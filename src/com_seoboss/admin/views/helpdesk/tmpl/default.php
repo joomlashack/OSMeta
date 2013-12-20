@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <?php if(is_array($this->requests)){?>
@@ -22,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    </tr>
 	    </thead>
 	    <tbody>
-		<?php 
+		<?php
 		foreach($this->requests as $request){?>
 		<tr class="row0">
 			<td><a href="index.php?option=com_seoboss&task=helpdesk_view_request&id=<?php echo $request->id;?>"><?php echo $request->subject ?></a></td>
@@ -34,7 +34,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	</table>
 <?php } else{?>
 <?php echo $this->requests; ?>
-<?php }?>	
+<?php }?>
 <input type="hidden" name="option" value="com_seoboss" />
 <input type="hidden" name="task" value="helpdesk" />
 </form>

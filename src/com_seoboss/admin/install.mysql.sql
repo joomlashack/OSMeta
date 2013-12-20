@@ -114,7 +114,7 @@ PRIMARY KEY (  `component` )
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__seoboss_meta_extensions` VALUES
-  ('com_content-1.5','Joomla 1.5 Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0), 
+  ('com_content-1.5','Joomla 1.5 Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0),
   ('com_content','Joomla Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0),
   ('com_menu','Menu Items','Manage metadata for Menu Items. Be careful with this plugin, because it can override the metadata from other components.',0,0),
   ('com_k2','K2', 'K2 content items',1,0),

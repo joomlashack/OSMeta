@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
@@ -24,7 +24,7 @@ class SeobossModelPanel extends JBModel
 		parent::__construct();
 
 	}
-	
+
 	public function getSystemInfo(){
 	    $system = array();
 	    $db = JFactory::getDBO();
@@ -34,16 +34,16 @@ class SeobossModelPanel extends JBModel
 	    $system['pages'] = $db->loadResult();
 	    $db->setQuery("SELECT COUNT(*) from #__seoboss_redirects");
 	    $system['links'] = $db->loadResult();
-	    return $system; 
+	    return $system;
 	}
-	
+
 	public function getCode(){
 	    $db = JFactory::getDBO();
 	    $db->setQuery("SELECT joomboss_registration_code from #__seoboss_settings");
 	    $code = $db->loadResult();
 	    return $code;
 	}
-	
+
 	public function setCode( $code ){
 	    $db = JFactory::getDBO();
 	    $db->setQuery("UPDATE #__seoboss_settings SET joomboss_registration_code=".$db->quote( $code ) );

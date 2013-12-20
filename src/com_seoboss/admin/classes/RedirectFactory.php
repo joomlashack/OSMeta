@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class RedirectFactory{
 	public static function Redirect($data){
@@ -19,11 +19,11 @@ class RedirectFactory{
 		$obj->fetchLinksForRedirect($data);
 		$url = $_SERVER['HTTP_HOST'];
 		$extLink = array();
-		//rectal replacement 
+		//rectal replacement
 		if($obj->results){
 			$linksInText = array_flip($obj->results);
 			$linksInText = array_flip($linksInText);
-			
+
 			foreach($linksInText as $linkInText){
 				if (preg_match("~^[^=]+://~", $linkInText) && !preg_match("~^[^://]+://(www\.)?".$url."~i", $linkInText)) {
 					$extLink[]='|'.$linkInText.'|';
@@ -37,7 +37,7 @@ class RedirectFactory{
 					$target = ($r_link->target == '1')?"_blank":"_self";
 					if(substr($r_link->url, -1) == '*' && stripos($extLink[$i],substr($r_link->url, 0, -1) ) ){
 						$extLink[$i] = str_replace("|", "", $extLink[$i] );
-						
+
 						$data = str_replace($extLink[$i].'"', '/index.php?option=com_seoboss&amp;url='.$extLink[$i].'" target="'.$target.'"', $data);
 					}else if(stripos($extLink[$i],$r_link->url."|" )){
 						$extLink[$i] = str_replace("|", "", $extLink[$i] );
@@ -45,11 +45,11 @@ class RedirectFactory{
 					}
 				}
 			}
-			
+
 		}
-		
-		
-		
+
+
+
 		return $data;
 	}
 

@@ -9,13 +9,13 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 class DFA{
 	private $state=1;
 	private $buffer;
 	private $currentPos;
 	private $result;
-	
+
 	private $keywords = array();
 	private $omitTags = array('TITLE', 'STRONG', 'B');
 	private $encoding = null;
@@ -47,7 +47,7 @@ class DFA{
 	),
 	5=>array(
 	  '>'=>array(1,'endSpecial'),
-	   'DEFAULT'=>5 
+	   'DEFAULT'=>5
 	),
 	6=>array(
 	   '-'=>7,
@@ -75,14 +75,14 @@ class DFA{
 	   '/'=>16,
 	   'DEFAULT'=>11
 	),
-	
+
 	13=>array(
 	   'ALPHANUM'=>13,
 	   '>'=>array(1, array('endTagName', 'tagEnd', 'endSpecial')),
 	   'SPACE'=>array(15, 'endTagName'),
 	   'DEFAULT'=>1
 	),
-	
+
 	14=>array(
 	   'SPACE'=>14,
 	   'ALPHA'=>array(13, 'startTagName'),
@@ -102,65 +102,65 @@ class DFA{
 	   '>'=>array(1, 'endSpecial'),
 	   'DEFAULT'=>11
 	),
-	
+
 	'S1'=>array(
 	   'C'=>'S2',
 	   'c'=>'S2',
 	   'ALPHANUM'=>4,
 	   'DEFAULT'=>1
 	),
-    
+
     'S2'=>array(
        'R'=>'S3',
        'r'=>'S3',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
     ),
-    
+
     'S3'=>array(
        'I'=>'S4',
        'i'=>'S4',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
     ),
-    
+
     'S4'=>array(
        'P'=>'S5',
        'p'=>'S5',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
     ),
-    
+
     'S5'=>array(
        'T'=>'S6',
        't'=>'S6',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
     ),
-    
+
     'S6'=>array(
        'SPACE'=>'S7',
        '>'=>'S8',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
     ),
-    
+
     'S7'=>array(
        '>'=>'S8',
        'DEFAULT'=>'S7'
     ),
-    
+
     'S8'=>array(
        '<'=>'S9',
        'DEFAULT'=>'S8'
     ),
-    
+
     'S9'=>array(
        '/'=>'S10',
        'SPACE'=>'S17',
        'DEFAULT'=>'S8'
     ),
-    
+
     'S10'=>array(
        'S'=>'S11',
         's'=>'S11',
@@ -212,15 +212,15 @@ class DFA{
        '>'=>array(1, 'endSpecial'),
        'DEFAULT'=>'S19'
     )
-    
-    
+
+
 	);
-	
+
 	private $hilight_tag = "strong";
 	private $hilight_class = "strong";
-	
-	public function hilight($str, 
-	   $keywords = array() , 
+
+	public function hilight($str,
+	   $keywords = array() ,
 	   $omitTags = array(),
 	   $hilight_tag="strong",
 	   $hilight_class="",
@@ -232,7 +232,7 @@ class DFA{
                     'keyword'=>$keyword,
                     'length'=>$encoding?mb_strlen($keyword, $encoding):strlen($keyword),
                     'upper'=>$encoding?mb_strtoupper($keyword, $encoding):strtoupper($keyword)
-                  ); 
+                  );
 		}
 		foreach($omitTags as $key=>$value){
 		    $omitTags[$key] = strtoupper($value);
@@ -242,14 +242,14 @@ class DFA{
 		$this->buffer = $str;
 		$this->currentPos = 0;
 		$this->state=1;
-		
+
 		$this->hilight_tag = $hilight_tag;
 		$this->hilight_class = $hilight_class;
-		
+
 		$this->startPos = 0;
         $this->sectionStart = 0;
         $this->sectionEnd = 0;
-        
+
         $this->result = "";
         $chars = preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY );
 		foreach($chars as $char){
@@ -257,7 +257,7 @@ class DFA{
 		}
 		return $this->result;
 	}
-	
+
 	private function nextState($char){
 		foreach($this->statesGraph[$this->state] as $token=>$action){
 			if( $token == $char ||
@@ -280,7 +280,7 @@ class DFA{
 		}
 		$this->currentPos++;
 	}
-	
+
 	private $startPos = 0;
 	private $sectionStart = 0;
 	private $sectionEnd = 0;
@@ -296,9 +296,9 @@ class DFA{
         $this->result .= $this->performReplace($replaceContent).
            ($this->encoding?mb_substr($this->buffer, $this->sectionStart , $this->sectionEnd  - $this->sectionStart, $this->encoding):
                             substr($this->buffer, $this->sectionStart , $this->sectionEnd  - $this->sectionStart));
-        $this->startPos = $this->sectionEnd; 
+        $this->startPos = $this->sectionEnd;
     }
-    
+
   private function performReplace($content){
           $origContent =  $content;
     	if(in_array($this->closedTag, $this->omitTags)){
@@ -329,7 +329,7 @@ class DFA{
     	   //}
     	}
 
-      
+
       usort($keywordsToReplace, "DFA::dfa_cmp");
       $keywordsToReplaceFiltered = array();
       $pos = 0;
@@ -360,7 +360,7 @@ class DFA{
       }
     	return $content;
     }
-    
+
     public static function dfa_cmp($a, $b)
     {
       if ($a[1] == $b[1]) {
@@ -371,28 +371,28 @@ class DFA{
       }
       return ($a[1] < $b[1]) ? -1 : 1;
     }
-    
+
     private $tagNameStartPosition = 0;
     private $tagName = '';
-    
+
     private $currentTag = '';
     private $closedTag = '';
-    
+
     private function startTagName(){
     	$this->tagNameStartPosition = $this->currentPos;
     }
-    
+
     private function endTagName(){
         $this->tagName = $this->encoding?mb_substr($this->buffer, $this->tagNameStartPosition, $this->currentPos - $this->tagNameStartPosition, $this->encoding):
         substr($this->buffer, $this->tagNameStartPosition, $this->currentPos - $this->tagNameStartPosition);
     }
-    
+
     private function tag(){
      $this->currentTag = strtoupper($this->tagName);
     }
-    
+
     private function tagEnd(){
-     $this->currentTag = ""; 
-     $this->closedTag = strtoupper($this->tagName); 
+     $this->currentTag = "";
+     $this->closedTag = strtoupper($this->tagName);
     }
 }

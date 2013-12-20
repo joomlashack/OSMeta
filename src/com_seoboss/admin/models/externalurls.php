@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
@@ -24,7 +24,7 @@ class SeobossModelExternalUrls extends JBModel
 		parent::__construct();
 
 	}
-	
+
 	public function getUrls(){
 	    $db = JFactory::getDBO();
         $query = "SELECT * FROM #__seoboss_redirects";
@@ -36,7 +36,7 @@ class SeobossModelExternalUrls extends JBModel
         }
         return $rows;
 	}
-	
+
 	public function saveUrls($array){
 	    $db = JFactory::getDBO();
 	    if($array){
@@ -56,8 +56,8 @@ class SeobossModelExternalUrls extends JBModel
 	                $db->query();
 	            }
 	        }
-	    
+
 	    }
 	}
-	
+
 }

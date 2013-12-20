@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
@@ -27,12 +27,12 @@ class SeobossViewPages extends JBView{
         parent::__construct($config);
         $this->_addPath('template', $this->_basePath.DS.'views'.DS.'default'.DS.'tmpl');
     }
-    
+
     function display($tpl=null)
     {
       JToolBarHelper::title( JText::_( 'SEO_PAGES_MANAGER' ),'joomboss_html.png' );
       JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation/52-seo-boss-pages-manager?tmpl=component');
       parent::display($tpl);
     }
-    
+
 }

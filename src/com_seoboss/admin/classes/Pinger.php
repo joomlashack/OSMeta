@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class Pinger{
     private $GOOGLE_PING_URL="http://blogsearch.google.com/ping/RPC2";
@@ -51,7 +51,7 @@ class Pinger{
 
         fwrite($fp, $out);
         $response = '';
-        while(!feof($fp)){ 
+        while(!feof($fp)){
             $response.=fgets($fp, 128);
         }
         fclose($fp);
@@ -59,18 +59,18 @@ class Pinger{
         $firstline=$lines[0];
         if(!ereg("HTTP/1.[01] 200 OK",$firstline))
         {
-            return array(-1,$firstline);  
+            return array(-1,$firstline);
         }
         while($lines[0]!='') array_shift($lines);
         array_shift($lines);
         $lines=strip_tags(implode(' ',$lines));
-    
+
         $n=preg_match(
             '|<member>\s*<name>flerror</name>\s*<value>\s*<boolean>([^<]*)</boolean>\s*</value>\s*</member>|i',
             $response, $matches);
         if(0==$n)
-        { 
-            return array(-1,$lines);  
+        {
+            return array(-1,$lines);
         }
         $flerror=$matches[1];
 
@@ -78,8 +78,8 @@ class Pinger{
             '|<member>\s*<name>message</name>\s*<value>([^<]*)</value>\s*</member>|i',
             $response, $matches);
         if(0==$n)
-        { 
-            return array(-1,$lines);  
+        {
+            return array(-1,$lines);
         }
         $message=$matches[1];
         return array($flerror,$message);

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*------------------------------------------------------------------------
 # SEO Boss Pro
 # ------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport("joomla.version");
 $version = new JVersion();
 if($version->RELEASE == "1.5"){
@@ -18,7 +18,7 @@ if($version->RELEASE == "1.5"){
 <script src="components/com_seoboss/js/Autocompleter.js"></script>
 <script>
 window.addEvent('domready', function() {
-  new Autocompleter.Local('tag_name', ['abstract', 
+  new Autocompleter.Local('tag_name', ['abstract',
 	    'author', 'classification', 'copyright', 'description', 'distribution', 'doc-class', 'doc-rights', 'doc-type','DownloadOptions', 'expires', 'generator', 'googlebot', 'keywords', 'MSSmartTagsPreventParsing', 'name', 'owner', 'progid', 'rating', 'refresh', 'reply-to', 'resource-type', 'revisit-after', 'robots', 'Template'],
 		{
 	                                                		'minLength': 0, // We need at least 1 character

@@ -9,33 +9,33 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class Cobalt_MetatagsContainer extends MetatagsContainer{
     public $code=7;
     public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS 
-        c.id as id, 
-        c.title AS title, 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        c.id as id,
+        c.title AS title,
         c.meta_key AS metakey,
-        c.meta_descr as metadesc, 
-        m.title as metatitle 
-         FROM 
+        c.meta_descr as metadesc,
+        m.title as metatitle
+         FROM
         #__js_res_record c
         LEFT JOIN #__seoboss_metadata m ON c.id=m.item_id AND m.item_type=".$db->quote($this->code)."
         WHERE 1 ";
-        
+
         $search = JRequest::getVar("filter_search", "");
         $section_id = JRequest::getVar("section_id", "0");
         $type_id = JRequest::getVar("type_id", "0");
         $status_id = JRequest::getVar("status_id");
-        
+
         $show_empty_keywords =
             JRequest::getVar("show_empty_keywords", "-1");
         $show_empty_descriptions =
             JRequest::getVar("show_empty_descriptions", "-1");
-        
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
@@ -43,14 +43,14 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
                 $sql .= " AND c.title LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        
+
         if( $section_id > 0 ){
             $sql .= " AND c.section_id=".$db->quote($section_id);
 
         }
         if( $type_id > 0 ){
             $sql .= " AND c.type_id=".$db->quote($type_id);
-        
+
         }
         if( $status_id  ){
             switch($status_id){
@@ -71,7 +71,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         if($show_empty_descriptions != "-1"){
             $sql .= "AND ( ISNULL(meta_descr) OR meta_descr='') ";
         }
-        
+
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
         $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
@@ -88,14 +88,14 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " ORDER BY title ";
                 break;
-                
+
         }
         if($order_dir == "asc"){
             $sql .= " ASC";
         }else{
             $sql .= " DESC";
         }
-             
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -107,27 +107,27 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS
-            	c.id AS id, 
-            	c.title AS title, 
+            	c.id AS id,
+            	c.title AS title,
             	c.meta_key AS metakey,
-            	c.title AS content 
-             FROM 
+            	c.title AS content
+             FROM
             #__js_res_record c WHERE 1
             ";
         $search = JRequest::getVar("filter_search", "");
         $section_id = JRequest::getVar("section_id", "0");
         $type_id = JRequest::getVar("type_id", "0");
         $status_id = JRequest::getVar("status_id");
-        
+
         $show_empty_keywords =
         JRequest::getVar("show_empty_keywords", "-1");
         $show_empty_descriptions =
         JRequest::getVar("show_empty_descriptions", "-1");
-        
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.virtuemart_product_id=".$db->quote($search);
@@ -137,11 +137,11 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         }
         if( $section_id > 0 ){
             $sql .= " AND c.section_id=".$db->quote($section_id);
-        
+
         }
         if( $type_id > 0 ){
             $sql .= " AND c.type_id=".$db->quote($type_id);
-        
+
         }
         if( $status_id  ){
             switch($status_id){
@@ -161,9 +161,9 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         }
         if($show_empty_descriptions != "-1"){
             $sql .= "AND ( ISNULL(meta_descr) OR meta_descr='') ";
-        }    
+        }
         $db->setQuery( $sql, $lim0, $lim );
-    
+
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -180,15 +180,15 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
 	public function mustReplaceMeteaKeywords(){
 	  return false;
 	}
 	public function mustReplaceMetaDescription(){
 	  return false;
 	}
-    
-    
+
+
     public function copyKeywordsToTitle($ids){
         $db = JFactory::getDBO();
 		foreach($ids as $key=>$value){
@@ -209,13 +209,13 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
              ".$db->quote($item->meta_key).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->meta_key);
-			
+
 			$db->setQuery($sql);
             $db->query();
 			}
 		}
     }
-    
+
     public function copyTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -235,7 +235,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             }
         }
     }
-    
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -256,13 +256,13 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
              ".$db->quote($item->title).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -274,16 +274,16 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->query();
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
-      
+
       $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
@@ -304,35 +304,35 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
              VALUES (
              ".$db->quote($item->id).",
              ".$db->quote($this->code).",
-             
+
              '',
              ".$db->quote($introtext)."
              ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-            
+
             $db->setQuery($sql);
             $db->query();
-            
+
             $sql = "UPDATE #__js_res_record SET meta_descr=".$db->quote($introtext)."
             WHERE id=".$db->quote($item->id);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
-    
+
+
     public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys){
         $db = JFactory::getDBO();
         for($i = 0 ;$i < count($ids); $i++){
             $sql = "UPDATE #__js_res_record
-             SET 
+             SET
              meta_descr=".$db->quote( $metadescriptions[$i] ).",
              meta_key=".$db->quote( $metakeys[$i] )."
              WHERE id=".$db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
-            
+
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
                     			 item_type, title, description)
                     			 VALUES (
@@ -343,20 +343,20 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
                     			 ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]);
             $db->setQuery($sql);
             $db->query();
-            
+
             $this->saveKeywords($metakeys[$i], $ids[$i]);
         }
     }
-    
+
     public function getTypeId(){
       return $this->code;
     }
-    
+
     public function getMetadata($id){
         $db = JFactory::getDBO();
 		$sql = "SELECT c.id as id, c.title as title, c.meta_key as metakeywords,
-         c.meta_descr as metadescription 
-         FROM 
+         c.meta_descr as metadescription
+         FROM
         #__js_res_record c
          WHERE c.id=".$db->quote($id);
 		$db->setQuery($sql);
@@ -366,7 +366,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         $data["metatitle"] = $parentData["metatitle"];
         return $data;
     }
-    
+
     public function setMetadata($id, $data){
         $db = JFactory::getDBO();
         $sql = "UPDATE #__js_res_record SET .".
@@ -376,10 +376,10 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         WHERE `id`=".$db->quote($id);
         $db->setQuery($sql);
         $db->query();
-        
+
         parent::setMetadata($id, $data);
     }
-    
+
     public function getMetadataByRequest($query){
       $params = array();
       parse_str($query, $params);
@@ -389,7 +389,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
       }
       return $metadata;
     }
-    
+
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($url, $params);
@@ -397,7 +397,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         $this->setMetadata($params["id"], $data);
       }
     }
-    
+
     function getFilter(){
         $search = JRequest::getVar("filter_search", "");
         $section_id = JRequest::getVar("section_id", "");
@@ -407,16 +407,16 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         $show_empty_keywords = JRequest::getVar("show_empty_keywords", "-1");
         $show_empty_descriptions = JRequest::getVar("show_empty_descriptions", "-1");
 
-                $result =  'Filter:                        
-        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/> 
-        <button onclick="this.form.submit();">Go</button> 
+                $result =  'Filter:
+        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/>
+        <button onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-                        
+
         &nbsp;&nbsp;&nbsp;';
 
         $result .=  "<select name=\"type_id\" onchange=\"document.adminForm.submit();\">".
                 "<option value=\"\">Select Field Type</option>";
-         
+
         $db = JFactory::getDBO();
         $db->setQuery("SELECT id , name FROM #__js_res_types ORDER BY name ASC");
         $types = $db->loadObjectList();
@@ -424,10 +424,10 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             $result .= "<option value=\"{$type->id}\" ".($type->id==$type_id?"selected=\"true\"":"").">{$type->name}</option>";
         }
         $result .= "</select>";
-        
+
         $result .=  "<select name=\"section_id\" onchange=\"document.adminForm.submit();\">".
         "<option value=\"\">Select Section</option>";
-         
+
         $db = JFactory::getDBO();
         $db->setQuery("SELECT id , name FROM #__js_res_sections ORDER BY name ASC");
         $sections = $db->loadObjectList();
@@ -435,16 +435,16 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             $result .= "<option value=\"{$section->id}\" ".($section->id==$section_id?"selected=\"true\"":"").">{$section->name}</option>";
         }
         $result .= "</select>";
-        
+
         $result .=  "<select name=\"status_id\" onchange=\"document.adminForm.submit();\">".
                 "<option value=\"\">Select Status</option>";
-         
+
         $result .= "<option value=\"P\" ".("P"==$status_id?"selected=\"true\"":"").">Published</option>";
         $result .= "<option value=\"U\" ".("U"==$status_id?"selected=\"true\"":"").">Unpublished</option>";
         $result .= "<option value=\"A\" ".("A"==$status_id?"selected=\"true\"":"").">Archived</option>";
 
         $result .= "</select>";
-        
+
         $result .= '<br/>
         <label>Show only Items with empty keywords</label>
         <input type="checkbox" onchange="document.adminForm.submit();" name="show_empty_keywords" '.($show_empty_keywords!="-1"?'checked="yes" ':'').'/>
@@ -452,7 +452,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         <input type="checkbox" onchange="document.adminForm.submit();" name="show_empty_descriptions" '.($show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
         return $result;
     }
-    
+
     public function isAvailable(){
       require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
       return MetatagsContainerFactory::componentExists("com_cobalt");

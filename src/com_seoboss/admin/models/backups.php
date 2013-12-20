@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 
 class SeobossModelBackups extends JBModel
@@ -25,12 +25,12 @@ class SeobossModelBackups extends JBModel
   public function getDump(){
     $dump = "";
     $db = JFactory::getDBO();
-    
-    $db->setQuery("SELECT domain, 
-        `google_server`, 
-        `hilight_keywords`, 
-        `hilight_tag`, 
-        `hilight_class`, 
+
+    $db->setQuery("SELECT domain,
+        `google_server`,
+        `hilight_keywords`,
+        `hilight_tag`,
+        `hilight_class`,
         `hilight_skip`,
         `joomboss_registration_code`,
         `enable_google_ping`,
@@ -55,7 +55,7 @@ class SeobossModelBackups extends JBModel
       frontpage_keywords=".$db->quote($row->frontpage_keywords) . ",
       frontpage_description=".$db->quote($row->frontpage_description) . ",
       frontpage_meta_title=".$db->quote($row->frontpage_meta_title) . ";\n";
-    
+
     $db->setQuery("SELECT id, url, target, ext FROM #__seoboss_redirects");
     $data = $db->loadObjectList();
     foreach($data as $row){
@@ -146,7 +146,7 @@ class SeobossModelBackups extends JBModel
 
     return $dump;
   }
-  
+
   public function applyDump($dump){
     jimport("joomla.installer.helper");
     jimport("joomla.version");
@@ -154,7 +154,7 @@ class SeobossModelBackups extends JBModel
     if($version->RELEASE == "1.5"){
         $helper = new JInstallerHelper();
         $sql_statements = $helper->splitSql($dump);
-        
+
     }else{
         //$helper = new JInstallerHelper();
         $sql_statements = JInstallerHelper::splitSql($dump);

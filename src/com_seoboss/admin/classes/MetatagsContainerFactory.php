@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class MetatagsContainerFactory{
   public static function getContainerById($type){
@@ -68,9 +68,9 @@ class MetatagsContainerFactory{
     }
     return self::getContainerById($resultFeatureId);
   }
-  
+
   public static $metadataByQueryMap = array();
-  
+
   public static function getMetadata($queryString){
     $result = array();
     if(isset(self::$metadataByQueryMap[$queryString])){
@@ -81,10 +81,10 @@ class MetatagsContainerFactory{
         $result = $container->getMetadataByRequest($queryString);
         self::$metadataByQueryMap[$queryString] = $result;
       }
-    } 
+    }
     return $result;
   }
-  
+
   public static function processBody($body, $queryString){
     $container = self::getContainerByRequest($queryString);
     if($container != null){
@@ -123,9 +123,9 @@ class MetatagsContainerFactory{
         $body = preg_replace("/<title[^>]*>.*<\\/title>/i",
             '<title>'.htmlspecialchars($metadata["title_tag"]).'</title>', $body, 1, $replaced);
       }
-      
-      
-           
+
+
+
     }
     require_once(dirname(__FILE__)."/Canonical.php");
     $canonical = new SeobossCanonicalURL();
@@ -154,14 +154,14 @@ class MetatagsContainerFactory{
     }
     return $body;
   }
-  
+
   public static function setMetadataByRequest($query, $metadata){
     $container = self::getContainerByRequest($query);
     if($container != null){
       $container->setMetadataByRequest($query, $metadata);
     }
   }
-  
+
         public static function getMenuContainer(){
           require_once "MenuItemMetatagsContainer.php";
           return new MenuItemMetatagsContainer();
@@ -174,7 +174,7 @@ class MetatagsContainerFactory{
 	public static function getFeatures(){
 	  if(MetatagsContainerFactory::$features == null){
 	    $features  = array();
-	    
+
 	    $directoryName = dirname(dirname(__FILE__)).'/features';
 	    $db=JFactory::getDBO();
 	    $db->setQuery("SELECT component FROM
@@ -189,7 +189,7 @@ class MetatagsContainerFactory{
 	  }
       return MetatagsContainerFactory::$features ;
 	}
-	
+
 	public static function refreshFeatures(){
 	  $result = array();
 	  $db = JFactory::getDBO();
@@ -206,9 +206,9 @@ class MetatagsContainerFactory{
 	          $available = $available && $container->isAvailable();
 	        }else{
 	          $available = false;
-	        } 
+	        }
 	    }
-	    
+
 	    $db->setQuery("UPDATE #__seoboss_meta_extensions SET available=".($available?1:0)."
 	        WHERE component=".$db->quote($extension->component));
 	    $db->query();
@@ -216,7 +216,7 @@ class MetatagsContainerFactory{
 	  }
 	  return $result;
 	}
-	
+
 	public static function getJoomlaVersion(){
 	    if(MetatagsContainerFactory::$version==null){
 	        jimport("joomla.version");
@@ -225,7 +225,7 @@ class MetatagsContainerFactory{
 	    }
 	    return MetatagsContainerFactory::$version;
 	}
-	
+
 	public static function componentExists($name){
 	  $db = JFactory::getDBO();
 	  $sql = "";
@@ -237,7 +237,7 @@ class MetatagsContainerFactory{
 	  $db->setQuery($sql);
 	  return $db->loadResult() == "1";
 	}
-	
+
 	public static function getAllFeatures(){
 	  $db=JFactory::getDBO();
 	  $db->setQuery("SELECT name, component, description, enabled FROM
@@ -245,19 +245,19 @@ class MetatagsContainerFactory{
       $features = $db->loadAssocList();
       return $features;
 	}
-	
+
 	public static function enableFeature($feature){
 	  $db = JFactory::getDBO();
 	  $db->setQuery("UPDATE #__seoboss_meta_extensions SET enabled=1 WHERE component=".$db->quote($feature));
 	  $db->query();
 	}
-	
+
 	public static function disableFeature($feature){
 	  $db = JFactory::getDBO();
 	  $db->setQuery("UPDATE #__seoboss_meta_extensions SET enabled=0 WHERE component=".$db->quote($feature));
 	  $db->query();
 	}
-	
+
 	private static $features = null;
 	private static $version = null;
 }

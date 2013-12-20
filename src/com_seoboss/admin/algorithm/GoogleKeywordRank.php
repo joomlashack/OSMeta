@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once JPATH_ADMINISTRATOR.DS."components".
         DS."com_seoboss".DS."lib".DS."Snoopy.class.php";
@@ -39,7 +39,7 @@ function getGoogleKeywordRank($keyword, $site, $google_url = "google.by", $lang 
 	$SnoopySeoBoss->fetch(
 	"http://www.$google_url/search?as_q=$keyword&num=100&site=&source=hp"
 	);
-	
+
 	preg_match_all("/<h3[\\s]+class=\\\"r\\\">[\\s]*<a[\\s]+href=\\\"([^\\\"]*)\\\"/i", $SnoopySeoBoss->results, $results );
 	$rank = 1;
     foreach($results[1] as $result){

@@ -9,16 +9,16 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form id="adminForm" name="adminForm" id="adminForm" method="post" action="">
 <input type="hidden" name="option" id="option" value="com_seoboss"/>
 <input type="hidden" name="task" id="task" value="settings"/>
 <?php
 if(version_compare(JVERSION, "3.0", "ge")){
-  ?> 
+  ?>
   <h3><?php echo JText::_( 'SEO_SITE_SETTINGS' )?></h3>
-  <?php 
+  <?php
 } else{
   jimport('joomla.html.pane');
   $pane = JPane::getInstance('sliders', array('allowAllClose' => true));
@@ -47,7 +47,7 @@ if(version_compare(JVERSION, "3.0", "ge")){
     </td>
   </tr>
   </table>
-  <?php 
+  <?php
   if(version_compare(JVERSION, "3.0", "ge")){
     ?><h3>Metadata generation</h3><?php
   }else{
@@ -60,19 +60,19 @@ if(version_compare(JVERSION, "3.0", "ge")){
   <td valign="top" width="100">
     <label for="max_description_length">Meta descirption max length</label></td>
       <td>
-      <input type="text" class="inputbox" id="max_description_length" 
+      <input type="text" class="inputbox" id="max_description_length"
       name="max_description_length" value="<?php echo $this->settings->max_description_length ?>" />
       </td>
       <td>
           Max length of generated meta description tag.
-          
+
       </td>
     </tr>
     </table>
   <?php
   if(version_compare(JVERSION, "3.0", "ge")){
-   ?><h3><?php echo JText::_( 'SEO_TEXT_REPLACEMENTS' )?></h3><?php 
-  }else{ 
+   ?><h3><?php echo JText::_( 'SEO_TEXT_REPLACEMENTS' )?></h3><?php
+  }else{
     echo $pane->endPanel();
     echo $pane->startPanel( JText::_( 'SEO_TEXT_REPLACEMENTS' ), 'cpanel-panel-text' );
   }
@@ -81,11 +81,11 @@ if(version_compare(JVERSION, "3.0", "ge")){
   <tr>
     <td valign="top" width="100"><label for="title"><?php echo JText::_( 'SEO_HIGHLIGHT_KEYWORDS' ) ?></label></td>
     <td>
-    <input type="checkbox" class="inputbox" id="hilight_keywords" name="hilight_keywords" 
+    <input type="checkbox" class="inputbox" id="hilight_keywords" name="hilight_keywords"
        <?php if($this->settings->hilight_keywords){ ?>checked <?php }?>/>
        </td>
        <td>
-<?php echo JText::_( 'SEO_HIGHLIGHT_KEYWORDS_DESC' ) ?> 
+<?php echo JText::_( 'SEO_HIGHLIGHT_KEYWORDS_DESC' ) ?>
        </td>
   </tr>
   <tr>
@@ -104,7 +104,7 @@ if(version_compare(JVERSION, "3.0", "ge")){
   <tr>
     <td valign="top" width="100"><label for="title"><?php echo JText::_( 'SEO_CLASS' ) ?></label></td>
     <td>
-    <input type="text" class="inputbox" 
+    <input type="text" class="inputbox"
         id="hilight_class" name="hilight_class" value="<?php echo $this->settings->hilight_class ?>" />
         </td>
    <td>
@@ -114,7 +114,7 @@ if(version_compare(JVERSION, "3.0", "ge")){
   <tr>
     <td valign="top" width="100"><label for="title"><?php echo JText::_( 'SEO_SKIP_TAGS' ) ?></label></td>
     <td>
-    <input type="text" class="inputbox" 
+    <input type="text" class="inputbox"
         id="hilight_skip" name="hilight_skip" value="<?php echo $this->settings->hilight_skip ?>" />
         </td>
         <td>
@@ -124,7 +124,7 @@ if(version_compare(JVERSION, "3.0", "ge")){
   </table>
   <?php
     if(version_compare(JVERSION, "3.0", "ge")){
-     ?><h3><?php echo JText::_( 'SEO_GOOGLE_PING_SERVICE' )?></h3><?php 
+     ?><h3><?php echo JText::_( 'SEO_GOOGLE_PING_SERVICE' )?></h3><?php
     }else{
       echo $pane->endPanel();
       echo $pane->startPanel( JText::_( 'SEO_GOOGLE_PING_SERVICE' ), 'cpanel-panel-ping' );
@@ -149,32 +149,32 @@ if(version_compare(JVERSION, "3.0", "ge")){
       echo $pane->startPanel( JText::_( 'SEO_FRONTPAGE_SETTINGS' ), 'cpanel-panel-frontpage' );
     }
     ?>
-    
+
         <table class="adminform" >
             <tr>
                 <td>
                     <input type="radio" name="frontpage_meta" value="0" <?php if($this->settings->frontpage_meta==0){ ?>
                     checked="true"
                     <?php }?>
-                    /> 
+                    />
                     <?php echo JText::_( 'SEO_FRONTPAGE_SPECIFY_METATAGS' ); ?>
                 </td>
                 <td align="left">
                     <label for="frontpage_title"><?php echo JText::_( 'SEO_FRONTPAGE_TITLE' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_title" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_title" size="50"
                         name="frontpage_title" value="<?php echo htmlspecialchars($this->settings->frontpage_title) ; ?>"/>
                      <br/>
                      <label for="frontpage_meta_title"><?php echo JText::_( 'SEO_FRONTPAGE_META_TITLE' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_meta_title" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_meta_title" size="50"
                         name="frontpage_meta_title" value="<?php echo htmlspecialchars($this->settings->frontpage_meta_title) ; ?>"/>
                      <br/>
                     <label for="frontpage_keywords"><?php echo JText::_( 'SEO_FRONTPAGE_KEYWORDS' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_keywords" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_keywords" size="50"
                         name="frontpage_keywords" value="<?php echo htmlspecialchars($this->settings->frontpage_keywords); ?>"/>
-                     <br/>   
+                     <br/>
                     <label for="frontpage_description"><?php echo JText::_( 'SEO_FRONTPAGE_DESCRIPTION' ); ?>:</label>
                     <br/>
                     <input type="text" class="inputbox" id="frontpage_description" size="50"
@@ -213,8 +213,8 @@ if(version_compare(JVERSION, "3.0", "ge")){
       </table>
       <?php
       if(version_compare(JVERSION, "3.0", "ge")){
-       ?><h3>SEO Boss Extensions</h3><?php  
-      } else{    
+       ?><h3>SEO Boss Extensions</h3><?php
+      } else{
        echo $pane->endPanel();
        echo $pane->startPanel( 'SEO Boss Extensions', 'cpanel-panel-extensions' );
       }
@@ -225,7 +225,7 @@ if(version_compare(JVERSION, "3.0", "ge")){
        <th>Description</th>
        <th width="10%">Enabled</th>
      </tr>
-     <?php 
+     <?php
      foreach( $this->features as $feature){
        $img="components/com_seoboss/images/";
        if($feature["enabled"]){
@@ -241,16 +241,16 @@ if(version_compare(JVERSION, "3.0", "ge")){
          <td><?php echo $feature["description"]?></td>
          <td><a href="index.php?option=com_seoboss&task=<?php echo $feature["enabled"]?"disablefeature":"enablefeature";?>&id=<?php echo $feature["component"]?>" ><img src="<?php echo $img?>" alt="<?php echo $alt?>"/></a></td>
        </tr>
-       <?php 
+       <?php
      }
      ?>
      </table>
-     <?php 
+     <?php
      if(version_compare(JVERSION, "3.0", "ge")){
-       
+
      }else{
       echo $pane->endPanel();
       echo $pane->endPane();
      }
   ?>
-</form> 
+</form>

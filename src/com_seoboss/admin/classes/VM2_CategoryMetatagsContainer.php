@@ -16,19 +16,19 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
     public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS 
-        c.virtuemart_category_id as id, 
-        c.category_name AS title, 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        c.virtuemart_category_id as id,
+        c.category_name AS title,
         c.metakey AS metakey,
-        c.metadesc AS metadesc, 
+        c.metadesc AS metadesc,
         c.customtitle as metatitle ,
         m.title_tag as title_tag
-         FROM 
+         FROM
         #__virtuemart_categories_$language c
         LEFT JOIN
 		#__seoboss_metadata m ON m.item_id=c.virtuemart_category_id and m.item_type={$this->code}
         WHERE 1 ";
-        
+
         $search = JRequest::getVar("filter_search", "");
 
         $com_vm_filter_show_empty_keywords =
@@ -43,7 +43,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
                 $sql .= " AND c.category_name LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        
+
         if($com_vm_filter_show_empty_keywords != "-1"){
             $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
         }
@@ -69,14 +69,14 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " ORDER BY title ";
                 break;
-                
+
         }
         if($order_dir == "asc"){
             $sql .= " ASC";
         }else{
             $sql .= " DESC";
         }
-             
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -88,7 +88,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     public function mustReplaceMetaTitle(){
       return false;
     }
@@ -98,7 +98,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
     public function mustReplaceMetaDescription(){
       return false;
     }
-        
+
     public function copyKeywordsToTitle($ids){
         $language = $this->getLanguage();
         $db = JFactory::getDBO();
@@ -114,7 +114,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             $db->query();
         }
     }
-    
+
     public function copyTitleToKeywords($ids){
        $language = $this->getLanguage();
        $db = JFactory::getDBO();
@@ -128,7 +128,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
                                implode(",", $ids). " )";
             $db->setQuery($sql);
             $db->query();
-            
+
             //save keywords
             $sql = "SELECT virtuemart_category_id as id , metakey FROM #__virtuemart_categories_$language WHERE virtuemart_category_id IN (".
             implode(",", $ids). " )";
@@ -139,7 +139,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             }
         }
     }
-    
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -155,7 +155,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             $db->query();
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
@@ -169,7 +169,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
                                implode(",", $ids). " )";
             $db->setQuery($sql);
             $db->query();
-            
+
             //save keywords
             $sql = "SELECT virtuemart_category_id as id , metakey FROM #__virtuemart_categories_$language WHERE virtuemart_category_id IN (".
                                implode(",", $ids). " )";
@@ -180,12 +180,12 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             }
         }
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
@@ -196,13 +196,13 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
                 unset($ids[$key]);
             }
         }
-        
+
         $sql = "SELECT virtuemart_category_id, category_description
-                FROM  #__virtuemart_categories_$language 
+                FROM  #__virtuemart_categories_$language
                 WHERE virtuemart_category_id IN (".implode(",", $ids).")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
-        
+
         foreach($items as $item){
           if($item->product_s_desc != ''){
             $introtext = strip_tags($item->product_s_desc);
@@ -214,36 +214,36 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             VALUES (
             ".$db->quote($item->virtuemart_product_id).",
             {$this->getTypeId()},
-             
+
             '',
             ".$db->quote($introtext)."
             ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-        
+
             $db->setQuery($sql);
             $db->query();
-        
-            $sql = "UPDATE #__virtuemart_categories_$language 
+
+            $sql = "UPDATE #__virtuemart_categories_$language
                     SET metadesc=".$db->quote($introtext)."
                     WHERE virtuemart_category_id=".$db->quote($item->virtuemart_product_id);
-        
+
             $db->setQuery($sql);
             $db->query();
           }
         }
     }
-    
+
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS 
-        	c.virtuemart_category_id AS id, 
-        	c.category_name AS title, 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+        	c.virtuemart_category_id AS id,
+        	c.category_name AS title,
         	c.metakey AS metakey,
-        	c.category_description AS content 
-         FROM 
+        	c.category_description AS content
+         FROM
         #__virtuemart_categories_$language c WHERE 1
         ";
-        
+
         $search = JRequest::getVar("filter_search", "");
         $com_vm_filter_show_empty_keywords = JRequest::getVar("com_vm_filter_show_empty_keywords", "-1");
         $com_vm_filter_show_empty_descriptions = JRequest::getVar("com_vm_filter_show_empty_descriptions", "-1");
@@ -255,14 +255,14 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
                 $sql .= " AND c.category_name LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        
+
         if($com_vm_filter_show_empty_keywords != "-1"){
             $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
         }
         if($com_vm_filter_show_empty_descriptions != "-1"){
             $sql .= "AND ( ISNULL(metadesc) OR metadesc='') ";
         }
-        
+
         $db->setQuery( $sql, $lim0, $lim );
 
         $rows = $db->loadObjectList();
@@ -293,7 +293,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             $db->setQuery($sql);
             $db->query();
             $this->saveKeywords($metakeys[$i], $ids[$i]);
-            
+
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
             item_type, title, description, title_tag)
             VALUES (
@@ -304,25 +304,25 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
             ".$db->quote($title_tags!=null?$title_tags[$i]:'')."
             ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]).
             ", title_tag=".$db->quote($title_tags!=null?$title_tags[$i]:'');
-            
+
             $db->setQuery($sql);
             $db->query();
         }
-        
+
     }
     public function saveKeywords($keys, $id){
         parent::saveKeywords($keys, $id,$this->code);
     }
-    
+
     public function getItemData($id){
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
-        $sql = "SELECT c.virtuemart_category_id as id, 
-        c.category_name as title, 
+        $sql = "SELECT c.virtuemart_category_id as id,
+        c.category_name as title,
         c.metakey AS metakeywords,
-        c.metadesc as metadescription, 
-        c.customtitle as metatitle 
-         FROM 
+        c.metadesc as metadescription,
+        c.customtitle as metatitle
+         FROM
         #__virtuemart_categories_$language c
         WHERE c.virtuemart_category_id=".$db->quote($id);
         $db->setQuery($sql);
@@ -331,8 +331,8 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         $data["title_tag"] = $parentData["title_tag"];
         return $data;
     }
-    
-    
+
+
     public function setMetadata($id, $data){
         $keywords = $data["metakeywords"];
         $title = isset($data["title"])?$data["title"]:"";
@@ -349,10 +349,10 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         		metakey=".$db->quote($keywords)."
         		WHERE virtuemart_category_id=".$db->quote($id);
         $db->setQuery($sql);
-        $db->query(); 
+        $db->query();
         parent::setMetadata($id, $data);
     }
-    
+
     public function getMetadataByRequest($query){
       $params = array();
       parse_str($query, $params);
@@ -362,7 +362,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
       }
       return $metadata;
     }
-    
+
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
@@ -370,7 +370,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         $this->setMetadata($params["virtuemart_category_id"], $data);
       }
     }
-    
+
     function getFilter(){
         $language = $this->getLanguage();
         $search = JRequest::getVar("filter_search", "");
@@ -379,13 +379,13 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         $com_vm_filter_show_empty_keywords = JRequest::getVar("com_vm_filter_show_empty_keywords", "-1");
         $com_vm_filter_show_empty_descriptions = JRequest::getVar("com_vm_filter_show_empty_descriptions", "-1");
 
-                $result =  'Filter:                        
-        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/> 
-        <button onclick="this.form.submit();">Go</button> 
+                $result =  'Filter:
+        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/>
+        <button onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-                        
+
         &nbsp;&nbsp;&nbsp;';
-        
+
         $result .= '<br/>
         <label>Show only Items with empty keywords</label>
         <input type="checkbox" onchange="document.adminForm.submit();" name="com_vm_filter_show_empty_keywords" '.($com_vm_filter_show_empty_keywords!="-1"?'checked="yes" ':'').'/>
@@ -393,25 +393,25 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         <input type="checkbox" onchange="document.adminForm.submit();" name="com_vm_filter_show_empty_descriptions" '.($com_vm_filter_show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
         return $result;
     }
-    
+
     private function getLanguage(){
         $language="en_gb";
         $vmHelperPath = dirname(__FILE__)."/../../com_virtuemart/helpers/config.php";
-        if(is_file($vmHelperPath) ){ 
+        if(is_file($vmHelperPath) ){
             require_once($vmHelperPath);
             $config = VmConfig::loadConfig();
             $language = $config->lang;
         }
         return $language;
     }
-    
+
     public function getTypeId(){
       return $this->code;
     }
-    
+
     public function isAvailable(){
       return file_exists( dirname(__FILE__)."/../../com_virtuemart/models/virtuemart.php");
     }
-    
+
 
 }

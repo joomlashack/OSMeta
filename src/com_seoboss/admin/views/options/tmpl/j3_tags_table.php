@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <fieldset class="adminform">
@@ -26,8 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	    </tr>
 	    </thead>
 	    <tbody>
-		<?php 
-		
+		<?php
+
 		foreach($this->metatags as $metatag){?>
 		<tr class="row0">
 			<td><?php echo $metatag->name ?></td>

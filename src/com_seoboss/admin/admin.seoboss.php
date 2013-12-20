@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JLoader::register('JBView', JPATH_COMPONENT."/views/view.php");
 JLoader::register('JBModel', JPATH_COMPONENT."/models/model.php");
@@ -71,10 +71,10 @@ background-image: url(".JURI::base()."components/com_seoboss/images/48x48-keywor
 }
 .icon-16-joomboss_settings{
 background-image: url(".JURI::base()."components/com_seoboss/images/16x16-settings.png);
-}	
+}
 .icon-48-joomboss_redirect{
 background-image: url(".JURI::base()."components/com_seoboss/images/48x48-redirect.png);
-}	
+}
 .icon-48-joomboss_html{
 background-image: url(".JURI::base()."components/com_seoboss/images/48x48-html.png);
 }
@@ -83,7 +83,7 @@ background-image: url(".JURI::base()."components/com_seoboss/images/48x48-jb.png
 }
 .icon-48-helpdesk{
 background-image: url(".JURI::base()."components/com_seoboss/images/48x48-helpdesk.png);
-}	
+}
 	");
 }
 

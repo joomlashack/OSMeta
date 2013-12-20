@@ -16,7 +16,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
   public function getTypeId(){
     return $this->code;
   }
-  
+
   public function getMetatags($lim0, $lim, $filter=null){
     $db = JFactory::getDBO();
     $sql = "SELECT SQL_CALC_FOUND_ROWS
@@ -75,7 +75,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
     }else{
       $sql .= " DESC";
     }
-     
+
     $db->setQuery( $sql, $lim0, $lim );
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -114,7 +114,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
             '{$this->code}',
             ".$db->quote($item->metakey)."
                 ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->metakey);
-         
+
         $db->setQuery($sql);
         $db->query();
       }
@@ -285,7 +285,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
                   ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , title_tag=".$db->quote($title_tags[$i]);
           $db->setQuery($sql);
           $db->query();
-           
+
           $this->saveKeywords($metakeys[$i], $ids[$i]);
     }
 
@@ -318,7 +318,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
     }
     return $metadata;
   }
-  
+
   public function setMetadataByRequest($query, $metadata){
     $params = array();
     parse_str($query, $params);
@@ -326,7 +326,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
       $this->setMetadata($query["link_id"], $metadata);
     }
   }
-  
+
   public function setMetadata($id, $data){
     $keywords = $data["metakeywords"];
     $title = isset($data["title"])?$data["title"]:"";
@@ -365,7 +365,7 @@ class MosetsTree_LinkMetatagsContainer extends MetatagsContainer{
             <input type="checkbox" onchange="document.adminForm.submit();" name="filter_show_empty_descriptions" '.($filter_show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
     return $result;
   }
-  
+
   public function isAvailable(){
     require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
     return MetatagsContainerFactory::componentExists("com_mtree");

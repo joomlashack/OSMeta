@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <tr>
     <td align="right">
 <label><?php echo JText::_( 'SEO_SELECT_CONTENT_TYPE' ) ?>:&nbsp;</label><select name="type" onchange="document.adminForm.submit();">
-<?php 
+<?php
     foreach($this->availableTypes as $typeId=>$typeName){
 ?>
     <option value="<?php echo $typeId?>" <?php if ($typeId==$this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
@@ -28,7 +28,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   </tr>
   <tr>
     <td align="right">
-        <?php echo $this->filter;?>  
+        <?php echo $this->filter;?>
     </td>
   </tr>
   </table>
@@ -57,12 +57,12 @@ function createTitleTag(id){
             <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_DESCRIPTION_METATAG' ), 'meta_desc', $this->order_Dir, $this->order, "metatags_view"); ?>
             </th>
         </tr>
-        
+
     </thead>
     <tr>
     <td width="20"></td>
     <td class="title">
-    
+
     </td>
     <td valign="top">
     <?php echo JText::_( 'SEO_TITLE_TAG_DESC' );
@@ -94,11 +94,11 @@ function createTitleTag(id){
             <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>"><?php echo $row->title; ?></a>
         </td>
         <td valign="top">
-<?php 
+<?php
 ?>
         	<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="components/com_seoboss/images/rightarrow.png"/></a>
             <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
-<?php 
+<?php
 ?>
           </td>
         <td>
@@ -121,7 +121,7 @@ function createTitleTag(id){
     </tr>
   </tfoot>
 </table>
-<input type="hidden" name="option" value="com_seoboss" /> 
-<input type="hidden" name="task" value="metatags_view" /> 
+<input type="hidden" name="option" value="com_seoboss" />
+<input type="hidden" name="task" value="metatags_view" />
 <input type="hidden" name="boxchecked" value="0" />
 </form>

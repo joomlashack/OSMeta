@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form id="adminForm" name="adminForm" id="adminForm" method="post" action="">
 <input type="hidden" name="option" id="option" value="com_seoboss"/>
@@ -162,25 +162,25 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                     <input type="radio" name="frontpage_meta" value="0" <?php if($this->settings->frontpage_meta==0){ ?>
                     checked="true"
                     <?php }?>
-                    /> 
+                    />
                     <?php echo JText::_( 'SEO_FRONTPAGE_SPECIFY_METATAGS' ); ?>
                 </td>
                 <td align="left">
                     <label for="frontpage_title"><?php echo JText::_( 'SEO_FRONTPAGE_TITLE' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_title" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_title" size="50"
                         name="frontpage_title" value="<?php echo htmlspecialchars($this->settings->frontpage_title) ; ?>"/>
                      <br/>
                      <label for="frontpage_meta_title"><?php echo JText::_( 'SEO_FRONTPAGE_META_TITLE' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_meta_title" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_meta_title" size="50"
                         name="frontpage_meta_title" value="<?php echo htmlspecialchars($this->settings->frontpage_meta_title) ; ?>"/>
                      <br/>
                     <label for="frontpage_keywords"><?php echo JText::_( 'SEO_FRONTPAGE_KEYWORDS' ); ?>:</label>
                     <br/>
-                    <input type="text" class="inputbox" id="frontpage_keywords" size="50" 
+                    <input type="text" class="inputbox" id="frontpage_keywords" size="50"
                         name="frontpage_keywords" value="<?php echo htmlspecialchars($this->settings->frontpage_keywords); ?>"/>
-                     <br/>   
+                     <br/>
                     <label for="frontpage_description"><?php echo JText::_( 'SEO_FRONTPAGE_DESCRIPTION' ); ?>:</label>
                     <br/>
                     <input type="text" class="inputbox" id="frontpage_description" size="50"

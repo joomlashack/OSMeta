@@ -9,16 +9,16 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once "MetatagsContainer.php";
 class ArticleMetatagsContainer extends MetatagsContainer{
-	
+
 	public function getMetatags($lim0, $lim, $filter=null){
 	    jimport("joomla.version");
 	    $version = new JVersion();
 	    if(version_compare($version->RELEASE, "2.5", "ge")){
-            return $this->getMetatags25($lim0, $lim, $filter);	    
+            return $this->getMetatags25($lim0, $lim, $filter);
 	    }
 		$db = JFactory::getDBO();
 		$sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
@@ -35,7 +35,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
-        
+
         if($search != ""){
         	if(is_numeric($search)){
         		$sql .= " AND c.id=".$db->quote($search);
@@ -93,14 +93,14 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " ORDER BY title ";
                 break;
-        		
+
         }
         if($order_dir == "asc"){
         	$sql .= " ASC";
         }else{
         	$sql .= " DESC";
         }
-             
+
 	    $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -116,19 +116,19 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         }
         return $rows;
 	}
-	
+
 	public function getMetatags25($lim0, $lim, $filter=null){
-	
-	
+
+
 	    $db = JFactory::getDBO();
 	    $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
-			 c.metadesc, m.title as metatitle, m.title_tag as title_tag 
-			 FROM 
+			 c.metadesc, m.title as metatitle, m.title_tag as title_tag
+			 FROM
 			#__content c
 			LEFT JOIN #__categories cc ON cc.id=c.catid
 			LEFT JOIN
 			#__seoboss_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
-	
+
 	    $search = JRequest::getVar("com_content_filter_search", "");
 	    $cat_id = JRequest::getVar("com_content_filter_catid", "0");
 	    $level = JRequest::getVar("com_content_filter_level", "0");
@@ -136,7 +136,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    $state = JRequest::getVar("com_content_filter_state", "");
 	    $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
 	    $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
-	
+
 	    if($search != ""){
 	        if(is_numeric($search)){
 	            $sql .= " AND c.id=".$db->quote($search);
@@ -178,7 +178,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " AND c.state=1";
                 break;
-	
+
 	    }
 	    if($com_content_filter_show_empty_keywords != "-1"){
 	        $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
@@ -205,14 +205,14 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	        default:
 	            $sql .= " ORDER BY title ";
 	        break;
-	
+
 	    }
 	    if($order_dir == "asc"){
 	        $sql .= " ASC";
 	    }else{
 	        $sql .= " DESC";
 	    }
-	     
+
 	    $db->setQuery( $sql, $lim0, $lim );
 	    $rows = $db->loadObjectList();
 	    if ($db->getErrorNum()) {
@@ -224,21 +224,21 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    }
 	    return $rows;
 	}
-	
+
     public function getPages($lim0, $lim, $filter=null){
         jimport("joomla.version");
         $version = new JVersion();
         if(version_compare($version->RELEASE ,"2.5", "ge") ){
             return $this->getPages25($lim0, $lim, $filter);
         }
-        
+
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey, c.state,
-        IF(c.fulltext != '', c.fulltext, c.introtext) AS content 
-         FROM 
+        IF(c.fulltext != '', c.fulltext, c.introtext) AS content
+         FROM
         #__content c WHERE 1
         ";
-        
+
         $search = JRequest::getVar("com_content_filter_search", "");
         $section_id= JRequest::getVar("com_content_filter_sectionid", "-1");
         $cat_id = JRequest::getVar("com_content_filter_catid", "0");
@@ -246,7 +246,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
-        
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
@@ -278,7 +278,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " AND c.state=1";
                 break;
-                
+
         }
         if($com_content_filter_show_empty_keywords != "-1"){
             $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
@@ -286,7 +286,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         if($com_content_filter_show_empty_descriptions != "-1"){
             $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
         }
-        
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -308,19 +308,19 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     public function getPages25($lim0, $lim, $filter=null){
-    
-    
+
+
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey, c.state,
-            IF(c.fulltext != '', c.fulltext, c.introtext) AS content 
-             FROM 
-            #__content c 
+            IF(c.fulltext != '', c.fulltext, c.introtext) AS content
+             FROM
+            #__content c
             LEFT JOIN #__categories cc ON cc.id=c.catid
             WHERE 1
             ";
-    
+
         $search = JRequest::getVar("com_content_filter_search", "");
         $cat_id = JRequest::getVar("com_content_filter_catid", "0");
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
@@ -328,7 +328,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
-    
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
@@ -370,7 +370,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             default:
                 $sql .= " AND c.state=1";
                 break;
-    
+
         }
         if($com_content_filter_show_empty_keywords != "-1"){
             $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
@@ -378,7 +378,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         if($com_content_filter_show_empty_descriptions != "-1"){
             $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
         }
-    
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -396,16 +396,16 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     private $isFrontpage=false;
-    
+
     public function mustReplaceMeteaKeywords(){
       return $this->isFrontpage;
     }
     public function mustReplaceMetaDescription(){
       return $this->isFrontpage;
     }
-    
+
 	public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags=null){
 		$db = JFactory::getDBO();
 		for($i = 0 ;$i < count($ids); $i++){
@@ -426,7 +426,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             $db->query();
             parent::saveKeywords($metakeys[$i], $ids[$i],1);
 		}
-		
+
 	}
 	public function saveKeywords($keys, $id, $itemTypeId=null){
 	    parent::saveKeywords($keys, $id,$itemTypeId?$itemTypeId:1);
@@ -451,13 +451,13 @@ class ArticleMetatagsContainer extends MetatagsContainer{
              ".$db->quote($item->metakey).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->metakey);
-			
+
 			$db->setQuery($sql);
             $db->query();
 			}
 		}
 	}
-	
+
 	public function copyTitleToKeywords($ids){
 	   $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -477,7 +477,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             }
         }
 	}
-	
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -498,13 +498,13 @@ class ArticleMetatagsContainer extends MetatagsContainer{
              ".$db->quote($item->title).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -516,16 +516,16 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->query();
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
-        
+
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
@@ -546,17 +546,17 @@ class ArticleMetatagsContainer extends MetatagsContainer{
              VALUES (
              ".$db->quote($item->id).",
              1,
-             
+
              '',
              ".$db->quote($introtext)."
              ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-            
+
             $db->setQuery($sql);
             $db->query();
-            
+
             $sql = "UPDATE #__content SET metadesc=".$db->quote($introtext)."
             WHERE id=".$db->quote($item->id);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
@@ -571,10 +571,10 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	      return $this->getFilter15();
 	    }
 	}
-	
+
 	private function getFilter15(){
 		$db = JFactory::getDBO();
-		
+
 		$search = JRequest::getVar("com_content_filter_search", "");
 		$section_id= JRequest::getVar("com_content_filter_sectionid", "-1");
 		$cat_id = JRequest::getVar("com_content_filter_catid", "0");
@@ -583,32 +583,32 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 		$com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
 		$com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-		$result =  'Filter:                        
-		<input type="text" name="com_content_filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Article ID"/> 
-        <button id="Go" onclick="this.form.submit();">Go</button> 
+		$result =  'Filter:
+		<input type="text" name="com_content_filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Article ID"/>
+        <button id="Go" onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-                        
+
         &nbsp;&nbsp;&nbsp;';
 		$sql = "SELECT id, title from #__sections ORDER BY title";
 		$db->setQuery($sql);
 		$sections = $db->loadObjectList();
-		
+
         $result .= '<select name="com_content_filter_sectionid" id="filter_sectionid" class="inputbox" size="1" onchange="document.adminForm.submit();">
         <option value="-1" '.($section_id==-1?'selected="true"':'').'>- Select Section -</option>
         <option value="0" '.($section_id==0?'selected="true"':'').'>Uncategorised</option>';
-        if(is_array($sections)){        
+        if(is_array($sections)){
           foreach($sections as $section){
           	$result .= '<option value="'.$section->id.'" '.($section_id==$section->id?'selected="true"':'').'>'.$section->title.'</option>';
           }
         }
-        
-        
+
+
         $result .= '</select>
-        
+
         <select name="com_content_filter_catid" id="catid" class="inputbox" size="1" onchange="document.adminForm.submit( );">
         <option value="0"  selected="selected">- Select Category -</option>';
-        
-        $sql = "SELECT id, title from #__categories 
+
+        $sql = "SELECT id, title from #__categories
         WHERE ".($section_id>0?"section=$section_id":"section not LIKE 'com_%'")."
         ORDER BY title";
         $db->setQuery($sql);
@@ -618,26 +618,26 @@ class ArticleMetatagsContainer extends MetatagsContainer{
               $result .= '<option value="'.$category->id.'" '.($cat_id==$category->id?'selected="true"':'').'>'.$category->title.'</option>';
           }
         }
-        
-        
+
+
         $result .= '</select>
-        
+
         <select name="com_content_filter_authorid" id="filter_authorid" class="inputbox" size="1" onchange="document.adminForm.submit( );">
         <option value="0" >- Select Author -</option>';
-        
-	    $sql = "SELECT id, name from #__users 
+
+	    $sql = "SELECT id, name from #__users
         WHERE block=0
         ORDER BY name";
         $db->setQuery($sql);
         $authors = $db->loadObjectList();
-        
+
         foreach($authors as $author){
             $result .= '<option value="'.$author->id.'" '.($author_id==$author->id?'selected="true"':'').'>'.$author->name.'</option>';
         }
-        
+
         $result .= '
         </select>
-        
+
         <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform( );">
         <option value=""  >- Select State -</option>
         <option value="P" '.($state=='P'?'selected="selected"':'').'>Published</option>
@@ -647,13 +647,13 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         </select>
         <br/>
         <label>Show only Articles with empty keywords</label>
-        <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_keywords" '.($com_content_filter_show_empty_keywords!="-1"?'checked="yes" ':'').'/>                
+        <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_keywords" '.($com_content_filter_show_empty_keywords!="-1"?'checked="yes" ':'').'/>
         <label>Show only Articles with empty descriptions</label>
         <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_descriptions" '.($com_content_filter_show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
         return $result;
-         
+
 	}
-	
+
 	private function getFilter25(){
 	    $db = JFactory::getDBO();
 	    $search = JRequest::getVar("com_content_filter_search", "");
@@ -671,33 +671,33 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    $levels[]	= JHtml::_('select.option', '8', JText::_('J8'));
 	    $levels[]	= JHtml::_('select.option', '9', JText::_('J9'));
 	    $levels[]	= JHtml::_('select.option', '10', JText::_('J10'));
-	     
+
 	    $author_id = JRequest::getVar("com_content_filter_authorid", "0");
 	    $state = JRequest::getVar("com_content_filter_state", "");
-	    $com_content_filter_show_empty_keywords = 
+	    $com_content_filter_show_empty_keywords =
 	        JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-	    $com_content_filter_show_empty_descriptions = 
+	    $com_content_filter_show_empty_descriptions =
 	        JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
-	    
+
 	    $result =  'Filter:
-	    		<input type="text" name="com_content_filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Article ID"/> 
-	            <button id="Go" onclick="this.form.submit();">Go</button> 
+	    		<input type="text" name="com_content_filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Article ID"/>
+	            <button id="Go" onclick="this.form.submit();">Go</button>
 	            <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-	                            
+
 	            &nbsp;&nbsp;&nbsp;';
-	    
+
 	    $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">'.
 	    				'<option value="">Select category</option>'.
 	    JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $cat_id).
 	    			'</select>';
-	    
+
 	    $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">'.
 				'<option value="">Select max levels</option>'.
-				JHtml::_('select.options', $levels, 
+				JHtml::_('select.options', $levels,
 					'value', 'text', $level).
-			'</select>';	    
+			'</select>';
 	    $result .= '
-	            
+
 	            <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform( );">
 	            <option value=""  >- Select State -</option>
 	            <option value="P" '.($state=='P'?'selected="selected"':'').'>Published</option>
@@ -708,18 +708,18 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	            </select>
 	            <br/>
 	            <label>Show only Articles with empty keywords</label>
-	            <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_keywords" '.($com_content_filter_show_empty_keywords!="-1"?'checked="yes" ':'').'/>                
+	            <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_keywords" '.($com_content_filter_show_empty_keywords!="-1"?'checked="yes" ':'').'/>
 	            <label>Show only Articles with empty descriptions</label>
 	            <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_descriptions" '.($com_content_filter_show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
 	    return $result;
-	    
+
 	}
-	
+
 	public function getMetadata($id){
 		$db = JFactory::getDBO();
 		$sql = "SELECT c.id as id, c.title as title, c.metakey as metakeywords,
-         c.metadesc as metadescription 
-         FROM 
+         c.metadesc as metadescription
+         FROM
         #__content c
         WHERE c.id=".$db->quote($id);
 		$db->setQuery($sql);
@@ -742,8 +742,8 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 		$metadata["title_tag"] = $sb_metadata["title_tag"];
 		return $metadata;
 	}
-	
-	
+
+
 	public function setMetadata($id, $data){
 		$db = JFactory::getDBO();
         $sql = "UPDATE #__content SET ".
@@ -756,11 +756,11 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $db->query();
         parent::setMetadata($id, $data);
 	}
-	
+
 	public function getTypeId(){
 	  return $this->code;
 	}
-	
+
 	function getMetadataByRequest($query){
 	  $params = array();
 	  parse_str($query, $params);
@@ -777,7 +777,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	        frontpage_description
 	        FROM #__seoboss_settings LIMIT 0,1");
 	    $settings = $db->loadObject();
-	    
+
 	    if($settings->frontpage_meta==0){
 	      $metadata = array(
 	          "title_tag"=>$settings->frontpage_title,
@@ -807,7 +807,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	  }
 	  return $metadata;
 	}
-	
+
 	public function setMetadataByRequest($url,$data) {
 	  $params = array();
 	  parse_str($url, $params);
@@ -815,7 +815,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    $this->setMetadata($params["id"], $data);
 	  }elseif(isset($params["view"]) && $params["view"]=="frontpage"){
 	    $db = JFactory::getDBO();
-	    
+
 	    $db->setQuery("
 	        UPDATE #__seoboss_settings SET
 	        frontpage_meta = '0',
@@ -827,9 +827,9 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    $db->query();
 	  }
 	}
-	
+
 	private $code=1;
-	
+
 	public function isAvailable(){
 	  return true;
 	}

@@ -9,22 +9,22 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 abstract class MetatagsContainer{
 	public function setMetadata($itemId, $data){
 	    $itemTypeId = $this->getTypeId();
 		$keywords = $data["metakeywords"];
-		
+
 		$db = JFactory::getDBO();
 		//Save metatitles and metadata
 		$sql = "INSERT INTO #__seoboss_metadata
 		(title,
          title_tag,
 		 description,
-		 item_id,  
+		 item_id,
 		 item_type)
-		VALUES ( 
+		VALUES (
 		  ".$db->quote($data["metatitle"]). " ,
 		  ".$db->quote($data["title_tag"]). " ,
 		  ".$db->quote($data["metadescription"]). ",
@@ -42,10 +42,10 @@ abstract class MetatagsContainer{
 		//Save keywords
 		$this->saveKeywords($keywords, $itemId, $itemTypeId);
 	}
-	
+
 	public function saveKeywords($keywords, $itemId, $itemTypeId){
 	    $db = JFactory::getDBO();
-	    $sql = "DELETE FROM #__seoboss_keywords_items 
+	    $sql = "DELETE FROM #__seoboss_keywords_items
         WHERE item_id=".$db->quote($itemId)." AND item_type_id=".$db->quote($itemTypeId);
         $db->setQuery($sql);
         $db->query();
@@ -66,9 +66,9 @@ abstract class MetatagsContainer{
                  $sql = "INSERT INTO #__seoboss_keywords ( name ) VALUES (".$db->quote($keyword).")";
                  $db->setQuery($sql);
                  $db->query();
-                 $id= $db->insertid();  
+                 $id= $db->insertid();
             }
-            
+
             $sql = "INSERT IGNORE INTO #__seoboss_keywords_items (keyword_id, item_id, item_type_id)
              VALUES ( ".$db->quote($id).", ".$db->quote($itemId).",".$db->quote($itemTypeId).")";
             $db->setQuery($sql);
@@ -77,14 +77,14 @@ abstract class MetatagsContainer{
             echo $db->stderr();
             return false;
         }
-            
+
         }
-        
+
         $sql = "DELETE FROM #__seoboss_keywords WHERE NOT EXISTS ( SELECT 1 FROM #__seoboss_keywords_items  WHERE keyword_id=#__seoboss_keywords.id )";
         $db->setQuery($sql);
         $db->query();
 	}
-	
+
 	public function getMetadata($id){
 	  $db = JFactory::getDBO();
 	  $sql = "SELECT m.item_id as id,
@@ -98,13 +98,13 @@ abstract class MetatagsContainer{
 	  m.description as metadescription,
 	  m.title as metatitle
 	  FROM
-	  #__seoboss_metadata m 
+	  #__seoboss_metadata m
 	  WHERE m.item_id=".$db->quote($id)."
 	    AND m.item_type=".$db->quote($this->getTypeId());
 	  $db->setQuery($sql);
 	  return $db->loadAssoc();
 	}
-    
+
 	public function clearBrowserTitles($ids){
       foreach($ids as $key=>$value){
 	    if(!is_numeric($value)){
@@ -119,7 +119,7 @@ abstract class MetatagsContainer{
     	  $db->query();
 	  }
 	}
-	
+
 	public function mustReplaceTitle(){
 	  return true;
 	}
@@ -132,9 +132,9 @@ abstract class MetatagsContainer{
 	public function mustReplaceMetaDescription(){
 	  return true;
 	}
-	
+
 	public abstract function getTypeId();
-	
+
 	public abstract function getMetadataByRequest($query);
 	/**
 	 * Stores item metadata
@@ -147,7 +147,7 @@ abstract class MetatagsContainer{
 	 * - metadescription
 	 */
 	public abstract function setMetadataByRequest($url, $data);
-	
+
 	public abstract function isAvailable();
-	
+
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*------------------------------------------------------------------------
 # SEO Boss Pro
 # ------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport("joomla.version");
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -29,22 +29,22 @@ jimport("joomla.version");
         <td width="100" align="right">Action:</td>
         <td>
           <select name="action" id="action">
-            <option value="<?php echo SeobossCanonicalURL::$ACTION_CANONICAL?>" 
+            <option value="<?php echo SeobossCanonicalURL::$ACTION_CANONICAL?>"
              <?php if(isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_CANONICAL) echo "selected=\"true\"";?>
             >Use Canonical URL</option>
-            <option value="<?php echo SeobossCanonicalURL::$ACTION_REDIRECT?>" 
+            <option value="<?php echo SeobossCanonicalURL::$ACTION_REDIRECT?>"
              <?php if(isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_REDIRECT) echo "selected=\"true\"";?>
             >Use 301 Redirect</option>
-            <option value="<?php echo SeobossCanonicalURL::$ACTION_NOINDEX?>" 
+            <option value="<?php echo SeobossCanonicalURL::$ACTION_NOINDEX?>"
              <?php if(isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_NOINDEX) echo "selected=\"true\"";?>
             >Use Noindex</option>
           </select>
         </td>
       </tr>
-      
+
       <tr>
       	<td colspan="2" align="center">
       	</td>
@@ -65,5 +65,5 @@ The canonical link element, which can be inserted into the &lt;head&gt; section 
 According to Google, the canonical link element is not considered to be a directive, but a hint that the web crawler will "honor strongly".
 </p>
 <p>
-While the canonical link element has its benefits, sometimes the search engine prefers the use of 301 redirects. 
+While the canonical link element has its benefits, sometimes the search engine prefers the use of 301 redirects.
 </p>

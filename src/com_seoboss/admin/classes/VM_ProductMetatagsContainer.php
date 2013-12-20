@@ -9,28 +9,28 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class VM_ProductMetatagsContainer extends MetatagsContainer{
-  
+
 public function getMetatags($lim0, $lim, $filter=null){
-        
-        
+
+
         $db = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id as id, c.product_name AS title, 
-        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',') 
-            FROM #__seoboss_keywords k, 
-            #__seoboss_keywords_items ki 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id as id, c.product_name AS title,
+        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+            FROM #__seoboss_keywords k,
+            #__seoboss_keywords_items ki
             WHERE ki.item_id=c.product_id and ki.item_type_id=2
                 AND ki.keyword_id=k.id
         ) AS metakey,
-        m.description as metadesc, 
-        m.title as metatitle 
-         FROM 
+        m.description as metadesc,
+        m.title as metatitle
+         FROM
         #__vm_product c
         LEFT JOIN
         #__seoboss_metadata m ON m.item_id=c.product_id and m.item_type=2 WHERE 1";
-        
+
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "0");
         $com_vm_filter_show_empty_keywords =
@@ -79,14 +79,14 @@ public function getMetatags($lim0, $lim, $filter=null){
             default:
                 $sql .= " ORDER BY title ";
                 break;
-                
+
         }
         if($order_dir == "asc"){
             $sql .= " ASC";
         }else{
             $sql .= " DESC";
         }
-             
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -99,16 +99,16 @@ public function getMetatags($lim0, $lim, $filter=null){
         }
         return $rows;
     }
-    
+
     public function copyKeywordsToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
                 unset($ids[$key]);
             }else{
-                $sql = "SELECT k.name 
-                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki 
-                  WHERE k.id=ki.keyword_id 
+                $sql = "SELECT k.name
+                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki
+                  WHERE k.id=ki.keyword_id
                      AND ki.item_id=".$db->quote($value).
                     "  AND ki.item_type_id=2";
                 $db->setQuery($sql);
@@ -126,16 +126,16 @@ public function getMetatags($lim0, $lim, $filter=null){
                         2,
                         ".$db->quote($keywords_str).",
                         ''
-                        ) ON DUPLICATE KEY 
+                        ) ON DUPLICATE KEY
                         UPDATE title=".$db->quote($keywords_str);
-            
+
                     $db->setQuery($sql);
                     $db->query();
                 }
             }
         }
     }
-    
+
     public function copyTitleToKeywords($ids){
        $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -152,7 +152,7 @@ public function getMetatags($lim0, $lim, $filter=null){
             }
         }
     }
-    
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -173,13 +173,13 @@ public function getMetatags($lim0, $lim, $filter=null){
              ".$db->quote($item->title).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -194,14 +194,14 @@ public function getMetatags($lim0, $lim, $filter=null){
                 }
             }
         }
-        
+
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
@@ -225,31 +225,31 @@ public function getMetatags($lim0, $lim, $filter=null){
              VALUES (
              ".$db->quote($item->id).",
              2,
-             
+
              '',
              ".$db->quote($introtext)."
              ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-            
+
             $db->setQuery($sql);
             $db->query();
-            
+
             }
         }
     }
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id AS id, c.product_name AS title, 
-        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',') 
-            FROM #__seoboss_keywords k, 
-            #__seoboss_keywords_items ki 
+        $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id AS id, c.product_name AS title,
+        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+            FROM #__seoboss_keywords k,
+            #__seoboss_keywords_items ki
             WHERE ki.item_id=c.product_id and ki.item_type_id=2
                 AND ki.keyword_id=k.id
         ) AS metakey,
-        c.product_desc AS content 
-         FROM 
+        c.product_desc AS content
+         FROM
         #__vm_product c WHERE 1
         ";
-        
+
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "0");
         $com_vm_filter_show_empty_keywords = JRequest::getVar("com_vm_filter_show_empty_keywords", "-1");
@@ -271,7 +271,7 @@ public function getMetatags($lim0, $lim, $filter=null){
         /*if($com_vm_filter_show_empty_descriptions != "-1"){
             $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
         }*/
-        
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -305,16 +305,16 @@ public function getMetatags($lim0, $lim, $filter=null){
             $db->query();
             parent::saveKeywords($metakeys[$i], $ids[$i],2);
         }
-        
+
     }
     public function saveKeywords($keys, $id){
         parent::saveKeywords($keys, $id,2);
     }
-    
+
     public function getMetadata($id){
         $db = JFactory::getDBO();
         $sql = "SELECT c.product_id as id, c.product_name as title
-         FROM 
+         FROM
         #__vm_product c
         WHERE c.product_id=".$db->quote($id);
         $db->setQuery($sql);
@@ -326,18 +326,18 @@ public function getMetatags($lim0, $lim, $filter=null){
         $data["metadescription"] = $baseData["metadescription"];
         return $data;
     }
-    
-    
+
+
     public function setMetadata($id, $data){
         if(isset($data["title"]) && $data["title"]){
           $db = JFactory::getDBO();
           $sql = "UPDATE #__vm_product SET product_name=".$db->quote($data["title"])." WHERE product_id=".$db->quote($id);
           $db->setQuery($sql);
-          $db->query(); 
+          $db->query();
         }
         parent::setMetadata($id, $data);
     }
-    
+
     public function getMetadataByRequest($query){
       $params = array();
       parse_str($query, $params);
@@ -347,7 +347,7 @@ public function getMetatags($lim0, $lim, $filter=null){
       }
       return $metadata;
     }
-    
+
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
@@ -355,7 +355,7 @@ public function getMetatags($lim0, $lim, $filter=null){
         $this->setMetadata($params["product_id"], $data);
       }
     }
-    
+
     function getFilter(){
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "");
@@ -363,13 +363,13 @@ public function getMetatags($lim0, $lim, $filter=null){
         $com_vm_filter_show_empty_keywords = JRequest::getVar("com_vm_filter_show_empty_keywords", "-1");
         $com_vm_filter_show_empty_descriptions = JRequest::getVar("com_vm_filter_show_empty_descriptions", "-1");
 
-                $result =  'Filter:                        
-        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/> 
-        <button onclick="this.form.submit();">Go</button> 
+                $result =  'Filter:
+        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/>
+        <button onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-                        
+
         &nbsp;&nbsp;&nbsp;';
-        
+
         $result .=  "<select name=\"filter_category_id\" onchange=\"document.adminForm.submit();\">".
         "<option value=\"\">Select Category</option>".
         $this->list_tree($category_id).
@@ -392,7 +392,7 @@ public function getMetatags($lim0, $lim, $filter=null){
      */
     private function list_tree($category_id="", $cid='0', $level='0', $selected_categories=Array(), $disabledFields=Array() ) {
         $db = JFactory::getDBO();
-        
+
         $result = "";
         $level++;
 
@@ -401,7 +401,7 @@ public function getMetatags($lim0, $lim, $filter=null){
         $q .= "AND #__vm_category.category_id=#__vm_category_xref.category_child_id ";
  //       $q .= "AND #__vm_category.vendor_id ='$ps_vendor_id' ";
         $q .= "ORDER BY #__vm_category.list_order, #__vm_category.category_name ASC";
-        $db->setQuery($q);   
+        $db->setQuery($q);
         //$db->query();
         $categories = $db->loadObjectList();
         foreach($categories as $category) {
@@ -424,7 +424,7 @@ public function getMetatags($lim0, $lim, $filter=null){
     }
    public function getTypeId(){
      return 2;
-   }  
+   }
 
    public function isAvailable(){
      require_once dirname(__FILE__)."/MetatagsContainerFactory.php";

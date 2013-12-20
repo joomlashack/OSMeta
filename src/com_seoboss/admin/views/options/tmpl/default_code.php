@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form name="adminForm" action="index.php" method="post" id="adminForm">
   <input type="hidden" name="option" value="com_seoboss"/>
@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <?php echo JText::_( 'SEO_REGISTRATION_CODE_DESC' ) ?>
   <ul>
   	<li><?php echo JText::sprintf('SEO_CODE_STEP1', "<a href=\"http://joomboss.com\">http://joomboss.com</a>");?></li>
-  	<li><?php echo JText::sprintf('SEO_CODE_STEP2', "<a href=\"http://joomboss.com\">http://joomboss.com</a>","<a href=\"http://joomboss.com/?option=com_seobossupdater&task=register\">http://joomboss.com/?option=com_seobossupdater&task=register</a>");?> 
+  	<li><?php echo JText::sprintf('SEO_CODE_STEP2', "<a href=\"http://joomboss.com\">http://joomboss.com</a>","<a href=\"http://joomboss.com/?option=com_seobossupdater&task=register\">http://joomboss.com/?option=com_seobossupdater&task=register</a>");?>
   	</li>
   	<li><?php echo JText::_('SEO_CODE_STEP3');?></li>
   </ul>

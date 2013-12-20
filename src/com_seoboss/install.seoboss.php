@@ -10,7 +10,7 @@
 -------------------------------------------------------------------------*/
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-if(!function_exists('jb_com_install')){ 
+if(!function_exists('jb_com_install')){
 function jb_com_install()
 {
   $db = JFactory::getDBO();
@@ -62,7 +62,7 @@ function jb_com_install()
     }
     $db->setQuery(
         "INSERT IGNORE INTO `#__seoboss_meta_extensions` VALUES
-        ('com_content-1.5','Joomla 1.5 Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0), 
+        ('com_content-1.5','Joomla 1.5 Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0),
         ('com_content','Joomla Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0),
         ('com_menu','Menu Items','Manage metadata for Menu Items. Be careful with this plugin, because it can override the metadata from other components.',0,0),
         ('com_k2','K2', 'K2 content items',1,0),
@@ -88,7 +88,7 @@ function jb_com_install()
     if (!$db->loadResult()){
       $db->setQuery('ALTER TABLE #__seoboss_settings ADD `frontpage_keywords` VARCHAR( 255 ) NOT NULL');
       $db->query();
-    } 
+    }
     $db->setQuery("SHOW COLUMNS FROM `#__seoboss_settings` WHERE field LIKE 'frontpage_description'");
     if (!$db->loadResult()){
       $db->setQuery('ALTER TABLE #__seoboss_settings ADD `frontpage_description` VARCHAR( 255 ) NOT NULL');
@@ -132,11 +132,11 @@ PRIMARY KEY (  `id` )
       $db->query();
     }
 //Update Core version
-    $db->setQuery("insert into `#__seoboss_client_features` 
-                    (`name`, `version`, `build`) 
-                    VALUES 
-                    ('SEOBoss', '1.4r23', '33') 
-                   ON DUPLICATE KEY 
+    $db->setQuery("insert into `#__seoboss_client_features`
+                    (`name`, `version`, `build`)
+                    VALUES
+                    ('SEOBoss', '1.4r23', '33')
+                   ON DUPLICATE KEY
                     UPDATE `version`='1.4r23', `build`='33';");
     $db->query('');
 //Update Host Name
@@ -156,7 +156,7 @@ $db->setQuery("SELECT id, metakey from #__content ");
 $rows = $db->loadObjectList();
 foreach($rows as $row){
     $cc->saveKeywords($row->metakey, $row->id);
-} 
+}
 */
 
 //Enable plugins - for Joomla 2.5:

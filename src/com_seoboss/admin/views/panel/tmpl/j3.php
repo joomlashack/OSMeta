@@ -32,7 +32,7 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
 		</div>
 		<?php
 	 }
-	 
+
 
 		?>
 		<form action="index.php" method="post" name="adminForm">
@@ -43,7 +43,7 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
 						<?php
 						$link = 'index.php?option=com_seoboss&amp;task=panel';
 						quickiconButton( $link, '48x48-jb.png', JText::_('SEO_CONTROL_PANEL') );
-						
+
 						$link = 'index.php?option=com_seoboss&amp;task=metatags_view';
 						quickiconButton( $link, '48x48-metatag.png', JText::_('SEO_META_TAGS_MANAGER_TITLE') );
 
@@ -55,13 +55,13 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
 
 						$link = 'index.php?option=com_seoboss&task=url_list';
 						quickiconButton( $link, '48x48-redirect.png', JText::_('SEO_EXTERNAL_LINK') );
-						
+
 						$link = 'index.php?option=com_seoboss&task=backup_manager';
 						quickiconButton( $link, '48x48-backup.png', JText::_('SEO_BACKUP_MANAGER') );
-						
+
                         $link = 'index.php?option=com_seoboss&amp;task=settings';
                         quickiconButton( $link, '48x48-settings.png', JText::_('SEO_SETTINGS') );
-                        
+
                         $link = 'index.php?option=com_seoboss&amp;task=helpdesk';
                         quickiconButton( $link, '48x48-helpdesk.png', JText::_('SEO_HELPDESK') );
 						?>

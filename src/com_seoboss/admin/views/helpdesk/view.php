@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
@@ -27,7 +27,7 @@ class SeobossViewHelpdesk extends JBView{
         parent::__construct($config);
         $this->_addPath('template', $this->_basePath.DS.'views'.DS.'default'.DS.'tmpl');
     }
-    
+
     function display($tpl=null){
       switch($tpl){
         case "request":

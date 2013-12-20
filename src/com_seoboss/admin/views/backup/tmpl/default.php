@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
   <fieldset class="adminform"><legend><?php echo JText::_("SEO_BACKUP_CREATE");?></legend>
@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<?php echo JText::_("SEO_BACKUP_DESC");?>
   </p>
   <a href="index.php?option=com_seoboss&task=backup_download&format=raw" ><img src="<?php echo JURI::base(); ?>components/com_seoboss/images/download_snapshot.png" title="Download Snapshot" alt="Download Snapshot"/></a>
-  </fieldset>  
+  </fieldset>
   <fieldset class="adminform"><legend><?php echo JText::_("SEO_BACKUP_RESTORE");?></legend>
   <p>
 		<?php echo JText::_("SEO_BACKUP_UPLOAD_DESC");?>

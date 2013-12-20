@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <form action="index.php" method="post" name="adminForm">
 <table class="adminlist">
@@ -33,7 +33,7 @@ count( $this->rows ); ?>);" /></th>
 		$published = JHTML::_('grid.published', $row, $i );
 		$link = JFilterOutput::ampReplace( 'index.php?option=' .
         $option . '&task=edit_keyword&cid[]='. $row->id );
-		
+
 		?>
 	<tr class="<?php echo "row$k"; ?>">
 		<td><?php echo $checked; ?></td>

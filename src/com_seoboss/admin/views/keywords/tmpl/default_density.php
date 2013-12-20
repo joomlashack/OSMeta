@@ -9,11 +9,11 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <br/>
     <table class="adminform">
-    
+
   <tr>
     <th valign="top" width="100"> <?php echo JText::_( 'SEO_KEYWORD' );?> </th>
     <th valign="top"> <?php echo JText::_( 'SEO_FREQUENCY' );?></th>

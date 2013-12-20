@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $editor = JFactory::getEditor();
 ?>
@@ -31,7 +31,7 @@ var modalsubmit= function () {
             //showHide( 'fail' );
         }
     });
-       
+
  }
 </script>
 <form id="adminModalForm" name="adminModalForm" method="post">

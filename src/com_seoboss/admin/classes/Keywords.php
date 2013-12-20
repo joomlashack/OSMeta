@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once JPATH_ADMINISTRATOR.DS."components".
         DS."com_seoboss".DS."algorithm".DS."GoogleKeywordRank.php";
@@ -17,9 +17,9 @@ require_once JPATH_ADMINISTRATOR.DS."components".
 class Keywords{
 	public function updateOldestKeywords($site, $google_url, $lang, $count = 1){
 		$db = JFactory::getDBO();
-	
-		$sql = "SELECT id, name, google_rank, google_rank_change_date 
-		FROM #__seoboss_keywords 
+
+		$sql = "SELECT id, name, google_rank, google_rank_change_date
+		FROM #__seoboss_keywords
 		ORDER BY google_rank_change_date ASC LIMIT 0,$count";
         $db->setQuery($sql);
         $keywords = $db->loadObjectList();
@@ -36,9 +36,9 @@ class Keywords{
     		return;
     	}
         $db = JFactory::getDBO();
-    
-        $sql = "SELECT id, name, google_rank, google_rank_change_date 
-        FROM #__seoboss_keywords 
+
+        $sql = "SELECT id, name, google_rank, google_rank_change_date
+        FROM #__seoboss_keywords
         WHERE id IN (".implode(",", $ids).")";
         $db->setQuery($sql);
         $keywords = $db->loadObjectList();
@@ -47,7 +47,7 @@ class Keywords{
             $this->updateGoogleRank($keyword, $site, $google_url, $lang);
          }
     }
-	
+
 	private function updateGoogleRank(&$keyword, $site, $google_url, $lang){
 		$db = JFactory::getDBO();
 	   $rank = getGoogleKeywordRank($keyword->name, $site, $google_url, $lang);
@@ -64,10 +64,10 @@ class Keywords{
     }else{
         $change = $keyword->google_rank - $rank;
     }
-    
+
     $sql = "UPDATE #__seoboss_keywords SET google_rank=".$db->quote($rank).", google_rank_change=".$db->quote($change).",
     google_rank_change_date=NOW() WHERE id=".$db->quote($keyword->id);
-    
+
     $db->setQuery($sql);
     $db->query();
 	}

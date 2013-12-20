@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 function com_k2_get_url(&$article, $isNew){
     $url=null;
     $helperPath = dirname(__FILE__)."/../../../../../components/com_k2/helpers/route.php";

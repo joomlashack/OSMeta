@@ -9,21 +9,21 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class JS_Player_MetaTagsContainer extends MetatagsContainer{
     private $itemType=6;
     public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, CONCAT(c.first_name, ' ', c.last_name)  title,
-	( SELECT GROUP_CONCAT(k.name SEPARATOR ',') 
-		            FROM #__seoboss_keywords k, 
-		            #__seoboss_keywords_items ki 
+	( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+		            FROM #__seoboss_keywords k,
+		            #__seoboss_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->itemType}
 		                AND ki.keyword_id=k.id
 		        ) AS metakey,
-	 m.description as metadesc,  
-		 m.title as metatitle 
+	 m.description as metadesc,
+		 m.title as metatitle
 		 FROM
 		#__bl_players c
 		LEFT JOIN
@@ -64,7 +64,7 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
                 $sql .= " AND c.state=-1";
                 break;
         }
-       
+
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
         $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
@@ -107,9 +107,9 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
             if(!is_numeric($value)){
                 unset($ids[$key]);
             }else{
-                $sql = "SELECT k.name 
-                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki 
-                  WHERE k.id=ki.keyword_id 
+                $sql = "SELECT k.name
+                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki
+                  WHERE k.id=ki.keyword_id
                      AND ki.item_id=".$db->quote($value).
                     "  AND ki.item_type_id={$this->itemType}";
                 $db->setQuery($sql);
@@ -127,16 +127,16 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
                         {$this->itemType},
                         ".$db->quote($keywords_str).",
                         ''
-                        ) ON DUPLICATE KEY 
+                        ) ON DUPLICATE KEY
                         UPDATE title=".$db->quote($keywords_str);
-            
+
                     $db->setQuery($sql);
                     $db->query();
                 }
             }
         }
     }
-    
+
     public function copyTitleToKeywords($ids){
        $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -153,7 +153,7 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
             }
         }
     }
-    
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -174,13 +174,13 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
              ".$db->quote($item->title).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -195,18 +195,18 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
                 }
             }
         }
-        
+
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
-      
+
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
@@ -227,34 +227,34 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
              VALUES (
              ".$db->quote($item->id).",
              {$this->itemType},
-             
+
              '',
              ".$db->quote($introtext)."
              ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-            
+
             $db->setQuery($sql);
             $db->query();
 
-            
+
             }
         }
     }
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id AS id, CONCAT(c.first_name, ' ', c.last_name) AS title,
-        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',') 
-            FROM #__seoboss_keywords k, 
-            #__seoboss_keywords_items ki 
+        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+            FROM #__seoboss_keywords k,
+            #__seoboss_keywords_items ki
             WHERE ki.item_id=c.id and ki.item_type_id={$this->itemType}
                 AND ki.keyword_id=k.id
         ) AS metakey,
         c.about  AS content
-         FROM 
+         FROM
         #__bl_players c WHERE 1
         ";
-        
+
         $search = JRequest::getVar("filter_search", "");
-       
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
@@ -262,8 +262,8 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
                 $sql .= " AND c.first_name LIKE ".$db->quote('%'.$search.'%');
             }
         }
-      
-        
+
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -300,11 +300,11 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
     public function saveKeywords($keys, $id){
         parent::saveKeywords($keys, $id,$this->itemType);
     }
-    
+
     public function getMetadata($id){
         $db = JFactory::getDBO();
         $sql = "SELECT c.id as id, CONCAT(c.first_name, ' ', c.last_name) as title
-         FROM 
+         FROM
         #__bl_players c
         WHERE c.id=".$db->quote($id);
         $db->setQuery($sql);
@@ -316,7 +316,7 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
         $data["metadescription"] = $parentData["metadescription"];
         return $data;
     }
-    
+
     public function getMetadataByRequest($query){
       $params = array();
       parse_str($query, $params);
@@ -326,7 +326,7 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
       }
       return $metadata;
     }
-    
+
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($url, $params);
@@ -334,11 +334,11 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
         $this->setMetadata($params["id"], $data);
       }
     }
-    
+
     //public function setItemData($id, $data){
     //    $this->saveMetadata($id, $this->itemType, $data);
     //}
-    
+
     function getFilter(){
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "");
@@ -355,21 +355,21 @@ class JS_Player_MetaTagsContainer extends MetatagsContainer{
         $result .= "</select>";
 
         $result .= '&nbsp;&nbsp;&nbsp;&nbsp;';
-       
-       
+
+
         $result .=  'Filter:
-        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/> 
-        <button onclick="this.form.submit();">Go</button> 
+        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/>
+        <button onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';;this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-         ';               
-     
+         ';
+
         return $result;
     }
-    
+
     public function getTypeId(){
       return 6;
     }
-    
+
     public function isAvailable(){
       require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
       return MetatagsContainerFactory::componentExists("com_joomsport");

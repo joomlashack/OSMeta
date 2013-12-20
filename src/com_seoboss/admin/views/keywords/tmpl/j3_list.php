@@ -14,7 +14,7 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
- 
+
 ?>
 <form action="index.php" method="post" name="adminForm">
 <table class="table table-striped" id="articleList">
@@ -40,7 +40,7 @@ JHtml::_('formbehavior.chosen', 'select');
 		$published = JHTML::_('grid.published', $row, $i );
 		$link = JFilterOutput::ampReplace( 'index.php?option=' .
         $option . '&task=edit_keyword&cid[]='. $row->id );
-		
+
 		?>
 	<tr class="<?php echo "row$k"; ?>">
 		<td><?php echo $checked; ?></td>

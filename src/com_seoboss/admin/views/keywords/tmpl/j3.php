@@ -14,12 +14,12 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
- 
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>" />
-  
+
    <table class="table table-striped" id="articleList">
     <thead>
       <tr>
@@ -28,33 +28,33 @@ JHtml::_('formbehavior.chosen', 'select');
             </th>
             <th class="title">
             <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_KEYWORD_PHRASE' ), 'name', $this->order_Dir, $this->order, "keywords_view"); ?>
-                
+
             </th>
             <th class="title">
             <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_GOOGLE_POSITION' ), 'google_rank', $this->order_Dir, $this->order, "keywords_view"); ?>
-                
+
             </th>
             <th class="title">
             <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_CHANGE' ), 'google_rank_change', $this->order_Dir, $this->order, "keywords_view"); ?>
-                
+
             </th>
             <th class="title">
             <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_CHANGE_SINCE' ), 'google_rank_change_date', $this->order_Dir, $this->order, "keywords_view"); ?>
-                
+
             </th>
-           
+
             <th class="title">
                 <?php echo JText::_( 'SEO_VIEW_ON_GOOGLE' );?>
             </th>
         </tr>
     </thead>
-    <?php 
+    <?php
         $k = 0;
         for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
     {
         $row = $this->rows[$i];
         $checked = JHTML::_('grid.id', $i, $row->id );?>
-    
+
     <tr class="<?php echo "row$k"; ?>">
         <td><?php echo $checked; ?>
             <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
@@ -63,7 +63,7 @@ JHtml::_('formbehavior.chosen', 'select');
             <?php echo $row->name;?>
         </td>
         <td>
-            <?php 
+            <?php
             if( $row->google_rank > 0 ){
             	echo $row->google_rank<1000?$row->google_rank:"out of top 100";
             }else{
@@ -71,7 +71,7 @@ JHtml::_('formbehavior.chosen', 'select');
             }?>
         </td>
         <td>
-            <?php 
+            <?php
             if($row->google_rank_change>0){
             echo "+".$row->google_rank_change;
             }elseif($row->google_rank_change<0){
@@ -82,7 +82,7 @@ JHtml::_('formbehavior.chosen', 'select');
         <td>
             <?php echo $row->google_rank_change_date!='0000-00-00 00:00:00'?$row->google_rank_change_date:"never";?>
         </td>
-       
+
         <td>
             <a href="http://<?php echo $this->google_url?>/search?aq=f&q=<?php echo $row->name?>" target="_blank"><?php echo JText::_( 'SEO_VIEW' );?></a>
         </td>
@@ -95,7 +95,7 @@ JHtml::_('formbehavior.chosen', 'select');
   </tfoot>
  </table>
  <input type="hidden" name="option" value="com_seoboss" /> <input
-    type="hidden" name="task" value="keywords_view" /> 
+    type="hidden" name="task" value="keywords_view" />
     <input type="hidden" name="boxchecked" value="0" />
  </form>
- 
+

@@ -9,26 +9,26 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class CommonMetatagsContainer extends MetatagsContainer{
     private $code = 20;
-    	
+
 	public function getMetatags($lim0, $lim, $filter=null){
         return null;
 	}
-	
+
     public function getPages($lim0, $lim, $filter=null){
         return null;
     }
-    
+
 	public function processBody($body){
 	   $db = JFactory::getDBO();
-	   
+
 	   if(JRequest::getVar('id') > 0){
           $sql = "SELECT title, title_tag from #__seoboss_metadata WHERE item_id=".$db->quote(JRequest::getVar('id'))." AND
 	      item_type=1";
-       
+
 	   	  $db->setQuery( $sql);
           $metadata = $db->loadObject();
           if($metadata && $metadata->title){
@@ -36,7 +36,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
           	$body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
           	'<meta name="title" content="'.htmlspecialchars($metadata->title).'" />', $body, 1, $replaced);
           	if($replaced != 1){
-          		$body = preg_replace('/<head>/i', "<head>\n  <meta name=\"title\" content=\"".htmlspecialchars($metadata->title).'" />', $body, 1); 
+          		$body = preg_replace('/<head>/i', "<head>\n  <meta name=\"title\" content=\"".htmlspecialchars($metadata->title).'" />', $body, 1);
           	}
           }elseif($metadata){
               $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",'', $body, 1, $replaced);
@@ -47,14 +47,14 @@ class CommonMetatagsContainer extends MetatagsContainer{
                       '<title>'.htmlspecialchars($metadata->title_tag).'</title>', $body, 1, $replaced);
           }
 	   }else{
-	       $db->setQuery("SELECT frontpage_meta, 
+	       $db->setQuery("SELECT frontpage_meta,
 	               frontpage_title,
-	               frontpage_meta_title, 
-	               frontpage_keywords, 
+	               frontpage_meta_title,
+	               frontpage_keywords,
 	               frontpage_description
 	               FROM #__seoboss_settings LIMIT 0,1");
 	       $settings = $db->loadObject();
-	       
+
 	       if($settings->frontpage_meta==0){
 	           if($settings->frontpage_title){
 	               $replaced = 0;
@@ -65,7 +65,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	               $body = $this->setMetatag($body, "title", $settings->frontpage_meta_title);
 	           }
 	           if($settings->frontpage_keywords){
-	               $body = $this->setMetatag($body, "keywords", $settings->frontpage_keywords);   
+	               $body = $this->setMetatag($body, "keywords", $settings->frontpage_keywords);
 	           }
 	           if($settings->frontpage_description){
 	               $body = $this->setMetatag($body, "description", $settings->frontpage_description);
@@ -91,7 +91,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	               }
 	           }
 	       }
-	   }	
+	   }
 	   return $body;
 	}
 	private function setMetaTag($body, $name, $value){
@@ -107,17 +107,17 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	public function saveKeywords($keys, $id, $itemTypeId=null ){
 	  parent::saveKeywords($keys, $id, $itemTypeId?$itemTypeId:$this->code);
 	}
-	
-	
-	public function setMetadataByRequest($url,$data) { 
+
+
+	public function setMetadataByRequest($url,$data) {
 	    $id = $this->getURLId($url);
 	    if(!$id){
 	      $id = $this->createURL($url);
 	    }
-	    
+
 		$this->setMetadata($id, $data);
 	}
-	
+
 	public function getMetadataByRequest($query){
 	  $id = $this->getURLId($query);
 	  $result=null;
@@ -126,7 +126,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	  }
 	  return $result;
 	}
-	
+
 	public function getURLId($url){
       if(empty($url)){
         $url = "/";
@@ -135,7 +135,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	  $db->setQuery("SELECT `id` FROM `#__seoboss_urls` where `url`=".$db->quote($url));
 	  return $db->loadResult();
 	}
-	
+
 	public function createURL($url){
 	  if(empty($url)){
 	    $url = "/";
@@ -145,11 +145,11 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	  $db->query();
 	  return $db->insertid();
 	}
-	
+
 	public function getTypeId(){
 	  return $this->code;
 	}
-	
+
 	public function isAvailable(){
 	  return true;
 	}

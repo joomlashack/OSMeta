@@ -9,12 +9,12 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.filesystem.file');
 
 class FileList{
-    
+
     public function __construct($listPath){
         $this->files = file($listPath);
         if($this->files === false){
@@ -22,24 +22,24 @@ class FileList{
         }
         $this->path = $listPath;
     }
-    
+
     public function addFile($path){
         if(!in_array($filePath, $this->files)){
             $this->files[] = $path;
         }
     }
-    
+
     public function removeFile($path){
         $key = array_search($path, $this->files);
         if( $key !== FALSE ){
             unset($this->files[$key]);
         }
     }
-    
+
     public function save(){
         JFile::write($this->path, implode("\n", $this->files));
     }
-    
+
     public function getFiles(){
         return $this->files;
     }

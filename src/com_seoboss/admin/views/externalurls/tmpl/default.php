@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <script type="text/javascript" src="components/com_seoboss/js/url_list.js" ></script>
 <form name="adminForm" >
@@ -17,29 +17,29 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'PHPSHOP_PRODUCT_FORM_TITLE' ) . '" />
 <input type="hidden" name="js_lbl_property" value="' . JText::_( 'SEO_NEW_REDIRECT_URL' ) . '" />
 <input type="hidden" name="js_lbl_property_new" value="' . JText::_( 'SEO_NEW_REDIRECT' ) . '" />
-<input type="hidden" name="js_lbl_attribute_new" value="' . 
+<input type="hidden" name="js_lbl_attribute_new" value="' .
     JText::_( 'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_NEW' ) . '" />
-<input type="hidden" name="js_lbl_attribute_delete" value="' . 
+<input type="hidden" name="js_lbl_attribute_delete" value="' .
     JText::_( 'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_DELETE' ) . '" />
 <input type="hidden" name="js_lbl_price" value="' . JText::_( 'SEO_NEW_URL_TARGET' ) . '" />' ;
-?>		
+?>
 
-		
+
 		 <a href="javascript: newProperty(0)"><?php
 			echo JText::_( 'SEO_NEW_REDIRECT' ) ;
 			?></a>
 		<table id="attributeX_table_0" cellpadding="0" cellspacing="0" border="0" class="adminform" width="30%">
 	<tbody width="30%">
-		
+
 		<?php
 		$i = 1;
 		foreach ($this->urls as $url){
-		
-			
-			
-			 
+
+
+
+
 			// ... and the properties and prices in the second
-			
+
 					?>
 			  	  <tr id="attributeX_tr_<?php echo "0_" . $i ; ?>">
 			<td width="5%">&nbsp;<?php echo $i;?></td>
@@ -68,11 +68,11 @@ echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'PHPSHOP_PRO
 			  	  <?php
 				  $i++;
 				  }
-				
+
 			?>
 			  </tbody>
 </table>
 
-<input	type="hidden" name="option" value="com_seoboss" /> 
+<input	type="hidden" name="option" value="com_seoboss" />
 <input type="hidden" name="task" value="" />
 </form>

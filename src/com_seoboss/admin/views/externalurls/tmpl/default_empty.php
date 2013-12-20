@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <script type="text/javascript" src="/administrator/components/com_seoboss/js/url_list.js" ></script>
 <form name="adminForm" >
@@ -17,19 +17,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'PHPSHOP_PRODUCT_FORM_TITLE' ) . '" />
 <input type="hidden" name="js_lbl_property" value="' . JText::_( 'SEO_NEW_REDIRECT_URL' ) . '" />
 <input type="hidden" name="js_lbl_property_new" value="' . JText::_( 'SEO_NEW_REDIRECT' ) . '" />
-<input type="hidden" name="js_lbl_attribute_new" value="' . 
+<input type="hidden" name="js_lbl_attribute_new" value="' .
     JText::_( 'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_NEW' ) . '" />
-<input type="hidden" name="js_lbl_attribute_delete" value="' . 
+<input type="hidden" name="js_lbl_attribute_delete" value="' .
     JText::_( 'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_DELETE' ) . '" />
 <input type="hidden" name="js_lbl_price" value="' . JText::_( 'SEO_NEW_URL_TARGET' ) . '" />' ;
-?>			
+?>
 			<a href="javascript: newProperty(0)"><?php
 			echo JText::_( 'SEO_NEW_REDIRECT' ) ;
 			?></a>
 			<table width="100%"> <tr><td>
 <table id="attributeX_table_0" cellpadding="0" cellspacing="0" border="0" class="adminform" width="30%">
 	<tbody width="30%">
-		
+
 		<tr id="attributeX_tr_0_0">
 			<td width="5%">1</td>
 			<td width="10%" align="left"><?php
@@ -49,7 +49,7 @@ echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'PHPSHOP_PRO
 		</tr>
 	</tbody>
 </table>
-<input	type="hidden" name="option" value="com_seoboss" /> 
+<input	type="hidden" name="option" value="com_seoboss" />
 <input type="hidden" name="task" value="" />
 </form>
 </td>
@@ -60,7 +60,7 @@ echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'PHPSHOP_PRO
 	<ul>
 		<li><?php echo JText::_("SEO_REDIRECT_TITLE");?></li>
 	</ul>
-	
+
 </dd>
 </dl>
 <ul>

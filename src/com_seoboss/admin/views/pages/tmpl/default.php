@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*------------------------------------------------------------------------
 # SEO Boss Pro
 # ------------------------------------------------------------------------
@@ -9,8 +9,8 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
-JHTML::_( 'behavior.modal' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+JHTML::_( 'behavior.modal' );
 ?>
 <form action="index.php" method="post" name="adminForm">
   <table width="100%">
@@ -18,7 +18,7 @@ JHTML::_( 'behavior.modal' );
       <td align="right">
       <label><?php echo JText::_('SEO_SELECT_CONTENT_TYPE');?>:&nbsp;</label>
       <select name="type" onchange="document.adminForm.submit();">
-<?php 
+<?php
     foreach($this->availableTypes as $typeId=>$typeName){
 ?>
     <option value="<?php echo $typeId?>" <?php if ($typeId==$this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
@@ -28,14 +28,14 @@ JHTML::_( 'behavior.modal' );
   </tr>
   <tr>
     <td align="right">
-        <?php echo $this->filter;?>  
+        <?php echo $this->filter;?>
     </td>
   </tr>
   </table>
    <table class="adminlist">
     <thead>
       <tr>
-        
+
              <th class="title">
             <?php echo JText::_('SEO_PAGE');?>
             </th>
@@ -44,18 +44,18 @@ JHTML::_( 'behavior.modal' );
             </th>
             <th class="title">
             <?php echo JText::_('SEO_KEYWORDS_PHRASES');?>
-                
+
             </th>
             <th class="title">
             <?php echo JText::_('SEO_TIMES_ON_CONTENT');?>
-                
+
             </th>
             <th class="title">
             <?php echo JText::_('SEO_DENSITY');?>
             </th>
         </tr>
     </thead>
-    <?php 
+    <?php
         $k = 0;
         for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
     {
@@ -97,7 +97,7 @@ JHTML::_( 'behavior.modal' );
     </tr>
   </tfoot>
  </table>
- <input type="hidden" name="option" value="com_seoboss" /> 
- <input type="hidden" name="task" value="pages_manager" /> 
+ <input type="hidden" name="option" value="com_seoboss" />
+ <input type="hidden" name="task" value="pages_manager" />
  <input type="hidden" name="boxchecked" value="0" />
 </form>

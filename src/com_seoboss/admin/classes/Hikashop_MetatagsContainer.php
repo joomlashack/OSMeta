@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class Hikashop_MetaTagsContainer extends MetatagsContainer{
     private $itemType=10;
@@ -26,7 +26,7 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         $cat_id = JRequest::getVar("filter_category_id", "0");
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_show_published", "");
-		
+
         $com_content_filter_show_empty_keywords =
             JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions =
@@ -51,7 +51,7 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
             case '1':
                 $sql .= " AND c.product_published =1";
                 break;
-           
+
         }
         if($com_content_filter_show_empty_keywords != "-1"){
             $sql .= " AND ( ISNULL(c.product_keywords) OR c.product_keywords='') ";
@@ -94,16 +94,16 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     public function copyKeywordsToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
                 unset($ids[$key]);
             }else{
-                $sql = "SELECT k.name 
-                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki 
-                  WHERE k.id=ki.keyword_id 
+                $sql = "SELECT k.name
+                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki
+                  WHERE k.id=ki.keyword_id
                      AND ki.item_id=".$db->quote($value).
                     "  AND ki.item_type_id={$this->itemType}";
                 $db->setQuery($sql);
@@ -121,16 +121,16 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
                         {$this->itemType},
                         ".$db->quote($keywords_str).",
                         ''
-                        ) ON DUPLICATE KEY 
+                        ) ON DUPLICATE KEY
                         UPDATE title=".$db->quote($keywords_str);
-            
+
                     $db->setQuery($sql);
                     $db->query();
                 }
             }
         }
     }
-    
+
     public function copyTitleToKeywords($ids){
        $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -145,14 +145,14 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
             if($item->title != ''){
             $this->saveKeywords($item->title, $item->item_id, $this->itemType);
 			$query = "UPDATE #__hikashop_product SET product_keywords = '".$item->title."' WHERE product_id = ".$item->item_id;
-			
+
 			$db->setQuery($query);
 			$db->query();
-			
+
             }
         }
     }
-    
+
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -173,13 +173,13 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
              ".$db->quote($item->title).",
              ''
              ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
-            
+
             $db->setQuery($sql);
             $db->query();
             }
         }
     }
-    
+
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
@@ -192,26 +192,26 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
                 if($title){
                     $this->saveKeywords($title, $value, $this->itemType);
 					$query = "UPDATE #__hikashop_product SET product_keywords = '".$title."' WHERE product_id = ".$value;
-			
+
 					$db->setQuery($query);
 					$db->query();
-							
-					
+
+
                 }
             }
         }
-        
+
     }
-    
+
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
       $model = JBModel::getInstance("options", "SeobossModel");
       $params = $model->getOptions();
-      $max_description_length = 
+      $max_description_length =
         $params->max_description_length?
          $params->max_description_length:
          $max_description_length;
-      
+
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
             if(!is_numeric($value)){
@@ -232,11 +232,11 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
              VALUES (
              ".$db->quote($item->id).",
              {$this->itemType},
-             
+
              '',
              ".$db->quote($introtext)."
              ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
-            
+
             $db->setQuery($sql);
             $db->query();
 
@@ -251,23 +251,23 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id AS id, c.product_name AS title,
-        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',') 
-            FROM #__seoboss_keywords k, 
-            #__seoboss_keywords_items ki 
+        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+            FROM #__seoboss_keywords k,
+            #__seoboss_keywords_items ki
             WHERE ki.item_id=c.product_id and ki.item_type_id={$this->itemType}
                 AND ki.keyword_id=k.id
         ) AS metakey,
         c.product_description AS content
-         FROM 
+         FROM
         #__hikashop_product c WHERE 1
         ";
-        
+
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "0");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
         $state = JRequest::getVar("com_content_filter_show_published", "");
-        
+
         if($search != ""){
             if(is_numeric($search)){
                 $sql .= " AND c.product_id=".$db->quote($search);
@@ -288,9 +288,9 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
             case '1':
                 $sql .= " AND c.product_published =1";
                 break;
-                 
+
         }
-        
+
         $db->setQuery( $sql, $lim0, $lim );
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -308,7 +308,7 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         }
         return $rows;
     }
-    
+
     public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys ,$title_tags=null	){
         $db = JFactory::getDBO();
         for($i = 0 ;$i < count($ids); $i++){
@@ -324,20 +324,20 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
 			 ".$db->quote($metadescriptions[$i]).",
 			 ".$db->quote($title_tags!=null?$title_tags[$i]:'')."
 			 ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i])." , title_tag = ".$db->quote($title_tags!=null?$title_tags[$i]:'');
-            
+
 			$db->setQuery($sql);
             $db->query();
             parent::saveKeywords($metakeys[$i], $ids[$i],$this->itemType);
         }
     }
-    
+
     public function getMetadata($id){
         $db = JFactory::getDBO();
         $sql = "
-        SELECT c.product_id as id, 
+        SELECT c.product_id as id,
           c.product_name as title,
-          c.product_meta_description as metadescription, 
-          c.product_keywords as metakeywords 
+          c.product_meta_description as metadescription,
+          c.product_keywords as metakeywords
         FROM #__hikashop_product c
         WHERE c.product_id =".$db->quote($id);
         $db->setQuery($sql);
@@ -345,10 +345,10 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         $sb_metadata = parent::getMetadata($id);
         $metadata["metatitle"] = $sb_metadata["metatitle"];
         $metadata["title_tag"] = $sb_metadata["title_tag"];
-        return $metadata;        
+        return $metadata;
     }
-    
-    
+
+
     public function setMetadata($id, $data){
       $db = JFactory::getDBO();
       $sql = "
@@ -361,11 +361,11 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
       WHERE product_id=".$db->quote($id);
       $db->setQuery($sql);
       $db->query();
-	  
+
       parent::setMetadata($id, $data);
     }
-    
-    
+
+
     function getFilter(){
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "");
@@ -375,10 +375,10 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result =  'Filter:
-        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/> 
-        <button onclick="this.form.submit();">Go</button> 
+        <input type="text" name="filter_search" id="search" value="'.$search.'" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Product ID"/>
+        <button onclick="this.form.submit();">Go</button>
         <button onclick="document.getElementById(\'search\').value=\'\';;this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
-                        
+
         &nbsp;&nbsp;&nbsp;';
         $db = JFactory::getDBO();
         $db->setQuery("SELECT category_id, category_name FROM #__hikashop_category WHERE category_type LIKE 'product'");
@@ -402,11 +402,11 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
 
         return $result;
     }
-    
+
     public function getTypeId(){
       return $this->itemType;
     }
-    
+
     public function getMetadataByRequest($query){
       $params = array();
       parse_str($query, $params);
@@ -416,7 +416,7 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
       }
       return $metadata;
     }
-    
+
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
@@ -424,12 +424,12 @@ class Hikashop_MetaTagsContainer extends MetatagsContainer{
         $this->setMetadata($params["id"], $data);
       }
     }
-    
+
     public function isAvailable(){
       require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
       return MetatagsContainerFactory::componentExists("com_hikashop");
     }
-    
+
     public function mustReplaceMetaTitle(){
       return false;
     }

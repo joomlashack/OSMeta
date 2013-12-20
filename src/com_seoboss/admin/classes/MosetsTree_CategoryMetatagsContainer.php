@@ -13,11 +13,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 require_once "MetatagsContainer.php";
 class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public $code=8;
-  
+
   public function getTypeId(){
     return $this->code;
   }
-  
+
   public function getMetatags($lim0, $lim, $filter=null){
     $db = JFactory::getDBO();
     $sql = "SELECT SQL_CALC_FOUND_ROWS
@@ -56,7 +56,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $order = JRequest::getCmd("filter_order", "title");
     $order_dir = JRequest::getCmd("filter_order_Dir", "asc");
 
-    
+
 
     switch($order){
       case "meta_title":
@@ -76,13 +76,13 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
         break;
 
     }
-    
+
     if($order_dir == "asc"){
       $sql .= " ASC";
     }else{
       $sql .= " DESC";
     }
-    
+
     $db->setQuery( $sql, $lim0, $lim );
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -121,7 +121,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
             '{$this->code}',
             ".$db->quote($item->metakey)."
                 ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->metakey);
-         
+
         $db->setQuery($sql);
         $db->query();
       }
@@ -294,7 +294,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
                   ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , title_tag=".$db->quote($title_tags[$i]);
           $db->setQuery($sql);
           $db->query();
-           
+
           $this->saveKeywords($metakeys[$i], $ids[$i]);
 
 
@@ -307,7 +307,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
 
   public function getMetadata($id){
     $db = JFactory::getDBO();
-     
+
     $sql = "SELECT c.cat_id as id,
     c.cat_name as title,
     c.metakey AS metakeywords,
@@ -350,7 +350,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     }
     return $metadata;
   }
-  
+
   public function setMetadataByRequest($query, $metadata){
     $params = array();
     parse_str($query, $params);
@@ -358,7 +358,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
       $this->setMetadata($query["cat_id"], $metadata);
     }
   }
-  
+
   function getFilter(){
     $search = JRequest::getVar("filter_search", "");
 
@@ -377,7 +377,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
             <input type="checkbox" onchange="document.adminForm.submit();" name="filter_show_empty_descriptions" '.($filter_show_empty_descriptions!="-1"?'checked="yes" ':'').'/>                ';
     return $result;
   }
-  
+
   public function isAvailable(){
     require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
     return MetatagsContainerFactory::componentExists("com_mtree");
