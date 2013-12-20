@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" version="1.6">
+	<name>SEO Boss Installation Bundle</name>
+	<packagename>seoboss_all</packagename>
+	<creationDate>February 18, 2012</creationDate>
+	<packager>JoomBoss</packager>
+	<packagerurl>http://joomboss.com</packagerurl>
+	<copyright>(C) 2012 JoomBoss. All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<version>1.4r23</version>
+	<description>
+		SEO Boss Installation Bundle
+	</description>
+	<!--updateservers>
+      <server type="extension" name="SEO Boss Updates">http://joomboss.com/index.php?option=com_seobossupdater&amp;task=update_server&amp;product=SEOBoss&amp;format=raw&amp;code=25ce8bfd8e4c2dec4effc6d92b9eb152&amp;type=extension.xml</server>
+    </updateservers-->
+  <files>
+    <file type="plugin" id="seoboss_render" group="system">plg_system_seoboss.zip</file>
+    <file type="plugin" id="seoboss_content" group="content">plg_content_seoboss.zip</file>
+    <file type="component" id="com_seoboss">com_seoboss.zip</file>
+  </files>
+  
+</extension>

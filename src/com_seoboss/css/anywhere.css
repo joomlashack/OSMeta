@@ -1,0 +1,30 @@
+#seobossAnywhereForm{
+z-index:1000;
+padding:10px;
+display:none;
+border:1px solid red;
+background-color:white;	
+}
+
+#seobossAnywhereForm ol {
+	-webkit-padding-start:0px;margin:0px;
+}
+
+#seobossAnywhereForm li  {
+    text-align:left;display:block;
+}
+
+#seobossAnywhereForm input{
+	font-size:1.5em;
+	height:auto;
+}
+#seobossAnywhereForm input[type=text]{
+    margin:0px 0px 20px 0px;border:1px solid gray;border-radius:5px;display:block;width:100%
+}
+
+#seoboss_anywhere_toggle_link{
+	z-index:1000;display:block;background-color:red;border-radius:0px 0px 5px 5px;
+	font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+}

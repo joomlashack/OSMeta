@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="system"  method="upgrade">
+    <name>System - SeoBoss Renderer</name>
+    <author>JoomBoss</author>
+    <creationDate>March 2011</creationDate>
+    <copyright>Copyright (C) 2011 JoomBoss. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>admin@joomboss.com</authorEmail>
+    <authorUrl>joomboss.com</authorUrl>
+    <version>1.4r23</version>
+    <description>System plugn which perform content preparation 'on the fly' - 
+hilights keywords, formats extarnal links</description>
+    <files>
+        <filename plugin="seoboss_render">seoboss_render.php</filename>
+    </files>
+    <params/>
+</extension>

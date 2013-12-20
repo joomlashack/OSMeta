@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="content" method="upgrade">
+    <name>Content - SeoBoss Content</name>
+    <author>JoomBoss</author>
+    <creationDate>March 2011</creationDate>
+    <copyright>Copyright (C) 2011 JoomBoss. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>admin@joomboss.com</authorEmail>
+    <authorUrl>joomboss.com</authorUrl>
+    <version>1.4r23</version>
+    <description>Content plugn which keeps Keywords information for content items</description>
+    <files>
+        <filename plugin="seoboss_content">seoboss_content.php</filename>
+    </files>
+    <params/>
+</extension>
