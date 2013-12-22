@@ -131,16 +131,21 @@ class OsmetaController extends OSController
 
 		$pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
+		$filter = $metatagsContainer->getFilter();
+		$features = MetatagsContainerFactory::getFeatures();
+		$order = JRequest::getCmd("filter_order", "title");
+		$orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
+
 		$view = $this->getView('OSMeta', 'html');
 		$view->assignRef('itemType', $itemType);
 		$view->assignRef('metatagsData', $tags);
 		$view->assignRef('page', $page);
 		$view->assignRef('itemsOnPage', $itemsOnPage);
-		$view->assignRef('filter', $metatagsContainer->getFilter());
-		$view->assignRef('availableTypes', MetatagsContainerFactory::getFeatures());
+		$view->assignRef('filter', $filter);
+		$view->assignRef('availableTypes', $features);
 		$view->assignRef('pageNav', $pageNav);
-		$view->assignRef('order', JRequest::getCmd("filter_order", "title"));
-		$view->assignRef('order_Dir', JRequest::getCmd("filter_order_Dir", "ASC"));
+		$view->assignRef('order', $order);
+		$view->assignRef('order_Dir', $orderDir);
 		$view->display();
 	}
 }
