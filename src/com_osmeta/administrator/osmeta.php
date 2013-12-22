@@ -12,3 +12,5 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+require_once("admin.osmeta.php");
