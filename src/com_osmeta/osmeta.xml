@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+	<name>com_osmeta</name>
+	<author>OSTraining</author>
+	<creationDate>December 2013</creationDate>
+	<copyright>Copyright (C) 2013 OSTraining.com</copyright>
+	<license>GPL</license>
+	<authorEmail>info@ostraining.com</authorEmail>
+	<authorUrl>http://www.ostraining.com</authorUrl>
+	<version>1.0.0</version>
+	<description>A component for Meta Tag adjustements</description>
+
+	<administration>
+		<menu img="class:component">OSMeta</menu>
+
+		<files folder="admin">
+			<!-- <filename>access.xml</filename> -->
+			<!-- <folder>controllers</folder> -->
+		</files>
+
+		<languages folder="admin">
+			<language tag="en-GB">languages/en-GB.com_seoboss.ini</language>
+            <language tag="en-GB">languages/en-GB.com_seoboss.sys.ini</language>
+            <language tag="it-IT">languages/it-IT.com_seoboss.ini</language>
+            <language tag="it-IT">languages/it-IT.com_seoboss.sys.ini</language>
+            <language tag="ru-RU">languages/ru-RU.com_seoboss.ini</language>
+            <language tag="ru-RU">languages/ru-RU.com_seoboss.sys.ini</language>
+            <language tag="de-DE">languages/de-DE.com_seoboss.ini</language>
+            <language tag="de-DE">languages/de-DE.com_seoboss.sys.ini</language>
+		</languages>
+	</administration>
+
+</extension>
