@@ -8,7 +8,7 @@
     <authorEmail>admin@joomboss.com</authorEmail>
     <authorUrl>joomboss.com</authorUrl>
     <version>1.4r23</version>
-    <description>System plugn which perform content preparation 'on the fly' - 
+    <description>System plugn which perform content preparation 'on the fly' -
 hilights keywords, formats extarnal links</description>
     <files>
         <filename plugin="seoboss_render">seoboss_render.php</filename>
