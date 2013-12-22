@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.7" type="plugin" group="content" method="upgrade">
-	<name>Content - OSMeta Content</name>
+	<name>Content - OSMeta</name>
 	<author>OSTraining</author>
 	<creationDate>December 2013</creationDate>
 	<copyright>Copyright (C) 2011, 2013 OSTraining.com. All rights reserved.</copyright>
