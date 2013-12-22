@@ -69,7 +69,7 @@ class OsmetaController extends OSController
 	private function metatags_manager($task)
 	{
 		$app = JFactory::getApplication();
-		require_once("classes/MetatagsContainerFactory.php");
+		require_once "classes/MetatagsContainerFactory.php";
 
 		$itemType = JRequest::getVar('type', null, '', 'string');
 		if (!$itemType)
@@ -118,6 +118,7 @@ class OsmetaController extends OSController
 				$metatagsContainer->clearBrowserTitles(JRequest::getVar('cid', array(), '', 'array'));
 				break;
 		}
+
 		$limit = JRequest::getVar('limit',
 		$app->getCfg('list_limit'));
 		$limitstart = JRequest::getVar('limitstart', 0);

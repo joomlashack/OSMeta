@@ -1,16 +1,20 @@
 <?php
-/*------------------------------------------------------------------------
-# SEO Boss Pro
-# ------------------------------------------------------------------------
-# author    JoomBoss
-# copyright Copyright (C) 2012 Joomboss.com. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://www.joomboss.com
-# Technical Support:  Forum - http://joomboss.com/forum
--------------------------------------------------------------------------*/
+/**
+ * @category  Joomla Component
+ * @package   osmeta
+ * @author    JoomBoss
+ * @copyright 2012, JoomBoss. All rights reserved
+ * @copyright 2013 Open Source Training, LLC. All rights reserved
+ * @contact   www.ostraining.com, support@ostraining.com
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version   1.0.0
+ */
+
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
 require_once "MetatagsContainer.php";
+
 class CommonMetatagsContainer extends MetatagsContainer{
     private $code = 20;
 
