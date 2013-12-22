@@ -8,7 +8,7 @@
 	<authorEmail>info@ostraining.com</authorEmail>
 	<authorUrl>http://www.ostraining.com</authorUrl>
 	<version>1.0.0</version>
-	<description>Content plugin which keeps Keywords information for content items - Based on SEOBoss (http://joomboss.com)</description>
+	<description>Content plugin which keeps Keywords information for content items - Based on SEOBoss Pro (http://joomboss.com)</description>
 
 	<files>
 		<filename plugin="osmeta_content">osmeta_content.php</filename>

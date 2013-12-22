@@ -8,7 +8,7 @@
 	<authorEmail>info@ostraining.com</authorEmail>
 	<authorUrl>http://www.ostraining.com</authorUrl>
 	<version>1.0.0</version>
-	<description>A component for Meta Tag adjustements</description>
+	<description>A component for Meta Tag adjustements - Based on SEOBoss Pro (http://joomboss.com)</description>
 
 	<administration>
 		<menu img="class:component">OSMeta</menu>
