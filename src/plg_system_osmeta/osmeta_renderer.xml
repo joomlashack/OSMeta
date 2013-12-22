@@ -8,7 +8,7 @@
 	<authorEmail>info@ostraining.com</authorEmail>
 	<authorUrl>http://www.ostraining.com</authorUrl>
 	<version>1.0.0</version>
-	<description>System plugn which perform content preparation 'on the fly' - hilights keywords, formats extarnal links. Based on SEOBoss (http://joomboss.com)</description>
+	<description>System plugin which perform content preparation 'on the fly' - hilights keywords, formats extarnal links. Based on SEOBoss (http://joomboss.com)</description>
 
 	<files>
 		<filename plugin="osmeta_renderer">osmeta_renderer.php</filename>
