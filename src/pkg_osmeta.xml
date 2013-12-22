@@ -11,7 +11,7 @@
 	<description>OSMeta Installation Bundle - Based on SEOBoss (http://joomboss.com)</description>
 
 	<files>
-		<file group="system" id="osmeta_render" type="plugin">plg_system_osmeta.zip</file>
+		<file group="system" id="osmeta_renderer" type="plugin">plg_system_osmeta.zip</file>
 		<file group="content" id="osmeta_content" type="plugin">plg_content_osmeta.zip</file>
 		<file id="com_osmeta" type="component">com_osmeta.zip</file>
 	</files>

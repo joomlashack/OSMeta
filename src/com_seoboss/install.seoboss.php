@@ -163,7 +163,7 @@ foreach($rows as $row){
 jimport("joomla.version");
 $version = new JVersion();
 if(version_compare($version->RELEASE, "1.7", "ge") ){
-    $db->setQuery("UPDATE #__extensions set enabled='1' WHERE `element`='seoboss_render' AND `type`='plugin'");
+    $db->setQuery("UPDATE #__extensions set enabled='1' WHERE `element`='seoboss_renderer' AND `type`='plugin'");
     $db->query();
     $db->setQuery("UPDATE #__extensions set enabled='1' WHERE `element`='seoboss_content' AND `type`='plugin'");
     $db->query();
