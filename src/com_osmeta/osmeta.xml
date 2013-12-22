@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
-	<name>com_osmeta</name>
+	<name>OSMeta</name>
 	<author>OSTraining</author>
 	<creationDate>December 2013</creationDate>
 	<copyright>Copyright (C) 2013 OSTraining.com</copyright>
@@ -19,15 +19,9 @@
 			<!-- <folder>controllers</folder> -->
 		</files>
 
-		<languages folder="administrator/languages">
+		<languages folder="administrator/language">
 			<language tag="en-GB">en-GB.com_seoboss.ini</language>
-            <language tag="en-GB">en-GB.com_seoboss.sys.ini</language>
-            <language tag="it-IT">it-IT.com_seoboss.ini</language>
-            <language tag="it-IT">it-IT.com_seoboss.sys.ini</language>
-            <language tag="ru-RU">ru-RU.com_seoboss.ini</language>
-            <language tag="ru-RU">ru-RU.com_seoboss.sys.ini</language>
-            <language tag="de-DE">de-DE.com_seoboss.ini</language>
-            <language tag="de-DE">de-DE.com_seoboss.sys.ini</language>
+			<language tag="en-GB">en-GB.com_seoboss.sys.ini</language>
 		</languages>
 	</administration>
 
