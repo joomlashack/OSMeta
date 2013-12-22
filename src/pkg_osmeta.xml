@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="package" version="1.6">
 	<name>OSMeta Installation Bundle</name>
-	<packagename>osmeta_all</packagename>
+	<packagename>osmeta</packagename>
 	<creationDate>December 20, 2013</creationDate>
 	<packager>OS Training</packager>
 	<packagerurl>http://ostraining.com</packagerurl>
 	<copyright>(C) 2013 OS Training. All rights reserved.</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.0.0</version>
-	<description>OSMeta Installation Bundle - Based on JoomBoss (http://joomboss.com)</description>
+	<description>OSMeta Installation Bundle - Based on SEOBoss (http://joomboss.com)</description>
 
 	<files>
 		<file group="system" id="osmeta_render" type="plugin">plg_system_osmeta.zip</file>
