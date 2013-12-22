@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $features['com_content:Article'] = array(
         'name'=>'Article',
@@ -19,7 +19,7 @@ $features['com_content:Article'] = array(
             'params'=>array(array('option'=>'com_content', 'view'=>'article'),
                 array('option'=>'com_content', 'view'=>'frontpage'),
                 array('option'=>'com_content', 'view'=>'featured'))
-        );
+       );
 
 $features['com_content:ArticleCategory2']=
         array(

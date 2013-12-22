@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 require_once "MetatagsContainer.php";
 class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
@@ -23,7 +23,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 	  $params = array();
 	  parse_str($query, $params);
 	  $metadata = null;
-	  if(isset($params["id"])){
+	  if (isset($params["id"])){
 	    $metadata = $this->getMetadata($params["id"]);
 	  }
 	  return $metadata;
@@ -45,14 +45,14 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-        	if(is_numeric($search)){
+        if ($search != ""){
+        	if (is_numeric($search)){
         		$sql .= " AND c.id=".$db->quote($search);
         	}else{
         		$sql .= " AND c.title LIKE ".$db->quote('%'.$search.'%');
         	}
         }
-	    if( $author_id > 0 ){
+	    if ($author_id > 0){
             $sql .= " AND c.created_user_id=".$db->quote($author_id);
         }
         switch($state){
@@ -63,11 +63,11 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         		$sql .= " AND c.published=0";
                 break;
         }
-        if($com_content_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
+        if ($com_content_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
-	    if($com_content_filter_show_empty_descriptions != "-1"){
-            $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
+	    if ($com_content_filter_show_empty_descriptions != "-1"){
+            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
@@ -90,13 +90,13 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
                 break;
 
         }
-        if($order_dir == "asc"){
+        if ($order_dir == "asc"){
         	$sql .= " ASC";
         }else{
         	$sql .= " DESC";
         }
 
-	    $db->setQuery( $sql, $lim0, $lim );
+	    $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -123,14 +123,14 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-            if(is_numeric($search)){
+        if ($search != ""){
+            if (is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
             }else{
                 $sql .= " AND c.title LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        if( $author_id > 0 ){
+        if ($author_id > 0){
             $sql .= " AND c.created_user_id=".$db->quote($author_id);
         }
         switch($state){
@@ -141,14 +141,14 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
                 $sql .= " AND c.published=0";
                 break;
         }
-        if($com_content_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
+        if ($com_content_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
-        if($com_content_filter_show_empty_descriptions != "-1"){
-            $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
+        if ($com_content_filter_show_empty_descriptions != "-1"){
+            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
-        $db->setQuery( $sql, $lim0, $lim );
+        $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -156,7 +156,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         }
         // Get outgoing links and keywords density
         for($i = 0 ; $i < count($rows);$i++){
-        	if($rows[$i]->metakey){
+        	if ($rows[$i]->metakey){
         		$rows[$i]->metakey = explode(",", $rows[$i]->metakey);
         	}else{
         		$rows[$i]->metakey = array("");
@@ -175,14 +175,14 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 			$sql = "INSERT INTO #__seoboss_metadata (item_id,
 			 item_type, title, description
 , title_tag
-			 )
+			)
 			 VALUES (
 			 ".$db->quote($ids[$i]).",
 			 '{$this->code}',
 			 ".$db->quote($metatitles[$i]).",
 			 ".$db->quote($metadescriptions[$i])."
 			 ,".$db->quote($title_tags!=null?$title_tags[$i]:'')."
-			 ) ON DUPLICATE KEY
+			) ON DUPLICATE KEY
 				UPDATE
 				title=".$db->quote($metatitles[$i])."
 			    , description=".$db->quote($metadescriptions[$i])
@@ -200,7 +200,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 	public function copyKeywordsToTitle($ids){
 		$db = JFactory::getDBO();
 		foreach($ids as $key=>$value){
-			if(!is_numeric($value)){
+			if (!is_numeric($value)){
 				unset($ids[$key]);
 			}
 		}
@@ -208,7 +208,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 		$db->setQuery($sql);
 		$items = $db->loadObjectList();
 		foreach($items as $item){
-			if($item->metakey != ''){
+			if ($item->metakey != ''){
 			$sql = "INSERT INTO #__seoboss_metadata (item_id,
              item_type, title, description)
              VALUES (
@@ -216,7 +216,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
              '{$this->code}',
              ".$db->quote($item->metakey).",
              ''
-             ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->metakey);
+            ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->metakey);
 
 			$db->setQuery($sql);
             $db->query();
@@ -227,7 +227,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 	public function copyTitleToKeywords($ids){
 	   $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -237,7 +237,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->title != ''){
+            if ($item->title != ''){
             $sql = "UPDATE #__categories SET metakey=".$db->quote($item->title)."
             WHERE id=".$db->quote($item->item_id);
             $db->setQuery($sql);
@@ -249,7 +249,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -259,7 +259,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->title != ''){
+            if ($item->title != ''){
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
              item_type, title, description)
              VALUES (
@@ -267,7 +267,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
              '{$this->code}',
              ".$db->quote($item->title).",
              ''
-             ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
+            ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
 
             $db->setQuery($sql);
             $db->query();
@@ -278,7 +278,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -298,7 +298,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -306,9 +306,9 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->introtext != ''){
+            if ($item->introtext != ''){
             $introtext = strip_tags($item->introtext);
-            if(strlen($introtext) > max_description_length){
+            if (strlen($introtext) > max_description_length){
                 $introtext = substr($introtext, 0, max_description_length);
             }
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
@@ -319,7 +319,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 
              '',
              ".$db->quote($introtext)."
-             ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
+            ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
 
             $db->setQuery($sql);
             $db->query();
@@ -352,7 +352,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 
 
         $result .= '
-        <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform( );">
+        <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform();">
         <option value=""  >- Select State -</option>
         <option value="P" '.($state=='P'?'selected="selected"':'').'>Published</option>
         <option value="U" '.($state=='U'?'selected="selected"':'').'>Unpublished</option>
@@ -394,7 +394,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 	public function setMetadataByRequest($url,$data) {
 	  $params = array();
 	  parse_str($url, $params);
-	  if( isset($params["id"]) && $params["id"]){
+	  if (isset($params["id"]) && $params["id"]){
 	    $this->setMetadata($params["id"], $data);
 	  }
 	}

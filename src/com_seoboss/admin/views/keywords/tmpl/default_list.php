@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <form action="index.php" method="post" name="adminForm">
 <table class="adminlist">
@@ -17,22 +17,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<tr>
 			<th width="20"><input type="checkbox" name="toggle" value=""
 				onclick="checkAll(<?php echo
-count( $this->rows ); ?>);" /></th>
-			<th class="title"><?php echo JText::_( 'SEO_NAME' )?></th>
-			<th width="15%"><?php echo JText::_( 'SEO_URL' )?></th>
-			<th width="5%" nowrap="nowrap"><?php echo JText::_( 'SEO_ACTIVE' )?></th>
+count($this->rows); ?>);" /></th>
+			<th class="title"><?php echo JText::_('SEO_NAME')?></th>
+			<th width="15%"><?php echo JText::_('SEO_URL')?></th>
+			<th width="5%" nowrap="nowrap"><?php echo JText::_('SEO_ACTIVE')?></th>
 		</tr>
 	</thead>
 	<?php
 	jimport('joomla.filter.output');
 	$k = 0;
-	for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+	for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row = $rows[$i];
-		$checked = JHTML::_('grid.id', $i, $row->id );
-		$published = JHTML::_('grid.published', $row, $i );
-		$link = JFilterOutput::ampReplace( 'index.php?option=' .
-        $option . '&task=edit_keyword&cid[]='. $row->id );
+		$checked = JHTML::_('grid.id', $i, $row->id);
+		$published = JHTML::_('grid.published', $row, $i);
+		$link = JFilterOutput::ampReplace('index.php?option=' .
+        $option . '&task=edit_keyword&cid[]='. $row->id);
 
 		?>
 	<tr class="<?php echo "row$k"; ?>">

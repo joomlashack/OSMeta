@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $features['com_content-1.5:Article'] = array(
         'name'=>'Article',
@@ -24,7 +24,7 @@ $features['com_content-1.5:ArticleCategory'] = array(
         'file'=>'ArticleCategoryMetatagsContainer.php',
         'class'=>'ArticleCategoryMetatagsContainer',
         'params'=>array(array('option'=>'com_content', 'view'=>'category'))
-    );
+   );
 
 //Add info for Search Engines ping feature
 $extensions['ping'][] = array(

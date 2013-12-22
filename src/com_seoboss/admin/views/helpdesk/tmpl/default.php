@@ -9,10 +9,10 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-<?php if(is_array($this->requests)){?>
+<?php if (is_array($this->requests)){?>
 <table class="adminlist">
 	    <thead>
 	    <tr>

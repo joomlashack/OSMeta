@@ -9,9 +9,9 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.model');
 
 class SeobossModelPanel extends JBModel
 {
@@ -44,9 +44,9 @@ class SeobossModelPanel extends JBModel
 	    return $code;
 	}
 
-	public function setCode( $code ){
+	public function setCode($code){
 	    $db = JFactory::getDBO();
-	    $db->setQuery("UPDATE #__seoboss_settings SET joomboss_registration_code=".$db->quote( $code ) );
+	    $db->setQuery("UPDATE #__seoboss_settings SET joomboss_registration_code=".$db->quote($code));
 	    $code = $db->query();
 	}
 }

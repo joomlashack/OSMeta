@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR.DS."components".
         DS."com_seoboss".DS."algorithm".DS."GoogleKeywordRank.php";
@@ -32,7 +32,7 @@ class Keywords{
     	for($i = 0 ; $i< count($ids) ; $i++){
     		$ids[$i] = intval($ids[$i]);
     	}
-    	if(count($ids)== 0){
+    	if (count($ids)== 0){
     		return;
     	}
         $db = JFactory::getDBO();
@@ -51,15 +51,15 @@ class Keywords{
 	private function updateGoogleRank(&$keyword, $site, $google_url, $lang){
 		$db = JFactory::getDBO();
 	   $rank = getGoogleKeywordRank($keyword->name, $site, $google_url, $lang);
-    if($rank == 1000 ){
-    	if($keyword->google_rank > 0 && $keyword->google_rank < 1000){
+    if ($rank == 1000){
+    	if ($keyword->google_rank > 0 && $keyword->google_rank < 1000){
             $change =    "-100";
     	}else{
     		$change=0;
     	}
-    }elseif($keyword->google_rank_change_date == '0000-00-00 00:00:00'){
+    }elseif ($keyword->google_rank_change_date == '0000-00-00 00:00:00'){
         $change = 0;
-    }elseif(( $keyword->google_rank==0 || $keyword->google_rank==1000)&& $rank!= 0){
+    }elseif (($keyword->google_rank==0 || $keyword->google_rank==1000)&& $rank!= 0){
         $change = "+100";
     }else{
         $change = $keyword->google_rank - $rank;

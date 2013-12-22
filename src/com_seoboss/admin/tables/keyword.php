@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class TableKeyword extends JTable {
   var $id = null;
@@ -18,7 +18,7 @@ class TableKeyword extends JTable {
   var $url = null;
 
   function __construct(&$db) {
-    parent::__construct( '#__seoboss_keywords', 'id', $db );
+    parent::__construct('#__seoboss_keywords', 'id', $db);
   }
 }
 ?>

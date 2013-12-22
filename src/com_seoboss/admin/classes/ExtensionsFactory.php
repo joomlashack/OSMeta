@@ -9,17 +9,17 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class ExtensionsFactory{
 
     static function getExtensions(){
-        if ( ExtensionsFactory::$extensions == null){
+        if (ExtensionsFactory::$extensions == null){
             $extensions = array();
             $directoryName = dirname(dirname(__FILE__)).'/features';
-            $handle = opendir( $directoryName );
+            $handle = opendir($directoryName);
             while (false !== ($file = readdir($handle))) {
-                if(substr($file, strlen($file) - 4) == ".php" ){
+                if (substr($file, strlen($file) - 4) == ".php"){
                     include $directoryName.'/'.$file;
                 }
             }

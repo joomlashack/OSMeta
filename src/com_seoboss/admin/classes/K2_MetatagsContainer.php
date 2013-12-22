@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 require_once "MetatagsContainer.php";
 class K2_MetaTagsContainer extends MetatagsContainer{
     private $itemType=3;
@@ -19,7 +19,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
          c.title,
          m.title_tag as title_tag,
          c.metakey,
-		 c.metadesc, IF(ISNULL(m.title) OR m.title='',c.title,m.title) as metatitle
+		 c.metadesc, if (ISNULL(m.title) OR m.title='',c.title,m.title) as metatitle
 		 FROM
 		#__k2_items c
 		LEFT JOIN
@@ -35,19 +35,19 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         $com_content_filter_show_empty_descriptions =
             JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-            if(is_numeric($search)){
+        if ($search != ""){
+            if (is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
             }else{
                 $sql .= " AND c.title LIKE ".$db->quote('%'.$search.'%');
             }
         }
 
-        if( $cat_id > 0 ){
+        if ($cat_id > 0){
             $sql .= " AND c.catid=".$db->quote($cat_id);
         }
 
-        if( $author_id > 0 ){
+        if ($author_id > 0){
             $sql .= " AND c.created_by=".$db->quote($author_id);
         }
         switch($state){
@@ -56,11 +56,11 @@ class K2_MetaTagsContainer extends MetatagsContainer{
                 break;
 
         }
-        if($com_content_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
+        if ($com_content_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
-        if($com_content_filter_show_empty_descriptions != "-1"){
-            $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
+        if ($com_content_filter_show_empty_descriptions != "-1"){
+            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
@@ -82,13 +82,13 @@ class K2_MetaTagsContainer extends MetatagsContainer{
                 $sql .= " ORDER BY title ";
                 break;
         }
-        if($order_dir == "asc"){
+        if ($order_dir == "asc"){
             $sql .= " ASC";
         }else{
             $sql .= " DESC";
         }
 
-        $db->setQuery( $sql, $lim0, $lim );
+        $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -104,7 +104,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function copyKeywordsToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }else{
                 $sql = "SELECT k.name
@@ -114,7 +114,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
                     "  AND ki.item_type_id={$this->itemType}";
                 $db->setQuery($sql);
                 $keywords = $db->loadObjectList();
-                if(count($keywords) > 0){
+                if (count($keywords) > 0){
                     $keywords_arr = array();
                     foreach($keywords as $keyword){
                         $keywords_arr[] = $keyword->name;
@@ -127,7 +127,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
                         {$this->itemType},
                         ".$db->quote($keywords_str).",
                         ''
-                        ) ON DUPLICATE KEY
+                       ) ON DUPLICATE KEY
                         UPDATE title=".$db->quote($keywords_str);
 
                     $db->setQuery($sql);
@@ -140,7 +140,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function copyTitleToKeywords($ids){
        $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -148,7 +148,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->title != ''){
+            if ($item->title != ''){
             $this->saveKeywords($item->title, $item->item_id, $this->getTypeId());
             }
         }
@@ -157,7 +157,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -165,7 +165,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->title != ''){
+            if ($item->title != ''){
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
              item_type, title, description)
              VALUES (
@@ -173,7 +173,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
              {$this->itemType},
              ".$db->quote($item->title).",
              ''
-             ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
+            ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
 
             $db->setQuery($sql);
             $db->query();
@@ -184,13 +184,13 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }else{
                 $sql = "SELECT title FROM #__k2_items WHERE id=".$db->quote($value);
                 $db->setQuery($sql);
                 $title = $db->loadResult();
-                if($title){
+                if ($title){
                     $this->saveKeywords($title, $value, $this->getTypeId());
                 }
             }
@@ -209,7 +209,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
 
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -217,9 +217,9 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
-            if($item->introtext != ''){
+            if ($item->introtext != ''){
             $introtext = strip_tags($item->introtext);
-            if(strlen($introtext) > $max_description_length){
+            if (strlen($introtext) > $max_description_length){
               $introtext = substr($introtext, 0, $max_description_length);
             }
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
@@ -230,7 +230,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
 
              '',
              ".$db->quote($introtext)."
-             ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
+            ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
 
             $db->setQuery($sql);
             $db->query();
@@ -246,12 +246,12 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function getPages($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id AS id, c.title AS title,
-        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+        (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
             FROM #__seoboss_keywords k,
             #__seoboss_keywords_items ki
             WHERE ki.item_id=c.id and ki.item_type_id={$this->itemType}
                 AND ki.keyword_id=k.id
-        ) AS metakey,
+       ) AS metakey,
         c.fulltext AS content
          FROM
         #__k2_items c WHERE 1
@@ -263,21 +263,21 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
         $state = JRequest::getVar("com_content_filter_show_published", "");
 
-        if($search != ""){
-            if(is_numeric($search)){
+        if ($search != ""){
+            if (is_numeric($search)){
                 $sql .= " AND c.id=".$db->quote($search);
             }else{
                 $sql .= " AND c.title LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        if( $category_id > 0 ){
+        if ($category_id > 0){
             $sql .= " AND c.catid=".$db->quote($category_id);
         }
-        if($com_content_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(c.metakey) OR c.metakey='') ";
+        if ($com_content_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
-        if($com_content_filter_show_empty_descriptions != "-1"){
-            $sql .= " AND ( ISNULL(c.metadesc) OR c.metadesc='') ";
+        if ($com_content_filter_show_empty_descriptions != "-1"){
+            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
         switch($state){
             case '1':
@@ -286,7 +286,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
 
         }
 
-        $db->setQuery( $sql, $lim0, $lim );
+        $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -294,7 +294,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
         }
         // Get outgoing links and keywords density
         for($i = 0 ; $i < count($rows);$i++){
-            if($rows[$i]->metakey){
+            if ($rows[$i]->metakey){
                 $rows[$i]->metakey = explode(",", $rows[$i]->metakey);
             }else{
                 $rows[$i]->metakey = array("");
@@ -318,7 +318,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
             ".$db->quote($metatitles[$i]).",
             ".$db->quote($metadescriptions[$i]).",
             ".$db->quote($title_tags!=null?$title_tags[$i]:'')."
-            ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]).
+           ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]).
             ", title_tag=".$db->quote($title_tags!=null?$title_tags[$i]:'');
 
 			$db->setQuery($sql);
@@ -406,7 +406,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
       $params = array();
       parse_str($query, $params);
       $metadata = null;
-      if(isset($params["id"])){
+      if (isset($params["id"])){
         $metadata = $this->getMetadata($params["id"]);
       }
       return $metadata;
@@ -415,7 +415,7 @@ class K2_MetaTagsContainer extends MetatagsContainer{
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
-      if( isset($params["id"]) && $params["id"]){
+      if (isset($params["id"]) && $params["id"]){
         $this->setMetadata($params["id"], $data);
       }
     }

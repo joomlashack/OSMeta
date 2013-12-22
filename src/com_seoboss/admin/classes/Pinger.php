@@ -9,20 +9,20 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class Pinger{
     private $GOOGLE_PING_URL="http://blogsearch.google.com/ping/RPC2";
     private $GOOGLE_METHOD_NAME="weblogUpdates.extendedPing";
     function RPC($URL, $methodName){
         $parse = parse_url($URL);
-        if(!isset($parse['host'])) return false;
+        if (!isset($parse['host'])) return false;
         $host = $parse['host'];
         $port = isset($parse['port'])?$parse['port']:80;
         $uri  = isset($parse['path'])?$parse['path']:'/';
 
         $fp=fsockopen($host,$port,$errno,$errstr);
-        if(!$fp)
+        if (!$fp)
         {
             return array(-1,"Cannot open connection: $errstr ($errno)<br />\n");
         }
@@ -57,7 +57,7 @@ class Pinger{
         fclose($fp);
         $lines=explode("\r\n",$response);
         $firstline=$lines[0];
-        if(!ereg("HTTP/1.[01] 200 OK",$firstline))
+        if (!ereg("HTTP/1.[01] 200 OK",$firstline))
         {
             return array(-1,$firstline);
         }
@@ -68,7 +68,7 @@ class Pinger{
         $n=preg_match(
             '|<member>\s*<name>flerror</name>\s*<value>\s*<boolean>([^<]*)</boolean>\s*</value>\s*</member>|i',
             $response, $matches);
-        if(0==$n)
+        if (0==$n)
         {
             return array(-1,$lines);
         }
@@ -77,7 +77,7 @@ class Pinger{
         $n=preg_match(
             '|<member>\s*<name>message</name>\s*<value>([^<]*)</value>\s*</member>|i',
             $response, $matches);
-        if(0==$n)
+        if (0==$n)
         {
             return array(-1,$lines);
         }

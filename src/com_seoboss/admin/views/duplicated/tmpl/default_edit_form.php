@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 jimport("joomla.version");
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -30,15 +30,15 @@ jimport("joomla.version");
         <td>
           <select name="action" id="action">
             <option value="<?php echo SeobossCanonicalURL::$ACTION_CANONICAL?>"
-             <?php if(isset($this->page->action)&&
+             <?php if (isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_CANONICAL) echo "selected=\"true\"";?>
             >Use Canonical URL</option>
             <option value="<?php echo SeobossCanonicalURL::$ACTION_REDIRECT?>"
-             <?php if(isset($this->page->action)&&
+             <?php if (isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_REDIRECT) echo "selected=\"true\"";?>
             >Use 301 Redirect</option>
             <option value="<?php echo SeobossCanonicalURL::$ACTION_NOINDEX?>"
-             <?php if(isset($this->page->action)&&
+             <?php if (isset($this->page->action)&&
                  $this->page->action==SeobossCanonicalURL::$ACTION_NOINDEX) echo "selected=\"true\"";?>
             >Use Noindex</option>
           </select>

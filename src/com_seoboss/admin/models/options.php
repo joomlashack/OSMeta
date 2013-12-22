@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 
 class SeobossModelOptions extends JBModel
@@ -31,7 +31,7 @@ class SeobossModelOptions extends JBModel
 	    return $code;
 	}
 
-	public function setRegistrationCode( $code ){
+	public function setRegistrationCode($code){
 	    $db = JFactory::getDBO();
 	    $db->setQuery("UPDATE #__seoboss_settings SET joomboss_registration_code=".$db->quote($code));
 	    $db->query();
@@ -40,7 +40,7 @@ class SeobossModelOptions extends JBModel
 	                   FROM `#__update_sites`
 	                   WHERE `location` LIKE 'http://joomboss.com/index.php?option=com_seobossupdater&task=update_server&product=SEOBoss&%'");
 	    $seoboss_update_site_id = $db->loadResult();
-	    if($seoboss_update_site_id){
+	    if ($seoboss_update_site_id){
 	        $db->setQuery("UPDATE `#__update_sites`
 	                        SET `location`=".
 	                        $db->quote("http://joomboss.com/index.php?option=com_seobossupdater&task=update_server&product=SEOBoss&code=$code&format=extension.xml")."
@@ -77,7 +77,7 @@ class SeobossModelOptions extends JBModel
 	public function updateDefaultTag($id, $name, $value){
 	    $db = JFactory::getDBO();
 	    $db->setQuery("UPDATE #__seoboss_default_tags SET
-		    				`name`=".$db->quote($name).", `value`=".$db->quote($value)." WHERE id=".$db->quote($id) );
+		    				`name`=".$db->quote($name).", `value`=".$db->quote($value)." WHERE id=".$db->quote($id));
 	    $db->query();
 	}
 

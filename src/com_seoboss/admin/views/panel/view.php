@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -33,7 +33,7 @@ class SeobossViewPanel extends JBView{
       $document = JFactory::getDocument();
       JHTML::_('behavior.tooltip');
       $document->addStyleSheet(JURI::base(true)."/components/com_seoboss/views/panel/tmpl/css/style.css");
-      JToolBarHelper::title( JText::_( 'SEO_CONTROL_PANEL' ),'joomboss.png' );
+      JToolBarHelper::title(JText::_('SEO_CONTROL_PANEL'),'joomboss.png');
       JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation?tmpl=component');
       parent::display($tpl);
     }

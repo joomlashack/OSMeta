@@ -9,9 +9,9 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.model');
 
 class SeobossModelExternalUrls extends JBModel
 {
@@ -28,7 +28,7 @@ class SeobossModelExternalUrls extends JBModel
 	public function getUrls(){
 	    $db = JFactory::getDBO();
         $query = "SELECT * FROM #__seoboss_redirects";
-        $db->setQuery( $query );
+        $db->setQuery($query);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -39,7 +39,7 @@ class SeobossModelExternalUrls extends JBModel
 
 	public function saveUrls($array){
 	    $db = JFactory::getDBO();
-	    if($array){
+	    if ($array){
 	        $db->setQuery("TRUNCATE #__seoboss_redirects");
 	        $db->query();
 	        if ($db->getErrorNum()) {
@@ -48,7 +48,7 @@ class SeobossModelExternalUrls extends JBModel
 	        }
 	        for($i=0; $n = count($array['attributeX']['0']['value']), $i < $n+1; $i++){
 	            echo "<br>".(isset($array['attributeX']['0']['value'][$i])?$array['attributeX']['0']['value'][$i]:"")."<br>";
-	            if(isset($array['attributeX']['0']['value'][$i]) && $array['attributeX']['0']['value'][$i] != ''){
+	            if (isset($array['attributeX']['0']['value'][$i]) && $array['attributeX']['0']['value'][$i] != ''){
 	                $array['attributeX']['0']['value'][$i] = str_replace("http://", '' , $array['attributeX']['0']['value'][$i]);
 	                $array['attributeX']['0']['value'][$i] = str_replace("www.", "", $array['attributeX']['0']['value'][$i]);
 	                $query = "INSERT INTO #__seoboss_redirects VALUES ('".$i."', '".$array['attributeX']['0']['value'][$i]."', '".$array['attributeX']['0']['price'][$i]."', '')";

@@ -101,7 +101,7 @@ Autocompleter.Base = new Class({
 				else {
 					this.choiceOver((e.key == 'up')
 						? this.selected.getPrevious() || this.choices.getLast()
-						: this.selected.getNext() || this.choices.getFirst() );
+						: this.selected.getNext() || this.choices.getFirst());
 					this.setSelection();
 				}
 				e.stop(); return;
@@ -172,7 +172,7 @@ Autocompleter.Base = new Class({
 
 	choiceOver: function(el) {
 		if (this.selected) this.selected.removeClass('autocompleter-selected');
-		if(typeof el[0] !== "undefined"){
+		if (typeof el[0] !== "undefined"){
 			this.selected = el[0].addClass('autocompleter-selected');
 		}else{
 			this.selected = el.addClass('autocompleter-selected');

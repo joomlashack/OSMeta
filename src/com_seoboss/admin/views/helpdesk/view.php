@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -31,17 +31,17 @@ class SeobossViewHelpdesk extends JBView{
     function display($tpl=null){
       switch($tpl){
         case "request":
-          JToolBarHelper::title( JText::_( 'SEO_HELPDESK_REQUEST' ),'helpdesk.png' );
+          JToolBarHelper::title(JText::_('SEO_HELPDESK_REQUEST'),'helpdesk.png');
           JToolBarHelper::cancel('helpdesk');
           break;
         case "new_request":
-          JToolBarHelper::title( JText::_( 'SEO_NEW_HELPDESK_REQUEST' ),'helpdesk.png' );
-          JToolBarHelper::custom('helpdesk_submit_request', 'save', '', JText::_( 'SEO_SUBMIT_REQUEST' ), false);
+          JToolBarHelper::title(JText::_('SEO_NEW_HELPDESK_REQUEST'),'helpdesk.png');
+          JToolBarHelper::custom('helpdesk_submit_request', 'save', '', JText::_('SEO_SUBMIT_REQUEST'), false);
           JToolBarHelper::cancel('helpdesk');
           break;
         default:
-          JToolBarHelper::title( JText::_( 'SEO_HELPDESK' ),'helpdesk.png' );
-          JToolBarHelper::custom('helpdesk_new_request', 'new', '', JText::_( 'SEO_NEW_REQUEST' ), false);
+          JToolBarHelper::title(JText::_('SEO_HELPDESK'),'helpdesk.png');
+          JToolBarHelper::custom('helpdesk_new_request', 'new', '', JText::_('SEO_NEW_REQUEST'), false);
       }
       parent::display($tpl);
     }

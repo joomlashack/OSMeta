@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 
 class SeobossModelBackups extends JBModel
@@ -60,7 +60,7 @@ class SeobossModelBackups extends JBModel
     $data = $db->loadObjectList();
     foreach($data as $row){
       $dump .= "INSERT IGNORE INTO #__seoboss_redirects
-      (id, url, target, ext) VALUES (".$db->quote($row->id).", ".$db->quote($row->url).", ".$db->quote($row->target).", ".$db->quote($row->ext) ." ) ;\n";
+      (id, url, target, ext) VALUES (".$db->quote($row->id).", ".$db->quote($row->url).", ".$db->quote($row->target).", ".$db->quote($row->ext) .") ;\n";
     }
     $db->setQuery("SELECT id,
         item_id,
@@ -151,7 +151,7 @@ class SeobossModelBackups extends JBModel
     jimport("joomla.installer.helper");
     jimport("joomla.version");
     $version = new JVersion();
-    if($version->RELEASE == "1.5"){
+    if ($version->RELEASE == "1.5"){
         $helper = new JInstallerHelper();
         $sql_statements = $helper->splitSql($dump);
 
@@ -162,7 +162,7 @@ class SeobossModelBackups extends JBModel
     $db = JFactory::getDBO();
     $count = 0;
     foreach($sql_statements as $statement){
-      if(trim($statement)){
+      if (trim($statement)){
         $db->setQuery($statement);
         $db->query();
         $count++;

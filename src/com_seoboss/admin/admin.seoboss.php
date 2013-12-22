@@ -9,20 +9,20 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 JLoader::register('JBView', JPATH_COMPONENT."/views/view.php");
 JLoader::register('JBModel', JPATH_COMPONENT."/models/model.php");
 JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
-if(!defined('DS')){
+if (!defined('DS')){
    define('DS', '/');
 }
 
 if (!function_exists('json_decode')) {
   function json_decode($content, $assoc=false){
     require_once 'classes/JSON.php';
-    if ( $assoc ){
+    if ($assoc){
       $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
     } else {
       $json = new Services_JSON;
@@ -31,9 +31,9 @@ if (!function_exists('json_decode')) {
   }
 }
 
-require_once( JPATH_COMPONENT.DS.'controller.php' );
-$controller = new SeobossController( array('default_task' => 'panel') );
-$controller->execute( JRequest::getCmd('task') );
+require_once(JPATH_COMPONENT.DS.'controller.php');
+$controller = new SeobossController(array('default_task' => 'panel'));
+$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
 
 theme();

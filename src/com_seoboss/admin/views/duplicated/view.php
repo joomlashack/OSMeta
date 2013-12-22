@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -32,12 +32,12 @@ class SeobossViewDuplicated extends JBView{
     {
       switch($tpl){
         case null:
-          JToolBarHelper::title( JText::_( 'SEO_DUPLICATED_PAGES' ),'joomboss_settings.png' );
+          JToolBarHelper::title(JText::_('SEO_DUPLICATED_PAGES'),'joomboss_settings.png');
           JToolBarHelper::custom('duplicated_edit', 'new', '', 'New', false);
           break;
         case "edit_form":
-          JToolBarHelper::title( JText::_( 'SEO_DUPLAICATED_PAGES_EDIT' ),'joomboss_settings.png' );
-          JToolBarHelper::custom('duplicated_save', 'save', '', JText::_( 'SEO_SAVE' ), false);
+          JToolBarHelper::title(JText::_('SEO_DUPLAICATED_PAGES_EDIT'),'joomboss_settings.png');
+          JToolBarHelper::custom('duplicated_save', 'save', '', JText::_('SEO_SAVE'), false);
           JToolBarHelper::cancel('duplicated_pages');
           break;
       }

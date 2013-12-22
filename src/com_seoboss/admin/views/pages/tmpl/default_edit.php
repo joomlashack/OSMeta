@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $editor = JFactory::getEditor();
 ?>
@@ -19,7 +19,7 @@ var modalsubmit= function () {
     $('adminModalForm').send({
         onRequest: function(){
             // Show loading div.
-            //fx.loading.start( 0,1 );
+            //fx.loading.start(0,1);
         },
         onSuccess: function(){
             // Hide loading and show success for 3 seconds.
@@ -28,7 +28,7 @@ var modalsubmit= function () {
         },
         onFailure: function(){
             // Hide loading and show fail for 3 seconds.
-            //showHide( 'fail' );
+            //showHide('fail');
         }
     });
 
@@ -61,9 +61,9 @@ var modalsubmit= function () {
   </tr>
   <tr>
     <td colspan="2" align="center">
-         <input type="submit" value="<?php echo JText::_( 'SEO_SAVE' );?>" />
+         <input type="submit" value="<?php echo JText::_('SEO_SAVE');?>" />
          <button type="button" onclick="window.parent.SqueezeBox.close()">
-            <?php echo JText::_( 'SEO_CANCEL' );?></button>
+            <?php echo JText::_('SEO_CANCEL');?></button>
     </td>
   </tr>
 </table>

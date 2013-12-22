@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR.DS."components".
         DS."com_seoboss".DS."lib".DS."Snoopy.class.php";
@@ -26,13 +26,13 @@ require_once JPATH_ADMINISTRATOR.DS."components".
  */
 function getGoogleKeywordRank($keyword, $site, $google_url = "google.by", $lang = "be"){
 	$SnoopySeoBoss = new SnoopySeoBoss;
-	if(strpos($site, "https://") === 0){
+	if (strpos($site, "https://") === 0){
 	  $site = substr($site, strlen("https://"));
 	}
-	if(strpos($site, "http://") === 0){
+	if (strpos($site, "http://") === 0){
 		$site = substr($site, strlen("http://"));
 	}
-    if(strpos($site, "www.") === 0){
+    if (strpos($site, "www.") === 0){
         $site = substr($site, strlen("www."));
     }
     $keyword = urlencode($keyword);
@@ -40,10 +40,10 @@ function getGoogleKeywordRank($keyword, $site, $google_url = "google.by", $lang 
 	"http://www.$google_url/search?as_q=$keyword&num=100&site=&source=hp"
 	);
 
-	preg_match_all("/<h3[\\s]+class=\\\"r\\\">[\\s]*<a[\\s]+href=\\\"([^\\\"]*)\\\"/i", $SnoopySeoBoss->results, $results );
+	preg_match_all("/<h3[\\s]+class=\\\"r\\\">[\\s]*<a[\\s]+href=\\\"([^\\\"]*)\\\"/i", $SnoopySeoBoss->results, $results);
 	$rank = 1;
     foreach($results[1] as $result){
-    	if(strpos($result, "http://$site") !== false ||
+    	if (strpos($result, "http://$site") !== false ||
     	  strpos($result, "http://www.$site") !== false ||
     	  strpos($result, "https://$site") !== false ||
     	  strpos($result, "https://www.$site") !== false ||

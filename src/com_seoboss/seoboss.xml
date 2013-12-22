@@ -1,214 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.7" method="upgrade">
-<name>SeoBoss</name>
-<author>JoomBoss</author>
-<creationDate>January 2011</creationDate>
-<copyright>(C) 2011</copyright>
-<authorEmail>support@joomboss.com</authorEmail>
-<authorUrl>joomboss.com</authorUrl>
-<version>1.4r23</version>
-<license>Free</license>
-<description>A component for SEO adjustements.</description>
-<installfile>install.seoboss.php</installfile>
-<scriptfile>script.seoboss.php</scriptfile>
-<uninstallfile>uninstall.seoboss.php</uninstallfile>
-<install>
-<sql>
-<file driver="mysql" charset="utf8">install.mysql.sql</file>
-</sql>
-</install>
-<uninstall>
-<sql>
-<file driver="mysql" charset="utf8">uninstall.mysql.sql</file>
-</sql>
-</uninstall>
-<files>
-    <filename>seoboss.php</filename>
-    <filename>controller.php</filename>
-    <filename>css/index.html</filename>
-    <filename>css/anywhere.css</filename>
-</files>
-<administration>
-<menu task="panel">SEO_COM_SEOBOSS</menu>
-<submenu>
-<menu task="panel">SEO_CONTROL_PANEL</menu>
-<menu task="keywords_view">SEO_KEYWORDS_MANAGER</menu>
-<menu task="metatags_view">SEO_META_TAGS_MANAGER</menu>
-<menu task="settings_default_tags">SEO_DEFAULT_META_TAGS</menu>
-<menu task="pages_manager">SEO_PAGES_MANAGER</menu>
-<menu task="url_list">SEO_EXTERNAL_LINKS</menu>
-<menu task="duplicated_pages">SEO_DUPLICATED_CONTENT</menu>
-<menu task="backup_manager">SEO_BACKUP_AND_RESTORE</menu>
-<menu task="settings">SEO_SETTINGS</menu>
-<menu task="helpdesk">SEO_HELPDESK</menu>
-</submenu>
-<files folder="admin">
-<filename>install.mysql.sql</filename>
-<filename>uninstall.mysql.sql</filename>
-<filename>admin.seoboss.php</filename>
-<filename>seoboss.php</filename>
-<filename>admin.seoboss.inc.php</filename>
-<filename>toolbar.seoboss.html.php</filename>
-<filename>toolbar.seoboss.php</filename>
-<filename>controller.php</filename>
-
-<filename>index.html</filename>
-
-<filename>algorithm/DFA.php</filename>
-<filename>algorithm/GoogleKeywordRank.php</filename>
-<filename>algorithm/KeywordsCounter.php</filename>
-<filename>algorithm/index.html</filename>
-<filename>images/сaution_sign.png</filename>
-<filename>images/upload_snapshot.png</filename>
-<filename>images/download_snapshot.png</filename>
-<filename>images/48x48-keywords.png</filename>
-<filename>images/48x48-metatag.png</filename>
-<filename>images/48x48-settings.png</filename>
-<filename>images/48x48-redirect.png</filename>
-<filename>images/48x48-html.png</filename>
-<filename>images/48x48-jb.png</filename>
-<filename>images/48x48-backup.png</filename>
-<filename>images/48x48-helpdesk.png</filename>
-<filename>images/elephant.png</filename>
-<filename>images/rightarrow.png</filename>
-<filename>images/enabled.png</filename>
-<filename>images/disabled.png</filename>
-<filename>images/index.html</filename>
-
-<filename>lib/RedirectFactory.php</filename>
-<filename>lib/Snoopy.class.php</filename>
-<filename>lib/index.html</filename>
-
-<filename>classes/ArticleMetatagsContainer.php</filename>
-<filename>classes/ArticleCategoryMetatagsContainer.php</filename>
-<filename>classes/MenuItemMetatagsContainer.php</filename>
-<filename>classes/K2_MetatagsContainer.php</filename>
-<filename>classes/Hikashop_MetatagsContainer.php</filename>
-<filename>classes/VM_ProductMetatagsContainer.php</filename>
-<filename>classes/VM2_ProductMetatagsContainer.php</filename>
-<filename>classes/VM2_CategoryMetatagsContainer.php</filename>
-<filename>classes/MosetsTree_LinkMetatagsContainer.php</filename>
-<filename>classes/MosetsTree_CategoryMetatagsContainer.php</filename>
-<filename>classes/JS_Team_MetatagsContainer.php</filename>
-<filename>classes/JS_Player_MetatagsContainer.php</filename>
-<filename>classes/Cobalt_MetatagsContainer.php</filename>
-<filename>classes/ArticleCategoryMetatagsContainer2.php</filename>
-<filename>classes/FileList.php</filename>
-<filename>classes/Keywords.php</filename>
-<filename>classes/MetatagsContainer.php</filename>
-<filename>classes/MetatagsContainerFactory.php</filename>
-<filename>classes/CommonMetatagsContainer.php</filename>
-<filename>classes/RedirectFactory.php</filename>
-<filename>classes/ExtensionsFactory.php</filename>
-<filename>classes/Pinger.php</filename>
-<filename>classes/JSON.php</filename>
-<filename>classes/Canonical.php</filename>
-<filename>classes/index.html</filename>
-<filename>features/index.html</filename>
-<filename>features/com_content.php</filename>
-<filename>features/com_content-1.5.php</filename>
-<filename>features/installer_data/index.html</filename>
-<filename>features/com_content/ping.php</filename>
-<filename>features/com_content/index.html</filename>
-
-<filename>features/com_k2/ping.php</filename>
-<filename>features/com_k2/index.html</filename>
-<filename>features/com_menu.php</filename>
-<filename>features/com_k2.php</filename>
-<filename>features/com_mt.php</filename>
-<filename>features/com_virtuemart.php</filename>
-<filename>features/com_virtuemart2.php</filename>
-<filename>features/com_cobalt.php</filename>
-<filename>features/com_joomsport.php</filename>
-<filename>features/com_hikashop.php</filename>
-
-<filename>models/index.html</filename>
-<filename>models/panel.php</filename>
-<filename>models/helpdesk.php</filename>
-<filename>models/options.php</filename>
-<filename>models/externalurls.php</filename>
-<filename>models/backups.php</filename>
-<filename>models/model.php</filename>
-<filename>tables/keyword.php</filename>
-<filename>tables/index.html</filename>
-
-<filename>js/url_list.js</filename>
-<filename>js/index.html</filename>
-<filename>js/Autocompleter.js</filename>
-<filename>js/Autocompleter.css</filename>
-<filename>js/Observer.js</filename>
-<filename>views/index.html</filename>
-<filename>views/view.php</filename>
-<filename>views/backup/index.html</filename>
-<filename>views/backup/view.php</filename>
-<filename>views/backup/tmpl/index.html</filename>
-<filename>views/backup/tmpl/default.php</filename>
-<filename>views/panel/index.html</filename>
-<filename>views/panel/view.php</filename>
-<filename>views/panel/tmpl/index.html</filename>
-<filename>views/panel/tmpl/css/index.html</filename>
-<filename>views/panel/tmpl/css/style.css</filename>
-<filename>views/panel/tmpl/default.php</filename>
-<filename>views/panel/tmpl/j3.php</filename>
-<filename>views/helpdesk/index.html</filename>
-<filename>views/helpdesk/view.php</filename>
-<filename>views/helpdesk/tmpl/index.html</filename>
-<filename>views/helpdesk/tmpl/default.php</filename>
-<filename>views/helpdesk/tmpl/default_new_request.php</filename>
-<filename>views/helpdesk/tmpl/default_request.php</filename>
-<filename>views/options/index.html</filename>
-<filename>views/options/view.php</filename>
-<filename>views/options/tmpl/index.html</filename>
-<filename>views/options/tmpl/default_code.php</filename>
-<filename>views/options/tmpl/default_tags_table.php</filename>
-<filename>views/options/tmpl/j3_tags_table.php</filename>
-<filename>views/options/tmpl/default_tags_form.php</filename>
-<filename>views/options/tmpl/default.php</filename>
-<filename>views/options/tmpl/j3.php</filename>
-<filename>views/externalurls/index.html</filename>
-<filename>views/externalurls/view.php</filename>
-<filename>views/externalurls/tmpl/index.html</filename>
-<filename>views/externalurls/tmpl/default.php</filename>
-<filename>views/externalurls/tmpl/default_empty.php</filename>
-<filename>views/pages/index.html</filename>
-<filename>views/pages/view.php</filename>
-<filename>views/pages/tmpl/index.html</filename>
-<filename>views/pages/tmpl/default.php</filename>
-<filename>views/pages/tmpl/j3.php</filename>
-<filename>views/pages/tmpl/default_edit.php</filename>
-<filename>views/metatags/index.html</filename>
-<filename>views/metatags/view.php</filename>
-<filename>views/metatags/tmpl/index.html</filename>
-<filename>views/metatags/tmpl/default.php</filename>
-<filename>views/metatags/tmpl/j3.php</filename>
-<filename>views/keywords/index.html</filename>
-<filename>views/keywords/view.php</filename>
-<filename>views/keywords/tmpl/index.html</filename>
-<filename>views/keywords/tmpl/default.php</filename>
-<filename>views/keywords/tmpl/default_edit.php</filename>
-<filename>views/keywords/tmpl/default_list.php</filename>
-<filename>views/keywords/tmpl/j3.php</filename>
-<filename>views/keywords/tmpl/j3_list.php</filename>
-<filename>views/keywords/tmpl/default_density.php</filename>
-<filename>views/keywords/tmpl/default_density_window.php</filename>
-<filename>views/duplicated/index.html</filename>
-<filename>views/duplicated/view.php</filename>
-<filename>views/duplicated/tmpl/index.html</filename>
-<filename>views/duplicated/tmpl/default.php</filename>
-<filename>views/duplicated/tmpl/j3.php</filename>
-<filename>views/duplicated/tmpl/default_edit_form.php</filename>
-
-<!--other staff-->
-</files>
-    <languages>
-        <language tag="en-GB">en-GB.com_seoboss.ini</language>
-        <language tag="en-GB">en-GB.com_seoboss.sys.ini</language>
-        <language tag="it-IT">it-IT.com_seoboss.ini</language>
-        <language tag="it-IT">it-IT.com_seoboss.sys.ini</language>
-        <language tag="ru-RU">ru-RU.com_seoboss.ini</language>
-        <language tag="ru-RU">ru-RU.com_seoboss.sys.ini</language>
-        <language tag="de-DE">de-DE.com_seoboss.ini</language>
-        <language tag="de-DE">de-DE.com_seoboss.sys.ini</language>
-    </languages>
-</administration>
+<extension method="upgrade" type="component" version="1.7">
+    <name>SeoBoss</name>
+    <author>JoomBoss</author>
+    <creationDate>January 2011</creationDate>
+    <copyright>(C) 2011</copyright>
+    <authorEmail>support@joomboss.com</authorEmail>
+    <authorUrl>joomboss.com</authorUrl>
+    <version>1.4r23</version>
+    <license>Free</license>
+    <description>A component for SEO adjustements.</description>
+    <installfile>install.seoboss.php</installfile>
+    <scriptfile>script.seoboss.php</scriptfile>
+    <uninstallfile>uninstall.seoboss.php</uninstallfile>
+    <install>
+        <sql>
+            <file charset="utf8" driver="mysql">install.mysql.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file charset="utf8" driver="mysql">uninstall.mysql.sql</file>
+        </sql>
+    </uninstall>
+    <files>
+        <filename>seoboss.php</filename>
+        <filename>controller.php</filename>
+        <filename>css/index.html</filename>
+        <filename>css/anywhere.css</filename>
+    </files>
+    <administration>
+        <menu task="panel">SEO_COM_SEOBOSS</menu>
+        <submenu>
+            <menu task="panel">SEO_CONTROL_PANEL</menu>
+            <menu task="keywords_view">SEO_KEYWORDS_MANAGER</menu>
+            <menu task="metatags_view">SEO_META_TAGS_MANAGER</menu>
+            <menu task="settings_default_tags">SEO_DEFAULT_META_TAGS</menu>
+            <menu task="pages_manager">SEO_PAGES_MANAGER</menu>
+            <menu task="url_list">SEO_EXTERNAL_LINKS</menu>
+            <menu task="duplicated_pages">SEO_DUPLICATED_CONTENT</menu>
+            <menu task="backup_manager">SEO_BACKUP_AND_RESTORE</menu>
+            <menu task="settings">SEO_SETTINGS</menu>
+            <menu task="helpdesk">SEO_HELPDESK</menu>
+        </submenu>
+        <files folder="admin">
+            <filename>install.mysql.sql</filename>
+            <filename>uninstall.mysql.sql</filename>
+            <filename>admin.seoboss.php</filename>
+            <filename>seoboss.php</filename>
+            <filename>admin.seoboss.inc.php</filename>
+            <filename>toolbar.seoboss.html.php</filename>
+            <filename>toolbar.seoboss.php</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>algorithm/DFA.php</filename>
+            <filename>algorithm/GoogleKeywordRank.php</filename>
+            <filename>algorithm/KeywordsCounter.php</filename>
+            <filename>algorithm/index.html</filename>
+            <filename>images/сaution_sign.png</filename>
+            <filename>images/upload_snapshot.png</filename>
+            <filename>images/download_snapshot.png</filename>
+            <filename>images/48x48-keywords.png</filename>
+            <filename>images/48x48-metatag.png</filename>
+            <filename>images/48x48-settings.png</filename>
+            <filename>images/48x48-redirect.png</filename>
+            <filename>images/48x48-html.png</filename>
+            <filename>images/48x48-jb.png</filename>
+            <filename>images/48x48-backup.png</filename>
+            <filename>images/48x48-helpdesk.png</filename>
+            <filename>images/elephant.png</filename>
+            <filename>images/rightarrow.png</filename>
+            <filename>images/enabled.png</filename>
+            <filename>images/disabled.png</filename>
+            <filename>images/index.html</filename>
+            <filename>lib/RedirectFactory.php</filename>
+            <filename>lib/Snoopy.class.php</filename>
+            <filename>lib/index.html</filename>
+            <filename>classes/ArticleMetatagsContainer.php</filename>
+            <filename>classes/ArticleCategoryMetatagsContainer.php</filename>
+            <filename>classes/MenuItemMetatagsContainer.php</filename>
+            <filename>classes/K2_MetatagsContainer.php</filename>
+            <filename>classes/Hikashop_MetatagsContainer.php</filename>
+            <filename>classes/VM_ProductMetatagsContainer.php</filename>
+            <filename>classes/VM2_ProductMetatagsContainer.php</filename>
+            <filename>classes/VM2_CategoryMetatagsContainer.php</filename>
+            <filename>classes/MosetsTree_LinkMetatagsContainer.php</filename>
+            <filename>classes/MosetsTree_CategoryMetatagsContainer.php</filename>
+            <filename>classes/JS_Team_MetatagsContainer.php</filename>
+            <filename>classes/JS_Player_MetatagsContainer.php</filename>
+            <filename>classes/Cobalt_MetatagsContainer.php</filename>
+            <filename>classes/ArticleCategoryMetatagsContainer2.php</filename>
+            <filename>classes/FileList.php</filename>
+            <filename>classes/Keywords.php</filename>
+            <filename>classes/MetatagsContainer.php</filename>
+            <filename>classes/MetatagsContainerFactory.php</filename>
+            <filename>classes/CommonMetatagsContainer.php</filename>
+            <filename>classes/RedirectFactory.php</filename>
+            <filename>classes/ExtensionsFactory.php</filename>
+            <filename>classes/Pinger.php</filename>
+            <filename>classes/JSON.php</filename>
+            <filename>classes/Canonical.php</filename>
+            <filename>classes/index.html</filename>
+            <filename>features/index.html</filename>
+            <filename>features/com_content.php</filename>
+            <filename>features/com_content-1.5.php</filename>
+            <filename>features/installer_data/index.html</filename>
+            <filename>features/com_content/ping.php</filename>
+            <filename>features/com_content/index.html</filename>
+            <filename>features/com_k2/ping.php</filename>
+            <filename>features/com_k2/index.html</filename>
+            <filename>features/com_menu.php</filename>
+            <filename>features/com_k2.php</filename>
+            <filename>features/com_mt.php</filename>
+            <filename>features/com_virtuemart.php</filename>
+            <filename>features/com_virtuemart2.php</filename>
+            <filename>features/com_cobalt.php</filename>
+            <filename>features/com_joomsport.php</filename>
+            <filename>features/com_hikashop.php</filename>
+            <filename>models/index.html</filename>
+            <filename>models/panel.php</filename>
+            <filename>models/helpdesk.php</filename>
+            <filename>models/options.php</filename>
+            <filename>models/externalurls.php</filename>
+            <filename>models/backups.php</filename>
+            <filename>models/model.php</filename>
+            <filename>tables/keyword.php</filename>
+            <filename>tables/index.html</filename>
+            <filename>js/url_list.js</filename>
+            <filename>js/index.html</filename>
+            <filename>js/Autocompleter.js</filename>
+            <filename>js/Autocompleter.css</filename>
+            <filename>js/Observer.js</filename>
+            <filename>views/index.html</filename>
+            <filename>views/view.php</filename>
+            <filename>views/backup/index.html</filename>
+            <filename>views/backup/view.php</filename>
+            <filename>views/backup/tmpl/index.html</filename>
+            <filename>views/backup/tmpl/default.php</filename>
+            <filename>views/panel/index.html</filename>
+            <filename>views/panel/view.php</filename>
+            <filename>views/panel/tmpl/index.html</filename>
+            <filename>views/panel/tmpl/css/index.html</filename>
+            <filename>views/panel/tmpl/css/style.css</filename>
+            <filename>views/panel/tmpl/default.php</filename>
+            <filename>views/panel/tmpl/j3.php</filename>
+            <filename>views/helpdesk/index.html</filename>
+            <filename>views/helpdesk/view.php</filename>
+            <filename>views/helpdesk/tmpl/index.html</filename>
+            <filename>views/helpdesk/tmpl/default.php</filename>
+            <filename>views/helpdesk/tmpl/default_new_request.php</filename>
+            <filename>views/helpdesk/tmpl/default_request.php</filename>
+            <filename>views/options/index.html</filename>
+            <filename>views/options/view.php</filename>
+            <filename>views/options/tmpl/index.html</filename>
+            <filename>views/options/tmpl/default_code.php</filename>
+            <filename>views/options/tmpl/default_tags_table.php</filename>
+            <filename>views/options/tmpl/j3_tags_table.php</filename>
+            <filename>views/options/tmpl/default_tags_form.php</filename>
+            <filename>views/options/tmpl/default.php</filename>
+            <filename>views/options/tmpl/j3.php</filename>
+            <filename>views/externalurls/index.html</filename>
+            <filename>views/externalurls/view.php</filename>
+            <filename>views/externalurls/tmpl/index.html</filename>
+            <filename>views/externalurls/tmpl/default.php</filename>
+            <filename>views/externalurls/tmpl/default_empty.php</filename>
+            <filename>views/pages/index.html</filename>
+            <filename>views/pages/view.php</filename>
+            <filename>views/pages/tmpl/index.html</filename>
+            <filename>views/pages/tmpl/default.php</filename>
+            <filename>views/pages/tmpl/j3.php</filename>
+            <filename>views/pages/tmpl/default_edit.php</filename>
+            <filename>views/metatags/index.html</filename>
+            <filename>views/metatags/view.php</filename>
+            <filename>views/metatags/tmpl/index.html</filename>
+            <filename>views/metatags/tmpl/default.php</filename>
+            <filename>views/metatags/tmpl/j3.php</filename>
+            <filename>views/keywords/index.html</filename>
+            <filename>views/keywords/view.php</filename>
+            <filename>views/keywords/tmpl/index.html</filename>
+            <filename>views/keywords/tmpl/default.php</filename>
+            <filename>views/keywords/tmpl/default_edit.php</filename>
+            <filename>views/keywords/tmpl/default_list.php</filename>
+            <filename>views/keywords/tmpl/j3.php</filename>
+            <filename>views/keywords/tmpl/j3_list.php</filename>
+            <filename>views/keywords/tmpl/default_density.php</filename>
+            <filename>views/keywords/tmpl/default_density_window.php</filename>
+            <filename>views/duplicated/index.html</filename>
+            <filename>views/duplicated/view.php</filename>
+            <filename>views/duplicated/tmpl/index.html</filename>
+            <filename>views/duplicated/tmpl/default.php</filename>
+            <filename>views/duplicated/tmpl/j3.php</filename>
+            <filename>views/duplicated/tmpl/default_edit_form.php</filename>
+            <!--other staff-->
+        </files>
+        <languages>
+            <language tag="en-GB">en-GB.com_seoboss.ini</language>
+            <language tag="en-GB">en-GB.com_seoboss.sys.ini</language>
+            <language tag="it-IT">it-IT.com_seoboss.ini</language>
+            <language tag="it-IT">it-IT.com_seoboss.sys.ini</language>
+            <language tag="ru-RU">ru-RU.com_seoboss.ini</language>
+            <language tag="ru-RU">ru-RU.com_seoboss.sys.ini</language>
+            <language tag="de-DE">de-DE.com_seoboss.ini</language>
+            <language tag="de-DE">de-DE.com_seoboss.sys.ini</language>
+        </languages>
+    </administration>
 </extension>

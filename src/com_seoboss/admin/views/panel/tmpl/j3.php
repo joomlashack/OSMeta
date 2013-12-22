@@ -9,16 +9,16 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick='' ) {
-  if( $target != '' ) {
+function quickiconButton($link, $image, $text, $path=null, $target='', $onclick='') {
+  if ($target != '') {
     $target = 'target="' .$target. '"';
   }
-  if( $onclick != '' ) {
+  if ($onclick != '') {
     $onclick = 'onclick="' .$onclick. '"';
   }
-  if( $path === null || $path === '' ) {
+  if ($path === null || $path === '') {
     $path = '/components/com_seoboss/images/';
   }
   ?>
@@ -42,28 +42,28 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
 						<div id="k2QuickIcons">
 						<?php
 						$link = 'index.php?option=com_seoboss&amp;task=panel';
-						quickiconButton( $link, '48x48-jb.png', JText::_('SEO_CONTROL_PANEL') );
+						quickiconButton($link, '48x48-jb.png', JText::_('SEO_CONTROL_PANEL'));
 
 						$link = 'index.php?option=com_seoboss&amp;task=metatags_view';
-						quickiconButton( $link, '48x48-metatag.png', JText::_('SEO_META_TAGS_MANAGER_TITLE') );
+						quickiconButton($link, '48x48-metatag.png', JText::_('SEO_META_TAGS_MANAGER_TITLE'));
 
 						$link = 'index.php?option=com_seoboss&task=keywords_view';
-						quickiconButton( $link, '48x48-keywords.png', JText::_('SEO_KEYWORDS_MANAGER_TITLE') );
+						quickiconButton($link, '48x48-keywords.png', JText::_('SEO_KEYWORDS_MANAGER_TITLE'));
 
 						$link = 'index.php?option=com_seoboss&task=pages_manager';
-						quickiconButton( $link, '48x48-html.png', JText::_('SEO_PAGES_MANAGER') );
+						quickiconButton($link, '48x48-html.png', JText::_('SEO_PAGES_MANAGER'));
 
 						$link = 'index.php?option=com_seoboss&task=url_list';
-						quickiconButton( $link, '48x48-redirect.png', JText::_('SEO_EXTERNAL_LINK') );
+						quickiconButton($link, '48x48-redirect.png', JText::_('SEO_EXTERNAL_LINK'));
 
 						$link = 'index.php?option=com_seoboss&task=backup_manager';
-						quickiconButton( $link, '48x48-backup.png', JText::_('SEO_BACKUP_MANAGER') );
+						quickiconButton($link, '48x48-backup.png', JText::_('SEO_BACKUP_MANAGER'));
 
                         $link = 'index.php?option=com_seoboss&amp;task=settings';
-                        quickiconButton( $link, '48x48-settings.png', JText::_('SEO_SETTINGS') );
+                        quickiconButton($link, '48x48-settings.png', JText::_('SEO_SETTINGS'));
 
                         $link = 'index.php?option=com_seoboss&amp;task=helpdesk';
-                        quickiconButton( $link, '48x48-helpdesk.png', JText::_('SEO_HELPDESK') );
+                        quickiconButton($link, '48x48-helpdesk.png', JText::_('SEO_HELPDESK'));
 						?>
 					</div>
 					</td>
@@ -115,7 +115,7 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
     <div id="collapseFour" class="accordion-body collapse">
       <div class="accordion-inner">
         <?php echo JText::sprintf('SEO_GOOGLE_PING_STATUS_DESC',"<a href=\"http://support.google.com/blogsearch/bin/answer.py?hl=en&answer=91323&rd=1\" target=\"_blank\">Google Blog Search Pinging Service</a>");?>
-        <?php if(count($this->pingStatus) > 0 ) { ?>
+        <?php if (count($this->pingStatus) > 0) { ?>
                             <table>
                                  <tr>
                                 <th>
@@ -133,7 +133,7 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
                                     <td><a href="<?php echo $status->url?>" target="_blank"><?php echo $status->title?></a></td>
                                     <td><?php echo $status->date ?></td>
                                     <td>
-                                         <?php if($status->response_code == 0) { ?>
+                                         <?php if ($status->response_code == 0) { ?>
                                         <span style="color:green"><?php echo JText::_('SEO_OK'); ?></span>
                                         <?php } else { ?>
                                         <span style="color:red"><?php echo JText::_('SEO_ERROR'); ?>: <?php echo $status->response_text ?></span>
@@ -151,7 +151,7 @@ function quickiconButton( $link, $image, $text, $path=null, $target='', $onclick
 					</td>
 				</tr>
 			</table>
-            <?php if(!$this->code){ ?>
+            <?php if (!$this->code){ ?>
            <table class="adminform">
                 <tr>
                     <td>

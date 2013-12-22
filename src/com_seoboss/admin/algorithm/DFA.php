@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 class DFA{
 	private $state=1;
 	private $buffer;
@@ -115,103 +115,103 @@ class DFA{
        'r'=>'S3',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
-    ),
+   ),
 
     'S3'=>array(
        'I'=>'S4',
        'i'=>'S4',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
-    ),
+   ),
 
     'S4'=>array(
        'P'=>'S5',
        'p'=>'S5',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
-    ),
+   ),
 
     'S5'=>array(
        'T'=>'S6',
        't'=>'S6',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
-    ),
+   ),
 
     'S6'=>array(
        'SPACE'=>'S7',
        '>'=>'S8',
        'ALPHANUM'=>4,
        'DEFAULT'=>1
-    ),
+   ),
 
     'S7'=>array(
        '>'=>'S8',
        'DEFAULT'=>'S7'
-    ),
+   ),
 
     'S8'=>array(
        '<'=>'S9',
        'DEFAULT'=>'S8'
-    ),
+   ),
 
     'S9'=>array(
        '/'=>'S10',
        'SPACE'=>'S17',
        'DEFAULT'=>'S8'
-    ),
+   ),
 
     'S10'=>array(
        'S'=>'S11',
         's'=>'S11',
        'SPACE'=>'S18',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S11'=>array(
        'C'=>'S12',
         'c'=>'S12',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S12'=>array(
        'R'=>'S13',
         'r'=>'S13',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S13'=>array(
        'I'=>'S14',
         'i'=>'S14',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S14'=>array(
        'P'=>'S15',
         'p'=>'S15',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S15'=>array(
        'T'=>'S16',
         't'=>'S16',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S16'=>array(
        '>'=>array(1, 'endSpecial'),
         'SPACE'=>'S19',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S17'=>array(
        '/'=>'S10',
         'SPACE'=>'S17',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S18'=>array(
        'S'=>'S11',
     's'=>'S11',
         'SPACE'=>'S18',
        'DEFAULT'=>'S8'
-    ),
+   ),
     'S19'=>array(
        '>'=>array(1, 'endSpecial'),
        'DEFAULT'=>'S19'
-    )
+   )
 
 
 	);
@@ -232,7 +232,7 @@ class DFA{
                     'keyword'=>$keyword,
                     'length'=>$encoding?mb_strlen($keyword, $encoding):strlen($keyword),
                     'upper'=>$encoding?mb_strtoupper($keyword, $encoding):strtoupper($keyword)
-                  );
+                 );
 		}
 		foreach($omitTags as $key=>$value){
 		    $omitTags[$key] = strtoupper($value);
@@ -251,7 +251,7 @@ class DFA{
         $this->sectionEnd = 0;
 
         $this->result = "";
-        $chars = preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY );
+        $chars = preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY);
 		foreach($chars as $char){
                   $this->nextState($char);
 		}
@@ -260,15 +260,15 @@ class DFA{
 
 	private function nextState($char){
 		foreach($this->statesGraph[$this->state] as $token=>$action){
-			if( $token == $char ||
+			if ($token == $char ||
 			($token=='ALPHA' && ctype_alpha($char)) ||
 			($token=='ALPHANUM' && ctype_alnum($char)) ||
 			($token=='SPACE' && ctype_space($char)) ||
-			$token == 'DEFAULT' ){
+			$token == 'DEFAULT'){
 				$this->state = is_array($action)?$action[0]:$action;
-				if(is_array($action) && isset($action[1])){
-					if(is_array($action[1])){
-						foreach( $action[1] as $functionName ){
+				if (is_array($action) && isset($action[1])){
+					if (is_array($action[1])){
+						foreach($action[1] as $functionName){
 							eval('$this->'.$functionName.'();');
 						}
 					}else{
@@ -301,7 +301,7 @@ class DFA{
 
   private function performReplace($content){
           $origContent =  $content;
-    	if(in_array($this->closedTag, $this->omitTags)){
+    	if (in_array($this->closedTag, $this->omitTags)){
     		return $content;
     	}
       $keywordsToReplace = array();
@@ -315,9 +315,9 @@ class DFA{
     	   $keywordsPositions = array();
     	   $currentPosition = 0;
     	   $searchPositions = array();
-    	   while(( $currentPosition = $this->encoding?@mb_strpos($upper, $upperKeyword, $currentPosition, $this->encoding):
-    	      @strpos($upper, $upperKeyword, $currentPosition) )!==false){
-           $keywordsToReplace[] = array( $keyword, $currentPosition,  $currentPosition + $keywordLength);
+    	   while(($currentPosition = $this->encoding?@mb_strpos($upper, $upperKeyword, $currentPosition, $this->encoding):
+    	      @strpos($upper, $upperKeyword, $currentPosition))!==false){
+           $keywordsToReplace[] = array($keyword, $currentPosition,  $currentPosition + $keywordLength);
     	    $currentPosition+=$keywordLength;
     	   }
     	   //$searchPositions = array_reverse($searchPositions);
@@ -334,13 +334,13 @@ class DFA{
       $keywordsToReplaceFiltered = array();
       $pos = 0;
       while($pos < count($keywordsToReplace)){
-        while($pos+1 < count($keywordsToReplace) && $keywordsToReplace[$pos][1] == $keywordsToReplace[$pos+1][1] ){
+        while($pos+1 < count($keywordsToReplace) && $keywordsToReplace[$pos][1] == $keywordsToReplace[$pos+1][1]){
           $pos++;
         }
         $startPosition = $keywordsToReplace[$pos][1];
         $endPosition = $keywordsToReplace[$pos][2];
-        while($pos+1 < count($keywordsToReplace) && $keywordsToReplace[$pos+1][1] < $endPosition ){
-          if($keywordsToReplace[$pos+1][2] > $endPosition){
+        while($pos+1 < count($keywordsToReplace) && $keywordsToReplace[$pos+1][1] < $endPosition){
+          if ($keywordsToReplace[$pos+1][2] > $endPosition){
             $endPosition = $keywordsToReplace[$pos+1][2];
           }
           $pos++;
@@ -351,11 +351,11 @@ class DFA{
       $searchPositions = array_reverse($keywordsToReplaceFiltered);
       foreach($searchPositions as $currentPosition){
       	$content = $this->encoding? (mb_substr($content, 0, $currentPosition[0],$this->encoding).'<'.$this->hilight_tag.(empty($this->hilight_class)?"":' class="'.$this->hilight_class.'"').'>'.mb_substr($content, $currentPosition[0], $currentPosition[1] - $currentPosition[0], $this->encoding).'</'.$this->hilight_tag.'>'.
-        	mb_substr($content, $currentPosition[1], null, $this->encoding )):
+        	mb_substr($content, $currentPosition[1], null, $this->encoding)):
       	   (substr($content, 0, $currentPosition[0]).'<'.$this->hilight_tag.(empty($this->hilight_class)?"":' class="'.$this->hilight_class.'"').'>'.substr($content, $currentPosition[0], $currentPosition[1] - $currentPosition[0]).'</'.$this->hilight_tag.'>'.
          substr($content, $currentPosition[1]));
       }
-      if($origContent !== $content){
+      if ($origContent !== $content){
       //  print $origContent." - ".$content."\n";
       }
     	return $content;
@@ -364,7 +364,7 @@ class DFA{
     public static function dfa_cmp($a, $b)
     {
       if ($a[1] == $b[1]) {
-        if($a[2]==$b[2]){
+        if ($a[2]==$b[2]){
           return 0;
         }
         return ($a[2] < $b[2]) ? -1 : 1;

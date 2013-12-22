@@ -5,10 +5,10 @@
 * @license		GNU/GPL, see LICENSE.php
 */
 
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
-if(version_compare(JVERSION, "3.0", "ge")){
+if (version_compare(JVERSION, "3.0", "ge")){
   class JBView extends JViewLegacy{
     function display($tpl=null)
     {

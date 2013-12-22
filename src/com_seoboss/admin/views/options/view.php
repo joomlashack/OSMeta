@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -32,22 +32,22 @@ class SeobossViewOptions extends JBView{
     {
       switch($tpl){
         case "tags_table":
-          JToolBarHelper::title( JText::_( 'SEO_SITE_DEFAULT_METATAGS' ),'joomboss_settings.png' );
+          JToolBarHelper::title(JText::_('SEO_SITE_DEFAULT_METATAGS'),'joomboss_settings.png');
           JToolBarHelper::custom('settings_edit_tag', 'new', '', 'New', false);
           break;
         case "tags_form":
-          JToolBarHelper::title( JText::_( 'SEO_EDIT_SITE_DEFAULT_META_TAG' ),'joomboss_settings.png' );
-          JToolBarHelper::custom('settings_save_tag', 'save', '', JText::_( 'SEO_SAVE' ), false);
+          JToolBarHelper::title(JText::_('SEO_EDIT_SITE_DEFAULT_META_TAG'),'joomboss_settings.png');
+          JToolBarHelper::custom('settings_save_tag', 'save', '', JText::_('SEO_SAVE'), false);
           JToolBarHelper::cancel('settings_default_tags');
           break;
         case "code":
-          JToolBarHelper::title( JText::_( 'SEO_MANAGE_REGISTRATION_CODE' ),'joomboss_settings.png' );
-          JToolBarHelper::custom('options_update_code', 'save', '', JText::_( 'SEO_SAVE' ), false);
+          JToolBarHelper::title(JText::_('SEO_MANAGE_REGISTRATION_CODE'),'joomboss_settings.png');
+          JToolBarHelper::custom('options_update_code', 'save', '', JText::_('SEO_SAVE'), false);
           JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation/53-seo-boss-settings?tmpl=component');
           break;
         case null:
-          JToolBarHelper::title( JText::_( 'SEO_SETTINGS' ),'joomboss_settings.png' );
-          JToolBarHelper::custom('settings_save', 'save', '', JText::_( 'SEO_SAVE' ), false);
+          JToolBarHelper::title(JText::_('SEO_SETTINGS'),'joomboss_settings.png');
+          JToolBarHelper::custom('settings_save', 'save', '', JText::_('SEO_SAVE'), false);
           JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation/53-seo-boss-settings?tmpl=component');
           break;
       }

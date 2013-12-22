@@ -9,10 +9,10 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 jimport("joomla.version");
 $version = new JVersion();
-if($version->RELEASE == "1.5"){
+if ($version->RELEASE == "1.5"){
 ?>
 <script src="components/com_seoboss/js/Observer.js"></script>
 <script src="components/com_seoboss/js/Autocompleter.js"></script>

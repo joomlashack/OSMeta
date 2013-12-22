@@ -9,8 +9,8 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
-JHTML::_( 'behavior.modal' );
+defined('_JEXEC') or die('Restricted access');
+JHTML::_('behavior.modal');
 ?>
 <form action="index.php" method="post" name="adminForm">
   <table width="100%">
@@ -57,14 +57,14 @@ JHTML::_( 'behavior.modal' );
     </thead>
     <?php
         $k = 0;
-        for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+        for ($i=0, $n=count($this->rows); $i < $n; $i++)
     {
         $row = $this->rows[$i];?>
     <tr >
-        <td rowspan="<?php echo count( $row->metakey) ;?>">
+        <td rowspan="<?php echo count($row->metakey) ;?>">
             <?php echo $row->title;?>
         </td>
-        <td rowspan="<?php echo count( $row->metakey) ;?>">
+        <td rowspan="<?php echo count($row->metakey) ;?>">
             <strong><a class="modal" rel="{handler:'iframe', size: {x: 650, y: 350}}" href="index.php?format=raw&option=com_seoboss&task=pages_edit_text&type=<?php echo $this->itemType; ?>&id=<?php echo $row->id;?>"><?php echo JText::_('SEO_EDIT');?></a></strong>
         </td>
         <td>
@@ -74,7 +74,7 @@ JHTML::_( 'behavior.modal' );
             <strong><?php echo $row->stat[0]["frequency"]?></strong>
         </td>
         <td>
-            <strong><?php  printf("%.2f", $row->stat[0]["density"] );?></strong>
+            <strong><?php  printf("%.2f", $row->stat[0]["density"]);?></strong>
         </td>
     </tr>
     <?php for ($j = 1 ; $j < count($row->metakey) ; $j++) {?>
@@ -86,7 +86,7 @@ JHTML::_( 'behavior.modal' );
             <strong><strong><?php echo $row->stat[$j]["frequency"]?></strong></strong>
         </td>
         <td>
-            <strong><?php printf("%.2f", $row->stat[$j]["density"] );?></strong>
+            <strong><?php printf("%.2f", $row->stat[$j]["density"]);?></strong>
         </td>
     </tr>
     <?php }?>

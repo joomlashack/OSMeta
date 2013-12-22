@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
@@ -24,22 +24,22 @@ JHtml::_('formbehavior.chosen', 'select');
 	    	  <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th>
-			<?php echo JText::_( 'SEO_NAME' )?>
+			<?php echo JText::_('SEO_NAME')?>
 			</th>
-			<th width="15%"><?php echo JText::_( 'SEO_URL' )?></th>
-			<th width="5%" nowrap="nowrap"><?php echo JText::_( 'SEO_ACTIVE' )?></th>
+			<th width="15%"><?php echo JText::_('SEO_URL')?></th>
+			<th width="5%" nowrap="nowrap"><?php echo JText::_('SEO_ACTIVE')?></th>
 		</tr>
 	</thead>
 	<?php
 	jimport('joomla.filter.output');
 	$k = 0;
-	for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+	for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		$row = $rows[$i];
-		$checked = JHTML::_('grid.id', $i, $row->id );
-		$published = JHTML::_('grid.published', $row, $i );
-		$link = JFilterOutput::ampReplace( 'index.php?option=' .
-        $option . '&task=edit_keyword&cid[]='. $row->id );
+		$checked = JHTML::_('grid.id', $i, $row->id);
+		$published = JHTML::_('grid.published', $row, $i);
+		$link = JFilterOutput::ampReplace('index.php?option=' .
+        $option . '&task=edit_keyword&cid[]='. $row->id);
 
 		?>
 	<tr class="<?php echo "row$k"; ?>">

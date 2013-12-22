@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 class SeobossCanonicalURL{
   public static $ACTION_CANONICAL=0;
@@ -45,14 +45,14 @@ class SeobossCanonicalURL{
 
   public function setCanonicalURLById($id, $url, $canonical_url, $action=0){
     $db = JFactory::getDBO();
-    if($id){
+    if ($id){
       $db->setQuery("UPDATE `#__seoboss_canonical_url`
           SET url=".$db->quote($url).",
           canonical_url=".$db->quote($canonical_url).",
           action=".$db->quote($action)."  WHERE id=".$db->quote($id));
     }else{
       $db->setQuery("INSERT INTO `#__seoboss_canonical_url` (url, canonical_url,action)
-          VALUES (".$db->quote($url).", ".$db->quote($canonical_url).", ".$db->quote($action)." ) ");
+          VALUES (".$db->quote($url).", ".$db->quote($canonical_url).", ".$db->quote($action).") ");
     }
     $db->query();
   }

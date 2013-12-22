@@ -9,10 +9,10 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
-if(version_compare(JVERSION, "3.0", "ge")){
+if (version_compare(JVERSION, "3.0", "ge")){
   class JBController extends JControllerLegacy{}
 }else{
   class JBController extends JController{}

@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 require_once "MetatagsContainer.php";
 class VM2_ProductMetatagsContainer extends MetatagsContainer{
     public $code=4;
@@ -20,7 +20,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         c.virtuemart_product_id as id,
         c.product_name AS title,
         c.metakey AS metakey,
-        IF(ISNULL(c.metadesc) OR c.metadesc='',c.product_s_desc,c.metadesc) as metadesc,
+        if (ISNULL(c.metadesc) OR c.metadesc='',c.product_s_desc,c.metadesc) as metadesc,
         c.customtitle as metatitle ,
         m.title_tag as title_tag
          FROM
@@ -36,23 +36,23 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $com_vm_filter_show_empty_descriptions =
             JRequest::getVar("com_vm_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-            if(is_numeric($search)){
+        if ($search != ""){
+            if (is_numeric($search)){
                 $sql .= " AND c.virtuemart_product_id=".$db->quote($search);
             }else{
                 $sql .= " AND c.product_name LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        if( $category_id > 0 ){
-            $sql .= " AND EXISTS (SELECT 1 FROM #__virtuemart_product_categories WHERE #__virtuemart_product_categories.virtuemart_category_id=".$db->quote($category_id)." AND #__virtuemart_product_categories.virtuemart_product_id=c.virtuemart_product_id )";
+        if ($category_id > 0){
+            $sql .= " AND EXISTS (SELECT 1 FROM #__virtuemart_product_categories WHERE #__virtuemart_product_categories.virtuemart_category_id=".$db->quote($category_id)." AND #__virtuemart_product_categories.virtuemart_product_id=c.virtuemart_product_id)";
 
         }
 
-        if($com_vm_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
+        if ($com_vm_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(metakey) OR metakey='') ";
         }
-        if($com_vm_filter_show_empty_descriptions != "-1"){
-            $sql .= "AND ( ISNULL(metadesc) OR metadesc='') ";
+        if ($com_vm_filter_show_empty_descriptions != "-1"){
+            $sql .= "AND (ISNULL(metadesc) OR metadesc='') ";
         }
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
@@ -75,13 +75,13 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
                 break;
 
         }
-        if($order_dir == "asc"){
+        if ($order_dir == "asc"){
             $sql .= " ASC";
         }else{
             $sql .= " DESC";
         }
 
-        $db->setQuery( $sql, $lim0, $lim );
+        $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -107,13 +107,13 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $language = $this->getLanguage();
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
-        if(count($ids) > 0){
+        if (count($ids) > 0){
             $sql = "UPDATE #__virtuemart_products_$language SET customtitle=metakey WHERE virtuemart_product_id IN (".
-                               implode(",", $ids). " )";
+                               implode(",", $ids). ")";
             $db->setQuery($sql);
             $db->query();
         }
@@ -123,19 +123,19 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
        $language = $this->getLanguage();
        $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
-        if(count($ids) > 0){
+        if (count($ids) > 0){
             $sql = "UPDATE #__virtuemart_products_$language SET metakey=customtitle WHERE virtuemart_product_id IN (".
-                               implode(",", $ids). " )";
+                               implode(",", $ids). ")";
             $db->setQuery($sql);
             $db->query();
 
             //save keywords
             $sql = "SELECT virtuemart_product_id as id , metakey FROM #__virtuemart_products_$language WHERE virtuemart_product_id IN (".
-            implode(",", $ids). " )";
+            implode(",", $ids). ")";
             $db->setQuery($sql);
             $items = $db->loadObjectList();
             foreach($items as $item){
@@ -147,14 +147,14 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
     public function copyItemTitleToTitle($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
-    if(count($ids) > 0){
+    if (count($ids) > 0){
             $language = $this->getLanguage();
             $sql = "UPDATE #__virtuemart_products_$language SET customtitle=product_name WHERE virtuemart_product_id IN (".
-                               implode(",", $ids). " )";
+                               implode(",", $ids). ")";
             $db->setQuery($sql);
             $db->query();
         }
@@ -164,19 +164,19 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
-        if(count($ids) > 0){
+        if (count($ids) > 0){
             $sql = "UPDATE #__virtuemart_products_$language SET metakey=product_name WHERE virtuemart_product_id IN (".
-                               implode(",", $ids). " )";
+                               implode(",", $ids). ")";
             $db->setQuery($sql);
             $db->query();
 
             //save keywords
             $sql = "SELECT virtuemart_product_id as id , metakey FROM #__virtuemart_products_$language WHERE virtuemart_product_id IN (".
-                               implode(",", $ids). " )";
+                               implode(",", $ids). ")";
             $db->setQuery($sql);
             $items = $db->loadObjectList();
             foreach($items as $item){
@@ -196,7 +196,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $db = JFactory::getDBO();
         $language = $this->getLanguage();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -208,9 +208,9 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $items = $db->loadObjectList();
 
         foreach($items as $item){
-          if($item->product_s_desc != ''){
+          if ($item->product_s_desc != ''){
             $introtext = strip_tags($item->product_s_desc);
-            if(strlen($introtext) > $max_description_length){
+            if (strlen($introtext) > $max_description_length){
               $introtext = substr($introtext, 0, $max_description_length);
             }
             $sql = "INSERT INTO #__seoboss_metadata (item_id,
@@ -221,7 +221,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
 
             '',
             ".$db->quote($introtext)."
-            ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
+           ) ON DUPLICATE KEY UPDATE description=".$db->quote($introtext);
 
             $db->setQuery($sql);
             $db->query();
@@ -253,26 +253,26 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $com_vm_filter_show_empty_keywords = JRequest::getVar("com_vm_filter_show_empty_keywords", "-1");
         $com_vm_filter_show_empty_descriptions = JRequest::getVar("com_vm_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-            if(is_numeric($search)){
+        if ($search != ""){
+            if (is_numeric($search)){
                 $sql .= " AND c.virtuemart_product_id=".$db->quote($search);
             }else{
                 $sql .= " AND c.product_name LIKE ".$db->quote('%'.$search.'%');
             }
         }
-        if( $category_id > 0 ){
-            $sql .= " AND EXISTS (SELECT 1 FROM #__virtuemart_product_categories WHERE #__virtuemart_product_categories.virtuemart_category_id=".$db->quote($category_id)." AND #__virtuemart_product_categories.virtuemart_product_id=c.virtuemart_product_id )";
+        if ($category_id > 0){
+            $sql .= " AND EXISTS (SELECT 1 FROM #__virtuemart_product_categories WHERE #__virtuemart_product_categories.virtuemart_category_id=".$db->quote($category_id)." AND #__virtuemart_product_categories.virtuemart_product_id=c.virtuemart_product_id)";
 
         }
 
-        if($com_vm_filter_show_empty_keywords != "-1"){
-            $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
+        if ($com_vm_filter_show_empty_keywords != "-1"){
+            $sql .= " AND (ISNULL(metakey) OR metakey='') ";
         }
-        if($com_vm_filter_show_empty_descriptions != "-1"){
-            $sql .= "AND ( ISNULL(metadesc) OR metadesc='') ";
+        if ($com_vm_filter_show_empty_descriptions != "-1"){
+            $sql .= "AND (ISNULL(metadesc) OR metadesc='') ";
         }
 
-        $db->setQuery( $sql, $lim0, $lim );
+        $db->setQuery($sql, $lim0, $lim);
 
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
@@ -281,7 +281,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         }
         // Get outgoing links and keywords density
         for($i = 0 ; $i < count($rows);$i++){
-            if($rows[$i]->metakey){
+            if ($rows[$i]->metakey){
                 $rows[$i]->metakey = explode(",", $rows[$i]->metakey);
             }else{
                 $rows[$i]->metakey = array("");
@@ -295,9 +295,9 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
         $language = $this->getLanguage();
         for($i = 0 ;$i < count($ids); $i++){
             $sql = "UPDATE #__virtuemart_products_$language
-             SET customtitle=".$db->quote( $metatitles[$i] ).",
-             metadesc=".$db->quote( $metadescriptions[$i] ).",
-             metakey=".$db->quote( $metakeys[$i] )."
+             SET customtitle=".$db->quote($metatitles[$i]).",
+             metadesc=".$db->quote($metadescriptions[$i]).",
+             metakey=".$db->quote($metakeys[$i])."
              WHERE virtuemart_product_id=".$db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
@@ -311,7 +311,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
             ".$db->quote($metatitles[$i]).",
             ".$db->quote($metadescriptions[$i]).",
             ".$db->quote($title_tags!=null?$title_tags[$i]:'')."
-            ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]).
+           ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i]).
             ", title_tag=".$db->quote($title_tags!=null?$title_tags[$i]:'');
 
             $db->setQuery($sql);
@@ -366,7 +366,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
       $params = array();
       parse_str($query, $params);
       $metadata = null;
-      if(isset($params["virtuemart_product_id"])){
+      if (isset($params["virtuemart_product_id"])){
         $metadata = $this->getMetadata($params["virtuemart_product_id"]);
       }
       return $metadata;
@@ -375,7 +375,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
     public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
-      if( isset($params["virtuemart_product_id"]) && $params["virtuemart_product_id"]){
+      if (isset($params["virtuemart_product_id"]) && $params["virtuemart_product_id"]){
         $this->setMetadata($params["virtuemart_product_id"], $data);
       }
     }
@@ -418,7 +418,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
     private function getLanguage(){
         $language="en_gb";
         $vmHelperPath = dirname(__FILE__)."/../../com_virtuemart/helpers/config.php";
-        if(is_file($vmHelperPath) ){
+        if (is_file($vmHelperPath)){
             require_once($vmHelperPath);
             $config = VmConfig::loadConfig();
             $language = $config->lang;
@@ -431,7 +431,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
     }
 
     public function isAvailable(){
-      return file_exists( dirname(__FILE__)."/../../com_virtuemart/models/virtuemart.php");
+      return file_exists(dirname(__FILE__)."/../../com_virtuemart/models/virtuemart.php");
     }
 
 

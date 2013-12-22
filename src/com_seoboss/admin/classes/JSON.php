@@ -57,7 +57,7 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Marker constant for Services_JSON::decode(), used to flag stack state
@@ -152,7 +152,7 @@ class Services_JSON
     function utf162utf8($utf16)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf16, 'UTF-8', 'UTF-16');
         }
 
@@ -196,7 +196,7 @@ class Services_JSON
     function utf82utf16($utf8)
     {
         // oh please oh please oh please oh please oh please
-        if(function_exists('mb_convert_encoding')) {
+        if (function_exists('mb_convert_encoding')) {
             return mb_convert_encoding($utf8, 'UTF-16', 'UTF-8');
         }
 
@@ -384,7 +384,7 @@ class Services_JSON
                                             array_values($var));
 
                     foreach($properties as $property) {
-                        if(Services_JSON::isError($property)) {
+                        if (Services_JSON::isError($property)) {
                             return $property;
                         }
                     }
@@ -396,7 +396,7 @@ class Services_JSON
                 $elements = array_map(array($this, 'encode'), $var);
 
                 foreach($elements as $element) {
-                    if(Services_JSON::isError($element)) {
+                    if (Services_JSON::isError($element)) {
                         return $element;
                     }
                 }
@@ -411,7 +411,7 @@ class Services_JSON
                                         array_values($vars));
 
                 foreach($properties as $property) {
-                    if(Services_JSON::isError($property)) {
+                    if (Services_JSON::isError($property)) {
                         return $property;
                     }
                 }
@@ -438,7 +438,7 @@ class Services_JSON
     {
         $encoded_value = $this->encode($value);
 
-        if(Services_JSON::isError($encoded_value)) {
+        if (Services_JSON::isError($encoded_value)) {
             return $encoded_value;
         }
 
@@ -466,7 +466,7 @@ class Services_JSON
                 // eliminate multi-line comments in '/* ... */' form, at end of string
                 '#/\*(.+)\*/\s*$#Us'
 
-            ), '', $str);
+           ), '', $str);
 
         // eliminate extraneous space
         return trim($str);

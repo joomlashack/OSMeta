@@ -9,11 +9,11 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 function com_content_get_url(&$article, $isNew){
     $url = null;
-    if($article->state == 1){
+    if ($article->state == 1){
         $slug=$article->alias?$article->id.":".$article->alias:$article->id;
 
         $app    = JApplication::getInstance('site');
@@ -23,7 +23,7 @@ function com_content_get_url(&$article, $isNew){
         }
         $uri = $router->build(ContentHelperRoute::getArticleRoute($slug, $article->catid, $article->sectionid));
         $url = $uri->toString();
-        if(strpos($url, "/administrator") === 0){
+        if (strpos($url, "/administrator") === 0){
             $url = substr($url, strlen("/administrator"));
         }
     }

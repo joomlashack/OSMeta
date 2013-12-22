@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <script>
 
@@ -31,12 +31,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   </script>
     <table class="adminform">
   <tr>
-    <td valign="top" width="100"><label for="title"> <?php echo JText::_( 'SEO_KEYWORDS' )?> </label></td>
+    <td valign="top" width="100"><label for="title"> <?php echo JText::_('SEO_KEYWORDS')?> </label></td>
     <td><input style="width:100%" class="inputbox" type="text" name="calc_keywords" id="calc_keywords" value="" /></td>
   </tr>
   <tr>
     <td colspan="2" align="center">
-        <button onclick="updateKeywords();"><?php echo JText::_( 'SEO_REFRESH' )?></button>
+        <button onclick="updateKeywords();"><?php echo JText::_('SEO_REFRESH')?></button>
     </td>
   </tr>
   </table>
@@ -45,12 +45,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
   <script>
 
     var keywords = "";
-    if(window.parent.document.getElementById('metakeywords')){
+    if (window.parent.document.getElementById('metakeywords')){
     	keywords = window.parent.document.getElementById('metakeywords').value;
     }
     document.getElementById('calc_keywords').value = keywords;
 
-    if(keywords!=''){
+    if (keywords!=''){
     	updateKeywords();
 
     }

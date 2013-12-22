@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * Gets keywords statistic (frequency, density) against the specified text.
@@ -22,16 +22,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 function getStat($keyword, $text){
 	$frequency  = 0;
 	$density = 0;
-	if($keyword && $text){
-		$text = strtoupper( strip_tags( trim($text) ) );
+	if ($keyword && $text){
+		$text = strtoupper(strip_tags(trim($text)));
 		$result = array();
 		$keyword = strtoupper(trim($keyword));
 
 		$keywords_arr = explode(" ", $keyword);
-		foreach( $keywords_arr as $keyword ){
+		foreach($keywords_arr as $keyword){
 			$start = 0;
 			$count = 0;
-			while( ($start = strpos($text, $keyword, $start)) !== false ){
+			while(($start = strpos($text, $keyword, $start)) !== false){
 				$count++;
 				$start++;
 			}
@@ -39,12 +39,12 @@ function getStat($keyword, $text){
 		}
 		$frequency = $result[0];
 		for($i = 1 ; $i < count($result); $i++){
-			if($result[$i] < $frequency){
+			if ($result[$i] < $frequency){
 				$frequency = $result[$i];
 			}
 		}
 
-		$density =  ( strlen($text) > 0 )?$frequency * strlen($keyword) * 100.0 / strlen($text) : 0;
+		$density =  (strlen($text) > 0)?$frequency * strlen($keyword) * 100.0 / strlen($text) : 0;
 	}
 	return array(
 	   "frequency"=>$frequency,

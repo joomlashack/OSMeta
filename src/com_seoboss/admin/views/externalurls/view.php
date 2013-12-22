@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -31,7 +31,7 @@ class SeobossViewExternalUrls extends JBView{
     function display($tpl=null)
     {
         JHTML::_('behavior.tooltip');
-        JToolBarHelper::title( JText::_( 'SEO_EXTERNAL_LINKS' ),'joomboss_redirect.png' );
+        JToolBarHelper::title(JText::_('SEO_EXTERNAL_LINKS'),'joomboss_redirect.png');
         JToolBarHelper::save("save_redirect");
         JToolBarHelper::apply("apply_redirect");
         JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation/54-seo-boss-external-links?tmpl=component');

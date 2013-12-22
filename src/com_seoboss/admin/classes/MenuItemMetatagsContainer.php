@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 require_once "MetatagsContainer.php";
 class MenuItemMetatagsContainer extends MetatagsContainer{
@@ -17,12 +17,12 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
         public function getMetatags($lim0, $lim, $filter=null){
 		$db = JFactory::getDBO();
 		$sql = "SELECT SQL_CALC_FOUND_ROWS c.id as id, c.{$this->getField()} AS title,
-		        ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+		        (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
 		            FROM #__seoboss_keywords k,
 		            #__seoboss_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
-		        ) AS metakey,
+		       ) AS metakey,
 		        m.description as metadesc,
 		        m.title as metatitle,
 		        m.title_tag as title_tag
@@ -36,22 +36,22 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
                 $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_category_filter_show_empty_keywords", "-1");
                 $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_category_filter_show_empty_descriptions", "-1");
 
-        if($search != ""){
-        	if(is_numeric($search)){
+        if ($search != ""){
+        	if (is_numeric($search)){
         		$sql .= " AND c.id=".$db->quote($search);
         	}else{
         		$sql .= " AND c.{$this->getField()} LIKE ".$db->quote('%'.$search.'%');
         	}
         }
-        if( $menu_type ){
+        if ($menu_type){
         	$sql .= " AND c.menutype=".$db->quote($menu_type);
         }
 
-        if($com_content_filter_show_empty_descriptions != "-1"){
-            $sql .= " AND ( ISNULL(m.description) OR m.description='') ";
+        if ($com_content_filter_show_empty_descriptions != "-1"){
+            $sql .= " AND (ISNULL(m.description) OR m.description='') ";
         }
-        if($com_content_filter_show_empty_keywords != "-1"){
-            $sql .= " HAVING ( ISNULL(metakey) OR metakey='') ";
+        if ($com_content_filter_show_empty_keywords != "-1"){
+            $sql .= " HAVING (ISNULL(metakey) OR metakey='') ";
         }
         //Sorting
         $order = JRequest::getCmd("filter_order", "title");
@@ -73,7 +73,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
                 $sql .= " ORDER BY title ";
                 break;
         }
-        if($order_dir == "asc"){
+        if ($order_dir == "asc"){
         	$sql .= " ASC";
         }else{
         	$sql .= " DESC";
@@ -81,7 +81,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
 
 
 
-	    $db->setQuery( $sql, $lim0, $lim );
+	    $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -96,12 +96,12 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function getPages($lim0, $lim, $filter=null){
     $db = JFactory::getDBO();
     $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.{$this->getField()} as title,
-            ( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+            (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
                         FROM #__seoboss_keywords k,
                         #__seoboss_keywords_items ki
                         WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
                             AND ki.keyword_id=k.id
-                    )  as metakey, c.published as state,
+                   )  as metakey, c.published as state,
     '' AS content
      FROM
     #__menu c WHERE 1
@@ -112,31 +112,31 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
     $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_category_filter_show_empty_keywords", "-1");
     $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_category_filter_show_empty_descriptions", "-1");
 
-    if($search != ""){
-      if(is_numeric($search)){
+    if ($search != ""){
+      if (is_numeric($search)){
         $sql .= " AND c.id=".$db->quote($search);
       }else{
         $sql .= " AND c.{$this->getField()} LIKE ".$db->quote('%'.$search.'%');
       }
     }
-    if( $menu_type ){
+    if ($menu_type){
       $sql .= " AND c.menutype=".$db->quote($menu_type);
     }
 
-    if($com_content_filter_show_empty_descriptions != "-1"){
-      $sql .= " AND ( ISNULL(m.description) OR m.description='') ";
+    if ($com_content_filter_show_empty_descriptions != "-1"){
+      $sql .= " AND (ISNULL(m.description) OR m.description='') ";
     }
-    if($com_content_filter_show_empty_keywords != "-1"){
-      $sql .= " HAVING ( ISNULL(metakey) OR metakey='') ";
+    if ($com_content_filter_show_empty_keywords != "-1"){
+      $sql .= " HAVING (ISNULL(metakey) OR metakey='') ";
     }
-    $db->setQuery( $sql, $lim0, $lim );
+    $db->setQuery($sql, $lim0, $lim);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
       echo $db->stderr();
       return false;
     }
     for($i = 0 ; $i < count($rows);$i++){
-      if($rows[$i]->metakey){
+      if ($rows[$i]->metakey){
         $rows[$i]->metakey = explode(",", $rows[$i]->metakey);
       }else{
         $rows[$i]->metakey = array("");
@@ -151,19 +151,19 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
             ,$metadescriptions
             ,$metakeys
             ,$title_tags=null
-            ){
+           ){
     $db = JFactory::getDBO();
     for($i = 0 ;$i < count($ids); $i++){
         $sql = "INSERT INTO #__seoboss_metadata (item_id,
          item_type, title, description
                     ,title_tag
-            )VALUES (
+           )VALUES (
          ".$db->quote($ids[$i]).",
          {$this->code},
          ".$db->quote($metatitles[$i]).",
          ".$db->quote($metadescriptions[$i])."
                      ,".$db->quote($title_tags!=null?$title_tags[$i]:'')."
-         ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i])
+        ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , description=".$db->quote($metadescriptions[$i])
                      .", title_tag=".$db->quote($title_tags!=null?$title_tags[$i]:'');
         $db->setQuery($sql);
         $db->query();
@@ -177,20 +177,20 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function copyKeywordsToTitle($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
-    $sql = "SELECT c.id, ( SELECT GROUP_CONCAT(k.name SEPARATOR ' ')
+    $sql = "SELECT c.id, (SELECT GROUP_CONCAT(k.name SEPARATOR ' ')
                 FROM #__seoboss_keywords k,
                 #__seoboss_keywords_items ki
                 WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
                     AND ki.keyword_id=k.id
-            ) AS metakey FROM #__menu c WHERE c.id IN (".implode(",", $ids).")";
+           ) AS metakey FROM #__menu c WHERE c.id IN (".implode(",", $ids).")";
     $db->setQuery($sql);
     $items = $db->loadObjectList();
     foreach($items as $item){
-      if($item->metakey != ''){
+      if ($item->metakey != ''){
         $sql = "INSERT INTO #__seoboss_metadata
           (item_id, item_type, title, description)
            VALUES (
@@ -198,7 +198,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
            {$this->code},
            ".$db->quote($item->metakey).",
            ''
-           ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->metakey);
+          ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->metakey);
 
         $db->setQuery($sql);
         $db->query();
@@ -209,7 +209,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function copyTitleToKeywords($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
@@ -218,10 +218,10 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
     $db->setQuery($sql);
     $categories = $db->loadObjectList();
     foreach($categories as $category){
-      if($category->title){
+      if ($category->title){
         $keywords = preg_split("/[\s,-\?!\\\"\\\'\\.]+/", $category->title);
         foreach($keywords as $key=>$value){
-          if(strlen($value) < 4){
+          if (strlen($value) < 4){
             unset($keywords[$key]);
           }
         }
@@ -233,7 +233,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function copyItemTitleToTitle($ids){
       $db = JFactory::getDBO();
       foreach($ids as $key=>$value){
-        if(!is_numeric($value)){
+        if (!is_numeric($value)){
           unset($ids[$key]);
         }
       }
@@ -241,7 +241,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
       $db->setQuery($sql);
       $items = $db->loadObjectList();
       foreach($items as $item){
-        if($item->title != ''){
+        if ($item->title != ''){
           $sql = "INSERT INTO #__seoboss_metadata (item_id,
            item_type, title, description)
            VALUES (
@@ -249,7 +249,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
            {$this->code},
            ".$db->quote($item->title).",
            ''
-           ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
+          ) ON DUPLICATE KEY UPDATE title=".$db->quote($item->title);
 
           $db->setQuery($sql);
           $db->query();
@@ -260,7 +260,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function copyItemTitleToKeywords($ids){
         $db = JFactory::getDBO();
         foreach($ids as $key=>$value){
-            if(!is_numeric($value)){
+            if (!is_numeric($value)){
                 unset($ids[$key]);
             }
         }
@@ -268,10 +268,10 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
         $db->setQuery($sql);
         $categories = $db->loadObjectList();
         foreach($categories as $category){
-            if($category->title){
+            if ($category->title){
                 $keywords = preg_split("/[\s,-\?!\\\"\\\'\\.]+/", $category->title);
                 foreach($keywords as $key=>$value){
-                    if(strlen($value) < 4){
+                    if (strlen($value) < 4){
                         unset($keywords[$key]);
                     }
                 }
@@ -323,12 +323,12 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
 	public function getItemData($id){
 		$db = JFactory::getDBO();
 		$sql = "SELECT c.id as id, c.{$this->getField()} as title,
-		( SELECT GROUP_CONCAT(k.name SEPARATOR ',')
+		(SELECT GROUP_CONCAT(k.name SEPARATOR ',')
 		            FROM #__seoboss_keywords k,
 		            #__seoboss_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
-		        ) as metakeywords,
+		       ) as metakeywords,
          m.description as metadescription, m.title as metatitle
          FROM
         #__menu c
@@ -358,7 +358,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
     $params = array();
       parse_str($query, $params);
       $metadata = null;
-      if(isset($params["Itemid"])){
+      if (isset($params["Itemid"])){
         $metadata = $this->getMetadata($params["Itemid"]);
       }
       return $metadata;
@@ -368,17 +368,17 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
   public function setMetadataByRequest($query, $data){
       $params = array();
       parse_str($query, $params);
-      if( isset($params["Itemid"]) && $params["Itemid"]){
+      if (isset($params["Itemid"]) && $params["Itemid"]){
         $this->setMetadata($params["Itemid"], $data);
       }
     }
 
   private $field=null;
         private function getField(){
-          if($this->field==null){
+          if ($this->field==null){
 	        jimport("joomla.version");
 	        $version = new JVersion();
-                if($version->RELEASE=="1.5"){
+                if ($version->RELEASE=="1.5"){
                   $this->field = "name";
                 }else{
                   $this->field = "title";

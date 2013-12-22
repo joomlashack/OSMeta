@@ -9,9 +9,9 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.model');
 
 class SeobossModelHelpdesk extends JBModel{
 
@@ -25,7 +25,7 @@ class SeobossModelHelpdesk extends JBModel{
         return $result->data;
     }
 
-    function getRequest( $code, $id ){
+    function getRequest($code, $id){
         require_once(dirname(__FILE__)."/../lib/Snoopy.class.php");
         $SnoopySeoBoss = new SnoopySeoBoss;
         $SnoopySeoBoss->fetchtext("http://{$this->UPDATE_SITE}/index.php?option=com_seobossupdater&task=helpdesk_view_request&id=$id&code=$code&format=raw");
@@ -42,7 +42,7 @@ class SeobossModelHelpdesk extends JBModel{
             "code"=>$code,
             "subject"=>$subject,
             "body"=>$body);
-        if($id){
+        if ($id){
             $vars["id"] = $id;
         }
         $SnoopySeoBoss->httpmethod = "POST";

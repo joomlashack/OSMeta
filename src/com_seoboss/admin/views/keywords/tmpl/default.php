@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 ?>
 <form action="index.php" method="post" name="adminForm">
 <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
@@ -20,35 +20,35 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
       <tr>
             <th width="20"><input type="checkbox" name="toggle" value=""
                 onclick="checkAll(<?php echo
-count( $this->rows ); ?>);" /></th>
+count($this->rows); ?>);" /></th>
             <th class="title">
-            <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_KEYWORD_PHRASE' ), 'name', $this->order_Dir, $this->order, "keywords_view"); ?>
+            <?php echo JHTML::_('grid.sort', JText::_('SEO_KEYWORD_PHRASE'), 'name', $this->order_Dir, $this->order, "keywords_view"); ?>
 
             </th>
             <th class="title">
-            <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_GOOGLE_POSITION' ), 'google_rank', $this->order_Dir, $this->order, "keywords_view"); ?>
+            <?php echo JHTML::_('grid.sort', JText::_('SEO_GOOGLE_POSITION'), 'google_rank', $this->order_Dir, $this->order, "keywords_view"); ?>
 
             </th>
             <th class="title">
-            <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_CHANGE' ), 'google_rank_change', $this->order_Dir, $this->order, "keywords_view"); ?>
+            <?php echo JHTML::_('grid.sort', JText::_('SEO_CHANGE'), 'google_rank_change', $this->order_Dir, $this->order, "keywords_view"); ?>
 
             </th>
             <th class="title">
-            <?php echo JHTML::_( 'grid.sort', JText::_( 'SEO_CHANGE_SINCE' ), 'google_rank_change_date', $this->order_Dir, $this->order, "keywords_view"); ?>
+            <?php echo JHTML::_('grid.sort', JText::_('SEO_CHANGE_SINCE'), 'google_rank_change_date', $this->order_Dir, $this->order, "keywords_view"); ?>
 
             </th>
 
             <th class="title">
-                <?php echo JText::_( 'SEO_VIEW_ON_GOOGLE' );?>
+                <?php echo JText::_('SEO_VIEW_ON_GOOGLE');?>
             </th>
         </tr>
     </thead>
     <?php
         $k = 0;
-        for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+        for ($i=0, $n=count($this->rows); $i < $n; $i++)
     {
         $row = $this->rows[$i];
-        $checked = JHTML::_('grid.id', $i, $row->id );?>
+        $checked = JHTML::_('grid.id', $i, $row->id);?>
 
     <tr class="<?php echo "row$k"; ?>">
         <td><?php echo $checked; ?>
@@ -59,17 +59,17 @@ count( $this->rows ); ?>);" /></th>
         </td>
         <td>
             <?php
-            if( $row->google_rank > 0 ){
+            if ($row->google_rank > 0){
             	echo $row->google_rank<1000?$row->google_rank:"out of top 100";
             }else{
-            	echo JText::_( 'SEO_UNKNOWN' );
+            	echo JText::_('SEO_UNKNOWN');
             }?>
         </td>
         <td>
             <?php
-            if($row->google_rank_change>0){
+            if ($row->google_rank_change>0){
             echo "+".$row->google_rank_change;
-            }elseif($row->google_rank_change<0){
+            }elseif ($row->google_rank_change<0){
             echo $row->google_rank_change;
             }
             ?>
@@ -79,7 +79,7 @@ count( $this->rows ); ?>);" /></th>
         </td>
 
         <td>
-            <a href="http://<?php echo $this->google_url?>/search?aq=f&q=<?php echo $row->name?>" target="_blank"><?php echo JText::_( 'SEO_VIEW' );?></a>
+            <a href="http://<?php echo $this->google_url?>/search?aq=f&q=<?php echo $row->name?>" target="_blank"><?php echo JText::_('SEO_VIEW');?></a>
         </td>
     </tr>
     <?php } ?>

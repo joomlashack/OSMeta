@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
@@ -37,9 +37,9 @@ class SeobossViewKeywords extends JBView{
             JToolBarHelper::cancel();
             break;
           case null:
-            JToolBarHelper::title( JText::_( 'SEO_KEYWORDS_MANAGER' ),
-                'joomboss_keywords.png' );
-            JToolBarHelper::custom('keywords_update_stat', 'apply', '', JText::_( 'SEO_UPDATE_GOOGLE_STAT' ), true);
+            JToolBarHelper::title(JText::_('SEO_KEYWORDS_MANAGER'),
+                'joomboss_keywords.png');
+            JToolBarHelper::custom('keywords_update_stat', 'apply', '', JText::_('SEO_UPDATE_GOOGLE_STAT'), true);
             JToolbarHelper::help(null, false, 'http://joomboss.com/products/seoboss/documentation/51-seo-boss-keywords-manager?tmpl=component');
         }
         parent::display($tpl);

@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 require_once "MetatagsContainer.php";
 class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public $code=8;
@@ -39,18 +39,18 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $filter_show_empty_descriptions =
     JRequest::getVar("filter_show_empty_descriptions", "-1");
 
-    if($search != ""){
-      if(is_numeric($search)){
+    if ($search != ""){
+      if (is_numeric($search)){
         $sql .= " AND c.cat_id=".$db->quote($search);
       }else{
         $sql .= " AND c.cat_name LIKE ".$db->quote('%'.$search.'%');
       }
     }
-    if($filter_show_empty_keywords != "-1"){
-      $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
+    if ($filter_show_empty_keywords != "-1"){
+      $sql .= " AND (ISNULL(metakey) OR metakey='') ";
     }
-    if($filter_show_empty_descriptions != "-1"){
-      $sql .= "AND ( ISNULL(metadesc) OR metadesc='') ";
+    if ($filter_show_empty_descriptions != "-1"){
+      $sql .= "AND (ISNULL(metadesc) OR metadesc='') ";
     }
     //Sorting
     $order = JRequest::getCmd("filter_order", "title");
@@ -77,13 +77,13 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
 
     }
 
-    if($order_dir == "asc"){
+    if ($order_dir == "asc"){
       $sql .= " ASC";
     }else{
       $sql .= " DESC";
     }
 
-    $db->setQuery( $sql, $lim0, $lim );
+    $db->setQuery($sql, $lim0, $lim);
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
       echo $db->stderr();
@@ -105,7 +105,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function copyKeywordsToTitle($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
@@ -113,14 +113,14 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $db->setQuery($sql);
     $items = $db->loadObjectList();
     foreach($items as $item){
-      if($item->metakey != ''){
+      if ($item->metakey != ''){
         $sql = "INSERT INTO #__seoboss_metadata (item_id,
             item_type, title_tag)
             VALUES (
             ".$db->quote($item->cat_id).",
             '{$this->code}',
             ".$db->quote($item->metakey)."
-                ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->metakey);
+               ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->metakey);
 
         $db->setQuery($sql);
         $db->query();
@@ -131,7 +131,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function copyTitleToKeywords($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
@@ -141,7 +141,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $db->setQuery($sql);
     $items = $db->loadObjectList();
     foreach($items as $item){
-      if($item->title_tag != ''){
+      if ($item->title_tag != ''){
         $sql = "UPDATE #__mt_cats SET metakey=".$db->quote($item->title_tag)."
             WHERE cat_id=".$db->quote($item->item_id);
         $db->setQuery($sql);
@@ -153,7 +153,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function copyItemTitleToTitle($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
@@ -163,14 +163,14 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $db->setQuery($sql);
     $items = $db->loadObjectList();
     foreach($items as $item){
-      if($item->cat_name != ''){
+      if ($item->cat_name != ''){
         $sql = "INSERT INTO #__seoboss_metadata (item_id,
             item_type, title_tag)
             VALUES (
             ".$db->quote($item->cat_id).",
             '{$this->code}',
             ".$db->quote($item->cat_name)."
-                ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->cat_name);
+               ) ON DUPLICATE KEY UPDATE title_tag=".$db->quote($item->cat_name);
 
         $db->setQuery($sql);
         $db->query();
@@ -181,19 +181,19 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function copyItemTitleToKeywords($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
-    if(count($ids) > 0){
+    if (count($ids) > 0){
       $sql = "UPDATE #__mt_cats SET metakey=cat_name WHERE cat_id IN (".
-          implode(",", $ids). " )";
+          implode(",", $ids). ")";
       $db->setQuery($sql);
       $db->query();
 
       //save keywords
       $sql = "SELECT cat_id as id , metakey FROM #__mt_cats WHERE cat_id IN (".
-          implode(",", $ids). " )";
+          implode(",", $ids). ")";
       $db->setQuery($sql);
       $items = $db->loadObjectList();
       foreach($items as $item){
@@ -205,7 +205,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function GenerateDescriptions($ids){
     $db = JFactory::getDBO();
     foreach($ids as $key=>$value){
-      if(!is_numeric($value)){
+      if (!is_numeric($value)){
         unset($ids[$key]);
       }
     }
@@ -234,23 +234,23 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $filter_show_empty_descriptions =
     JRequest::getVar("filter_show_empty_descriptions", "-1");
 
-    if($search != ""){
-      if(is_numeric($search)){
+    if ($search != ""){
+      if (is_numeric($search)){
         $sql .= " AND c.cat_id=".$db->quote($search);
       }else{
         $sql .= " AND c.cat_name LIKE ".$db->quote('%'.$search.'%');
       }
     }
-    if($filter_show_empty_keywords != "-1"){
-      $sql .= " AND ( ISNULL(metakey) OR metakey='') ";
+    if ($filter_show_empty_keywords != "-1"){
+      $sql .= " AND (ISNULL(metakey) OR metakey='') ";
     }
-    if($filter_show_empty_descriptions != "-1"){
-      $sql .= "AND ( ISNULL(metadesc) OR metadesc='') ";
+    if ($filter_show_empty_descriptions != "-1"){
+      $sql .= "AND (ISNULL(metadesc) OR metadesc='') ";
     }
 
     $sql .= " ORDER BY `lft` ASC";
 
-    $db->setQuery( $sql, $lim0, $lim );
+    $db->setQuery($sql, $lim0, $lim);
 
     $rows = $db->loadObjectList();
     if ($db->getErrorNum()) {
@@ -259,7 +259,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     }
     // Get outgoing links and keywords density
     for($i = 0 ; $i < count($rows);$i++){
-      if($rows[$i]->metakey){
+      if ($rows[$i]->metakey){
         $rows[$i]->metakey = explode(",", $rows[$i]->metakey);
       }else{
         $rows[$i]->metakey = array("");
@@ -269,14 +269,14 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     return $rows;
   }
 
-  public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags ){
+  public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags){
     $db = JFactory::getDBO();
     for($i = 0 ;$i < count($ids); $i++){
-      /*customtitle=".$db->quote( $metatitles[$i] ).",*/
+      /*customtitle=".$db->quote($metatitles[$i]).",*/
       $sql = "UPDATE #__mt_cats
           SET
-          metadesc=".$db->quote( $metadescriptions[$i] ).",
-              metakey=".$db->quote( $metakeys[$i] )."
+          metadesc=".$db->quote($metadescriptions[$i]).",
+              metakey=".$db->quote($metakeys[$i])."
                   WHERE cat_id=".$db->quote($ids[$i]);
       $db->setQuery($sql);
       $db->query();
@@ -291,7 +291,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
           {$this->code},
           ".$db->quote($metatitles[$i]).",
               ".$db->quote($title_tags[$i])."
-                  ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , title_tag=".$db->quote($title_tags[$i]);
+                 ) ON DUPLICATE KEY UPDATE title=".$db->quote($metatitles[$i])." , title_tag=".$db->quote($title_tags[$i]);
           $db->setQuery($sql);
           $db->query();
 
@@ -345,7 +345,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $metadata = null;
     $params = array();
     parse_str($query, $params);
-    if(isset($query["cat_id"]) && $query["cat_id"]){
+    if (isset($query["cat_id"]) && $query["cat_id"]){
       $metadata = $this->getMetadata($query["cat_id"]);
     }
     return $metadata;
@@ -354,7 +354,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
   public function setMetadataByRequest($query, $metadata){
     $params = array();
     parse_str($query, $params);
-    if(isset($query["cat_id"]) && $query["cat_id"]){
+    if (isset($query["cat_id"]) && $query["cat_id"]){
       $this->setMetadata($query["cat_id"], $metadata);
     }
   }

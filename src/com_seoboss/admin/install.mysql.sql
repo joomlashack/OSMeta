@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS `#__seoboss_settings` (
   `joomboss_registration_code` varchar(32) NOT NULL,
   `enable_google_ping` tinyint(4) NOT NULL,
   `frontpage_meta` TINYINT NOT NULL ,
-  `frontpage_title` VARCHAR( 255 ) NOT NULL ,
-  `frontpage_keywords` VARCHAR( 255 ) NOT NULL ,
-  `frontpage_description` VARCHAR( 255 ) NOT NULL,
-  `frontpage_meta_title` VARCHAR( 255 ) NOT NULL,
+  `frontpage_title` VARCHAR(255) NOT NULL ,
+  `frontpage_keywords` VARCHAR(255) NOT NULL ,
+  `frontpage_description` VARCHAR(255) NOT NULL,
+  `frontpage_meta_title` VARCHAR(255) NOT NULL,
   `sa_enable` tinyint(4) NOT NULL,
-  `sa_users` VARCHAR( 255 ) NOT NULL,
+  `sa_users` VARCHAR(255) NOT NULL,
   `max_description_length` int(11) NOT NULL default '255'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -62,11 +62,11 @@ INSERT IGNORE INTO `#__seoboss_settings` (`domain`, `google_server`, `hilight_ke
 ('', 'google.com', 1, 'strong', 'keyword', 'textarea', '0', 'admin');
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_client_features` (
-`name` VARCHAR( 50 ) NOT NULL ,
-`version` VARCHAR( 16 ) NOT NULL ,
+`name` VARCHAR(50) NOT NULL ,
+`version` VARCHAR(16) NOT NULL ,
 `build` INT NOT NULL,
 `minor_version` INT NOT NULL ,
-`description` VARCHAR( 255 ) NOT NULL ,
+`description` VARCHAR(255) NOT NULL ,
 `status` VARCHAR(50) NOT NULL,
 UNIQUE (
 `name`
@@ -74,8 +74,8 @@ UNIQUE (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_files_to_delete` (
-`feature` VARCHAR( 50 ) NOT NULL ,
-`file` VARCHAR( 255 ) NOT NULL ,
+`feature` VARCHAR(50) NOT NULL ,
+`file` VARCHAR(255) NOT NULL ,
 UNIQUE (
 `file`
 )
@@ -83,34 +83,34 @@ UNIQUE (
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_default_tags` (
     `id` int(11) NOT NULL auto_increment,
-    `name` VARCHAR( 255 ) NOT NULL ,
-    `value` VARCHAR( 255 ) NOT NULL ,
+    `name` VARCHAR(255) NOT NULL ,
+    `value` VARCHAR(255) NOT NULL ,
     PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_ping_status` (
 `id` INT NOT NULL AUTO_INCREMENT ,
 `date` DATETIME NOT NULL ,
-`title` VARCHAR( 255 ) NOT NULL ,
-`url` VARCHAR( 255 ) NOT NULL ,
-`response_code` VARCHAR( 10 ) NOT NULL ,
-`response_text` VARCHAR( 255 ) NOT NULL ,
-PRIMARY KEY (  `id` )
+`title` VARCHAR(255) NOT NULL ,
+`url` VARCHAR(255) NOT NULL ,
+`response_code` VARCHAR(10) NOT NULL ,
+`response_text` VARCHAR(255) NOT NULL ,
+PRIMARY KEY ( `id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_urls` (
 `id` INT NOT NULL AUTO_INCREMENT ,
-`url` VARCHAR( 255 ) NOT NULL ,
-PRIMARY KEY (  `id` )
+`url` VARCHAR(255) NOT NULL ,
+PRIMARY KEY ( `id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_meta_extensions` (
-`component` VARCHAR( 50 ) NOT NULL ,
-`name` VARCHAR( 50 ) NOT NULL ,
-`description` VARCHAR( 255 ) NOT NULL ,
+`component` VARCHAR(50) NOT NULL ,
+`name` VARCHAR(50) NOT NULL ,
+`description` VARCHAR(255) NOT NULL ,
 `enabled` TINYINT NOT NULL ,
 `available` TINYINT NOT NULL ,
-PRIMARY KEY (  `component` )
+PRIMARY KEY ( `component`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__seoboss_meta_extensions` VALUES
@@ -127,8 +127,8 @@ INSERT IGNORE INTO `#__seoboss_meta_extensions` VALUES
 
 CREATE TABLE  IF NOT EXISTS `#__seoboss_canonical_url` (
 `id` INT NOT NULL AUTO_INCREMENT ,
-`url` VARCHAR( 255 ) NOT NULL ,
-`canonical_url` VARCHAR( 255 ) NOT NULL ,
+`url` VARCHAR(255) NOT NULL ,
+`canonical_url` VARCHAR(255) NOT NULL ,
 `action` TINYINT NOT NULL,
-PRIMARY KEY (  `id` )
+PRIMARY KEY ( `id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

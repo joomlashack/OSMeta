@@ -9,12 +9,12 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 $features['com_menu'] = array(
         'name'=>'Menu Item',
         'file'=>'MenuItemMetatagsContainer.php',
         'class'=>'MenuItemMetatagsContainer',
             'params'=>array(array('Itemid'=>null))
-        );
+       );
 ?>
