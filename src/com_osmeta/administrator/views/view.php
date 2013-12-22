@@ -13,25 +13,20 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_COMPONENT . '/controller.php';
+jimport('joomla.application.component.view');
 
-$app = JFactory::getApplication();
-
-if (version_compare(JVERSION, '3.0', '>='))
+if (version_compare(JVERSION, "3.0", ">="))
 {
-	$task = $app->input->getCmd('task');
+	class OSView extends JViewLegacy
+	{
+		function display($tpl = null)
+		{
+			$this->setLayout("joomla3");
+			parent::display($tpl);
+		}
+	}
 }
 else
 {
-	$task = JRequest::getCmd('task');
+	class OSView extends JView {}
 }
-
-// Default task
-if (empty($task))
-{
-	$task = 'metatags_view';
-}
-
-$controller = OSController::getInstance('OSMeta');
-$controller->execute($task);
-$controller->redirect();
