@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 $mainframe = JFactory::getApplication();
 $mainframe->registerEvent( 'onAfterContentSave',
 'pluginSeoBoss_onAfterContentSave' );
@@ -18,8 +18,8 @@ $mainframe->registerEvent( 'onContentAfterSave',
 
 function pluginSeoBoss_onAfterContentSave( $article, $isNew ){
     $file = JPATH_ADMINISTRATOR."/components/com_seoboss/classes/ArticleMetatagsContainer.php";
-    if(is_object($article) && 
-	isset($article->id) && $article->id && 
+    if(is_object($article) &&
+	isset($article->id) && $article->id &&
 	isset($article->metakey) && $article->metakey &&
         is_file( $file )) {
         require_once( $file );
