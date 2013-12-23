@@ -15,12 +15,12 @@ defined('_JEXEC') or die('Restricted access');
 
 $app = JFactory::getApplication();
 
-$app->registerEvent('onAfterContentSave', 'pluginSeoBoss_onAfterContentSave');
-$app->registerEvent('onContentAfterSave', 'pluginSeoBoss_onContentAfterSave');
+$app->registerEvent('onAfterContentSave', 'pluginOSMeta_onAfterContentSave');
+$app->registerEvent('onContentAfterSave', 'pluginOSMeta_onContentAfterSave');
 
-function pluginSeoBoss_onAfterContentSave($article, $isNew)
+function pluginOSMeta_onAfterContentSave($article, $isNew)
 {
-	$file = JPATH_ADMINISTRATOR . "/components/com_seoboss/classes/ArticleMetatagsContainer.php";
+	$file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ArticleMetatagsContainer.php";
 	if (is_object($article) && isset($article->id) && $article->id && isset($article->metakey) && $article->metakey && is_file($file))
 	{
 		require_once($file);
@@ -29,14 +29,14 @@ function pluginSeoBoss_onAfterContentSave($article, $isNew)
 	}
 
 	$db = JFactory::getDBO();
-	$db->setQuery("SELECT enable_google_ping from  #__seoboss_settings ");
+	$db->setQuery("SELECT enable_google_ping from  #__osmeta_settings ");
 	$settings = $db->loadObject();
 
 	if ($settings->enable_google_ping)
 	{
 		$className = get_class($article);
 
-		require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/classes/ExtensionsFactory.php";
+		require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ExtensionsFactory.php";
 		$extensions = ExtensionsFactory::getExtensions();
 
 		if (is_array($extensions) && is_array($extensions['ping']))
@@ -45,7 +45,7 @@ function pluginSeoBoss_onAfterContentSave($article, $isNew)
 			{
 				if ($pingHandler['class'] == $className)
 				{
-					require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/" . $pingHandler['file'];
+					require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/" . $pingHandler['file'];
 
 					$url = '';
 					$rss = '';
@@ -62,10 +62,10 @@ function pluginSeoBoss_onAfterContentSave($article, $isNew)
 
 					if (!empty($url))
 					{
-						$db->setQuery("SELECT `domain` FROM `#__seoboss_settings`");
+						$db->setQuery("SELECT `domain` FROM `#__osmeta_settings`");
 						$domainName = $db->loadResult();
 
-						require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/classes/Pinger.php";
+						require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/Pinger.php";
 						$config = JFactory::getConfig();
 						$pinger = new Pinger;
 						$result = $pinger->pingGoogle(
@@ -75,7 +75,7 @@ function pluginSeoBoss_onAfterContentSave($article, $isNew)
 							"http://{$domainName}$rss"
 						);
 
-						$db->setQuery("INSERT INTO #__seoboss_ping_status
+						$db->setQuery("INSERT INTO #__osmeta_ping_status
 								(`date`, `title`, `url`, `response_code`, `response_text`) VALUES (
 								NOW(), " . $db->quote($article->title) . ", ".
 								$db->quote($url) . ", " .
@@ -91,7 +91,7 @@ function pluginSeoBoss_onAfterContentSave($article, $isNew)
 	}
 }
 
-function pluginSeoBoss_onContentAfterSave($context, $article, $isNew)
+function pluginOSMeta_onContentAfterSave($context, $article, $isNew)
 {
-	pluginSeoBoss_onAfterContentSave($article, $isNew);
+	pluginOSMeta_onAfterContentSave($article, $isNew);
 }

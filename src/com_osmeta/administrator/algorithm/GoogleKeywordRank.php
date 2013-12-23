@@ -14,7 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR.DS."components".
-        DS."com_seoboss".DS."lib".DS."Snoopy.class.php";
+        DS."com_osmeta".DS."lib".DS."Snoopy.class.php";
 
 /**
  * Retrieves the position of specified site in the google result list by specified keyword.
@@ -27,7 +27,7 @@ require_once JPATH_ADMINISTRATOR.DS."components".
  *  1000 if site is not in the first top 100 sites.
  */
 function getGoogleKeywordRank($keyword, $site, $google_url = "google.by", $lang = "be"){
-	$SnoopySeoBoss = new SnoopySeoBoss;
+	$SnoopyOSMeta = new SnoopyOSMeta;
 	if (strpos($site, "https://") === 0){
 	  $site = substr($site, strlen("https://"));
 	}
@@ -38,11 +38,11 @@ function getGoogleKeywordRank($keyword, $site, $google_url = "google.by", $lang 
         $site = substr($site, strlen("www."));
     }
     $keyword = urlencode($keyword);
-	$SnoopySeoBoss->fetch(
+	$SnoopyOSMeta->fetch(
 	"http://www.$google_url/search?as_q=$keyword&num=100&site=&source=hp"
 	);
 
-	preg_match_all("/<h3[\\s]+class=\\\"r\\\">[\\s]*<a[\\s]+href=\\\"([^\\\"]*)\\\"/i", $SnoopySeoBoss->results, $results);
+	preg_match_all("/<h3[\\s]+class=\\\"r\\\">[\\s]*<a[\\s]+href=\\\"([^\\\"]*)\\\"/i", $SnoopyOSMeta->results, $results);
 	$rank = 1;
     foreach($results[1] as $result){
     	if (strpos($result, "http://$site") !== false ||
