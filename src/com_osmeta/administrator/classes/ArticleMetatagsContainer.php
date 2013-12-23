@@ -769,44 +769,8 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	  $metadata = null;
 	  if (isset($params["id"])){
 	    $metadata = $this->getMetadata($params["id"]);
-	  }elseif ($params["view"]=="frontpage" || $params["view"]=="featured"){
-	    $this->isFrontpage = true;
-	    $db = JFactory::getDBO();
-	    $db->setQuery("SELECT frontpage_meta,
-	        frontpage_title,
-	        frontpage_meta_title,
-	        frontpage_keywords,
-	        frontpage_description
-	        FROM #__osmeta_settings LIMIT 0,1");
-	    $settings = $db->loadObject();
-
-	    if ($settings->frontpage_meta==0){
-	      $metadata = array(
-	          "title_tag"=>$settings->frontpage_title,
-	          "metatitle"=>$settings->frontpage_meta_title,
-	          "metakeywords"=>$settings->frontpage_keywords,
-	          "metadescription"=>$settings->frontpage_description
-	         );
-	    }
-	    elseif ($settings->frontpage_meta==1){
-          jimport('joomla.version');
-            $version = new JVersion();
-          if ($version->RELEASE == "1.5"){
-            $model = OSModel::getInstance("frontpage", "contentModel", array());
-            $featuredItems = $model->getData();
-          }else{
-            $model = OSModel::getInstance("featured", "contentModel", array());
-            $featuredItems = $model->getItems();
-          }
-          $firstItem = $featuredItems[0];
-          if ($firstItem){
-            $metadata = array(
-              "metakeywords"=>$firstItem->metakey,
-              "metadescription"=>$firstItem->metadesc
-           );
-          }
-	    }
 	  }
+
 	  return $metadata;
 	}
 
@@ -815,18 +779,6 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	  parse_str($url, $params);
 	  if (isset($params["id"]) && $params["id"]){
 	    $this->setMetadata($params["id"], $data);
-	  }elseif (isset($params["view"]) && $params["view"]=="frontpage"){
-	    $db = JFactory::getDBO();
-
-	    $db->setQuery("
-	        UPDATE #__osmeta_settings SET
-	        frontpage_meta = '0',
-	        frontpage_title = ".$db->quote($data["title_tag"]).",
-	        frontpage_meta_title = ".$db->quote($data["metatitle"]).",
-	        frontpage_keywords = ".$db->quote($data["metakeywords"]).",
-	        frontpage_description = ".$db->quote($data["metadescription"])
-	   );
-	    $db->query();
 	  }
 	}
 

@@ -13,6 +13,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
+
 class OSModelOptions extends OSModel
 {
 	/**
@@ -59,9 +61,26 @@ class OSModelOptions extends OSModel
 	}
 
 	public function getOptions(){
-	    $db = JFactory::getDBO();
-	    $db->setQuery("SELECT * FROM #__osmeta_settings");
-	    return $db->loadObject();
+	    $options = new stdClass;
+
+	    $options->domain = '';
+	    $options->google_server = 'google.com';
+	    $options->hilight_keywords = 1;
+	    $options->hilight_tag = 'strong';
+	    $options->hilight_class = 'keyword';
+	    $options->hilight_skip = 'textarea';
+	    $options->joomboss_registration_code = '';
+	    $options->enable_google_ping = 0;
+	    $options->frontpage_meta = 0;
+	    $options->frontpage_title = '';
+	    $options->frontpage_keywords = '';
+	    $options->frontpage_description = '';
+	    $options->frontpage_meta_title = '';
+	    $options->sa_enable = 0;
+	    $options->sa_users = 'admin';
+	    $options->max_description_length = 255;
+
+	    return $options;
 	}
 
     public function getPingStatus(){
@@ -70,17 +89,5 @@ class OSModelOptions extends OSModel
           FROM #__osmeta_ping_status
           ORDER BY `date` DESC LIMIT 0,10");
         return $db->loadObjectList();
-    }
-
-    public function saveOptions($data){
-      $db = JFactory::getDBO();
-      $query = "UPDATE #__osmeta_settings SET ";
-      $updates = array();
-      foreach($data as $key=>$value){
-        $updates[] = "$key=".$db->quote($value);
-      }
-      $query = $query . implode(",", $updates);
-      $db->setQuery($query);
-      $db->query();
     }
 }

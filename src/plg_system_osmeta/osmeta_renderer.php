@@ -32,13 +32,15 @@ function pluginOSMetaRender()
 
 	$buffer = JResponse::getBody();
 
+	$db = JFactory::getDBO();
+
 	//Metatags processing
 	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
 	$buffer =  MetatagsContainerFactory::processBody($buffer, $url);
 
-	$db = JFactory::getDBO();
-	$db->setQuery ("SELECT sa_enable, sa_users from  #__osmeta_settings ");
-	$settings = $db->loadObject();
+	require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/options.php';
+	$model = OSModelOptions::getInstance('OSModelOptions');
+	$settings = $model->getOptions();
 
 	if ($settings->sa_enable == "1")
 	{
@@ -117,10 +119,6 @@ function pluginOSMetaRender()
 			$buffer = str_replace("<head>", "<head>\n<meta name=\"" . $metaTag->name . "\" content=\"" . $metaTag->value . "\"/>", $buffer);
 		}
 	}
-
-	//Retreive settings
-	$db->setQuery ("SELECT hilight_keywords, hilight_tag, hilight_class, hilight_skip from  #__osmeta_settings ");
-	$settings = $db->loadObject();
 
 	if ($settings->hilight_keywords)
 	{

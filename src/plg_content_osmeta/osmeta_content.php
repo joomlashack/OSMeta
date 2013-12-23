@@ -28,9 +28,9 @@ function pluginOSMeta_onAfterContentSave($article, $isNew)
 		$ac->saveKeywords($article->metakey, $article->id);
 	}
 
-	$db = JFactory::getDBO();
-	$db->setQuery("SELECT enable_google_ping from  #__osmeta_settings ");
-	$settings = $db->loadObject();
+	require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/options.php';
+	$model = OSModelOptions::getInstance('OSModelOptions');
+	$settings = $model->getOptions();
 
 	if ($settings->enable_google_ping)
 	{

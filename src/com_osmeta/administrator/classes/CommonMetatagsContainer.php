@@ -50,52 +50,8 @@ class CommonMetatagsContainer extends MetatagsContainer{
               $body = preg_replace("/<title[^>]*>.*<\\/title>/i",
                       '<title>'.htmlspecialchars($metadata->title_tag).'</title>', $body, 1, $replaced);
           }
-	   }else{
-	       $db->setQuery("SELECT frontpage_meta,
-	               frontpage_title,
-	               frontpage_meta_title,
-	               frontpage_keywords,
-	               frontpage_description
-	               FROM #__osmeta_settings LIMIT 0,1");
-	       $settings = $db->loadObject();
-
-	       if ($settings->frontpage_meta==0){
-	           if ($settings->frontpage_title){
-	               $replaced = 0;
-	               $body = preg_replace("/<title[^>]*>.*<\\/title>/i",
-	                       '<title>'.htmlspecialchars($settings->frontpage_title).'</title>', $body, 1, $replaced);
-	           }
-	           if ($settings->frontpage_meta_title){
-	               $body = $this->setMetatag($body, "title", $settings->frontpage_meta_title);
-	           }
-	           if ($settings->frontpage_keywords){
-	               $body = $this->setMetatag($body, "keywords", $settings->frontpage_keywords);
-	           }
-	           if ($settings->frontpage_description){
-	               $body = $this->setMetatag($body, "description", $settings->frontpage_description);
-	           }
-	       }
-	       elseif ($settings->frontpage_meta==1){
-	           jimport('joomla.version');
-	           $version = new JVersion();
-	           if ($version->RELEASE == "1.5"){
-	               $model = OSModel::getInstance("frontpage", "contentModel", array());
-	               $featuredItems = $model->getData();
-	           }else{
-	               $model = OSModel::getInstance("featured", "contentModel", array());
-	               $featuredItems = $model->getItems();
-	           }
-	           $firstItem = $featuredItems[0];
-	           if ($firstItem){
-	               if ($firstItem->metakey){
-	                   $body = $this->setMetatag($body, "keywords", $firstItem->metakey);
-	               }
-	               if ($firstItem->metadesc){
-	                   $body = $this->setMetatag($body, "description", $firstItem->metadesc);
-	               }
-	           }
-	       }
 	   }
+
 	   return $body;
 	}
 	private function setMetaTag($body, $name, $value){

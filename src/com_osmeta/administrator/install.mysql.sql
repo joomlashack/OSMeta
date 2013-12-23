@@ -39,28 +39,6 @@ CREATE TABLE IF NOT EXISTS `#__osmeta_redirects` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `#__osmeta_settings` (
-  `domain` varchar(255) NOT NULL,
-  `google_server` varchar(255) NOT NULL,
-  `hilight_keywords` tinyint(4) NOT NULL,
-  `hilight_tag` varchar(20) NOT NULL,
-  `hilight_class` varchar(50) NOT NULL,
-  `hilight_skip` varchar(255) NOT NULL,
-  `joomboss_registration_code` varchar(32) NOT NULL,
-  `enable_google_ping` tinyint(4) NOT NULL,
-  `frontpage_meta` TINYINT NOT NULL ,
-  `frontpage_title` VARCHAR(255) NOT NULL ,
-  `frontpage_keywords` VARCHAR(255) NOT NULL ,
-  `frontpage_description` VARCHAR(255) NOT NULL,
-  `frontpage_meta_title` VARCHAR(255) NOT NULL,
-  `sa_enable` tinyint(4) NOT NULL,
-  `sa_users` VARCHAR(255) NOT NULL,
-  `max_description_length` int(11) NOT NULL default '255'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-INSERT IGNORE INTO `#__osmeta_settings` (`domain`, `google_server`, `hilight_keywords`, `hilight_tag`, `hilight_class`, `hilight_skip`, `sa_enable`, `sa_users`) VALUES
-('', 'google.com', 1, 'strong', 'keyword', 'textarea', '0', 'admin');
-
 CREATE TABLE  IF NOT EXISTS `#__osmeta_client_features` (
 `name` VARCHAR(50) NOT NULL ,
 `version` VARCHAR(16) NOT NULL ,
