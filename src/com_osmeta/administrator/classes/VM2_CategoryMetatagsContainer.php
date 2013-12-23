@@ -402,7 +402,7 @@ class VM2_CategoryMetatagsContainer extends MetatagsContainer{
         $language="en_gb";
         $vmHelperPath = dirname(__FILE__)."/../../com_virtuemart/helpers/config.php";
         if (is_file($vmHelperPath)){
-            require_once($vmHelperPath);
+            require_once $vmHelperPath;
             $config = VmConfig::loadConfig();
             $language = $config->lang;
         }

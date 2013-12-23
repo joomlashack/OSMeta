@@ -23,7 +23,7 @@ function pluginOSMeta_onAfterContentSave($article, $isNew)
 	$file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ArticleMetatagsContainer.php";
 	if (is_object($article) && isset($article->id) && $article->id && isset($article->metakey) && $article->metakey && is_file($file))
 	{
-		require_once($file);
+		require_once $file;
 		$ac = new ArticleMetatagsContainer;
 		$ac->saveKeywords($article->metakey, $article->id);
 	}

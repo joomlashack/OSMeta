@@ -129,7 +129,7 @@ class MetatagsContainerFactory{
 
 
     }
-    require_once(dirname(__FILE__)."/Canonical.php");
+    require_once dirname(__FILE__)."/Canonical.php";
     $canonical = new OsmetaCanonicalURL();
     $canonical_url = $canonical->getCanonicalURL(substr($_SERVER["REQUEST_URI"], strlen(JURI::base(true))+1));
     if ($canonical_url != null){
@@ -204,7 +204,7 @@ class MetatagsContainerFactory{
 	    $available = true;
 	    foreach($features as $feature){
 	        if (is_file(dirname(__FILE__)."/".$feature["file"])){
-	          require_once(dirname(__FILE__)."/".$feature["file"]);
+	          require_once dirname(__FILE__)."/".$feature["file"];
 	          $container = new $feature["class"]();
 	          $available = $available && $container->isAvailable();
 	        }else{
