@@ -29,7 +29,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
 		#__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->itemType} WHERE 1";
 
         $search = JRequest::getVar("filter_search", "");
-	var_dump($search);
+
         $cat_id = JRequest::getVar("com_content_filter_catid", "0");
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
