@@ -15,62 +15,143 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-if (version_compare(JVERSION, "3.0", ">="))
+/**
+ * Extend the JController for J3.0 compatibility
+ *
+ */
+if (version_compare(JVERSION, "3.0", "<"))
 {
-	class OSController extends JControllerLegacy {}
+	/**
+	 * Alias Class for JController in Joomla! < 3.0
+	 *
+	 * @since  1.0.0
+	 */
+	class OSController extends JController {}
 }
 else
 {
-	class OSController extends JController {}
+	/**
+	 * Alias Class for JControllerLegacy in Joomla! >= 3.0
+	 *
+	 * @since  1.0.0
+	 */
+	class OSController extends JControllerLegacy {}
 }
 
-class OsmetaController extends OSController
+/**
+ * OSMetaController component Controller
+ *
+ * @since  1.0.0
+ */
+class OSMetaController extends OSController
 {
+	/**
+	 * Method to display the controller's view
+	 *
+	 * @param   bool   $cachable   Cachable
+	 * @param   array  $urlparams  URL Params
+	 *
+	 * @access	public
+	 */
 	public function display($cachable = false, $urlparams = array())
 	{
 		$this->metatags_view();
 	}
 
+	/**
+	 * Method to display the Meta Tags Manager's view
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_view()
 	{
 		$this->metatags_manager('metatags_view');
 	}
 
+	/**
+	 * Method to the Save action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_save()
 	{
 		$this->metatags_manager('metatags_save');
 	}
 
+	/**
+	 * Method to the Copy Keywords to Title action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_copy_keywords_to_title()
 	{
 		$this->metatags_manager('metatags_copy_keywords_to_title');
 	}
 
+	/**
+	 * Method to the Copy Title to Keywords action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_copy_title_to_keywords()
 	{
 		$this->metatags_manager('metatags_copy_title_to_keywords');
 	}
 
+	/**
+	 * Method to the Copy Item Title to Keywords action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_copy_item_title_to_keywords()
 	{
 		$this->metatags_manager('metatags_copy_item_title_to_keywords');
 	}
 
+	/**
+	 * Method to the Copy Item Title to Title action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_copy_item_title_to_title()
 	{
 		$this->metatags_manager('metatags_copy_item_title_to_title');
 	}
 
+	/**
+	 * Method to the Generate Descriptions action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_generare_descriptions()
 	{
 		$this->metatags_manager('metatags_generare_descriptions');
 	}
 
+	/**
+	 * Method to the Clear Browser Titles action for Meta Tags Manager
+	 *
+	 * @access	public
+	 * @since  1.0.0
+	 */
 	public function metatags_clear_browser_titles()
 	{
 	  $this->metatags_manager('metatags_clear_browser_titles');
 	}
 
+	/**
+	 * Method to the execute actions
+	 *
+	 * @access	private
+	 * @since  1.0.0
+	 */
 	private function metatags_manager($task)
 	{
 		$app = JFactory::getApplication();
@@ -89,6 +170,7 @@ class OsmetaController extends OSController
 			//TODO: throw error here.
 		}
 
+		// Execute the actions
 		switch($task)
 		{
 			case "metatags_save":
@@ -132,10 +214,10 @@ class OsmetaController extends OSController
 		$db = JFactory::getDBO();
 		$tags = $metatagsContainer->getMetatags($limitstart, $limit);
 
-		$db->setQuery('SELECT FOUND_ROWS();');  //no reloading the query! Just asking for total without limit
+		// No reloading the query! Just asking for total without limit
+		$db->setQuery('SELECT FOUND_ROWS();');
 
 		jimport('joomla.html.pagination');
-
 		$pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
 		$filter = $metatagsContainer->getFilter();

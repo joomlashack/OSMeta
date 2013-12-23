@@ -15,18 +15,37 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-if (version_compare(JVERSION, "3.0", ">="))
+// Joomla 3.x Backward Compatibility
+if (version_compare(JVERSION, "3.0", "<"))
 {
-	class OSView extends JViewLegacy
-	{
-		function display($tpl = null)
-		{
-			$this->setLayout("joomla3");
-			parent::display($tpl);
-		}
-	}
+	/**
+	 * Alias Class for JView in Joomla! < 3.0
+	 *
+	 * @since  1.0.0
+	 */
+	class OSView extends JView {}
 }
 else
 {
-	class OSView extends JView {}
+	/**
+	 * Alias Class for JViewLegacy in Joomla! >= 3.0
+	 *
+	 * @since  1.0.0
+	 */
+	class OSView extends JViewLegacy
+	{
+		/**
+		 * Method to display a view with the Joomla 3 template.
+		 *
+		 * @param   string  $tpl  Template file
+		 *
+		 * @access	public
+		 */
+		public function display($tpl = null)
+		{
+			$this->setLayout("joomla3");
+
+			parent::display($tpl);
+		}
+	}
 }

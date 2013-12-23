@@ -20,9 +20,16 @@ require_once JPATH_COMPONENT . '/views/view.php';
  *
  * @since		1.0.0
  */
-
 class OSMetaViewOSMeta extends OSView
 {
+	/**
+	 * Class constructor method
+	 *
+	 * @param   mix  $config  Configuration set
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 */
 	public function __construct($config = null)
 	{
 		parent::__construct($config);
@@ -30,9 +37,17 @@ class OSMetaViewOSMeta extends OSView
 		$this->_addPath('template', $this->_basePath . '/views/default/tmpl');
 	}
 
-	public function display($tpl=null)
+	/**
+	 * Method to display the view
+	 *
+	 * @param   string  $tpl  Template file
+	 *
+	 * @access	public
+	 */
+	public function display($tpl = null)
 	{
 		JToolBarHelper::title(JText::_('OSMETA_META_TAGS_MANAGER'));
+
 		JToolBarHelper::custom('metatags_copy_keywords_to_title', 'apply', '', JText::_('OSMETA_COPY_KEYWORDS_TO_TITLE'), true);
 		JToolBarHelper::custom('metatags_copy_title_to_keywords', 'apply', '', JText::_('OSMETA_COPY_TITLE_TO_KEYWORDS'), true);
 		JToolBarHelper::custom('metatags_copy_item_title_to_keywords', 'apply', '', JText::_('OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
