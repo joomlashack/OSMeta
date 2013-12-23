@@ -14,10 +14,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_cobalt'] = array(
-    'name'=>'Cobalt records',
-    'priority'=>1,
-    'file'=>'Cobalt_MetatagsContainer.php',
-    'class'=>'Cobalt_MetatagsContainer',
-    'params'=>array(array('option'=>'com_cobalt'))
+	'name' => 'Cobalt records',
+	'priority' => 1,
+	'file' => 'Cobalt_MetatagsContainer.php',
+	'class' => 'Cobalt_MetatagsContainer',
+	'params' => array(array('option' => 'com_cobalt'))
 );
-?>

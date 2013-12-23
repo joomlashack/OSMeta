@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right">
 			<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label><select name="type" onchange="document.adminForm.submit();">
 				<?php
-				foreach($this->availableTypes as $typeId => $typeName)
+				foreach ($this->availableTypes as $typeId => $typeName)
 				{
 					?>
 					<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>

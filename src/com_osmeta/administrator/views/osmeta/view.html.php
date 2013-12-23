@@ -18,7 +18,7 @@ require_once JPATH_COMPONENT . '/views/view.php';
 /**
  * Metatags Manager Default View
  *
- * @since		1.0.0
+ * @since  1.0.0
  */
 class OSMetaViewOSMeta extends OSView
 {
@@ -43,6 +43,8 @@ class OSMetaViewOSMeta extends OSView
 	 * @param   string  $tpl  Template file
 	 *
 	 * @access	public
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{

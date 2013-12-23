@@ -14,10 +14,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_virtuemart'] = array(
-    'name'=>'Virtuemart Products',
-    'priority'=>1,
-    'file'=>'VM_ProductMetatagsContainer.php',
-    'class'=>'VM_ProductMetatagsContainer',
-    'params'=>array(array('option'=>'com_virtuemart', 'page'=>'shop.product_details'))
+	'name' => 'Virtuemart Products',
+	'priority' => 1,
+	'file' => 'VM_ProductMetatagsContainer.php',
+	'class' => 'VM_ProductMetatagsContainer',
+	'params' => array(array('option' => 'com_virtuemart', 'page' => 'shop.product_details'))
 );
-?>

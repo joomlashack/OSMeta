@@ -40,6 +40,8 @@ else
 		 * @param   string  $tpl  Template file
 		 *
 		 * @access	public
+		 *
+		 * @return  void
 		 */
 		public function display($tpl = null)
 		{

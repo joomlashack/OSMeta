@@ -14,18 +14,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_virtuemart2:Product'] = array(
-    'name'=>'Virtuemart Products',
-    'priority'=>1,
-    'file'=>'VM2_ProductMetatagsContainer.php',
-    'class'=>'VM2_ProductMetatagsContainer',
-    'params'=>array(array('option'=>'com_virtuemart', 'view'=>'product'))
-);
-$features['com_virtuemart2:Category'] = array(
-    'name'=>'Virtuemart Categories',
-    'priority'=>1,
-    'file'=>'VM2_CategoryMetatagsContainer.php',
-    'class'=>'VM2_CategoryMetatagsContainer',
-    'params'=>array(array('option'=>'com_virtuemart', 'view'=>'category'))
+	'name' => 'Virtuemart Products',
+	'priority' => 1,
+	'file' => 'VM2_ProductMetatagsContainer.php',
+	'class' => 'VM2_ProductMetatagsContainer',
+	'params' => array(array('option' => 'com_virtuemart', 'view' => 'product'))
 );
 
-?>
+$features['com_virtuemart2:Category'] = array(
+	'name' => 'Virtuemart Categories',
+	'priority' => 1,
+	'file' => 'VM2_CategoryMetatagsContainer.php',
+	'class' => 'VM2_CategoryMetatagsContainer',
+	'params' => array(array('option' => 'com_virtuemart', 'view' => 'category'))
+);

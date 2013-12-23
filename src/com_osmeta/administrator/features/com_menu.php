@@ -14,9 +14,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_menu'] = array(
-        'name'=>'Menu Item',
-        'file'=>'MenuItemMetatagsContainer.php',
-        'class'=>'MenuItemMetatagsContainer',
-            'params'=>array(array('Itemid'=>null))
-       );
-?>
+	'name' => 'Menu Item',
+	'file' => 'MenuItemMetatagsContainer.php',
+	'class' => 'MenuItemMetatagsContainer',
+	'params' => array(array('Itemid' => null))
+);

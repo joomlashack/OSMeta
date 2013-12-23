@@ -14,19 +14,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_mt:Category'] = array(
-        'name'=>'Mosets Tree Category',
-        'priority'=>1,
-        'file'=>'MosetsTree_CategoryMetatagsContainer.php',
-        'class'=>'MosetsTree_CategoryMetatagsContainer',
-        'params'=>array(array('option'=>'com_mt', 'task'=>'viewcategory'))
-   );
+	'name' => 'Mosets Tree Category',
+	'priority' => 1,
+	'file' => 'MosetsTree_CategoryMetatagsContainer.php',
+	'class' => 'MosetsTree_CategoryMetatagsContainer',
+	'params' => array(array('option' => 'com_mt', 'task' => 'viewcategory'))
+);
 
-$features['com_mt:Link'] =
-    array(
-        'name'=>'Mosets Tree Link',
-        'priority'=>1,
-        'file'=>'MosetsTree_LinkMetatagsContainer.php',
-        'class'=>'MosetsTree_LinkMetatagsContainer',
-        'params'=>array(array('option'=>'com_mt', 'task'=>'viewlink'))
-   );
-?>
+$features['com_mt:Link'] = array(
+	'name' => 'Mosets Tree Link',
+	'priority' => 1,
+	'file' => 'MosetsTree_LinkMetatagsContainer.php',
+	'class' => 'MosetsTree_LinkMetatagsContainer',
+	'params' => array(array('option' => 'com_mt', 'task' => 'viewlink'))
+);

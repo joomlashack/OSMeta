@@ -14,10 +14,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_hikashop'] = array(
-    'name'=>'Hikashop',
-    'priority'=>1,
-    'file'=>'Hikashop_MetatagsContainer.php',
-    'class'=>'Hikashop_MetaTagsContainer',
-    'params'=>array(array('option'=>'com_hikashop'))
+	'name' => 'Hikashop',
+	'priority' => 1,
+	'file' => 'Hikashop_MetatagsContainer.php',
+	'class' => 'Hikashop_MetaTagsContainer',
+	'params' => array(array('option' => 'com_hikashop'))
 );
-?>
