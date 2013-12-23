@@ -22,22 +22,26 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right">
 			<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label><select name="type" onchange="document.adminForm.submit();">
 				<?php
-				foreach($this->availableTypes as $typeId=>$typeName){
+				foreach($this->availableTypes as $typeId => $typeName)
+				{
 					?>
-					<option value="<?php echo $typeId?>" <?php if ($typeId==$this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
-					<?php }?>
+					<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
+				<?php
+				}
+				?>
 				</select>
 			</td>
 		</tr>
 		<tr>
 			<td align="right">
-				<?php echo $this->filter;?>
+				<?php echo $this->filter; ?>
 			</td>
 		</tr>
 	</table>
 	<script>
-		function createTitleTag(id){
-			$('title_tag_'+id).value=$('title_'+id).innerHTML;
+		function createTitleTag(id)
+		{
+			$('title_tag_' + id).value = $('title_' + id).innerHTML;
 		}
 	</script>
 	<table   class="table table-striped" id="articleList">
@@ -84,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		jimport('joomla.filter.output');
 		$k = 0;
-		for ($i=0, $n=count($this->metatagsData); $i < $n; $i++)
+		for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++)
 		{
 			$row = $this->metatagsData[$i];
 			$checked = JHTML::_('grid.id', $i, $row->id);
