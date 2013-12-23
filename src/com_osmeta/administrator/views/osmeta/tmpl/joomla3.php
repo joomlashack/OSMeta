@@ -99,7 +99,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td valign="top">
 					<?php
 					?>
-					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="components/com_seoboss/images/rightarrow.png"/></a>
+					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="../media/com_osmeta/administrator/images/rightarrow.png"/></a>
 					<textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
 					<?php
 					?>
@@ -124,7 +124,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</tfoot>
 	</table>
-	<input type="hidden" name="option" value="com_seoboss" />
+	<input type="hidden" name="option" value="com_osmeta" />
 	<input type="hidden" name="task" value="metatags_view" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>

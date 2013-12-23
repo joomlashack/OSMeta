@@ -34,7 +34,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     FROM
     #__mt_cats c
     LEFT JOIN
-    #__seoboss_metadata m ON m.item_id=c.cat_id and m.item_type={$this->code}
+    #__osmeta_metadata m ON m.item_id=c.cat_id and m.item_type={$this->code}
     WHERE 1 ";
 
     $search = JRequest::getVar("filter_search", "");
@@ -118,7 +118,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $items = $db->loadObjectList();
     foreach($items as $item){
       if ($item->metakey != ''){
-        $sql = "INSERT INTO #__seoboss_metadata (item_id,
+        $sql = "INSERT INTO #__osmeta_metadata (item_id,
             item_type, title_tag)
             VALUES (
             ".$db->quote($item->cat_id).",
@@ -140,7 +140,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
       }
     }
     $sql = "SELECT item_id, title_tag
-        FROM #__seoboss_metadata
+        FROM #__osmeta_metadata
         WHERE item_id IN (".implode(",", $ids).") AND item_type='{$this->code}'";
     $db->setQuery($sql);
     $items = $db->loadObjectList();
@@ -168,7 +168,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     $items = $db->loadObjectList();
     foreach($items as $item){
       if ($item->cat_name != ''){
-        $sql = "INSERT INTO #__seoboss_metadata (item_id,
+        $sql = "INSERT INTO #__osmeta_metadata (item_id,
             item_type, title_tag)
             VALUES (
             ".$db->quote($item->cat_id).",
@@ -285,7 +285,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
       $db->setQuery($sql);
       $db->query();
 
-      $sql = "INSERT INTO #__seoboss_metadata (
+      $sql = "INSERT INTO #__osmeta_metadata (
           item_id,
           item_type,
           title,
@@ -319,7 +319,7 @@ class MosetsTree_CategoryMetatagsContainer extends MetatagsContainer{
     m.title as metatitle
     FROM
     #__mt_cats c
-    LEFT JOIN #__seoboss_metadata m ON m.item_id=c.cat_id and m.item_type={$this->code}
+    LEFT JOIN #__osmeta_metadata m ON m.item_id=c.cat_id and m.item_type={$this->code}
     WHERE c.cat_id=".$db->quote($id);
     $db->setQuery($sql);
     return $db->loadAssoc();

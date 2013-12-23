@@ -26,7 +26,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         m.title as metatitle
          FROM
         #__js_res_record c
-        LEFT JOIN #__seoboss_metadata m ON c.id=m.item_id AND m.item_type=".$db->quote($this->code)."
+        LEFT JOIN #__osmeta_metadata m ON c.id=m.item_id AND m.item_type=".$db->quote($this->code)."
         WHERE 1 ";
 
         $search = JRequest::getVar("filter_search", "");
@@ -204,7 +204,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
 		$items = $db->loadObjectList();
 		foreach($items as $item){
 			if ($item->meta_key != ''){
-			$sql = "INSERT INTO #__seoboss_metadata (item_id,
+			$sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -226,7 +226,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
                 unset($ids[$key]);
             }
         }
-        $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type=".$db->quote($this->code);
+        $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type=".$db->quote($this->code);
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
@@ -251,7 +251,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
         $items = $db->loadObjectList();
         foreach($items as $item){
             if ($item->title != ''){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -280,7 +280,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OsmetaModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -302,7 +302,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             if (strlen($introtext) > $max_description_length){
                 $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -336,7 +336,7 @@ class Cobalt_MetatagsContainer extends MetatagsContainer{
             $db->setQuery($sql);
             $db->query();
 
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
                     			 item_type, title, description)
                     			 VALUES (
                     			 ".$db->quote($ids[$i]).",

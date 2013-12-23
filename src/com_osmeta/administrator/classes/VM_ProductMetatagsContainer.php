@@ -23,8 +23,8 @@ public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id as id, c.product_name AS title,
         (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-            FROM #__seoboss_keywords k,
-            #__seoboss_keywords_items ki
+            FROM #__osmeta_keywords k,
+            #__osmeta_keywords_items ki
             WHERE ki.item_id=c.product_id and ki.item_type_id=2
                 AND ki.keyword_id=k.id
        ) AS metakey,
@@ -33,7 +33,7 @@ public function getMetatags($lim0, $lim, $filter=null){
          FROM
         #__vm_product c
         LEFT JOIN
-        #__seoboss_metadata m ON m.item_id=c.product_id and m.item_type=2 WHERE 1";
+        #__osmeta_metadata m ON m.item_id=c.product_id and m.item_type=2 WHERE 1";
 
         $search = JRequest::getVar("filter_search", "");
         $category_id = JRequest::getVar("filter_category_id", "0");
@@ -111,7 +111,7 @@ public function getMetatags($lim0, $lim, $filter=null){
                 unset($ids[$key]);
             }else{
                 $sql = "SELECT k.name
-                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki
+                  FROM #__osmeta_keywords k, #__osmeta_keywords_items ki
                   WHERE k.id=ki.keyword_id
                      AND ki.item_id=".$db->quote($value).
                     "  AND ki.item_type_id=2";
@@ -123,7 +123,7 @@ public function getMetatags($lim0, $lim, $filter=null){
                         $keywords_arr[] = $keyword->name;
                     }
                     $keywords_str = implode("," , $keywords_arr);
-                    $sql = "INSERT INTO #__seoboss_metadata (item_id,
+                    $sql = "INSERT INTO #__osmeta_metadata (item_id,
                         item_type, title, description)
                         VALUES (
                         ".$db->quote($value).",
@@ -147,7 +147,7 @@ public function getMetatags($lim0, $lim, $filter=null){
                 unset($ids[$key]);
             }
         }
-        $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_type=2 AND item_id IN (".implode(",", $ids).")";
+        $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_type=2 AND item_id IN (".implode(",", $ids).")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
@@ -169,7 +169,7 @@ public function getMetatags($lim0, $lim, $filter=null){
         $items = $db->loadObjectList();
         foreach($items as $item){
             if ($item->title != ''){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -203,7 +203,7 @@ public function getMetatags($lim0, $lim, $filter=null){
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OsmetaModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -224,7 +224,7 @@ public function getMetatags($lim0, $lim, $filter=null){
             if (strlen($introtext) > $max_description_length){
               $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -244,8 +244,8 @@ public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.product_id AS id, c.product_name AS title,
         (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-            FROM #__seoboss_keywords k,
-            #__seoboss_keywords_items ki
+            FROM #__osmeta_keywords k,
+            #__osmeta_keywords_items ki
             WHERE ki.item_id=c.product_id and ki.item_type_id=2
                 AND ki.keyword_id=k.id
        ) AS metakey,
@@ -297,7 +297,7 @@ public function getMetatags($lim0, $lim, $filter=null){
     public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys){
         $db = JFactory::getDBO();
         for($i = 0 ;$i < count($ids); $i++){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($ids[$i]).",

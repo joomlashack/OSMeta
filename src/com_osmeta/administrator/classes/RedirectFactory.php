@@ -15,9 +15,9 @@ defined('_JEXEC') or die('Restricted access');
 
 class RedirectFactory{
 	public static function Redirect($data){
-		require_once JPATH_ADMINISTRATOR."/components/com_seoboss/lib/Snoopy.class.php";
+		require_once JPATH_ADMINISTRATOR."/components/com_osmeta/lib/Snoopy.class.php";
 		$db = JFactory::getDBO();
-		$obj = new SnoopySeoBoss();
+		$obj = new SnoopyOSMeta();
 		$obj->fetchLinksForRedirect($data);
 		$url = $_SERVER['HTTP_HOST'];
 		$extLink = array();
@@ -31,7 +31,7 @@ class RedirectFactory{
 					$extLink[]='|'.$linkInText.'|';
 				}
 			}
-			$query="SELECT * FROM #__seoboss_redirects WHERE 1";
+			$query="SELECT * FROM #__osmeta_redirects WHERE 1";
 			$db->setQuery($query);
 			$r_links = $db->loadObjectList();
 			foreach($r_links as $r_link){
@@ -40,10 +40,10 @@ class RedirectFactory{
 					if (substr($r_link->url, -1) == '*' && stripos($extLink[$i],substr($r_link->url, 0, -1))){
 						$extLink[$i] = str_replace("|", "", $extLink[$i]);
 
-						$data = str_replace($extLink[$i].'"', '/index.php?option=com_seoboss&amp;url='.$extLink[$i].'" target="'.$target.'"', $data);
+						$data = str_replace($extLink[$i].'"', '/index.php?option=com_osmeta&amp;url='.$extLink[$i].'" target="'.$target.'"', $data);
 					}else if (stripos($extLink[$i],$r_link->url."|")){
 						$extLink[$i] = str_replace("|", "", $extLink[$i]);
-						$data = str_replace($extLink[$i].'"', '/index.php?option=com_seoboss&amp;url='.$extLink[$i].'" target="'.$target.'"', $data);
+						$data = str_replace($extLink[$i].'"', '/index.php?option=com_osmeta&amp;url='.$extLink[$i].'" target="'.$target.'"', $data);
 					}
 				}
 			}

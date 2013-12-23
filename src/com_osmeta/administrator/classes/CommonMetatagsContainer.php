@@ -30,7 +30,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	   $db = JFactory::getDBO();
 
 	   if (JRequest::getVar('id') > 0){
-          $sql = "SELECT title, title_tag from #__seoboss_metadata WHERE item_id=".$db->quote(JRequest::getVar('id'))." AND
+          $sql = "SELECT title, title_tag from #__osmeta_metadata WHERE item_id=".$db->quote(JRequest::getVar('id'))." AND
 	      item_type=1";
 
 	   	  $db->setQuery($sql);
@@ -56,7 +56,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	               frontpage_meta_title,
 	               frontpage_keywords,
 	               frontpage_description
-	               FROM #__seoboss_settings LIMIT 0,1");
+	               FROM #__osmeta_settings LIMIT 0,1");
 	       $settings = $db->loadObject();
 
 	       if ($settings->frontpage_meta==0){
@@ -79,10 +79,10 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	           jimport('joomla.version');
 	           $version = new JVersion();
 	           if ($version->RELEASE == "1.5"){
-	               $model = JBModel::getInstance("frontpage", "contentModel", array());
+	               $model = OSModel::getInstance("frontpage", "contentModel", array());
 	               $featuredItems = $model->getData();
 	           }else{
-	               $model = JBModel::getInstance("featured", "contentModel", array());
+	               $model = OSModel::getInstance("featured", "contentModel", array());
 	               $featuredItems = $model->getItems();
 	           }
 	           $firstItem = $featuredItems[0];
@@ -136,7 +136,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
         $url = "/";
       }
 	  $db = JFactory::getDBO();
-	  $db->setQuery("SELECT `id` FROM `#__seoboss_urls` where `url`=".$db->quote($url));
+	  $db->setQuery("SELECT `id` FROM `#__osmeta_urls` where `url`=".$db->quote($url));
 	  return $db->loadResult();
 	}
 
@@ -145,7 +145,7 @@ class CommonMetatagsContainer extends MetatagsContainer{
 	    $url = "/";
 	  }
 	  $db = JFactory::getDBO();
-	  $db->setQuery("INSERT INTO `#__seoboss_urls` (`url`) VALUES (".$db->quote($url).")");
+	  $db->setQuery("INSERT INTO `#__osmeta_urls` (`url`) VALUES (".$db->quote($url).")");
 	  $db->query();
 	  return $db->insertid();
 	}

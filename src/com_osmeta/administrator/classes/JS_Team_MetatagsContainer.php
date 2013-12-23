@@ -19,8 +19,8 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
     public function getMetatags($lim0, $lim, $filter=null){
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.t_name as title, (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->itemType}
 		                AND ki.keyword_id=k.id
 		       ) AS metakey,
@@ -29,7 +29,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
 		 FROM
 		#__bl_teams c
 		LEFT JOIN
-		#__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->itemType} WHERE 1";
+		#__osmeta_metadata m ON m.item_id=c.id and m.item_type={$this->itemType} WHERE 1";
 
         $search = JRequest::getVar("filter_search", "");
 	var_dump($search);
@@ -111,7 +111,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
                 unset($ids[$key]);
             }else{
                 $sql = "SELECT k.name
-                  FROM #__seoboss_keywords k, #__seoboss_keywords_items ki
+                  FROM #__osmeta_keywords k, #__osmeta_keywords_items ki
                   WHERE k.id=ki.keyword_id
                      AND ki.item_id=".$db->quote($value).
                     "  AND ki.item_type_id={$this->itemType}";
@@ -123,7 +123,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
                         $keywords_arr[] = $keyword->name;
                     }
                     $keywords_str = implode("," , $keywords_arr);
-                    $sql = "INSERT INTO #__seoboss_metadata (item_id,
+                    $sql = "INSERT INTO #__osmeta_metadata (item_id,
                         item_type, title, description)
                         VALUES (
                         ".$db->quote($value).",
@@ -147,7 +147,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
                 unset($ids[$key]);
             }
         }
-        $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_type={$this->itemType} AND item_id IN (".implode(",", $ids).")";
+        $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_type={$this->itemType} AND item_id IN (".implode(",", $ids).")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
@@ -169,7 +169,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
         $items = $db->loadObjectList();
         foreach($items as $item){
             if ($item->title != ''){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -203,7 +203,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OsmetaModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -225,7 +225,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
             if (strlen($introtext) > $max_description_length){
               $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -246,8 +246,8 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id AS id, c.t_name AS title,
         (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-            FROM #__seoboss_keywords k,
-            #__seoboss_keywords_items ki
+            FROM #__osmeta_keywords k,
+            #__osmeta_keywords_items ki
             WHERE ki.item_id=c.id and ki.item_type_id={$this->itemType}
                 AND ki.keyword_id=k.id
        ) AS metakey,
@@ -287,7 +287,7 @@ class JS_Team_MetaTagsContainer extends MetatagsContainer{
     public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys){
         $db = JFactory::getDBO();
         for($i = 0 ;$i < count($ids); $i++){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
 			 item_type, title, description)
 			 VALUES (
 			 ".$db->quote($ids[$i]).",

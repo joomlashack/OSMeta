@@ -20,7 +20,7 @@ abstract class MetatagsContainer{
 
 		$db = JFactory::getDBO();
 		//Save metatitles and metadata
-		$sql = "INSERT INTO #__seoboss_metadata
+		$sql = "INSERT INTO #__osmeta_metadata
 		(title,
          title_tag,
 		 description,
@@ -47,7 +47,7 @@ abstract class MetatagsContainer{
 
 	public function saveKeywords($keywords, $itemId, $itemTypeId){
 	    $db = JFactory::getDBO();
-	    $sql = "DELETE FROM #__seoboss_keywords_items
+	    $sql = "DELETE FROM #__osmeta_keywords_items
         WHERE item_id=".$db->quote($itemId)." AND item_type_id=".$db->quote($itemTypeId);
         $db->setQuery($sql);
         $db->query();
@@ -61,17 +61,17 @@ abstract class MetatagsContainer{
             if (!$keyword){
                 continue;
             }
-            $sql = "SELECT id FROM #__seoboss_keywords WHERE name=".$db->quote($keyword);
+            $sql = "SELECT id FROM #__osmeta_keywords WHERE name=".$db->quote($keyword);
             $db->setQuery($sql);
             $id = $db->loadResult();
             if (!$id){
-                 $sql = "INSERT INTO #__seoboss_keywords (name) VALUES (".$db->quote($keyword).")";
+                 $sql = "INSERT INTO #__osmeta_keywords (name) VALUES (".$db->quote($keyword).")";
                  $db->setQuery($sql);
                  $db->query();
                  $id= $db->insertid();
             }
 
-            $sql = "INSERT IGNORE INTO #__seoboss_keywords_items (keyword_id, item_id, item_type_id)
+            $sql = "INSERT IGNORE INTO #__osmeta_keywords_items (keyword_id, item_id, item_type_id)
              VALUES (".$db->quote($id).", ".$db->quote($itemId).",".$db->quote($itemTypeId).")";
             $db->setQuery($sql);
             $db->query();
@@ -82,7 +82,7 @@ abstract class MetatagsContainer{
 
         }
 
-        $sql = "DELETE FROM #__seoboss_keywords WHERE NOT EXISTS (SELECT 1 FROM #__seoboss_keywords_items  WHERE keyword_id=#__seoboss_keywords.id)";
+        $sql = "DELETE FROM #__osmeta_keywords WHERE NOT EXISTS (SELECT 1 FROM #__osmeta_keywords_items  WHERE keyword_id=#__osmeta_keywords.id)";
         $db->setQuery($sql);
         $db->query();
 	}
@@ -92,15 +92,15 @@ abstract class MetatagsContainer{
 	  $sql = "SELECT m.item_id as id,
 	  m.title_tag as title_tag,
 	  (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-	    FROM #__seoboss_keywords k,
-	    #__seoboss_keywords_items ki
+	    FROM #__osmeta_keywords k,
+	    #__osmeta_keywords_items ki
 	    WHERE ki.item_id=m.item_id and ki.item_type_id=".$db->quote($this->getTypeId())."
 	    AND ki.keyword_id=k.id
 	 ) AS metakeywords,
 	  m.description as metadescription,
 	  m.title as metatitle
 	  FROM
-	  #__seoboss_metadata m
+	  #__osmeta_metadata m
 	  WHERE m.item_id=".$db->quote($id)."
 	    AND m.item_type=".$db->quote($this->getTypeId());
 	  $db->setQuery($sql);
@@ -115,7 +115,7 @@ abstract class MetatagsContainer{
 	  }
 	  if (count($ids)>0){
     	  $db = JFactory::getDBO();
-    	  $db->setQuery("UPDATE #__seoboss_metadata SET title_tag=''
+    	  $db->setQuery("UPDATE #__osmeta_metadata SET title_tag=''
     	                 WHERE item_id IN ('".implode("','", $ids)."')
     	                AND item_type=".$db->quote($this->getTypeId()));
     	  $db->query();

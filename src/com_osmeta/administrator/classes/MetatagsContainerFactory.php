@@ -130,11 +130,11 @@ class MetatagsContainerFactory{
 
     }
     require_once(dirname(__FILE__)."/Canonical.php");
-    $canonical = new SeobossCanonicalURL();
+    $canonical = new OsmetaCanonicalURL();
     $canonical_url = $canonical->getCanonicalURL(substr($_SERVER["REQUEST_URI"], strlen(JURI::base(true))+1));
     if ($canonical_url != null){
       switch($canonical_url->action){
-        case SeobossCanonicalURL::$ACTION_CANONICAL:
+        case OsmetaCanonicalURL::$ACTION_CANONICAL:
           $replaced = 0;
           $location = JURI::base() . $canonical_url->canonical_url;
           $body = preg_replace("/<link[^>]*rel[\\s]*=[\\s]*[\\\"\\\']+canonical[\\\"\\\']+[^>]*>/i",
@@ -143,10 +143,10 @@ class MetatagsContainerFactory{
             $body = preg_replace('/<head>/i', "<head>\n  <link rel=\"canonical\" href=\"".htmlspecialchars($location)."\"/>", $body, 1);
           }
           break;
-        case SeobossCanonicalURL::$ACTION_NOINDEX:
+        case OsmetaCanonicalURL::$ACTION_NOINDEX:
           $body = preg_replace('/<head>/i', "<head>\n  <meta name=\"robots\" content=\"noindex\"/>", $body, 1);
           break;
-        case SeobossCanonicalURL::$ACTION_REDIRECT:
+        case OsmetaCanonicalURL::$ACTION_REDIRECT:
           $location = JURI::base() . $canonical_url->canonical_url;
           header ('HTTP/1.1 301 Moved Permanently');
           header ('Location: '.$location);
@@ -174,15 +174,16 @@ class MetatagsContainerFactory{
         }
 
 	public static function getFeatures(){
-	  if (MetatagsContainerFactory::$features == null){
+    if (MetatagsContainerFactory::$features == null){
 	    $features  = array();
 
 	    $directoryName = dirname(dirname(__FILE__)).'/features';
-	    $db=JFactory::getDBO();
+	    $db = JFactory::getDBO();
 	    $db->setQuery("SELECT component FROM
-	        #__seoboss_meta_extensions
+	        #__osmeta_meta_extensions
 	        WHERE available=1 AND enabled=1");
 	    $items = $db->loadObjectList();
+
 	    foreach($items as $item){
           include $directoryName."/".$item->component.".php";
         }
@@ -195,7 +196,7 @@ class MetatagsContainerFactory{
 	public static function refreshFeatures(){
 	  $result = array();
 	  $db = JFactory::getDBO();
-	  $db->setQuery("SELECT component, available FROM #__seoboss_meta_extensions");
+	  $db->setQuery("SELECT component, available FROM #__osmeta_meta_extensions");
 	  $extensions = $db->loadObjectList();
 	  foreach($extensions as $extension){
 	    $features = array();
@@ -211,7 +212,7 @@ class MetatagsContainerFactory{
 	        }
 	    }
 
-	    $db->setQuery("UPDATE #__seoboss_meta_extensions SET available=".($available?1:0)."
+	    $db->setQuery("UPDATE #__osmeta_meta_extensions SET available=".($available?1:0)."
 	        WHERE component=".$db->quote($extension->component));
 	    $db->query();
 	    $result[$extension->component] = $available;
@@ -243,20 +244,20 @@ class MetatagsContainerFactory{
 	public static function getAllFeatures(){
 	  $db=JFactory::getDBO();
 	  $db->setQuery("SELECT name, component, description, enabled FROM
-	      #__seoboss_meta_extensions WHERE available=1");
+	      #__osmeta_meta_extensions WHERE available=1");
       $features = $db->loadAssocList();
       return $features;
 	}
 
 	public static function enableFeature($feature){
 	  $db = JFactory::getDBO();
-	  $db->setQuery("UPDATE #__seoboss_meta_extensions SET enabled=1 WHERE component=".$db->quote($feature));
+	  $db->setQuery("UPDATE #__osmeta_meta_extensions SET enabled=1 WHERE component=".$db->quote($feature));
 	  $db->query();
 	}
 
 	public static function disableFeature($feature){
 	  $db = JFactory::getDBO();
-	  $db->setQuery("UPDATE #__seoboss_meta_extensions SET enabled=0 WHERE component=".$db->quote($feature));
+	  $db->setQuery("UPDATE #__osmeta_meta_extensions SET enabled=0 WHERE component=".$db->quote($feature));
 	  $db->query();
 	}
 

@@ -20,8 +20,8 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
 		$db = JFactory::getDBO();
 		$sql = "SELECT SQL_CALC_FOUND_ROWS c.id as id, c.{$this->getField()} AS title,
 		        (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       ) AS metakey,
@@ -31,7 +31,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
 		        FROM
 		        #__menu c
 		        LEFT JOIN
-		        #__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE 1";
+		        #__osmeta_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE 1";
 
 		$search = JRequest::getVar("filter_search", "");
                 $menu_type= JRequest::getVar("filter_menu_type", "mainmenu");
@@ -99,8 +99,8 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
     $db = JFactory::getDBO();
     $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.{$this->getField()} as title,
             (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-                        FROM #__seoboss_keywords k,
-                        #__seoboss_keywords_items ki
+                        FROM #__osmeta_keywords k,
+                        #__osmeta_keywords_items ki
                         WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
                             AND ki.keyword_id=k.id
                    )  as metakey, c.published as state,
@@ -156,7 +156,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
            ){
     $db = JFactory::getDBO();
     for($i = 0 ;$i < count($ids); $i++){
-        $sql = "INSERT INTO #__seoboss_metadata (item_id,
+        $sql = "INSERT INTO #__osmeta_metadata (item_id,
          item_type, title, description
                     ,title_tag
            )VALUES (
@@ -184,8 +184,8 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
       }
     }
     $sql = "SELECT c.id, (SELECT GROUP_CONCAT(k.name SEPARATOR ' ')
-                FROM #__seoboss_keywords k,
-                #__seoboss_keywords_items ki
+                FROM #__osmeta_keywords k,
+                #__osmeta_keywords_items ki
                 WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
                     AND ki.keyword_id=k.id
            ) AS metakey FROM #__menu c WHERE c.id IN (".implode(",", $ids).")";
@@ -193,7 +193,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
     $items = $db->loadObjectList();
     foreach($items as $item){
       if ($item->metakey != ''){
-        $sql = "INSERT INTO #__seoboss_metadata
+        $sql = "INSERT INTO #__osmeta_metadata
           (item_id, item_type, title, description)
            VALUES (
            ".$db->quote($item->id).",
@@ -216,7 +216,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
       }
     }
 
-    $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type={$this->code}";
+    $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type={$this->code}";
     $db->setQuery($sql);
     $categories = $db->loadObjectList();
     foreach($categories as $category){
@@ -244,7 +244,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
       $items = $db->loadObjectList();
       foreach($items as $item){
         if ($item->title != ''){
-          $sql = "INSERT INTO #__seoboss_metadata (item_id,
+          $sql = "INSERT INTO #__osmeta_metadata (item_id,
            item_type, title, description)
            VALUES (
            ".$db->quote($item->id).",
@@ -326,8 +326,8 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
 		$db = JFactory::getDBO();
 		$sql = "SELECT c.id as id, c.{$this->getField()} as title,
 		(SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       ) as metakeywords,
@@ -335,7 +335,7 @@ class MenuItemMetatagsContainer extends MetatagsContainer{
          FROM
         #__menu c
         LEFT JOIN
-        #__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE c.id=".$db->quote($id);
+        #__osmeta_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE c.id=".$db->quote($id);
 		$db->setQuery($sql);
 		return $db->loadAssoc();
 	}

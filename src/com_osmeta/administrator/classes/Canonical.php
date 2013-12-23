@@ -13,7 +13,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-class SeobossCanonicalURL{
+class OsmetaCanonicalURL{
   public static $ACTION_CANONICAL=0;
   public static $ACTION_REDIRECT=1;
   public static $ACTION_NOINDEX=2;
@@ -21,11 +21,11 @@ class SeobossCanonicalURL{
       $action=0){
     $db = JFactory::getDBO();
     $db->setQuery("
-        DELETE FROM `#__seoboss_canonical_url`
+        DELETE FROM `#__osmeta_canonical_url`
         WHERE url=".$db->quote($originalURL));
     $db->query();
 
-    $db->setQuery("INSERT INTO `#__seoboss_canonical_url`
+    $db->setQuery("INSERT INTO `#__osmeta_canonical_url`
         (url, canonical_url, action) VALUES (".
       $db->quote($originalURL). ",".
       $db->quote($canonicalURL) .",".
@@ -35,25 +35,25 @@ class SeobossCanonicalURL{
 
   public function getCanonicalURL($originalURL){
     $db = JFactory::getDBO();
-    $db->setQuery("SELECT canonical_url, action FROM `#__seoboss_canonical_url` WHERE url=".$db->quote($originalURL));
+    $db->setQuery("SELECT canonical_url, action FROM `#__osmeta_canonical_url` WHERE url=".$db->quote($originalURL));
     return $db->loadObject();
   }
 
   public function getCanonicalURLById($id){
     $db = JFactory::getDBO();
-    $db->setQuery("SELECT id, url, canonical_url, action FROM `#__seoboss_canonical_url` WHERE id=".$db->quote($id));
+    $db->setQuery("SELECT id, url, canonical_url, action FROM `#__osmeta_canonical_url` WHERE id=".$db->quote($id));
     return $db->loadObject();
   }
 
   public function setCanonicalURLById($id, $url, $canonical_url, $action=0){
     $db = JFactory::getDBO();
     if ($id){
-      $db->setQuery("UPDATE `#__seoboss_canonical_url`
+      $db->setQuery("UPDATE `#__osmeta_canonical_url`
           SET url=".$db->quote($url).",
           canonical_url=".$db->quote($canonical_url).",
           action=".$db->quote($action)."  WHERE id=".$db->quote($id));
     }else{
-      $db->setQuery("INSERT INTO `#__seoboss_canonical_url` (url, canonical_url,action)
+      $db->setQuery("INSERT INTO `#__osmeta_canonical_url` (url, canonical_url,action)
           VALUES (".$db->quote($url).", ".$db->quote($canonical_url).", ".$db->quote($action).") ");
     }
     $db->query();
@@ -61,13 +61,13 @@ class SeobossCanonicalURL{
 
   public function deleteCanonicalURLById($id){
     $db = JFactory::getDBO();
-    $db->setQuery("DELETE FROM `#__seoboss_canonical_url` WHERE id=".$db->quote($id));
+    $db->setQuery("DELETE FROM `#__osmeta_canonical_url` WHERE id=".$db->quote($id));
     $db->query();
   }
 
   public function getCanonicalURLs(){
     $db = JFactory::getDBO();
-    $db->setQuery("SELECT id, url, canonical_url, action FROM `#__seoboss_canonical_url` ");
+    $db->setQuery("SELECT id, url, canonical_url, action FROM `#__osmeta_canonical_url` ");
     return $db->loadObjectList();
   }
 }

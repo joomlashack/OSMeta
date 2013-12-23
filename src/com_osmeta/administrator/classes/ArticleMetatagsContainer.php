@@ -29,7 +29,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 		FROM
 		#__content c
 		LEFT JOIN
-		#__seoboss_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
+		#__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
 		$search = JRequest::getVar("com_content_filter_search", "");
         $section_id= JRequest::getVar("com_content_filter_sectionid", "-1");
         $cat_id = JRequest::getVar("com_content_filter_catid", "0");
@@ -129,7 +129,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 			#__content c
 			LEFT JOIN #__categories cc ON cc.id=c.catid
 			LEFT JOIN
-			#__seoboss_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
+			#__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
 
 	    $search = JRequest::getVar("com_content_filter_search", "");
 	    $cat_id = JRequest::getVar("com_content_filter_catid", "0");
@@ -414,7 +414,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 			$sql = "UPDATE #__content SET metakey=".$db->quote($metakeys[$i])." , metadesc=".$db->quote($metadescriptions[$i])." WHERE id=".$db->quote($ids[$i]);
 			$db->setQuery($sql);
 			$db->query();
-			$sql = "INSERT INTO #__seoboss_metadata (item_id,
+			$sql = "INSERT INTO #__osmeta_metadata (item_id,
 			item_type, title, description, title_tag)
 			VALUES (
 			".$db->quote($ids[$i]).",
@@ -445,7 +445,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 		$items = $db->loadObjectList();
 		foreach($items as $item){
 			if ($item->metakey != ''){
-			$sql = "INSERT INTO #__seoboss_metadata (item_id,
+			$sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -467,7 +467,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
                 unset($ids[$key]);
             }
         }
-        $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type=1";
+        $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type=1";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
         foreach($items as $item){
@@ -492,7 +492,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
         $items = $db->loadObjectList();
         foreach($items as $item){
             if ($item->title != ''){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -521,7 +521,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OSModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -543,7 +543,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
             if (strlen($introtext) > $max_description_length){
                 $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -777,7 +777,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	        frontpage_meta_title,
 	        frontpage_keywords,
 	        frontpage_description
-	        FROM #__seoboss_settings LIMIT 0,1");
+	        FROM #__osmeta_settings LIMIT 0,1");
 	    $settings = $db->loadObject();
 
 	    if ($settings->frontpage_meta==0){
@@ -792,10 +792,10 @@ class ArticleMetatagsContainer extends MetatagsContainer{
           jimport('joomla.version');
             $version = new JVersion();
           if ($version->RELEASE == "1.5"){
-            $model = JBModel::getInstance("frontpage", "contentModel", array());
+            $model = OSModel::getInstance("frontpage", "contentModel", array());
             $featuredItems = $model->getData();
           }else{
-            $model = JBModel::getInstance("featured", "contentModel", array());
+            $model = OSModel::getInstance("featured", "contentModel", array());
             $featuredItems = $model->getItems();
           }
           $firstItem = $featuredItems[0];
@@ -819,7 +819,7 @@ class ArticleMetatagsContainer extends MetatagsContainer{
 	    $db = JFactory::getDBO();
 
 	    $db->setQuery("
-	        UPDATE #__seoboss_settings SET
+	        UPDATE #__osmeta_settings SET
 	        frontpage_meta = '0',
 	        frontpage_title = ".$db->quote($data["title_tag"]).",
 	        frontpage_meta_title = ".$db->quote($data["metatitle"]).",

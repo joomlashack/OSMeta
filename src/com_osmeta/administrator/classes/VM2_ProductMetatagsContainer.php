@@ -30,7 +30,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
          FROM
         #__virtuemart_products_$language c
         LEFT JOIN
-		#__seoboss_metadata m ON m.item_id=c.virtuemart_product_id and m.item_type={$this->code}
+		#__osmeta_metadata m ON m.item_id=c.virtuemart_product_id and m.item_type={$this->code}
         WHERE 1 ";
 
         $search = JRequest::getVar("filter_search", "");
@@ -191,7 +191,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OsmetaModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -217,7 +217,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
             if (strlen($introtext) > $max_description_length){
               $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
             item_type, title, description)
             VALUES (
             ".$db->quote($item->virtuemart_product_id).",
@@ -307,7 +307,7 @@ class VM2_ProductMetatagsContainer extends MetatagsContainer{
             $db->query();
             $this->saveKeywords($metakeys[$i], $ids[$i]);
 
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
             item_type, title, description, title_tag)
             VALUES (
             ".$db->quote($ids[$i]).",

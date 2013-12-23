@@ -15,6 +15,9 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_COMPONENT . '/controller.php';
 
+JLoader::register('OSView', JPATH_COMPONENT . "/views/view.php");
+JLoader::register('OSModel', JPATH_COMPONENT . "/models/model.php");
+
 $app = JFactory::getApplication();
 
 if (version_compare(JVERSION, '3.0', '>='))

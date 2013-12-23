@@ -78,6 +78,7 @@ class OsmetaController extends OSController
 		}
 
 		$metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);
+
 		if (!is_object($metatagsContainer))
 		{
 			throw Exception('MetaTagsContainer is not an object');

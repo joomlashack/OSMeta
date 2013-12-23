@@ -23,8 +23,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 		$db = JFactory::getDBO();
 		$sql = "SELECT SQL_CALC_FOUND_ROWS c.id as id, c.title AS title,
 		        (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       ) AS metakey,
@@ -35,7 +35,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 		        #__categories c
 		        INNER JOIN #__sections AS s ON s.id=c.section
 		        LEFT JOIN
-		        #__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE 1";
+		        #__osmeta_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE 1";
 
 		$search = JRequest::getVar("com_content_category_filter_search", "");
         $section_id= JRequest::getVar("com_content_category_filter_sectionid", "-1");
@@ -113,8 +113,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
 		(SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       )  as metakey, c.published as state,
@@ -179,7 +179,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
    		){
 	$db = JFactory::getDBO();
         for($i = 0 ;$i < count($ids); $i++){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description
 			,title_tag
 		)VALUES (
@@ -207,8 +207,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 			}
 		}
 		$sql = "SELECT c.id, (SELECT GROUP_CONCAT(k.name SEPARATOR ' ')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       ) AS metakey, FROM #__categories c WHERE c.id IN (".implode(",", $ids).")";
@@ -216,7 +216,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 		$items = $db->loadObjectList();
 		foreach($items as $item){
 			if ($item->metakey != ''){
-			$sql = "INSERT INTO #__seoboss_metadata (item_id,
+			$sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -239,7 +239,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
             }
         }
 
-        $sql = "SELECT item_id, title FROM #__seoboss_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type={$this->code}";
+        $sql = "SELECT item_id, title FROM #__osmeta_metadata WHERE item_id IN (".implode(",", $ids).") AND item_type={$this->code}";
         $db->setQuery($sql);
         $categories = $db->loadObjectList();
         foreach($categories as $category){
@@ -267,7 +267,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
         $items = $db->loadObjectList();
         foreach($items as $item){
             if ($item->title != ''){
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -307,7 +307,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 
     public function GenerateDescriptions($ids){
       $max_description_length = 500;
-      $model = JBModel::getInstance("options", "SeobossModel");
+      $model = OSModel::getInstance("options", "OsmetaModel");
       $params = $model->getOptions();
       $max_description_length =
         $params->max_description_length?
@@ -329,7 +329,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
             if (strlen($introtext) > $max_description_length){
                 $introtext = substr($introtext, 0, $max_description_length);
             }
-            $sql = "INSERT INTO #__seoboss_metadata (item_id,
+            $sql = "INSERT INTO #__osmeta_metadata (item_id,
              item_type, title, description)
              VALUES (
              ".$db->quote($item->id).",
@@ -394,8 +394,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
 		$db = JFactory::getDBO();
 		$sql = "SELECT c.id as id, c.title as title,
 		(SELECT GROUP_CONCAT(k.name SEPARATOR ',')
-		            FROM #__seoboss_keywords k,
-		            #__seoboss_keywords_items ki
+		            FROM #__osmeta_keywords k,
+		            #__osmeta_keywords_items ki
 		            WHERE ki.item_id=c.id and ki.item_type_id={$this->code}
 		                AND ki.keyword_id=k.id
 		       ) as metakeywords,
@@ -403,7 +403,7 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer{
          FROM
         #__categories c
         LEFT JOIN
-        #__seoboss_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE c.id=".$db->quote($id);
+        #__osmeta_metadata m ON m.item_id=c.id and m.item_type={$this->code} WHERE c.id=".$db->quote($id);
 		$db->setQuery($sql);
 		return $db->loadAssoc();
 	}
