@@ -10,7 +10,7 @@
  * @version   1.0.0
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 function com_content_get_url(&$article, $isNew){

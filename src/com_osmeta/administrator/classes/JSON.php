@@ -56,7 +56,7 @@
  * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 /**

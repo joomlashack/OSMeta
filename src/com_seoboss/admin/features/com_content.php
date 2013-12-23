@@ -8,7 +8,7 @@
 # Websites: http://www.joomboss.com
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_content:Article'] = array(

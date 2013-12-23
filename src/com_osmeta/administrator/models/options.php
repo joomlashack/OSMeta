@@ -10,7 +10,7 @@
  * @version   1.0.0
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';

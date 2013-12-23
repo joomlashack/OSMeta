@@ -10,5 +10,5 @@
  * @version   1.0.0
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');

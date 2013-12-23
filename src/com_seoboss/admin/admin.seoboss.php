@@ -8,7 +8,7 @@
 # Websites: http://www.joomboss.com
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 
 JLoader::register('JBView', JPATH_COMPONENT."/views/view.php");

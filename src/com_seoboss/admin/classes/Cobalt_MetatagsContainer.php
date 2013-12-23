@@ -8,7 +8,7 @@
 # Websites: http://www.joomboss.com
 # Technical Support:  Forum - http://joomboss.com/forum
 -------------------------------------------------------------------------*/
-// no direct access
+// No direct access
 defined('_JEXEC') or die('Restricted access');
 require_once "MetatagsContainer.php";
 class Cobalt_MetatagsContainer extends MetatagsContainer{
