@@ -29,12 +29,6 @@ else
 	$task = JRequest::getCmd('task');
 }
 
-// Default task
-if (empty($task))
-{
-	$task = 'metatags_view';
-}
-
 $controller = OSController::getInstance('OSMeta');
 $controller->execute($task);
 $controller->redirect();

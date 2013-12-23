@@ -26,6 +26,11 @@ else
 
 class OsmetaController extends OSController
 {
+	public function display($cachable = false, $urlparams = array())
+	{
+		$this->metatags_view();
+	}
+
 	public function metatags_view()
 	{
 		$this->metatags_manager('metatags_view');
