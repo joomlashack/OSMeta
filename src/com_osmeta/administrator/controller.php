@@ -1,13 +1,13 @@
 <?php
 /**
- * @category  Joomla Component
- * @package   osmeta
- * @author    JoomBoss
- * @copyright 2012, JoomBoss. All rights reserved
- * @copyright 2013 Open Source Training, LLC. All rights reserved
- * @contact   www.ostraining.com, support@ostraining.com
- * @license   http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version   1.0.0
+ * @category   Joomla Component
+ * @package    Osmeta
+ * @author     JoomBoss
+ * @copyright  2012, JoomBoss. All rights reserved
+ * @copyright  2013 Open Source Training, LLC. All rights reserved
+ * @contact    www.ostraining.com, support@ostraining.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version    1.0.0
  */
 
 // No direct access
@@ -52,6 +52,8 @@ class OSMetaController extends OSController
 	 * @param   array  $urlparams  URL Params
 	 *
 	 * @access	public
+	 *
+	 * @return  void
 	 */
 	public function display($cachable = false, $urlparams = array())
 	{
@@ -63,6 +65,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_view()
 	{
@@ -74,6 +78,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_save()
 	{
@@ -85,6 +91,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_copy_keywords_to_title()
 	{
@@ -96,6 +104,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_copy_title_to_keywords()
 	{
@@ -107,6 +117,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_copy_item_title_to_keywords()
 	{
@@ -118,6 +130,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_copy_item_title_to_title()
 	{
@@ -129,6 +143,8 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_generare_descriptions()
 	{
@@ -140,17 +156,23 @@ class OSMetaController extends OSController
 	 *
 	 * @access	public
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	public function metatags_clear_browser_titles()
 	{
-	  $this->metatags_manager('metatags_clear_browser_titles');
+		$this->metatags_manager('metatags_clear_browser_titles');
 	}
 
 	/**
 	 * Method to the execute actions
 	 *
+	 * @param   string  $task  Task name
+	 *
 	 * @access	private
 	 * @since  1.0.0
+	 *
+	 * @return  void
 	 */
 	private function metatags_manager($task)
 	{
@@ -160,18 +182,18 @@ class OSMetaController extends OSController
 		$itemType = JRequest::getVar('type', null, '', 'string');
 		if (!$itemType)
 		{
-		  $itemType = key(MetatagsContainerFactory::getFeatures());
+			$itemType = key(MetatagsContainerFactory::getFeatures());
 		}
 
 		$metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);
 
 		if (!is_object($metatagsContainer))
 		{
-			//TODO: throw error here.
+			// TODO: throw error here.
 		}
 
 		// Execute the actions
-		switch($task)
+		switch ($task)
 		{
 			case "metatags_save":
 				$ids = JRequest::getVar('ids', array(), '', 'array');
@@ -207,8 +229,7 @@ class OSMetaController extends OSController
 				break;
 		}
 
-		$limit = JRequest::getVar('limit',
-		$app->getCfg('list_limit'));
+		$limit = JRequest::getVar('limit', $app->getCfg('list_limit'));
 		$limitstart = JRequest::getVar('limitstart', 0);
 
 		$db = JFactory::getDBO();
