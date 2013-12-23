@@ -25,4 +25,9 @@
 		</languages>
 	</administration>
 
+	<media destination="com_osmeta" folder="media">
+		<folder>administrator</folder>
+		<file>index.html</file>
+	</media>
+
 </extension>
