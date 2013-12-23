@@ -15,52 +15,125 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
 
+/**
+ * Model Options
+ *
+ * @since  1.0.0
+ */
 class OSModelOptions extends OSModel
 {
 	/**
-	 * Overridden constructor
-	 * @access	protected
+	 * Class constructor method
+	 *
+	 * @access	public
+	 * @since   1.0.0
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
-
 	}
 
-	/* Default tags feature */
-	public function getDefaultTags(){
+	/**
+	 * Get default tag list
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  array
+	 */
+	public function getDefaultTags()
+	{
 	    $db = JFactory::getDBO();
 	    $db->setQuery("SELECT `id`, `name`, `value` from #__osmeta_default_tags");
 	    $tags = $db->loadObjectList();
+
 	    return $tags;
 	}
-	public function deleteDefaultTag($tagId){
+
+	/**
+	 * Delete default tag
+	 *
+	 * @param   int   $tagId  Tag ID
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  array
+	 */
+	public function deleteDefaultTag($tagId = 0)
+	{
 	    $db = JFactory::getDBO();
-	    $db->setQuery("DELETE FROM #__osmeta_default_tags WHERE id=".$db->quote($tagId));
+	    $db->setQuery("DELETE FROM #__osmeta_default_tags WHERE id = " . $db->quote($tagId));
 	    $db->query();
 	}
 
-	public function getDefaultTag($tagId){
+	/**
+	 * Get default tag
+	 *
+	 * @param   int   $tagId  Tag ID
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  Object
+	 */
+	public function getDefaultTag($tagId = 0)
+	{
 	    $db = JFactory::getDBO();
-	    $db->setQuery("SELECT `id`, `name`, `value` FROM #__osmeta_default_tags WHERE id=".$db->quote($tagId));
+	    $db->setQuery("SELECT `id`, `name`, `value` FROM #__osmeta_default_tags WHERE id = " . $db->quote($tagId));
+
 	    return $db->loadObject();
 	}
-	public function addDefaultTag($name, $value){
+
+	/**
+	 * Add default tag
+	 *
+	 * @param   string   $name   Tag Name
+	 * @param   string   $value  Tag Value
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 */
+	public function addDefaultTag($name, $value)
+	{
 	    $db = JFactory::getDBO();
 	    $db->setQuery("INSERT INTO #__osmeta_default_tags
 	    				(`name`, `value`)
 	    				VALUES
-	    				(".$db->quote($name).",".$db->quote($value).")");
-	    $db->query();
-	}
-	public function updateDefaultTag($id, $name, $value){
-	    $db = JFactory::getDBO();
-	    $db->setQuery("UPDATE #__osmeta_default_tags SET
-		    				`name`=".$db->quote($name).", `value`=".$db->quote($value)." WHERE id=".$db->quote($id));
+	    				(" . $db->quote($name) . "," . $db->quote($value) . ")");
 	    $db->query();
 	}
 
-	public function getOptions(){
+	/**
+	 * Update default tag
+	 *
+	 * @param   int      $tagId  Tag ID
+	 * @param   string   $name   Tag Name
+	 * @param   string   $value  Tag Value
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  array
+	 */
+	public function updateDefaultTag($id, $name, $value)
+	{
+	    $db = JFactory::getDBO();
+	    $db->setQuery("UPDATE #__osmeta_default_tags SET
+		    				`name`=" . $db->quote($name) . ", `value`=" . $db->quote($value) . " WHERE id=" . $db->quote($id));
+	    $db->query();
+	}
+
+	/**
+	 * Get Options (fixed options, for now)
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  Object
+	 */
+	public function getOptions()
+	{
 	    $options = new stdClass;
 
 	    $options->domain = '';
@@ -83,11 +156,21 @@ class OSModelOptions extends OSModel
 	    return $options;
 	}
 
-    public function getPingStatus(){
+	/**
+	 * Ping Status
+	 *
+	 * @access	public
+	 * @since   1.0.0
+	 *
+	 * @return  array
+	 */
+    public function getPingStatus()
+    {
         $db = JFactory::getDBO();
         $db->setQuery("SELECT `id`, `date`, `title`, `url`, `response_code`, `response_text`
-          FROM #__osmeta_ping_status
-          ORDER BY `date` DESC LIMIT 0,10");
+        	FROM #__osmeta_ping_status
+        	ORDER BY `date` DESC LIMIT 0,10");
+
         return $db->loadObjectList();
     }
 }
