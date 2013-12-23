@@ -14,11 +14,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 $app = JFactory::getApplication();
-$app->registerEvent('onAfterRender', 'pluginSeoBossRender');
+$app->registerEvent('onAfterRender', 'pluginOSMetaRender');
 
-function pluginSeoBossRender()
+function pluginOSMetaRender()
 {
-	JLoader::register('JBModel', JPATH_ADMINISTRATOR . "/components/com_seoboss/models/model.php");
+	JLoader::register('JBModel', JPATH_ADMINISTRATOR . "/components/com_osmeta/models/model.php");
 	$app = JFactory::getApplication();
 
 	if ($app->getName() != 'site')
@@ -33,11 +33,11 @@ function pluginSeoBossRender()
 	$buffer = JResponse::getBody();
 
 	//Metatags processing
-	require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/classes/MetatagsContainerFactory.php";
+	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
 	$buffer =  MetatagsContainerFactory::processBody($buffer, $url);
 
 	$db = JFactory::getDBO();
-	$db->setQuery ("SELECT sa_enable, sa_users from  #__seoboss_settings ");
+	$db->setQuery ("SELECT sa_enable, sa_users from  #__osmeta_settings ");
 	$settings = $db->loadObject();
 
 	if ($settings->sa_enable == "1")
@@ -47,63 +47,63 @@ function pluginSeoBossRender()
 		if (in_array($user->username, $sa_users))
 		{
 			$metadata = MetatagsContainerFactory::getMetadata($url);
-			//insert the SEO Boss Metatags Anywhere feature
-			$buffer = preg_replace("/<\\/head[^>]*>/i", '<link rel="stylesheet" href="' . JURI::base() . 'components/com_seoboss/css/anywhere.css" type="text/css" />$0', $buffer);
+			//insert the OSMeta Boss Metatags Anywhere feature
+			$buffer = preg_replace("/<\\/head[^>]*>/i", '<link rel="stylesheet" href="' . JURI::base() . 'components/com_osmeta/css/anywhere.css" type="text/css" />$0', $buffer);
 			$buffer = preg_replace("/<body[^>]*>/i", '$0
 				<script language="javascript">
-					function toggleSeobossAnywhere()
+					function toggleOSMetaAnywhere()
 					{
-						if (document.getElementById("seobossAnywhereForm").style.display==\'none\')
+						if (document.getElementById("osmetaAnywhereForm").style.display==\'none\')
 						{
-							document.getElementById("seobossAnywhereForm").style.display = \'block\';
+							document.getElementById("osmetaAnywhereForm").style.display = \'block\';
 						}
 						else
 						{
-							document.getElementById("seobossAnywhereForm").style.display = \'none\';
+							document.getElementById("osmetaAnywhereForm").style.display = \'none\';
 						}
 					}
 				</script>
-				<div id="seobossAnywhereForm">
+				<div id="osmetaAnywhereForm">
 					<form method="POST" action="' . JURI::base() . '">
 						<ol>
 							<li>
-								<label for="seoboss_title">Title</label>
-								<input type="text" name="seoboss_title" id="seoboss_title" value="' . (isset($metadata['title_tag'])?htmlspecialchars($metadata['title_tag']):'') . '"/>
+								<label for="osmeta_title">Title</label>
+								<input type="text" name="osmeta_title" id="osmeta_title" value="' . (isset($metadata['title_tag'])?htmlspecialchars($metadata['title_tag']):'') . '"/>
 							</li>
 							<li>
-								<label for="seoboss_meta_title">Meta Title</label>
-								<input type="text" name="seoboss_meta_title" id="seoboss_meta_title" value="' . (isset($metadata['metatitle'])?htmlspecialchars($metadata['metatitle']):'') . '"/>
+								<label for="osmeta_meta_title">Meta Title</label>
+								<input type="text" name="osmeta_meta_title" id="osmeta_meta_title" value="' . (isset($metadata['metatitle'])?htmlspecialchars($metadata['metatitle']):'') . '"/>
 							</li>
 							<li>
-								<label for="seoboss_meta_keywords">Meta Keywords</label>
-								<input type="text" name="seoboss_meta_keywords" id="seoboss_meta_keywords" value="' . (isset($metadata['metakeywords'])?htmlspecialchars($metadata['metakeywords']):'') . '"/>
+								<label for="osmeta_meta_keywords">Meta Keywords</label>
+								<input type="text" name="osmeta_meta_keywords" id="osmeta_meta_keywords" value="' . (isset($metadata['metakeywords'])?htmlspecialchars($metadata['metakeywords']):'') . '"/>
 							</li>
 							<li>
-								<label for="seoboss_meta_description">Meta Description</label>
-								<input type="text" name="seoboss_meta_description" id="seoboss_meta_description" value="' . (isset($metadata['metadescription'])?htmlspecialchars($metadata['metadescription']):'') . '"/>
+								<label for="osmeta_meta_description">Meta Description</label>
+								<input type="text" name="osmeta_meta_description" id="osmeta_meta_description" value="' . (isset($metadata['metadescription'])?htmlspecialchars($metadata['metadescription']):'') . '"/>
 							</li>
 							<li>
 								<input type="submit" value="Save" />
-								<input type="submit" value="Cancel" onclick="toggleSeobossAnywhere();return false;" />
+								<input type="submit" value="Cancel" onclick="toggleOSMetaAnywhere();return false;" />
 							</li>
 						</ol>
-						<input type="hidden" name="option" value="com_seoboss"/>
+						<input type="hidden" name="option" value="com_osmeta"/>
 						<input type="hidden" name="task" value="saveMetadata"/>
 						<input type="hidden" name="url" value="' . $url . '"/>
 					</form>
 				</div>
-				<a id="seoboss_anywhere_toggle_link" href="#" onclick="toggleSeobossAnywhere();return false;">SEO Boss Anywhere</a>
+				<a id="osmeta_anywhere_toggle_link" href="#" onclick="toggleOSMetaAnywhere();return false;">OSMeta Anywhere</a>
 		', $buffer);
 		}
 	}
 
 	// Redirect processing
-	require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/classes/RedirectFactory.php";
+	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/RedirectFactory.php";
 	$redirect =  new RedirectFactory;
 	$buffer = $redirect->Redirect($buffer);
 
 	//set default metatags
-	$db->setQuery ("SELECT `name`, `value` from  #__seoboss_default_tags");
+	$db->setQuery ("SELECT `name`, `value` from  #__osmeta_default_tags");
 	$defaultMetaTags = $db->loadObjectList();
 	foreach ($defaultMetaTags as $metaTag)
 	{
@@ -119,7 +119,7 @@ function pluginSeoBossRender()
 	}
 
 	//Retreive settings
-	$db->setQuery ("SELECT hilight_keywords, hilight_tag, hilight_class, hilight_skip from  #__seoboss_settings ");
+	$db->setQuery ("SELECT hilight_keywords, hilight_tag, hilight_class, hilight_skip from  #__osmeta_settings ");
 	$settings = $db->loadObject();
 
 	if ($settings->hilight_keywords)
@@ -130,7 +130,7 @@ function pluginSeoBossRender()
 			$keywordsString = $match[1];
 			$keywords = explode(",", $keywordsString);
 
-			require_once JPATH_ADMINISTRATOR . "/components/com_seoboss/algorithm/DFA.php";
+			require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/algorithm/DFA.php";
 
 			$dfa = new DFA;
 			$omitTags = array('title', 'textarea', 'style', 'script');
