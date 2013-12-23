@@ -81,7 +81,7 @@ class OsmetaController extends OSController
 
 		if (!is_object($metatagsContainer))
 		{
-			throw Exception('MetaTagsContainer is not an object');
+			//TODO: throw error here.
 		}
 
 		switch($task)
