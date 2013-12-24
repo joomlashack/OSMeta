@@ -2,14 +2,14 @@
 <form>
     <fields name="metadata">
         <field
-            name="metatitle"
+            name="title_tag"
             type="text"
             label="COM_OSMETA_TITLE_TAG_LABEL"
             description="COM_OSMETA_TITLE_TAG_DESC" />
 
         <field
             type="text"
-            name="title_tag"
+            name="metatitle"
             label="COM_OSMETA_TITLE_METATAG_LABEL"
             description="COM_OSMETA_TITLE_METATAG_DESC" />
     </fields>
