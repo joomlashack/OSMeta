@@ -41,6 +41,13 @@ function pluginOSMetaRender()
 
 function pluginOSMeta_onAfterInitialise()
 {
+	$app = JFactory::getApplication();
+
+	if ($app->getName() !== 'administrator')
+	{
+		return true;
+	}
+
 	// Override the native JLayoutHelper to inject and manipulate fields on the article form
 	JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmeta_renderer/override/layouthelper.php', true);
 }
