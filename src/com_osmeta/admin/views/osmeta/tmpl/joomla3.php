@@ -78,17 +78,16 @@ defined('_JEXEC') or die('Restricted access');
 
             </td>
             <td valign="top">
-            <?php echo JText::_('COM_OSMETA_TITLE_TAG_DESC');
-                ?>
+                <?php echo JText::_('COM_OSMETA_TITLE_TAG_DESC'); ?>
             </td>
             <td valign="top">
-            <?php echo JText::_('COM_OSMETA_TITLE_METATAG_DESC')?>
+                <?php echo JText::_('COM_OSMETA_TITLE_METATAG_DESC') ?>
             </td>
             <td valign="top">
-            <?php echo JText::_('COM_OSMETA_KEYWORDS_METATAG_DESC')?>
+                <?php echo JText::_('COM_OSMETA_KEYWORDS_METATAG_DESC') ?>
             </td>
             <td valign="top">
-            <?php echo JText::_('COM_OSMETA_DESCRIPTION_METATAG_DESC')?>
+                <?php echo JText::_('COM_OSMETA_DESCRIPTION_METATAG_DESC') ?>
             </td>
         </tr>
         <?php
@@ -114,9 +113,7 @@ defined('_JEXEC') or die('Restricted access');
                         onclick="createTitleTag('<?php echo $row->id ?>');return false;">
                         <img src="../media/com_osmeta/admin/images/rightarrow.png"/>
                     </a>
-                    <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]">
-                        <?php echo $row->title_tag; ?>
-                    </textarea>
+                    <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
                     <?php
                     ?>
                 </td>
