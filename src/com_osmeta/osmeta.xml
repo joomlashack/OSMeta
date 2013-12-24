@@ -23,7 +23,6 @@
 
 	<files folder="site">
 		<filename>osmeta.php</filename>
-		<filename>index.html</filename>
 	</files>
 
 	<administration>
@@ -38,7 +37,6 @@
 			<filename>admin.osmeta.php</filename>
 			<filename>controller.php</filename>
 			<filename>osmeta.php</filename>
-			<filename>index.html</filename>
 		</files>
 
 		<languages folder="admin/language">
@@ -49,7 +47,6 @@
 
 	<media destination="com_osmeta" folder="media">
 		<folder>admin</folder>
-		<file>index.html</file>
 	</media>
 
 </extension>

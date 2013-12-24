@@ -13,6 +13,5 @@
 	<files>
 		<filename plugin="osmetarenderer">osmetarenderer.php</filename>
 		<folder>override</folder>
-		<filename>index.html</filename>
 	</files>
 </extension>

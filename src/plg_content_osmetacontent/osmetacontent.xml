@@ -12,6 +12,5 @@
 
 	<files>
 		<filename plugin="osmetacontent">osmetacontent.php</filename>
-		<filename>index.html</filename>
 	</files>
 </extension>
