@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td valign="top">
 					<?php
 					?>
-					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="../media/com_osmeta/administrator/images/rightarrow.png"/></a>
+					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="../media/com_osmeta/admin/images/rightarrow.png"/></a>
 					<textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
 					<?php
 					?>

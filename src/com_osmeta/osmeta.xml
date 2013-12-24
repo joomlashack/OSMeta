@@ -10,23 +10,45 @@
 	<version>1.0.0</version>
 	<description>A component for Meta Tag adjustements - Based on SEOBoss Pro (http://joomboss.com)</description>
 
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>osmeta.php</filename>
+		<filename>index.html</filename>
+	</files>
+
 	<administration>
 		<menu img="class:component">OSMeta</menu>
 
-		<files folder="administrator">
+		<files folder="admin">
+			<folder>classes</folder>
+			<folder>features</folder>
+			<folder>models</folder>
+			<folder>views</folder>
+			<folder>sql</folder>
 			<filename>admin.osmeta.php</filename>
+			<filename>controller.php</filename>
 			<filename>osmeta.php</filename>
-			<!-- <folder>controllers</folder> -->
+			<filename>index.html</filename>
 		</files>
 
-		<languages folder="administrator/language">
+		<languages folder="admin/language">
 			<language tag="en-GB">en-GB.com_osmeta.ini</language>
 			<language tag="en-GB">en-GB.com_osmeta.sys.ini</language>
 		</languages>
 	</administration>
 
 	<media destination="com_osmeta" folder="media">
-		<folder>administrator</folder>
+		<folder>admin</folder>
 		<file>index.html</file>
 	</media>
 

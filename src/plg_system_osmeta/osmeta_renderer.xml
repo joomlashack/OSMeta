@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="system"  method="upgrade">
+<extension version="2.5" type="plugin" group="system"  method="upgrade">
 	<name>System - OSMeta</name>
 	<author>OSTraining</author>
 	<creationDate>December 2013</creationDate>
@@ -12,5 +12,7 @@
 
 	<files>
 		<filename plugin="osmeta_renderer">osmeta_renderer.php</filename>
+		<folder>override</folder>
+		<filename>index.html</filename>
 	</files>
 </extension>
