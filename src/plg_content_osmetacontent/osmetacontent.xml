@@ -12,6 +12,7 @@
 
     <files>
         <filename plugin="osmetacontent">osmetacontent.php</filename>
+        <folder>forms</folder>
     </files>
 
     <updateservers>
