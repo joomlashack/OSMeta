@@ -580,8 +580,6 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 
 			&nbsp;&nbsp;&nbsp;';
 
-
-
 		$result .= '
 			<select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform();">
 			<option value=""  >- Select State -</option>
