@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table width="100%">
 		<tr>
 			<td align="right">
-				<label><?php echo JText::_('SEO_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
+				<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
 				<select name="type" onchange="document.adminForm.submit();">
 					<?php
 					foreach ($this->availableTypes as $typeId => $typeName)
@@ -52,19 +52,19 @@ defined('_JEXEC') or die('Restricted access');
 					onclick="checkAll(<?php echo count($this->metatagsData); ?>);" />
 				</th>
 				<th class="title" width="20%">
-					<?php echo JHTML::_('grid.sort', JText::_('SEO_TITLE'), 'title', $this->order_Dir, $this->order, "metatags_view"); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE'), 'title', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-					<?php echo JHTML::_('grid.sort', JText::_('SEO_TITLE_TAG'), 'title_tag', $this->order_Dir, $this->order, "metatags_view"); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE_TAG'), 'title_tag', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-					<?php echo JHTML::_('grid.sort', JText::_('SEO_TITLE_METATAG'), 'meta_title', $this->order_Dir, $this->order, "metatags_view"); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE_METATAG'), 'meta_title', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-					<?php echo JHTML::_('grid.sort', JText::_('SEO_KEYWORDS_METATAG'), 'meta_key', $this->order_Dir, $this->order, "metatags_view"); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('OSMETA_KEYWORDS_METATAG'), 'meta_key', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-					<?php echo JHTML::_('grid.sort', JText::_('SEO_DESCRIPTION_METATAG'), 'meta_desc', $this->order_Dir, $this->order, "metatags_view"); ?>
+					<?php echo JHTML::_('grid.sort', JText::_('OSMETA_DESCRIPTION_METATAG'), 'meta_desc', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 			</tr>
 
@@ -74,17 +74,17 @@ defined('_JEXEC') or die('Restricted access');
 			<td width="20"></td>
 			<td class="title"></td>
 			<td valign="top">
-				<?php echo JText::_('SEO_TITLE_TAG_DESC');
+				<?php echo JText::_('OSMETA_TITLE_TAG_DESC');
 				?>
 			</td>
 			<td valign="top">
-				<?php echo JText::_('SEO_TITLE_METATAG_DESC')?>
+				<?php echo JText::_('OSMETA_TITLE_METATAG_DESC')?>
 			</td>
 			<td valign="top">
-				<?php echo JText::_('SEO_KEYWORDS_METATAG_DESC')?>
+				<?php echo JText::_('OSMETA_KEYWORDS_METATAG_DESC')?>
 			</td>
 			<td valign="top">
-				<?php echo JText::_('SEO_DESCRIPTION_METATAG_DESC')?>
+				<?php echo JText::_('OSMETA_DESCRIPTION_METATAG_DESC')?>
 			</td>
 		</tr>
 
@@ -106,7 +106,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td valign="top">
 					<?php
 					?>
-					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="components/com_seoboss/images/rightarrow.png"/></a>
+					<a title="Copy contents from item Title" style="float:left" href="#" onclick="createTitleTag('<?php echo $row->id ?>');return false;"><img src="../media/com_osmeta/admin/images/rightarrow.png"/></a>
 					<textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
 					<?php
 					?>
@@ -131,7 +131,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</tfoot>
 	</table>
-	<input type="hidden" name="option" value="com_seoboss" />
+	<input type="hidden" name="option" value="com_osmeta" />
 	<input type="hidden" name="task" value="metatags_view" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>

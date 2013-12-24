@@ -179,10 +179,32 @@ class OSMetaController extends OSController
 		$app = JFactory::getApplication();
 		require_once "classes/MetatagsContainerFactory.php";
 
-		$itemType = JRequest::getVar('type', null, '', 'string');
+		$itemType = $app->input->getString('type', null);
+
 		if (!$itemType)
 		{
 			$itemType = key(MetatagsContainerFactory::getFeatures());
+
+			if (empty($itemType))
+			{
+				// Enable com_content
+				if (version_compare(JVERSION, '1.6', '<='))
+				{
+					$component = 'com_content-1.5';
+				}
+				else
+				{
+					$component = 'com_content';
+				}
+
+				$db = JFactory::getDBO();
+				$db->setQuery('UPDATE #__osmeta_meta_extensions SET available = 1
+					WHERE component LIKE "' . $component . '"');
+				$db->execute();
+
+				// Get the features again
+				$itemType = key(MetatagsContainerFactory::getFeatures());
+			}
 		}
 
 		$metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);

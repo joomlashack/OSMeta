@@ -48,6 +48,9 @@ function pluginOSMeta_onAfterInitialise()
 		return true;
 	}
 
-	// Override the native JLayoutHelper to inject and manipulate fields on the article form
-	JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmeta_renderer/override/layouthelper.php', true);
+	if (version_compare(JVERSION, '3.0', '>='))
+	{
+		// Override the native JLayoutHelper to inject and manipulate fields on the article form
+		JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmeta_renderer/override/layouthelper.php', true);
+	}
 }
