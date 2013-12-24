@@ -4,26 +4,28 @@
 		<fieldset
 			name="osmeta-fieldset">
 
-			<field name="title_tag"
+			<field
+				name="title_tag"
 				type="text"
 				label="OSMETA_TITLE_TAG_LABEL"
 				description="OSMETA_TITLE_TAG_DESC"
-				class="inputbox span12" size="45"
-				labelclass="control-label"
-			/>
+				class="inputbox span12"
+				size="45"
+				labelclass="control-label" />
 
-			<field name="title"
+			<field
+				name="title"
 				type="text"
 				label="OSMETA_TITLE_METATAG_LABEL"
 				description="OSMETA_TITLE_METATAG_DESC"
-				class="inputbox span12" size="45"
-				labelclass="control-label"
-			/>
+				class="inputbox span12"
+				size="45"
+				labelclass="control-label" />
 
-			<field name="type"
+			<field
+				name="type"
 				type="hidden"
-				value="0"
-			/>
+				value="0" />
 		</fieldset>
 	</fields>
 </form>
