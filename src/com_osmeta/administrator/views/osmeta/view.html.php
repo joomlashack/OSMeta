@@ -34,7 +34,7 @@ class OSMetaViewOSMeta extends OSView
 	{
 		parent::__construct($config);
 
-		$this->_addPath('template', $this->_basePath . '/views/default/tmpl');
+		$this->_addPath('template', $this->_basePath . '/views/osmeta/tmpl');
 	}
 
 	/**
