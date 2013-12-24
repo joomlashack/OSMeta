@@ -246,14 +246,14 @@ class MetatagsContainerFactory
 
 		require_once dirname(__FILE__) . "/Canonical.php";
 
-		$canonical = new OsmetaCanonicalURL;
+		$canonical = new OSMetaCanonicalURL;
 		$canonical_url = $canonical->getCanonicalURL(substr($_SERVER["REQUEST_URI"], strlen(JURI::base(true)) + 1));
 
 		if ($canonical_url != null)
 		{
 			switch ($canonical_url->action)
 			{
-				case OsmetaCanonicalURL::$ACTION_CANONICAL:
+				case OSMetaCanonicalURL::$ACTION_CANONICAL:
 					$replaced = 0;
 					$location = JURI::base() . $canonical_url->canonical_url;
 					$body = preg_replace("/<link[^>]*rel[\\s]*=[\\s]*[\\\"\\\']+canonical[\\\"\\\']+[^>]*>/i",
@@ -266,11 +266,11 @@ class MetatagsContainerFactory
 					}
 					break;
 
-				case OsmetaCanonicalURL::$ACTION_NOINDEX:
+				case OSMetaCanonicalURL::$ACTION_NOINDEX:
 					$body = preg_replace('/<head>/i', "<head>\n  <meta name=\"robots\" content=\"noindex\"/>", $body, 1);
 					break;
 
-				case OsmetaCanonicalURL::$ACTION_REDIRECT:
+				case OSMetaCanonicalURL::$ACTION_REDIRECT:
 					$location = JURI::base() . $canonical_url->canonical_url;
 					header('HTTP/1.1 301 Moved Permanently');
 					header('Location: ' . $location);
