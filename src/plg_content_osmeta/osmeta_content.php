@@ -89,6 +89,23 @@ function pluginOSMeta_onAfterContentSave($article, $isNew)
 			}
 		}
 	}
+
+	$app = JFactory::getApplication();
+	$articleOSMetadataInput = $app->input->get('article-osmeta-fields', '', 'array');
+	$articleMetadataInput = $app->input->get('jform', '', 'array');
+
+	$articleOSMetadataInput['description'] = $articleMetadataInput['metadesc'];
+
+	if (!empty($articleOSMetadataInput))
+	{
+		require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/metadata.php';
+
+		$id = $app->input->get('id', 0, 'int');
+
+		// Store the metadata information
+		$model = OSModelMetadata::getInstance('OSModelMetadata');
+		$metadata = $model->storeMetadata($id, $articleOSMetadataInput);
+	}
 }
 
 function pluginOSMeta_onContentAfterSave($context, $article, $isNew)

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="article-osmeta-fields">
+		<fieldset
+			name="article-osmeta">
+
+			<field name="title_tag"
+				type="text"
+				label="OSMETA_TITLE_TAG_LABEL"
+				description="OSMETA_TITLE_TAG_DESC"
+				class="inputbox span12" size="45"
+				labelclass="control-label"
+			/>
+
+			<field name="title"
+				type="text"
+				label="OSMETA_TITLE_METATAG_LABEL"
+				description="OSMETA_TITLE_METATAG_DESC"
+				class="inputbox span12" size="45"
+				labelclass="control-label"
+			/>
+		</fieldset>
+	</fields>
+</form>

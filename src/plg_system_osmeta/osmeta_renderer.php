@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $app = JFactory::getApplication();
 $app->registerEvent('onAfterRender', 'pluginOSMetaRender');
+$app->registerEvent('onAfterRoute', 'pluginOSMeta_onAfterInitialise');
 
 function pluginOSMetaRender()
 {
@@ -152,4 +153,10 @@ function pluginOSMetaRender()
 	}
 
 	JResponse::setBody($buffer);
+}
+
+function pluginOSMeta_onAfterInitialise()
+{
+	// Override the native JLayoutHelper to inject and manipulate fields on the article form
+	JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmeta_renderer/override/layouthelper.php', true);
 }
