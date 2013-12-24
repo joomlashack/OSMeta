@@ -20,15 +20,16 @@ defined('_JEXEC') or die('Restricted access');
 	<table width="100%">
 		<tr>
 			<td align="right">
-			<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label><select name="type" onchange="document.adminForm.submit();">
-				<?php
-				foreach ($this->availableTypes as $typeId => $typeName)
-				{
+				<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
+				<select name="type" onchange="document.adminForm.submit();">
+					<?php
+					foreach ($this->availableTypes as $typeId => $typeName)
+					{
+						?>
+						<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
+					<?php
+					}
 					?>
-					<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
-				<?php
-				}
-				?>
 				</select>
 			</td>
 		</tr>
@@ -44,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 			$('title_tag_' + id).value = $('title_' + id).innerHTML;
 		}
 	</script>
-	<table   class="table table-striped" id="articleList">
+	<table class="table table-striped" id="articleList">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>

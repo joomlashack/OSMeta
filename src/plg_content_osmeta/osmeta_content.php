@@ -21,9 +21,11 @@ $app->registerEvent('onContentAfterSave', 'pluginOSMeta_onContentAfterSave');
 function pluginOSMeta_onAfterContentSave($article, $isNew)
 {
 	$file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ArticleMetatagsContainer.php";
+
 	if (is_object($article) && isset($article->id) && $article->id && isset($article->metakey) && $article->metakey && is_file($file))
 	{
 		require_once $file;
+
 		$ac = new ArticleMetatagsContainer;
 		$ac->saveKeywords($article->metakey, $article->id);
 	}
@@ -77,7 +79,7 @@ function pluginOSMeta_onAfterContentSave($article, $isNew)
 
 						$db->setQuery("INSERT INTO #__osmeta_ping_status
 								(`date`, `title`, `url`, `response_code`, `response_text`) VALUES (
-								NOW(), " . $db->quote($article->title) . ", ".
+								NOW(), " . $db->quote($article->title) . ", " .
 								$db->quote($url) . ", " .
 								$db->quote($result[0]) . "," .
 								$db->quote($result[1]) . ")");

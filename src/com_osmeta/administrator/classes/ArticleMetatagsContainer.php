@@ -14,7 +14,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once "MetatagsContainer.php";
-class ArticleMetatagsContainer extends MetatagsContainer{
+
+class ArticleMetatagsContainer extends MetatagsContainer
+{
 
 	public function getMetatags($lim0, $lim, $filter=null){
 	    jimport("joomla.version");

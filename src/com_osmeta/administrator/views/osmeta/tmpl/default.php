@@ -20,15 +20,16 @@ defined('_JEXEC') or die('Restricted access');
 	<table width="100%">
 		<tr>
 			<td align="right">
-				<label><?php echo JText::_('SEO_SELECT_CONTENT_TYPE') ?>:&nbsp;</label><select name="type" onchange="document.adminForm.submit();">
-				<?php
-				foreach ($this->availableTypes as $typeId => $typeName)
-				{
-				?>
-					<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
-				<?php
-				}
-				?>
+				<label><?php echo JText::_('SEO_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
+				<select name="type" onchange="document.adminForm.submit();">
+					<?php
+					foreach ($this->availableTypes as $typeId => $typeName)
+					{
+					?>
+						<option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType){?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
+					<?php
+					}
+					?>
 				</select>
 			</td>
 		</tr>
