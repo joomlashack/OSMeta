@@ -68,7 +68,7 @@ class plgSystemOSMetaRenderer extends JPlugin
 			/*
 			 * Inject the metadata fields for Joomla 3.x
 			 *
-			 * For Joomla 2.5, look at: plugins/content/osmeta_content/osmeta_content.php,
+			 * For Joomla 2.5, look at: plugins/content/osmetacontent/osmetacontent.php,
 			 * into the onContentPrepareForm event.
 			 */
 			// Joomla 3.x Compatibility

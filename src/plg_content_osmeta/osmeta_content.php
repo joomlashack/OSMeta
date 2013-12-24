@@ -83,7 +83,7 @@ function pluginOSMeta_onContentPrepareForm($form, $data)
 			$lang = JFactory::getLanguage();
 			$lang->load('com_osmeta');
 
-			$xml = JFile::read(JPATH_ROOT . '/plugins/content/osmeta_content/forms/metadata.xml');
+			$xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata.xml');
 			$form->load($xml);
 
 			// Add Javascript code to sort the fields

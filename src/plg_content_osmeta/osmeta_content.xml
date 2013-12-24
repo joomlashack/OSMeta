@@ -11,7 +11,7 @@
 	<description>Content plugin which keeps Keywords information for content items - Based on SEOBoss Pro (http://joomboss.com)</description>
 
 	<files>
-		<filename plugin="osmeta_content">osmeta_content.php</filename>
+		<filename plugin="osmetacontent">osmetacontent.php</filename>
 		<filename>index.html</filename>
 	</files>
 </extension>
