@@ -22,27 +22,37 @@ require_once "MetatagsContainer.php";
  */
 class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 {
+	/**
+	 * Code
+	 *
+	 * @var    int
+	 * @since  1.0.0
+	 */
 	public $code = 4;
 
+	/**
+	 * Method to get type Id
+	 *
+	 * @access	public
+	 *
+	 * @return  int
+	 */
 	public function getTypeId()
 	{
 		return $this->code;
 	}
 
-	public function getMetadataByRequest($query)
-	{
-		$params = array();
-		parse_str($query, $params);
-		$metadata = null;
-
-		if (isset($params["id"]))
-		{
-			$metadata = $this->getMetadata($params["id"]);
-		}
-
-		return $metadata;
-	}
-
+	/**
+	 * Get meta tags
+	 *
+	 * @param   int  $lim0    Offset
+	 * @param   int  $lim     Limit
+	 * @param   int  $filter  Filter
+	 *
+	 * @access	public
+	 *
+	 * @return  array
+	 */
 	public function getMetatags($lim0, $lim, $filter = null)
 	{
 		$db = JFactory::getDBO();
@@ -152,6 +162,40 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		return $rows;
 	}
 
+	/**
+	 * Get meta data by request
+	 *
+	 * @param   string  $query  Query
+	 *
+	 * @access	public
+	 *
+	 * @return  array
+	 */
+	public function getMetadataByRequest($query)
+	{
+		$params = array();
+		parse_str($query, $params);
+		$metadata = null;
+
+		if (isset($params["id"]))
+		{
+			$metadata = $this->getMetadata($params["id"]);
+		}
+
+		return $metadata;
+	}
+
+	/**
+	 * Get Pages
+	 *
+	 * @param   int  $lim0    Offset
+	 * @param   int  $lim     Limit
+	 * @param   int  $filter  Filter
+	 *
+	 * @access	public
+	 *
+	 * @return  array
+	 */
 	public function getPages($lim0, $lim, $filter = null)
 	{
 		$db = JFactory::getDBO();
@@ -184,7 +228,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 			$sql .= " AND c.created_user_id=" . $db->quote($author_id);
 		}
 
-		switch($state)
+		switch ($state)
 		{
 			case 'P':
 				$sql .= " AND c.published=1";
@@ -207,6 +251,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 
 		$db->setQuery($sql, $lim0, $lim);
 		$rows = $db->loadObjectList();
+
 		if ($db->getErrorNum())
 		{
 			echo $db->stderr();
@@ -232,7 +277,20 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		return $rows;
 	}
 
-	public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags = null)
+	/**
+	 * Save meta tags
+	 *
+	 * @param   array  $ids               IDs
+	 * @param   array  $metatitles        Meta titles
+	 * @param   array  $metadescriptions  Meta Descriptions
+	 * @param   array  $metakeys          Meta Keys
+	 * @param   array  $titleTags         Title tags
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
+	public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $titleTags = null)
 	{
 		$db = JFactory::getDBO();
 
@@ -249,12 +307,12 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 				'{$this->code}',
 				" . $db->quote($metatitles[$i]) . ",
 				" . $db->quote($metadescriptions[$i]) . "
-				," . $db->quote($title_tags != null ? $title_tags[$i] : '') . "
+				," . $db->quote($titleTags != null ? $titleTags[$i] : '') . "
 				) ON DUPLICATE KEY
 					UPDATE
 					title=" . $db->quote($metatitles[$i]) . "
 					, description=" . $db->quote($metadescriptions[$i])
-				. ", title_tag=" . $db->quote($title_tags != null ? $title_tags[$i] : '');
+				. ", title_tag=" . $db->quote($titleTags != null ? $titleTags[$i] : '');
 
 			$db->setQuery($sql);
 			$db->query();
@@ -263,11 +321,31 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
-	public function saveKeywords($keys, $id, $itemTypeId = null)
+	/**
+	 * Method to save the Keywords
+	 *
+	 * @param   string  $keywords    Keywords as CSV
+	 * @param   int     $itemId      Item Id
+	 * @param   string  $itemTypeId  Item Type Id
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
+	public function saveKeywords($keywords, $itemId, $itemTypeId = null)
 	{
-		parent::saveKeywords($keys, $id, $itemTypeId ? $itemTypeId : $this->code);
+		parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : $this->code);
 	}
 
+	/**
+	 * Method to copy the keywords to title
+	 *
+	 * @param   array  $ids  IDs list
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
 	public function copyKeywordsToTitle($ids)
 	{
 		$db = JFactory::getDBO();
@@ -303,6 +381,15 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
+	/**
+	 * Method to copy the title to keyword
+	 *
+	 * @param   array  $ids  IDs list
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
 	public function copyTitleToKeywords($ids)
 	{
 		$db = JFactory::getDBO();
@@ -333,11 +420,20 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
+	/**
+	 * Method to copy the item title to title
+	 *
+	 * @param   array  $ids  IDs list
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
 	public function copyItemTitleToTitle($ids)
 	{
 		$db = JFactory::getDBO();
 
-		foreach ($ids as $key=>$value)
+		foreach ($ids as $key => $value)
 		{
 			if (!is_numeric($value))
 			{
@@ -371,6 +467,15 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
+	/**
+	 * Method to copy the item title to keywords
+	 *
+	 * @param   array  $ids  IDs list
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
 	public function copyItemTitleToKeywords($ids)
 	{
 		$db = JFactory::getDBO();
@@ -388,7 +493,16 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		$items = $db->query();
 	}
 
-	public function GenerateDescriptions($ids)
+	/**
+	 * Method to generate descriptions
+	 *
+	 * @param   array  $ids  IDs list
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
+	public function generateDescriptions($ids)
 	{
 		$max_description_length = 500;
 		$model = OSModel::getInstance("options", "OsmetaModel");
@@ -442,6 +556,13 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
+	/**
+	 * Method to get Filter
+	 *
+	 * @access	public
+	 *
+	 * @return  string
+	 */
 	public function getFilter()
 	{
 		$db = JFactory::getDBO();
@@ -476,6 +597,15 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		return $result;
 	}
 
+	/**
+	 * Method to get the item data
+	 *
+	 * @param   int  $id  Item Id
+	 *
+	 * @access  public
+	 *
+	 * @return  array
+	 */
 	public function getItemData($id)
 	{
 		$db = JFactory::getDBO();
@@ -490,7 +620,16 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		return $db->loadAssoc();
 	}
 
-
+	/**
+	 * Method to set the item data
+	 *
+	 * @param   int    $id    Item Id
+	 * @param   array  $data  Item Data
+	 *
+	 * @access  public
+	 *
+	 * @return  void
+	 */
 	public function setItemData($id, $data)
 	{
 		$db = JFactory::getDBO();
@@ -504,6 +643,16 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		$this->saveMetadata($id, $this->code, $data);
 	}
 
+	/**
+	 * Method to set Metadata by request
+	 *
+	 * @param   string  $url   URL
+	 * @param   array   $data  Data
+	 *
+	 * @access	public
+	 *
+	 * @return  void
+	 */
 	public function setMetadataByRequest($url, $data)
 	{
 		$params = array();
@@ -515,6 +664,13 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
 		}
 	}
 
+	/**
+	 * Method to get check if the container is available
+	 *
+	 * @access	public
+	 *
+	 * @return  bool
+	 */
 	public function isAvailable()
 	{
 		require_once dirname(__FILE__) . "/MetatagsContainerFactory.php";

@@ -606,7 +606,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
 	}
 
 	/**
-	 * Get Pages for Joomla >= 2.5
+	 * Save meta tags
 	 *
 	 * @param   array  $ids               IDs
 	 * @param   array  $metatitles        Meta titles
@@ -821,7 +821,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
 	 *
 	 * @return  void
 	 */
-	public function GenerateDescriptions($ids)
+	public function generateDescriptions($ids)
 	{
 		$max_description_length = 500;
 		$model = OSModel::getInstance("options", "OSModel");
