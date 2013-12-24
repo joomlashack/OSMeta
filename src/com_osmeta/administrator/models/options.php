@@ -23,17 +23,6 @@ require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
 class OSModelOptions extends OSModel
 {
 	/**
-	 * Class constructor method
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	/**
 	 * Get default tag list
 	 *
 	 * @access	public
