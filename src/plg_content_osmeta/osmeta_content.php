@@ -68,7 +68,7 @@ function pluginOSMeta_onContentPrepareForm($form, $data)
 	/*
 	 * Inject the metadata fields for Joomla 2.5
 	 *
-	 * For Joomla 3.0, look at: plugins/system/osmeta_renderer/osmeta_renderer.php,
+	 * For Joomla 3.0, look at: plugins/system/osmetarenderer/osmetarenderer.php,
 	 * into the onAfterInitialise event.
 	 */
 	// Joomla 3.x Backward Compatibility

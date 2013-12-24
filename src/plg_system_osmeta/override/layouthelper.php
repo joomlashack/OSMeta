@@ -82,7 +82,7 @@ class JLayoutHelper
 				$metadata = $container->getMetadata($id);
 
 				// Load the complementary form fields
-				$xml = file_get_contents(JPATH_ROOT . '/plugins/system/osmeta_renderer/override/forms/metadata.xml');
+				$xml = file_get_contents(JPATH_ROOT . '/plugins/system/osmetarenderer/override/forms/metadata.xml');
 				$form = new JForm('osmeta-metadata');
 				$form->load($xml);
 				$fieldset = $form->getFieldset();

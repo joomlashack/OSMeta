@@ -13,51 +13,72 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$app = JFactory::getApplication();
-$app->registerEvent('onAfterRender', 'pluginOSMetaRender');
-$app->registerEvent('onAfterRoute', 'pluginOSMeta_onAfterInitialise');
-
-function pluginOSMetaRender()
+/**
+ * OSMeta System Plugin - Renderer
+ *
+ * @package     Osmeta.Plugin
+ * @subpackage  System
+ * @since       1.0.0
+ */
+class plgSystemOSMetaRenderer extends JPlugin
 {
-	$app = JFactory::getApplication();
-
-	if ($app->getName() !== 'site')
-	{
-		return true;
-	}
-
-	$queryData = $_REQUEST;
-	ksort($queryData);
-	$url = http_build_query($queryData);
-
-	$buffer = JResponse::getBody();
-
-	// Metatags processing on the front
-	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
-	$buffer = MetatagsContainerFactory::processBody($buffer, $url);
-
-	JResponse::setBody($buffer);
-}
-
-function pluginOSMeta_onAfterInitialise()
-{
-	$app = JFactory::getApplication();
-
-	if ($app->getName() !== 'administrator')
-	{
-		return true;
-	}
-
-	/*
-	 * Inject the metadata fields for Joomla 3.0
+	/**
+	 * Event method onAfterRender, to process the metadata on the front-end
 	 *
-	 * For Joomla 2.5, look at: plugins/content/osmeta_content/osmeta_content.php,
-	 * into the onContentPrepareForm event.
+	 * @access	public
+	 *
+	 * @return  bool
 	 */
-	// Joomla 3.x Compatibility
-	if (version_compare(JVERSION, '3.0', '>='))
+	public function onAfterRender()
 	{
-		// Override the native JLayoutHelper to inject and manipulate fields on the article form
-		JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmeta_renderer/override/layouthelper.php', true);
+		$app = JFactory::getApplication();
+
+		if ($app->getName() === 'site')
+		{
+			$queryData = $_REQUEST;
+			ksort($queryData);
+			$url = http_build_query($queryData);
+
+			$buffer = JResponse::getBody();
+
+			// Metatags processing on the front
+			require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
+			$buffer = MetatagsContainerFactory::processBody($buffer, $url);
+
+			JResponse::setBody($buffer);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Event method onAfterRoute, to inject the metadata fields for Joomla 3.x
+	 * on the article/categories forms
+	 *
+	 * @access	public
+	 *
+	 * @return  bool
+	 */
+	public function onAfterRoute()
+	{
+		$app = JFactory::getApplication();
+
+		if ($app->getName() === 'administrator')
+		{
+			/*
+			 * Inject the metadata fields for Joomla 3.x
+			 *
+			 * For Joomla 2.5, look at: plugins/content/osmeta_content/osmeta_content.php,
+			 * into the onContentPrepareForm event.
+			 */
+			// Joomla 3.x Compatibility
+			if (version_compare(JVERSION, '3.0', '>='))
+			{
+				// Override the native JLayoutHelper to inject and manipulate fields on the article form
+				JLoader::register('JLayoutHelper', JPATH_ROOT . '/plugins/system/osmetarenderer/override/layouthelper.php', true);
+			}
+		}
+
+		return true;
 	}
 }
