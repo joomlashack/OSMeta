@@ -403,13 +403,6 @@ class ArticleMetatagsContainer extends MetatagsContainer
 
     private $isFrontpage=false;
 
-    public function mustReplaceMeteaKeywords(){
-      return $this->isFrontpage;
-    }
-    public function mustReplaceMetaDescription(){
-      return $this->isFrontpage;
-    }
-
 	public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags=null){
 		$db = JFactory::getDBO();
 		for($i = 0 ;$i < count($ids); $i++){

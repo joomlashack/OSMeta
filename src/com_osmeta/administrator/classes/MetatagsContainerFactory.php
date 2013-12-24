@@ -190,7 +190,7 @@ class MetatagsContainerFactory
 			$metadata = $container->getMetadataByRequest($queryString);
 
 			// Process meta title tag
-			if ($container->mustReplaceMetaTitle() && $metadata && $metadata["metatitle"])
+			if ($metadata && $metadata["metatitle"])
 			{
 				$replaced = 0;
 				$body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
@@ -208,7 +208,7 @@ class MetatagsContainerFactory
 			}
 
 			// Process meta description tag
-			if ($container->mustReplaceMetaDescription() && $metadata && $metadata["metadescription"])
+			if ($metadata && $metadata["metadescription"])
 			{
 				$replaced = 0;
 				$body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
@@ -222,7 +222,7 @@ class MetatagsContainerFactory
 			}
 
 			// Process meta keywords tag
-			if ($container->mustReplaceMetaKeywords() && $metadata && $metadata["metakeywords"])
+			if ($metadata && $metadata["metakeywords"])
 			{
 				$replaced = 0;
 				$body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+keywords[\\\"\\\']+[^>]*>/i",
@@ -235,7 +235,7 @@ class MetatagsContainerFactory
 				}
 			}
 
-			if ($container->mustReplaceTitle() && $metadata && $metadata["title_tag"])
+			if ($metadata && $metadata["title_tag"])
 			{
 				$replaced = 0;
 				$body = preg_replace("/<title[^>]*>.*<\\/title>/i",
