@@ -19,12 +19,11 @@ $app->registerEvent('onAfterRoute', 'pluginOSMeta_onAfterInitialise');
 
 function pluginOSMetaRender()
 {
-	JLoader::register('JBModel', JPATH_ADMINISTRATOR . "/components/com_osmeta/models/model.php");
 	$app = JFactory::getApplication();
 
-	if ($app->getName() != 'site')
+	if ($app->getName() !== 'site')
 	{
-	   return true;
+		return true;
 	}
 
 	$queryData = $_REQUEST;
@@ -33,7 +32,7 @@ function pluginOSMetaRender()
 
 	$buffer = JResponse::getBody();
 
-	//Metatags processing
+	// Metatags processing
 	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
 	$buffer = MetatagsContainerFactory::processBody($buffer, $url);
 
