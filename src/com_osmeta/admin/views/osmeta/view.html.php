@@ -48,14 +48,14 @@ class OSMetaViewOSMeta extends OSView
 	 */
 	public function display($tpl = null)
 	{
-		JToolBarHelper::title(JText::_('OSMETA_META_TAGS_MANAGER'));
+		JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'));
 
-		JToolBarHelper::custom('metatags_copy_keywords_to_title', 'apply', '', JText::_('OSMETA_COPY_KEYWORDS_TO_TITLE'), true);
-		JToolBarHelper::custom('metatags_copy_title_to_keywords', 'apply', '', JText::_('OSMETA_COPY_TITLE_TO_KEYWORDS'), true);
-		JToolBarHelper::custom('metatags_copy_item_title_to_keywords', 'apply', '', JText::_('OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
-		JToolBarHelper::custom('metatags_copy_item_title_to_title', 'apply', '', JText::_('OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
-		JToolBarHelper::custom('metatags_generare_descriptions', 'apply', '', JText::_('OSMETA_GENERATE_DESCRIPTIONS'), true);
-		JToolBarHelper::custom('metatags_clear_browser_titles', 'apply', '', JText::_('OSMETA_CLEAR_BROWSER_TITLES'), true);
+		JToolBarHelper::custom('metatags_copy_keywords_to_title', 'apply', '', JText::_('COM_OSMETA_COPY_KEYWORDS_TO_TITLE'), true);
+		JToolBarHelper::custom('metatags_copy_title_to_keywords', 'apply', '', JText::_('COM_OSMETA_COPY_TITLE_TO_KEYWORDS'), true);
+		JToolBarHelper::custom('metatags_copy_item_title_to_keywords', 'apply', '', JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
+		JToolBarHelper::custom('metatags_copy_item_title_to_title', 'apply', '', JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
+		JToolBarHelper::custom('metatags_generare_descriptions', 'apply', '', JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'), true);
+		JToolBarHelper::custom('metatags_clear_browser_titles', 'apply', '', JText::_('COM_OSMETA_CLEAR_BROWSER_TITLES'), true);
 		JToolBarHelper::save("metatags_save");
 		JToolBarHelper::cancel("metatags_cancel");
 

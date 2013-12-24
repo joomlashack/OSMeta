@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table width="100%">
 		<tr>
 			<td align="right">
-				<label><?php echo JText::_('OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
+				<label><?php echo JText::_('COM_OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
 				<select name="type" onchange="document.adminForm.submit();">
 					<?php
 					foreach ($this->availableTypes as $typeId => $typeName)
@@ -50,19 +50,19 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<th width="20"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
 				<th class="title" width="20%">
-				<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE'), 'title', $this->order_Dir, $this->order, "metatags_view"); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE'), 'title', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-				<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE_TAG'), 'title_tag', $this->order_Dir, $this->order, "metatags_view"); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_TAG'), 'title_tag', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-				<?php echo JHTML::_('grid.sort', JText::_('OSMETA_TITLE_METATAG'), 'meta_title', $this->order_Dir, $this->order, "metatags_view"); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_METATAG'), 'meta_title', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-				<?php echo JHTML::_('grid.sort', JText::_('OSMETA_KEYWORDS_METATAG'), 'meta_key', $this->order_Dir, $this->order, "metatags_view"); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_METATAG'), 'meta_key', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 				<th class="title" width="20%">
-				<?php echo JHTML::_('grid.sort', JText::_('OSMETA_DESCRIPTION_METATAG'), 'meta_desc', $this->order_Dir, $this->order, "metatags_view"); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_METATAG'), 'meta_desc', $this->order_Dir, $this->order, "metatags_view"); ?>
 				</th>
 			</tr>
 
@@ -73,17 +73,17 @@ defined('_JEXEC') or die('Restricted access');
 
 			</td>
 			<td valign="top">
-			<?php echo JText::_('OSMETA_TITLE_TAG_DESC');
+			<?php echo JText::_('COM_OSMETA_TITLE_TAG_DESC');
 				?>
 			</td>
 			<td valign="top">
-			<?php echo JText::_('OSMETA_TITLE_METATAG_DESC')?>
+			<?php echo JText::_('COM_OSMETA_TITLE_METATAG_DESC')?>
 			</td>
 			<td valign="top">
-			<?php echo JText::_('OSMETA_KEYWORDS_METATAG_DESC')?>
+			<?php echo JText::_('COM_OSMETA_KEYWORDS_METATAG_DESC')?>
 			</td>
 			<td valign="top">
-			<?php echo JText::_('OSMETA_DESCRIPTION_METATAG_DESC')?>
+			<?php echo JText::_('COM_OSMETA_DESCRIPTION_METATAG_DESC')?>
 			</td>
 		</tr>
 		<?php

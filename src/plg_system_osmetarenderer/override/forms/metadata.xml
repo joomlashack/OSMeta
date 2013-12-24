@@ -7,8 +7,8 @@
 			<field
 				name="title_tag"
 				type="text"
-				label="OSMETA_TITLE_TAG_LABEL"
-				description="OSMETA_TITLE_TAG_DESC"
+				label="COM_OSMETA_TITLE_TAG_LABEL"
+				description="COM_OSMETA_TITLE_TAG_DESC"
 				class="inputbox span12"
 				size="45"
 				labelclass="control-label" />
@@ -16,8 +16,8 @@
 			<field
 				name="title"
 				type="text"
-				label="OSMETA_TITLE_METATAG_LABEL"
-				description="OSMETA_TITLE_METATAG_DESC"
+				label="COM_OSMETA_TITLE_METATAG_LABEL"
+				description="COM_OSMETA_TITLE_METATAG_DESC"
 				class="inputbox span12"
 				size="45"
 				labelclass="control-label" />

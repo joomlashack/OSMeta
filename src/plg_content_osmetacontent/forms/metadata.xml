@@ -4,13 +4,13 @@
 		<field
 			name="metatitle"
 			type="text"
-			label="OSMETA_TITLE_TAG_LABEL"
-			description="OSMETA_TITLE_TAG_DESC" />
+			label="COM_OSMETA_TITLE_TAG_LABEL"
+			description="COM_OSMETA_TITLE_TAG_DESC" />
 
 		<field
 			type="text"
 			name="title_tag"
-			label="OSMETA_TITLE_METATAG_LABEL"
-			description="OSMETA_TITLE_METATAG_DESC" />
+			label="COM_OSMETA_TITLE_METATAG_LABEL"
+			description="COM_OSMETA_TITLE_METATAG_DESC" />
 	</fields>
 </form>
