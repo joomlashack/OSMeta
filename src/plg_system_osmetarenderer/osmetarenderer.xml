@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="system"  method="upgrade">
-	<name>System - OSMeta Renderer</name>
-	<author>OSTraining</author>
-	<creationDate>December 2013</creationDate>
-	<copyright>Copyright (C) 2011, 2013 OSTraining.com. All rights reserved.</copyright>
-	<license>GPL v3</license>
-	<authorEmail>info@ostraining.com</authorEmail>
-	<authorUrl>http://www.ostraining.com</authorUrl>
-	<version>1.0.0</version>
-	<description>System plugin which perform content preparation 'on the fly' - hilights keywords, formats extarnal links. Based on SEOBoss Pro (http://joomboss.com)</description>
+    <name>System - OSMeta Renderer</name>
+    <author>OSTraining</author>
+    <creationDate>December 2013</creationDate>
+    <copyright>Copyright (C) 2011, 2013 OSTraining.com. All rights reserved.</copyright>
+    <license>GPL v3</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.0</version>
+    <description>System plugin which perform content preparation 'on the fly' - hilights keywords, formats extarnal links. Based on SEOBoss Pro (http://joomboss.com)</description>
 
-	<files>
-		<filename plugin="osmetarenderer">osmetarenderer.php</filename>
-		<folder>override</folder>
-	</files>
+    <files>
+        <filename plugin="osmetarenderer">osmetarenderer.php</filename>
+        <folder>override</folder>
+    </files>
 
-	<updateservers>
-		<server type="extension" priority="1" name="OSMeta System Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetasystem.xml]]></server>
-	</updateservers>
+    <updateservers>
+        <server type="extension" priority="1" name="OSMeta System Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetasystem.xml]]></server>
+    </updateservers>
 </extension>

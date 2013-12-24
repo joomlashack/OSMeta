@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
-	<name>OSMeta</name>
-	<author>OSTraining</author>
-	<creationDate>December 2013</creationDate>
-	<copyright>Copyright (C) 2013 OSTraining.com</copyright>
-	<license>GPL</license>
-	<authorEmail>info@ostraining.com</authorEmail>
-	<authorUrl>http://www.ostraining.com</authorUrl>
-	<version>1.0.0</version>
-	<description>A component for Meta Tag adjustements - Based on SEOBoss Pro (http://joomboss.com)</description>
+    <name>OSMeta</name>
+    <author>OSTraining</author>
+    <creationDate>December 2013</creationDate>
+    <copyright>Copyright (C) 2013 OSTraining.com</copyright>
+    <license>GPL</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.0</version>
+    <description>A component for Meta Tag adjustements - Based on SEOBoss Pro (http://joomboss.com)</description>
 
-	<install>
-		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-		</sql>
-	</install>
-	<uninstall>
-		<sql>
-			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
-		</sql>
-	</uninstall>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
 
-	<files folder="site">
-		<filename>osmeta.php</filename>
-	</files>
+    <files folder="site">
+        <filename>osmeta.php</filename>
+    </files>
 
-	<administration>
-		<menu img="class:component">OSMeta</menu>
+    <administration>
+        <menu img="class:component">OSMeta</menu>
 
-		<files folder="admin">
-			<folder>classes</folder>
-			<folder>features</folder>
-			<folder>models</folder>
-			<folder>views</folder>
-			<folder>sql</folder>
-			<filename>admin.osmeta.php</filename>
-			<filename>controller.php</filename>
-			<filename>osmeta.php</filename>
-		</files>
+        <files folder="admin">
+            <folder>classes</folder>
+            <folder>features</folder>
+            <folder>models</folder>
+            <folder>views</folder>
+            <folder>sql</folder>
+            <filename>admin.osmeta.php</filename>
+            <filename>controller.php</filename>
+            <filename>osmeta.php</filename>
+        </files>
 
-		<languages folder="admin/language">
-			<language tag="en-GB">en-GB.com_osmeta.ini</language>
-			<language tag="en-GB">en-GB.com_osmeta.sys.ini</language>
-		</languages>
-	</administration>
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB.com_osmeta.ini</language>
+            <language tag="en-GB">en-GB.com_osmeta.sys.ini</language>
+        </languages>
+    </administration>
 
-	<media destination="com_osmeta" folder="media">
-		<folder>admin</folder>
-	</media>
+    <media destination="com_osmeta" folder="media">
+        <folder>admin</folder>
+    </media>
 
-	<updateservers>
-		<server type="extension" priority="1" name="OSMeta Updates"><![CDATA[http://updates.ostraining.com/osmeta.xml]]></server>
-	</updateservers>
+    <updateservers>
+        <server type="extension" priority="1" name="OSMeta Updates"><![CDATA[http://updates.ostraining.com/osmeta.xml]]></server>
+    </updateservers>
 
 </extension>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="metadata">
-		<field
-			name="metatitle"
-			type="text"
-			label="COM_OSMETA_TITLE_TAG_LABEL"
-			description="COM_OSMETA_TITLE_TAG_DESC" />
+    <fields name="metadata">
+        <field
+            name="metatitle"
+            type="text"
+            label="COM_OSMETA_TITLE_TAG_LABEL"
+            description="COM_OSMETA_TITLE_TAG_DESC" />
 
-		<field
-			type="text"
-			name="title_tag"
-			label="COM_OSMETA_TITLE_METATAG_LABEL"
-			description="COM_OSMETA_TITLE_METATAG_DESC" />
-	</fields>
+        <field
+            type="text"
+            name="title_tag"
+            label="COM_OSMETA_TITLE_METATAG_LABEL"
+            description="COM_OSMETA_TITLE_METATAG_DESC" />
+    </fields>
 </form>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="plugin" group="content" method="upgrade">
-	<name>Content - OSMeta Content</name>
-	<author>OSTraining</author>
-	<creationDate>December 2013</creationDate>
-	<copyright>Copyright (C) 2011, 2013 OSTraining.com. All rights reserved.</copyright>
-	<license>GPL v3</license>
-	<authorEmail>info@ostraining.com</authorEmail>
-	<authorUrl>http://www.ostraining.com</authorUrl>
-	<version>1.0.0</version>
-	<description>Content plugin which keeps Keywords information for content items - Based on SEOBoss Pro (http://joomboss.com)</description>
+    <name>Content - OSMeta Content</name>
+    <author>OSTraining</author>
+    <creationDate>December 2013</creationDate>
+    <copyright>Copyright (C) 2011, 2013 OSTraining.com. All rights reserved.</copyright>
+    <license>GPL v3</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.0</version>
+    <description>Content plugin which keeps Keywords information for content items - Based on SEOBoss Pro (http://joomboss.com)</description>
 
-	<files>
-		<filename plugin="osmetacontent">osmetacontent.php</filename>
-	</files>
+    <files>
+        <filename plugin="osmetacontent">osmetacontent.php</filename>
+    </files>
 
-	<updateservers>
-		<server type="extension" priority="1" name="OSMeta Content Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetacontent.xml]]></server>
-	</updateservers>
+    <updateservers>
+        <server type="extension" priority="1" name="OSMeta Content Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetacontent.xml]]></server>
+    </updateservers>
 </extension>
