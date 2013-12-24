@@ -149,7 +149,7 @@ abstract class MetatagsContainer
 	{
 		$db = JFactory::getDBO();
 
-		$sql = "SELECT m.item_id as id,
+		$sql = "SELECT m.item_id as id, m.item_id,
 			m.title_tag as title_tag,
 			(SELECT GROUP_CONCAT(k.name SEPARATOR ',')
 				FROM #__osmeta_keywords k,
@@ -158,7 +158,9 @@ abstract class MetatagsContainer
 					AND ki.keyword_id=k.id
 					) AS metakeywords,
 			m.description as metadescription,
-			m.title as metatitle
+			m.description,
+			m.title as metatitle,
+			m.title
 			FROM #__osmeta_metadata m
 			WHERE m.item_id=" . $db->quote($id) . "
 				AND m.item_type=" . $db->quote($this->getTypeId());

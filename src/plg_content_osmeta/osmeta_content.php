@@ -18,41 +18,34 @@ $app = JFactory::getApplication();
 $app->registerEvent('onAfterContentSave', 'pluginOSMeta_onAfterContentSave');
 $app->registerEvent('onContentAfterSave', 'pluginOSMeta_onContentAfterSave');
 
-function pluginOSMeta_onAfterContentSave($article, $isNew)
+function pluginOSMeta_onAfterContentSave($content, $isNew)
 {
-	$file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ArticleMetatagsContainer.php";
-
-	if (is_object($article) && isset($article->id) && $article->id && isset($article->metakey) && $article->metakey && is_file($file))
-	{
-		require_once $file;
-
-		$ac = new ArticleMetatagsContainer;
-		$ac->saveKeywords($article->metakey, $article->id);
-	}
-
-	require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/options.php';
-	$model = OSModelOptions::getInstance('OSModelOptions');
-	$settings = $model->getOptions();
-
 	$app = JFactory::getApplication();
-	$articleOSMetadataInput = $app->input->get('article-osmeta-fields', '', 'array');
-	$articleMetadataInput = $app->input->get('jform', '', 'array');
+	$input = $app->input;
 
-	$articleOSMetadataInput['description'] = $articleMetadataInput['metadesc'];
+	$option = $input->getCmd('option');
 
-	if (!empty($articleOSMetadataInput))
+
+	if (is_object($content) && isset($content->id) && $content->id && isset($content->metakey) && $content->metakey)
 	{
-		require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/metadata.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/MetatagsContainerFactory.php';
 
-		$id = $app->input->get('id', 0, 'int');
+		$container = MetatagsContainerFactory::getContainerByComponentName($option);
+		$container->saveKeywords($content->metakey, $content->id);
 
-		// Store the metadata information
-		$model = OSModelMetadata::getInstance('OSModelMetadata');
-		$metadata = $model->storeMetadata($id, $articleOSMetadataInput);
+		$articleOSMetadataInput = $app->input->get('osmeta-fields', '', 'array');
+
+		$id = array($content->id);
+		$title = array($articleOSMetadataInput['title']);
+		$metaDesc = array($content->metadesc);
+		$metaKey = array($content->metakey);
+		$titleTag = array($articleOSMetadataInput['title_tag']);
+
+		$container->saveMetatags($id, $title, $metaDesc, $metaKey, $titleTag);
 	}
 }
 
-function pluginOSMeta_onContentAfterSave($context, $article, $isNew)
+function pluginOSMeta_onContentAfterSave($context, $content, $isNew)
 {
-	pluginOSMeta_onAfterContentSave($article, $isNew);
+	pluginOSMeta_onAfterContentSave($content, $isNew);
 }

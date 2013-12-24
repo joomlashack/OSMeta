@@ -1056,49 +1056,6 @@ class ArticleMetatagsContainer extends MetatagsContainer
 	}
 
 	/**
-	 * Method to get Metadata
-	 *
-	 * @param   int  $id  ID
-	 *
-	 * @access	public
-	 *
-	 * @return  array
-	 */
-	public function getMetadata($id)
-	{
-		$db = JFactory::getDBO();
-		$sql = "SELECT c.id as id, c.title as title, c.metakey as metakeywords,
-			c.metadesc as metadescription
-			FROM
-			#__content c
-			WHERE c.id=" . $db->quote($id);
-		$db->setQuery($sql);
-		$metadata = $db->loadAssoc();
-
-		// JoomFish support
-		if (get_class($db) == "JFDatabase")
-		{
-			if (JVERSION == "1.5")
-			{
-				return $metadata;
-			}
-
-			$translatedInfo = $db->loadAssoc();
-
-			if ($translatedInfo != null && isset($translatedInfo["id"]))
-			{
-				$id = $translatedInfo["id"];
-			}
-		}
-
-		$sb_metadata = parent::getMetadata($id);
-		$metadata["metatitle"] = $sb_metadata["metatitle"];
-		$metadata["title_tag"] = $sb_metadata["title_tag"];
-
-		return $metadata;
-	}
-
-	/**
 	 * Method to set Metadata
 	 *
 	 * @param   int    $id    ID

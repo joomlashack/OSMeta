@@ -13,8 +13,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/metadata.php';
-
 /**
  * Helper to render a JLayout object, storing a base path
  *
@@ -67,9 +65,10 @@ class JLayoutHelper
 		{
 			$app = JFactory::getApplication();
 			$input = $app->input;
+			$option = $input->getCmd('option');
 
-			if ($input->getCmd('option') === 'com_content'
-				&& $input->getCmd('view') === 'article'
+			if (($option === 'com_content' || $option === 'com_categories')
+				&& ($input->getCmd('view') === 'article' || $input->getCmd('view') === 'category')
 				&& $input->getCmd('layout') === 'edit')
 			{
 				$id = $input->getInt('id');
@@ -78,12 +77,13 @@ class JLayoutHelper
 				$lang->load('com_osmeta');
 
 				// Get the metadata information
-				$model = OSModelMetadata::getInstance('OSModelMetadata');
-				$metadata = $model->getMetadata($id);
+				require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/MetatagsContainerFactory.php';
+				$container = MetatagsContainerFactory::getContainerByComponentName($option);
+				$metadata = $container->getMetadata($id);
 
 				// Load the complementary form fields
-				$xml = file_get_contents(JPATH_ROOT . '/plugins/system/osmeta_renderer/override/forms/article.xml');
-				$form = new JForm('article-osmeta');
+				$xml = file_get_contents(JPATH_ROOT . '/plugins/system/osmeta_renderer/override/forms/metadata.xml');
+				$form = new JForm('osmeta-metadata');
 				$form->load($xml);
 				$fieldset = $form->getFieldset();
 
@@ -91,11 +91,17 @@ class JLayoutHelper
 
 				foreach ($fieldset as $field)
 				{
-					$name = preg_replace('/(article\-osmeta\-fields\[|\])/', '', $field->name);
+					$name = preg_replace('/(osmeta\-fields\[|\])/', '', $field->name);
 
-					if (is_object($metadata) && isset($metadata->{$name}))
+					if ($name === 'item_type')
 					{
-						$field->value = $metadata->{$name};
+						// Container type
+						$field->value = $input->getCmd('option') === 'com_content' ? 1 : 4;
+					}
+					elseif (is_array($metadata) && isset($metadata[$name]))
+					{
+						// Metadata
+						$field->value = $metadata[$name];
 					}
 
 					$html .= $field->getControlGroup();

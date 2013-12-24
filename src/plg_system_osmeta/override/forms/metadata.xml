@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fields name="article-osmeta-fields">
+	<fields name="osmeta-fields">
 		<fieldset
-			name="article-osmeta">
+			name="osmeta-fieldset">
 
 			<field name="title_tag"
 				type="text"
@@ -18,6 +18,11 @@
 				description="OSMETA_TITLE_METATAG_DESC"
 				class="inputbox span12" size="45"
 				labelclass="control-label"
+			/>
+
+			<field name="type"
+				type="hidden"
+				value="0"
 			/>
 		</fieldset>
 	</fields>

@@ -141,6 +141,47 @@ class MetatagsContainerFactory
 	}
 
 	/**
+	 * Method to get container by component name
+	 *
+	 * @param   string  $component  Component Name
+	 *
+	 * @access	public
+	 *
+	 * @return  Object
+	 */
+	public static function getContainerByComponentName($component)
+	{
+		$containerName = false;
+		$container = false;
+
+		if ($component === 'com_content')
+		{
+			$containerName = 'ArticleMetatagsContainer';
+		}
+		elseif ($component === 'com_categories')
+		{
+			if (version_compare(JVERSION, '2.5', '>='))
+			{
+				$containerName = 'ArticleCategoryMetatagsContainer2';
+			}
+			else
+			{
+				$containerName = 'ArticleCategoryMetatagsContainer';
+			}
+		}
+
+		if ($containerName)
+		{
+			$file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/" . $containerName . ".php";
+			require_once $file;
+			$container = new $containerName;
+		}
+
+
+		return $container;
+	}
+
+	/**
 	 * Method to get metadata from the container
 	 *
 	 * @param   string  $queryString  Query string
