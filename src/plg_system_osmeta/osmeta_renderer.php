@@ -32,7 +32,7 @@ function pluginOSMetaRender()
 
 	$buffer = JResponse::getBody();
 
-	// Metatags processing
+	// Metatags processing on the front
 	require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
 	$buffer = MetatagsContainerFactory::processBody($buffer, $url);
 
@@ -48,6 +48,13 @@ function pluginOSMeta_onAfterInitialise()
 		return true;
 	}
 
+	/*
+	 * Inject the metadata fields for Joomla 3.0
+	 *
+	 * For Joomla 2.5, look at: plugins/content/osmeta_content/osmeta_content.php,
+	 * into the onContentPrepareForm event.
+	 */
+	// Joomla 3.x Compatibility
 	if (version_compare(JVERSION, '3.0', '>='))
 	{
 		// Override the native JLayoutHelper to inject and manipulate fields on the article form

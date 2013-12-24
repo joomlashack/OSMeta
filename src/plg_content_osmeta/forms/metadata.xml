@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="metadata">
+		<field description="OSMETA_TITLE_TAG_DESC" label="OSMETA_TITLE_TAG_LABEL" name="metatitle" type="text" />
+		<field description="OSMETA_TITLE_METATAG_DESC" label="OSMETA_TITLE_METATAG_LABEL" name="title_tag" type="text" />
+	</fields>
+</form>
