@@ -21,13 +21,10 @@ JLoader::register('OSModel', JPATH_COMPONENT . "/models/model.php");
 $app = JFactory::getApplication();
 
 // Joomla 3.x Backward Compatibility
-if (version_compare(JVERSION, '3.0', '<'))
-{
-	$task = JRequest::getCmd('task');
-}
-else
-{
-	$task = $app->input->getCmd('task');
+if (version_compare(JVERSION, '3.0', '<')) {
+    $task = JRequest::getCmd('task');
+} else {
+    $task = $app->input->getCmd('task');
 }
 
 $controller = OSController::getInstance('OSMeta');

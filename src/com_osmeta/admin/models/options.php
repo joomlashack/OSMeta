@@ -22,20 +22,20 @@ require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
  */
 class OSModelOptions extends OSModel
 {
-	/**
-	 * Get Options (fixed options, for now)
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  Object
-	 */
-	public function getOptions()
-	{
-		$options = new stdClass;
+    /**
+     * Get Options (fixed options, for now)
+     *
+     * @access	public
+     * @since   1.0.0
+     *
+     * @return Object
+     */
+    public function getOptions()
+    {
+        $options = new stdClass;
 
-		$options->max_description_length = 255;
+        $options->max_description_length = 255;
 
-		return $options;
-	}
+        return $options;
+    }
 }

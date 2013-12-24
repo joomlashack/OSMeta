@@ -14,19 +14,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 $features['com_content:Article'] = array(
-	'name' => 'Article',
-	'priority' => 1,
-	'file' => 'ArticleMetatagsContainer.php',
-	'class' => 'ArticleMetatagsContainer',
-		'params' => array(array('option' => 'com_content', 'view' => 'article'),
-			array('option' => 'com_content', 'view' => 'frontpage'),
-			array('option' => 'com_content', 'view' => 'featured'))
+    'name' => 'Article',
+    'priority' => 1,
+    'file' => 'ArticleMetatagsContainer.php',
+    'class' => 'ArticleMetatagsContainer',
+        'params' => array(array('option' => 'com_content', 'view' => 'article'),
+            array('option' => 'com_content', 'view' => 'frontpage'),
+            array('option' => 'com_content', 'view' => 'featured'))
 );
 
 $features['com_content:ArticleCategory2'] = array(
-	'name' => 'Article Category',
-	'priority' => 1,
-	'file' => 'ArticleCategoryMetatagsContainer2.php',
-	'class' => 'ArticleCategoryMetatagsContainer2',
-		'params' => array(array('option' => 'com_content', 'view' => 'category'))
+    'name' => 'Article Category',
+    'priority' => 1,
+    'file' => 'ArticleCategoryMetatagsContainer2.php',
+    'class' => 'ArticleCategoryMetatagsContainer2',
+        'params' => array(array('option' => 'com_content', 'view' => 'category'))
 );

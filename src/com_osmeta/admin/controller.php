@@ -19,23 +19,20 @@ jimport('joomla.application.component.controller');
  * Extend the JController for J3.0 compatibility
  *
  */
-if (version_compare(JVERSION, "3.0", "<"))
-{
-	/**
-	 * Alias Class for JController in Joomla! < 3.0
-	 *
-	 * @since  1.0.0
-	 */
-	class OSController extends JController {}
-}
-else
-{
-	/**
-	 * Alias Class for JControllerLegacy in Joomla! >= 3.0
-	 *
-	 * @since  1.0.0
-	 */
-	class OSController extends JControllerLegacy {}
+if (version_compare(JVERSION, "3.0", "<")) {
+    /**
+     * Alias Class for JController in Joomla! < 3.0
+     *
+     * @since  1.0.0
+     */
+    class OSController extends JController {}
+} else {
+    /**
+     * Alias Class for JControllerLegacy in Joomla! >= 3.0
+     *
+     * @since  1.0.0
+     */
+    class OSController extends JControllerLegacy {}
 }
 
 /**
@@ -45,240 +42,233 @@ else
  */
 class OSMetaController extends OSController
 {
-	/**
-	 * Method to display the controller's view
-	 *
-	 * @param   bool   $cachable   Cachable
-	 * @param   array  $urlparams  URL Params
-	 *
-	 * @access	public
-	 *
-	 * @return  void
-	 */
-	public function display($cachable = false, $urlparams = array())
-	{
-		$this->metatags_view();
-	}
+    /**
+     * Method to display the controller's view
+     *
+     * @param bool  $cachable  Cachable
+     * @param array $urlparams URL Params
+     *
+     * @access	public
+     *
+     * @return void
+     */
+    public function display($cachable = false, $urlparams = array())
+    {
+        $this->metatags_view();
+    }
 
-	/**
-	 * Method to display the Meta Tags Manager's view
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_view()
-	{
-		$this->metatags_manager('metatags_view');
-	}
+    /**
+     * Method to display the Meta Tags Manager's view
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_view()
+    {
+        $this->metatags_manager('metatags_view');
+    }
 
-	/**
-	 * Method to the Save action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_save()
-	{
-		$this->metatags_manager('metatags_save');
-	}
+    /**
+     * Method to the Save action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_save()
+    {
+        $this->metatags_manager('metatags_save');
+    }
 
-	/**
-	 * Method to the Copy Keywords to Title action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_copy_keywords_to_title()
-	{
-		$this->metatags_manager('metatags_copy_keywords_to_title');
-	}
+    /**
+     * Method to the Copy Keywords to Title action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_copy_keywords_to_title()
+    {
+        $this->metatags_manager('metatags_copy_keywords_to_title');
+    }
 
-	/**
-	 * Method to the Copy Title to Keywords action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_copy_title_to_keywords()
-	{
-		$this->metatags_manager('metatags_copy_title_to_keywords');
-	}
+    /**
+     * Method to the Copy Title to Keywords action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_copy_title_to_keywords()
+    {
+        $this->metatags_manager('metatags_copy_title_to_keywords');
+    }
 
-	/**
-	 * Method to the Copy Item Title to Keywords action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_copy_item_title_to_keywords()
-	{
-		$this->metatags_manager('metatags_copy_item_title_to_keywords');
-	}
+    /**
+     * Method to the Copy Item Title to Keywords action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_copy_item_title_to_keywords()
+    {
+        $this->metatags_manager('metatags_copy_item_title_to_keywords');
+    }
 
-	/**
-	 * Method to the Copy Item Title to Title action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_copy_item_title_to_title()
-	{
-		$this->metatags_manager('metatags_copy_item_title_to_title');
-	}
+    /**
+     * Method to the Copy Item Title to Title action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_copy_item_title_to_title()
+    {
+        $this->metatags_manager('metatags_copy_item_title_to_title');
+    }
 
-	/**
-	 * Method to the Generate Descriptions action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_generare_descriptions()
-	{
-		$this->metatags_manager('metatags_generare_descriptions');
-	}
+    /**
+     * Method to the Generate Descriptions action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_generare_descriptions()
+    {
+        $this->metatags_manager('metatags_generare_descriptions');
+    }
 
-	/**
-	 * Method to the Clear Browser Titles action for Meta Tags Manager
-	 *
-	 * @access	public
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	public function metatags_clear_browser_titles()
-	{
-		$this->metatags_manager('metatags_clear_browser_titles');
-	}
+    /**
+     * Method to the Clear Browser Titles action for Meta Tags Manager
+     *
+     * @access	public
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    public function metatags_clear_browser_titles()
+    {
+        $this->metatags_manager('metatags_clear_browser_titles');
+    }
 
-	/**
-	 * Method to the execute actions
-	 *
-	 * @param   string  $task  Task name
-	 *
-	 * @access	private
-	 * @since  1.0.0
-	 *
-	 * @return  void
-	 */
-	private function metatags_manager($task)
-	{
-		$app = JFactory::getApplication();
-		require_once "classes/MetatagsContainerFactory.php";
+    /**
+     * Method to the execute actions
+     *
+     * @param string $task Task name
+     *
+     * @access	private
+     * @since  1.0.0
+     *
+     * @return void
+     */
+    private function metatags_manager($task)
+    {
+        $app = JFactory::getApplication();
+        require_once 'classes/MetatagsContainerFactory.php';
 
-		$itemType = $app->input->getString('type', null);
+        $itemType = $app->input->getString('type', null);
 
-		if (!$itemType)
-		{
-			$itemType = key(MetatagsContainerFactory::getFeatures());
+        if (!$itemType) {
+            $itemType = key(MetatagsContainerFactory::getFeatures());
 
-			if (empty($itemType))
-			{
-				// Enable com_content
-				// Joomla 3.x Backward Compatibility
-				if (version_compare(JVERSION, '1.6', '<='))
-				{
-					$component = 'com_content-1.5';
-				}
-				else
-				{
-					$component = 'com_content';
-				}
+            if (empty($itemType)) {
+                // Enable com_content
+                // Joomla 3.x Backward Compatibility
+                if (version_compare(JVERSION, '1.6', '<=')) {
+                    $component = 'com_content-1.5';
+                } else {
+                    $component = 'com_content';
+                }
 
-				$db = JFactory::getDBO();
-				$db->setQuery('UPDATE #__osmeta_meta_extensions SET available = 1
-					WHERE component LIKE "' . $component . '"');
-				$db->execute();
+                $db = JFactory::getDBO();
+                $db->setQuery('UPDATE #__osmeta_meta_extensions SET available = 1
+                    WHERE component LIKE "' . $component . '"');
+                $db->execute();
 
-				// Get the features again
-				$itemType = key(MetatagsContainerFactory::getFeatures());
-			}
-		}
+                // Get the features again
+                $itemType = key(MetatagsContainerFactory::getFeatures());
+            }
+        }
 
-		$metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);
+        $metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);
 
-		if (!is_object($metatagsContainer))
-		{
-			// TODO: throw error here.
-		}
+        if (!is_object($metatagsContainer)) {
+            // TODO: throw error here.
+        }
 
-		// Execute the actions
-		switch ($task)
-		{
-			case "metatags_save":
-				$ids = JRequest::getVar('ids', array(), '', 'array');
-				$metatitles = JRequest::getVar('metatitle', array(), '', 'array');
-				$metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-				$metakeys = JRequest::getVar('metakey', array(), '', 'array');
-				$title_tags = JRequest::getVar('title_tag', array(), '', 'array');
-				$metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
-				break;
+        // Execute the actions
+        switch ($task) {
+            case "metatags_save":
+                $ids = JRequest::getVar('ids', array(), '', 'array');
+                $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
+                $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
+                $metakeys = JRequest::getVar('metakey', array(), '', 'array');
+                $title_tags = JRequest::getVar('title_tag', array(), '', 'array');
+                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
+                break;
 
-			case "metatags_copy_keywords_to_title":
-				$metatagsContainer->copyKeywordsToTitle(JRequest::getVar('cid', array(), '', 'array'));
-				break;
+            case "metatags_copy_keywords_to_title":
+                $metatagsContainer->copyKeywordsToTitle(JRequest::getVar('cid', array(), '', 'array'));
+                break;
 
-			case "metatags_copy_title_to_keywords":
-				$metatagsContainer->copyTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
-				break;
+            case "metatags_copy_title_to_keywords":
+                $metatagsContainer->copyTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
+                break;
 
-			case "metatags_copy_item_title_to_keywords":
-				$metatagsContainer->copyItemTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
-				break;
+            case "metatags_copy_item_title_to_keywords":
+                $metatagsContainer->copyItemTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
+                break;
 
-			case "metatags_copy_item_title_to_title":
-				$metatagsContainer->copyItemTitleToTitle(JRequest::getVar('cid', array(), '', 'array'));
-				break;
+            case "metatags_copy_item_title_to_title":
+                $metatagsContainer->copyItemTitleToTitle(JRequest::getVar('cid', array(), '', 'array'));
+                break;
 
-			case "metatags_generare_descriptions":
-				$metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
-				break;
+            case "metatags_generare_descriptions":
+                $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
+                break;
 
-			case "metatags_clear_browser_titles":
-				$metatagsContainer->clearBrowserTitles(JRequest::getVar('cid', array(), '', 'array'));
-				break;
-		}
+            case "metatags_clear_browser_titles":
+                $metatagsContainer->clearBrowserTitles(JRequest::getVar('cid', array(), '', 'array'));
+                break;
+        }
 
-		$limit = JRequest::getVar('limit', $app->getCfg('list_limit'));
-		$limitstart = JRequest::getVar('limitstart', 0);
+        $limit = JRequest::getVar('limit', $app->getCfg('list_limit'));
+        $limitstart = JRequest::getVar('limitstart', 0);
 
-		$db = JFactory::getDBO();
-		$tags = $metatagsContainer->getMetatags($limitstart, $limit);
+        $db = JFactory::getDBO();
+        $tags = $metatagsContainer->getMetatags($limitstart, $limit);
 
-		// No reloading the query! Just asking for total without limit
-		$db->setQuery('SELECT FOUND_ROWS();');
+        // No reloading the query! Just asking for total without limit
+        $db->setQuery('SELECT FOUND_ROWS();');
 
-		jimport('joomla.html.pagination');
-		$pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
+        jimport('joomla.html.pagination');
+        $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
-		$filter = $metatagsContainer->getFilter();
-		$features = MetatagsContainerFactory::getFeatures();
-		$order = JRequest::getCmd("filter_order", "title");
-		$orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
+        $filter = $metatagsContainer->getFilter();
+        $features = MetatagsContainerFactory::getFeatures();
+        $order = JRequest::getCmd("filter_order", "title");
+        $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
-		$view = $this->getView('OSMeta', 'html');
-		$view->assignRef('itemType', $itemType);
-		$view->assignRef('metatagsData', $tags);
-		$view->assignRef('page', $page);
-		$view->assignRef('itemsOnPage', $itemsOnPage);
-		$view->assignRef('filter', $filter);
-		$view->assignRef('availableTypes', $features);
-		$view->assignRef('pageNav', $pageNav);
-		$view->assignRef('order', $order);
-		$view->assignRef('order_Dir', $orderDir);
-		$view->display();
-	}
+        $view = $this->getView('OSMeta', 'html');
+        $view->assignRef('itemType', $itemType);
+        $view->assignRef('metatagsData', $tags);
+        $view->assignRef('page', $page);
+        $view->assignRef('itemsOnPage', $itemsOnPage);
+        $view->assignRef('filter', $filter);
+        $view->assignRef('availableTypes', $features);
+        $view->assignRef('pageNav', $pageNav);
+        $view->assignRef('order', $order);
+        $view->assignRef('order_Dir', $orderDir);
+        $view->display();
+    }
 }
