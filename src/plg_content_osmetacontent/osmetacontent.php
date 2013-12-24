@@ -21,13 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 class PlgContentOSMetaContent extends JPlugin
 {
     /**
-     * Event method onAfterContentSave, to store the meta data from the article form
+     * Event method onContentAfterSave, to store the meta data from the article form
      *
      * @access  public
      *
      * @return bool
      */
-    public function onAfterContentSave($content, $isNew)
+    public function onContentAfterSave($context, $content, $isNew)
     {
         $app = JFactory::getApplication();
         $input = $app->input;
@@ -64,15 +64,15 @@ class PlgContentOSMetaContent extends JPlugin
     }
 
     /**
-     * Event method onContentAfterSave, to store the meta data from the article form
+     * Event method onAfterContentSave, to store the meta data from the article form
      *
      * @access  public
      *
      * @return bool
      */
-    public function onContentAfterSave($context, $content, $isNew)
+    public function onAfterContentSave($content, $isNew)
     {
-        $this->onAfterContentSave($content, $isNew);
+        $this->onContentAfterSave('', $content, $isNew);
 
         return true;
     }
@@ -97,7 +97,9 @@ class PlgContentOSMetaContent extends JPlugin
         if (version_compare(JVERSION, '3.0', '<')) {
             $app = JFactory::getApplication();
 
-            if ($app->getName() === 'administrator' && $form->getName() === 'com_content.article') {
+            if ($app->getName() === 'administrator'
+                && ($form->getName() === 'com_content.article' || $form->getName() === 'com_categories.category')) {
+
                 jimport('joomla.filesystem.file');
 
                 $lang = JFactory::getLanguage();
@@ -121,8 +123,8 @@ class PlgContentOSMetaContent extends JPlugin
                             var titleTag = document.getElementById("jform_metadata_title_tag");
                             var fieldGroup = metaTitle.parentNode.parentNode;
 
-                            fieldGroup.insertBefore(titleTag.parentNode, fieldGroup.firstChild);
                             fieldGroup.insertBefore(metaTitle.parentNode, fieldGroup.firstChild);
+                            fieldGroup.insertBefore(titleTag.parentNode, fieldGroup.firstChild);
                         });
                     '
                 );
