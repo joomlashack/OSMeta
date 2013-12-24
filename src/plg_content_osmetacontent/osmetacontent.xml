@@ -13,4 +13,8 @@
 	<files>
 		<filename plugin="osmetacontent">osmetacontent.php</filename>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="OSMeta Content Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetacontent.xml]]></server>
+	</updateservers>
 </extension>

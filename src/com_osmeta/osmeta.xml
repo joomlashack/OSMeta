@@ -49,4 +49,8 @@
 		<folder>admin</folder>
 	</media>
 
+	<updateservers>
+		<server type="extension" priority="1" name="OSMeta Updates"><![CDATA[http://updates.ostraining.com/osmeta.xml]]></server>
+	</updateservers>
+
 </extension>

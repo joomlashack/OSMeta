@@ -14,4 +14,8 @@
 		<filename plugin="osmetarenderer">osmetarenderer.php</filename>
 		<folder>override</folder>
 	</files>
+
+	<updateservers>
+		<server type="extension" priority="1" name="OSMeta System Plugin Updates"><![CDATA[http://updates.ostraining.com/osmetasystem.xml]]></server>
+	</updateservers>
 </extension>
