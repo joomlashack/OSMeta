@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
     <script>
         function createTitleTag(id)
         {
-            $('title_tag_' + id).value=$('title_' + id).innerHTML;
+            $('title_tag_' + id).value=$('title_' + id).innerHTML.trim();
         }
     </script>
     <table class="adminlist">
