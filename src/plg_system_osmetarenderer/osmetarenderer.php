@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage  System
  * @since       1.0.0
  */
-class plgSystemOSMetaRenderer extends JPlugin
+class PlgSystemOSMetaRenderer extends JPlugin
 {
 	/**
 	 * Event method onAfterRender, to process the metadata on the front-end
