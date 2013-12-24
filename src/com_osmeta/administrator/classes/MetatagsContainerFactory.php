@@ -16,13 +16,10 @@ defined('_JEXEC') or die('Restricted access');
 class MetatagsContainerFactory{
   public static function getContainerById($type){
     $features = MetatagsContainerFactory::getFeatures();
-    $container = null;
+    $container = 'com_content:Article';
     if (isset($features[$type])){
       require_once $features[$type]["file"];
       eval('$container = new '.$features[$type]["class"].'();');
-    }
-    if ($container==null){
-      $container=MetatagsContainerFactory::getCommonContainer();
     }
     return $container;
   }

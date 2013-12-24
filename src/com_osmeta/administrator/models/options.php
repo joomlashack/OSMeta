@@ -34,21 +34,6 @@ class OSModelOptions extends OSModel
 	{
 		$options = new stdClass;
 
-		$options->domain = '';
-		$options->google_server = 'google.com';
-		$options->hilight_keywords = 1;
-		$options->hilight_tag = 'strong';
-		$options->hilight_class = 'keyword';
-		$options->hilight_skip = 'textarea';
-		$options->joomboss_registration_code = '';
-		$options->enable_google_ping = 0;
-		$options->frontpage_meta = 0;
-		$options->frontpage_title = '';
-		$options->frontpage_keywords = '';
-		$options->frontpage_description = '';
-		$options->frontpage_meta_title = '';
-		$options->sa_enable = 0;
-		$options->sa_users = 'admin';
 		$options->max_description_length = 255;
 
 		return $options;

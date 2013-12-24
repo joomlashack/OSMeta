@@ -30,12 +30,3 @@ $features['com_content:ArticleCategory2'] = array(
 	'class' => 'ArticleCategoryMetatagsContainer2',
 		'params' => array(array('option' => 'com_content', 'view' => 'category'))
 );
-
-// Add info for Search Engines ping feature
-$extensions['ping'][] = array(
-	'class' => 'JTableContent',
-	'file' => 'features/com_content/ping.php',
-	'function' => 'com_content_get_url',
-	'rss_function' => 'com_content_get_rss_url',
-	'info' => 'Standard Joomla articles'
-);
