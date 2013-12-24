@@ -403,8 +403,7 @@ class ArticleCategoryMetatagsContainer2 extends MetatagsContainer{
 
 	public function isAvailable(){
 	  require_once dirname(__FILE__)."/MetatagsContainerFactory.php";
-	  $version = MetatagsContainerFactory::getJoomlaVersion();
-	  return version_compare($version, "1.6", "ge");
+	  return version_compare(JVERSION, "1.6", "ge");
 	}
 
 }
