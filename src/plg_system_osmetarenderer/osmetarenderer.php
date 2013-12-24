@@ -1,7 +1,7 @@
 <?php
 /**
- * @category  Joomla Content Plugin
- * @package   Osmeta
+ * @category  Joomla System Plugin
+ * @package   com_osmeta
  * @author    JoomBoss
  * @copyright 2012, JoomBoss. All rights reserved
  * @copyright 2013 Open Source Training, LLC. All rights reserved
@@ -16,9 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * OSMeta System Plugin - Renderer
  *
- * @package     Osmeta.Plugin
- * @subpackage  System
- * @since       1.0.0
+ * @since  1.0.0
  */
 class PlgSystemOSMetaRenderer extends JPlugin
 {

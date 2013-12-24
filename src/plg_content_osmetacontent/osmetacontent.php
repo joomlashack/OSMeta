@@ -1,7 +1,7 @@
 <?php
 /**
  * @category   Joomla Content Plugin
- * @package    Osmeta
+ * @package    com_osmeta
  * @author     JoomBoss
  * @copyright  2012, JoomBoss. All rights reserved
  * @copyright  2013 Open Source Training, LLC. All rights reserved
