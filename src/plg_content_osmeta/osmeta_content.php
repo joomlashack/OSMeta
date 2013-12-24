@@ -34,64 +34,6 @@ function pluginOSMeta_onAfterContentSave($article, $isNew)
 	$model = OSModelOptions::getInstance('OSModelOptions');
 	$settings = $model->getOptions();
 
-	if ($settings->enable_google_ping)
-	{
-		$className = get_class($article);
-
-		require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/ExtensionsFactory.php";
-		$extensions = ExtensionsFactory::getExtensions();
-
-		if (is_array($extensions) && is_array($extensions['ping']))
-		{
-			foreach ($extensions['ping'] as $pingHandler)
-			{
-				if ($pingHandler['class'] == $className)
-				{
-					require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/" . $pingHandler['file'];
-
-					$url = '';
-					$rss = '';
-
-					if (isset($pingHandler['function']) && function_exists($pingHandler['function']))
-					{
-						eval('$url=' . $pingHandler['function'] . '($article, $isNew);');
-					}
-
-					if (isset($pingHandler['rss_function']) && function_exists($pingHandler['rss_function']))
-					{
-						eval('$rss=' . $pingHandler['rss_function'] . '();');
-					}
-
-					if (!empty($url))
-					{
-						$db->setQuery("SELECT `domain` FROM `#__osmeta_settings`");
-						$domainName = $db->loadResult();
-
-						require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/Pinger.php";
-						$config = JFactory::getConfig();
-						$pinger = new Pinger;
-						$result = $pinger->pingGoogle(
-							$config->get('config.sitename'),
-							"http://$domainName",
-							"http://{$domainName}$url",
-							"http://{$domainName}$rss"
-						);
-
-						$db->setQuery("INSERT INTO #__osmeta_ping_status
-								(`date`, `title`, `url`, `response_code`, `response_text`) VALUES (
-								NOW(), " . $db->quote($article->title) . ", " .
-								$db->quote($url) . ", " .
-								$db->quote($result[0]) . "," .
-								$db->quote($result[1]) . ")");
-						$db->query();
-					}
-
-					break;
-				}
-			}
-		}
-	}
-
 	$app = JFactory::getApplication();
 	$articleOSMetadataInput = $app->input->get('article-osmeta-fields', '', 'array');
 	$articleMetadataInput = $app->input->get('jform', '', 'array');

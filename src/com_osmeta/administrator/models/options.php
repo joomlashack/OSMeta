@@ -23,100 +23,6 @@ require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
 class OSModelOptions extends OSModel
 {
 	/**
-	 * Get default tag list
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  array
-	 */
-	public function getDefaultTags()
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("SELECT `id`, `name`, `value` from #__osmeta_default_tags");
-		$tags = $db->loadObjectList();
-
-		return $tags;
-	}
-
-	/**
-	 * Delete default tag
-	 *
-	 * @param  int   $tagId   Tag ID
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  array
-	 */
-	public function deleteDefaultTag($tagId = 0)
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("DELETE FROM #__osmeta_default_tags WHERE id = " . $db->quote($tagId));
-		$db->query();
-	}
-
-	/**
-	 * Get default tag
-	 *
-	 * @param  int   $tagId   Tag ID
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  Object
-	 */
-	public function getDefaultTag($tagId = 0)
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("SELECT `id`, `name`, `value` FROM #__osmeta_default_tags WHERE id = " . $db->quote($tagId));
-
-		return $db->loadObject();
-	}
-
-	/**
-	 * Add default tag
-	 *
-	 * @param  string   $name   Tag Name
-	 * @param  string   $value  Tag Value
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return void
-	 */
-	public function addDefaultTag($name, $value)
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("INSERT INTO #__osmeta_default_tags
-						(`name`, `value`)
-						VALUES
-						(" . $db->quote($name) . "," . $db->quote($value) . ")");
-		$db->query();
-	}
-
-	/**
-	 * Update default tag
-	 *
-	 * @param   int      $tagId  Tag ID
-	 * @param   string   $name   Tag Name
-	 * @param   string   $value  Tag Value
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  array
-	 */
-	public function updateDefaultTag($id, $name, $value)
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("UPDATE #__osmeta_default_tags SET
-							`name`=" . $db->quote($name) . ", `value`=" . $db->quote($value) . " WHERE id=" . $db->quote($id)
-					);
-		$db->query();
-	}
-
-	/**
 	 * Get Options (fixed options, for now)
 	 *
 	 * @access	public
@@ -146,23 +52,5 @@ class OSModelOptions extends OSModel
 		$options->max_description_length = 255;
 
 		return $options;
-	}
-
-	/**
-	 * Ping Status
-	 *
-	 * @access	public
-	 * @since   1.0.0
-	 *
-	 * @return  array
-	 */
-	public function getPingStatus()
-	{
-		$db = JFactory::getDBO();
-		$db->setQuery("SELECT `id`, `date`, `title`, `url`, `response_code`, `response_text`
-			FROM #__osmeta_ping_status
-			ORDER BY `date` DESC LIMIT 0,10");
-
-		return $db->loadObjectList();
 	}
 }
