@@ -23,11 +23,14 @@ defined('_JEXEC') or die('Restricted access');
                 <label><?php echo JText::_('COM_OSMETA_SELECT_CONTENT_TYPE') ?>:&nbsp;</label>
                 <select name="type" onchange="document.adminForm.submit();">
                     <?php
-                    foreach ($this->availableTypes as $typeId => $typeName) {
+                    foreach ($this->availableTypes as $typeId => $typeName) :
+                        $selected = $typeId == $this->itemType ? 'selected="true"' : '';
                         ?>
-                        <option value="<?php echo $typeId?>" <?php if ($typeId == $this->itemType) {?>selected="true"<?php }?>><?php echo $typeName["name"]?></option>
-                    <?php
-                    }
+                        <option value="<?php echo $typeId?>" <?php echo $selected; ?>>
+                            <?php echo $typeName["name"]?>
+                        </option>
+                        <?php
+                    endforeach;
                     ?>
                 </select>
             </td>
@@ -54,8 +57,8 @@ defined('_JEXEC') or die('Restricted access');
                         $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_BROWSER_TITLE_LABEL'), 'title_tag', $this->order_Dir,
-                        $this->order, "view"); ?>
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_BROWSER_TITLE_LABEL'), 'title_tag',
+                        $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
@@ -113,9 +116,8 @@ defined('_JEXEC') or die('Restricted access');
                         onclick="createTitleTag('<?php echo $row->id ?>');return false;">
                         <img src="../media/com_osmeta/admin/images/rightarrow.png"/>
                     </a>
-                    <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3" name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
-                    <?php
-                    ?>
+                    <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3"
+                        name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
                 </td>
                 <td>
                     <textarea cols=20 rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
@@ -149,6 +151,12 @@ defined('_JEXEC') or die('Restricted access');
         </a>
     </div>
     <br />
-    <div>OSMeta is built by <a href="http://www.ostraining.com">OSTraining</a></div>
-    <div>OSMeta is a simplified version of <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a></div>
+    <div>
+        OSMeta is built by&nbsp;
+        <a href="http://www.ostraining.com">OSTraining</a>
+    </div>
+    <div>
+        OSMeta is a simplified version of&nbsp;
+        <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a>
+    </div>
 </div>
