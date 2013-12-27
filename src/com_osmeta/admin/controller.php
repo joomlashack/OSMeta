@@ -254,6 +254,15 @@ class OSMetaController extends OSController
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
+        // Add a warning message if the plugins are disabled
+        if (!JPluginHelper::isEnabled('content', 'osmetacontent')) {
+            $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_CONTENT_PLUGIN'), 'warning');
+        }
+
+        if (!JPluginHelper::isEnabled('system', 'osmetarenderer')) {
+            $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
+        }
+
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
         $view->assignRef('metatagsData', $tags);
