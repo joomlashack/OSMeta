@@ -68,7 +68,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
+            "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -142,7 +143,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&extension={$rows[$i]->extension}";
+            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}"
+                . "&extension={$rows[$i]->extension}";
         }
 
         return $rows;
@@ -194,7 +196,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
+            "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -243,7 +246,8 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
                 $rows[$i]->metakey = array("");
             }
 
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&extension={$rows[$i]->extension}";
+            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&"
+                . "extension={$rows[$i]->extension}";
         }
 
         return $rows;
@@ -525,26 +529,39 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
+            "-1");
 
         $result = 'Filter:
-            <input type="text" name="com_content_filter_search" id="search" value="' . $search . '" class="text_area" onchange="document.adminForm.submit();" title="Filter by Title or enter an Article ID"/>
+            <input type="text" name="com_content_filter_search" id="search" value="' . $search
+            . '" class="text_area" onchange="document.adminForm.submit();" '
+            . ' title="Filter by Title or enter an Article ID"/>
             <button id="Go" onclick="this.form.submit();">Go</button>
-            <button onclick="document.getElementById(\'search\').value=\'\';this.form.getElementById(\'filter_sectionid\').value=\'-1\';this.form.getElementById(\'catid\').value=\'0\';this.form.getElementById(\'filter_authorid\').value=\'0\';this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
+            <button onclick="document.getElementById(\'search\').value=\'\';
+                this.form.getElementById(\'filter_sectionid\').value=\'-1\';
+                this.form.getElementById(\'catid\').value=\'0\';
+                this.form.getElementById(\'filter_authorid\').value=\'0\';
+                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
 
             &nbsp;&nbsp;&nbsp;';
 
+        $keywordChecked = $com_content_filter_show_empty_keywords != "-1" ? 'checked="yes" ' : '';
+        $descriptionChecked = $com_content_filter_show_empty_descriptions != "-1" ? 'checked="yes" ' : '';
+
         $result .= '
-            <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1" onchange="submitform();">
-            <option value=""  >- Select State -</option>
-            <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>Published</option>
-            <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
+            <select name="com_content_filter_state" id="filter_state"
+                class="inputbox" size="1" onchange="submitform();">
+                <option value=""  >- Select State -</option>
+                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>Published</option>
+                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
             </select>
             <br/>
             <label>Show only Article Categories with empty keywords</label>
-            <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_keywords" ' . ($com_content_filter_show_empty_keywords != "-1" ? 'checked="yes" ' : '') . '/>
+            <input type="checkbox" onchange="document.adminForm.submit();"
+                name="com_content_filter_show_empty_keywords" ' . $keywordChecked . '/>
             <label>Show only Article Categories with empty descriptions</label>
-            <input type="checkbox" onchange="document.adminForm.submit();" name="com_content_filter_show_empty_descriptions" ' . ($com_content_filter_show_empty_descriptions != "-1" ? 'checked="yes" ' : '') . '/>                ';
+            <input type="checkbox" onchange="document.adminForm.submit();"
+                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
 
         return $result;
     }
