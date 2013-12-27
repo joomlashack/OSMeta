@@ -140,11 +140,7 @@ class MetatagsContainerFactory
         if ($component === 'com_content') {
             $containerName = 'ArticleMetatagsContainer';
         } elseif ($component === 'com_categories') {
-            if (version_compare(JVERSION, '2.5', '>=')) {
-                $containerName = 'ArticleCategoryMetatagsContainer2';
-            } else {
-                $containerName = 'ArticleCategoryMetatagsContainer';
-            }
+            $containerName = 'ArticleCategoryMetatagsContainer';
         }
 
         if ($containerName) {

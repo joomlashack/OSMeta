@@ -23,10 +23,10 @@ $features['com_content:Article'] = array(
             array('option' => 'com_content', 'view' => 'featured'))
 );
 
-$features['com_content:ArticleCategory2'] = array(
+$features['com_content:ArticleCategory'] = array(
     'name' => 'Article Category',
     'priority' => 1,
-    'file' => 'ArticleCategoryMetatagsContainer2.php',
-    'class' => 'ArticleCategoryMetatagsContainer2',
+    'file' => 'ArticleCategoryMetatagsContainer.php',
+    'class' => 'ArticleCategoryMetatagsContainer',
         'params' => array(array('option' => 'com_content', 'view' => 'category'))
 );

@@ -183,12 +183,7 @@ class OSMetaController extends OSController
 
             if (empty($itemType)) {
                 // Enable com_content
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '1.6', '<=')) {
-                    $component = 'com_content-1.5';
-                } else {
-                    $component = 'com_content';
-                }
+                $component = 'com_content';
 
                 $db = JFactory::getDBO();
                 $db->setQuery('UPDATE #__osmeta_meta_extensions SET available = 1

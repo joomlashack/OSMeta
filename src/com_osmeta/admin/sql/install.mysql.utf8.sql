@@ -41,5 +41,4 @@ CREATE TABLE  IF NOT EXISTS `#__osmeta_meta_extensions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT IGNORE INTO `#__osmeta_meta_extensions` VALUES
-    ('com_content-1.5','Joomla 1.5 Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0),
     ('com_content','Joomla Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0);

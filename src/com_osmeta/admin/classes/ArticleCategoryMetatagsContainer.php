@@ -20,7 +20,7 @@ require_once 'MetatagsContainer.php';
  *
  * @since  1.0.0
  */
-class ArticleCategoryMetatagsContainer2 extends MetatagsContainer
+class ArticleCategoryMetatagsContainer extends MetatagsContainer
 {
     /**
      * Code
