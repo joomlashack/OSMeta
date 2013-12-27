@@ -47,34 +47,4 @@ class PlgSystemOSMetaRenderer extends JPlugin
 
         return true;
     }
-
-    /**
-     * Event method onAfterRoute, to inject the metadata fields for Joomla 3.x
-     * on the article/categories forms
-     *
-     * @access  public
-     *
-     * @return bool
-     */
-    public function onAfterRoute()
-    {
-        $app = JFactory::getApplication();
-
-        if ($app->getName() === 'administrator') {
-            /*
-             * Inject the metadata fields for Joomla 3.x
-             *
-             * For Joomla 2.5, look at: plugins/content/osmetacontent/osmetacontent.php,
-             * into the onContentPrepareForm event.
-             */
-            // Joomla 3.x Compatibility
-            if (version_compare(JVERSION, '3.0', '>=')) {
-                // Override the native JLayoutHelper to inject and manipulate fields on the article form
-                JLoader::register('JLayoutHelper',
-                    JPATH_ROOT . '/plugins/system/osmetarenderer/override/layouthelper.php', true);
-            }
-        }
-
-        return true;
-    }
 }

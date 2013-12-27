@@ -312,21 +312,38 @@ class ArticleMetatagsContainer extends MetatagsContainer
         $db = JFactory::getDBO();
 
         for ($i = 0; $i < count($ids); $i++) {
-            $sql = "UPDATE #__content SET metakey=" . $db->quote($metakeys[$i]) . " , metadesc="
-                . $db->quote($metadescriptions[$i]) . " WHERE id=" . $db->quote($ids[$i]);
+            // Get current article metadata
+            $sql = "SELECT metadata FROM #__content"
+                . " WHERE id=" . $db->quote($ids[$i]);
+            $db->setQuery($sql);
+            $result = $db->loadObject();
+
+            // Update the metadata
+            $metadata = json_decode($result->metadata);
+            $metadata->title_tag = $titleTags[$i];
+            $metadata->metatitle = $metatitles[$i];
+            $metadata = json_encode($metadata);
+
+            $sql = "UPDATE #__content SET "
+                . " metakey=" . $db->quote($metakeys[$i]) . ", "
+                . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
+                . " metadata=" . $db->quote($metadata)
+                . " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
+
+            // Insert/Update OS Metadata
             $sql = "INSERT INTO #__osmeta_metadata (item_id,
-            item_type, title, description, title_tag)
-            VALUES (
-            " . $db->quote($ids[$i]) . ",
-            1,
-            " . $db->quote($metatitles[$i]) . ",
-            " . $db->quote($metadescriptions[$i]) . ",
-            " . $db->quote($titleTags != null ? $titleTags[$i] : '') . "
-            ) ON DUPLICATE KEY UPDATE title=" . $db->quote($metatitles[$i]) . " , description="
-                . $db->quote($metadescriptions[$i]) .
-            ", title_tag=" . $db->quote($titleTags != null ? $titleTags[$i] : '');
+                item_type, title, description, title_tag)
+                VALUES (
+                " . $db->quote($ids[$i]) . ",
+                1,
+                " . $db->quote($metatitles[$i]) . ",
+                " . $db->quote($metadescriptions[$i]) . ",
+                " . $db->quote($titleTags != null ? $titleTags[$i] : '') . "
+                ) ON DUPLICATE KEY UPDATE title=" . $db->quote($metatitles[$i]) . " ,
+                    description=" . $db->quote($metadescriptions[$i]) .
+                ", title_tag=" . $db->quote($titleTags != null ? $titleTags[$i] : '');
 
             $db->setQuery($sql);
             $db->query();

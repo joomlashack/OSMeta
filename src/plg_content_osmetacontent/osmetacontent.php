@@ -40,22 +40,12 @@ class PlgContentOSMetaContent extends JPlugin
             $container = MetatagsContainerFactory::getContainerByComponentName($option);
             $container->saveKeywords($content->metakey, $content->id);
 
-            // Joomla 3.x Backward Compatibility
-            if (version_compare(JVERSION, '3.0', '<')) {
-                $articleOSMetadataInput = json_decode($content->metadata);
-                $id = array($content->id);
-                $title = array($articleOSMetadataInput->metatitle);
-                $metaDesc = array($content->metadesc);
-                $metaKey = array($content->metakey);
-                $titleTag = array($articleOSMetadataInput->title_tag);
-            } else {
-                $articleOSMetadataInput = $app->input->get('osmeta-fields', '', 'array');
-                $id = array($content->id);
-                $title = array($articleOSMetadataInput['title']);
-                $metaDesc = array($content->metadesc);
-                $metaKey = array($content->metakey);
-                $titleTag = array($articleOSMetadataInput['title_tag']);
-            }
+            $articleOSMetadataInput = json_decode($content->metadata);
+            $id = array($content->id);
+            $title = array($articleOSMetadataInput->metatitle);
+            $metaDesc = array($content->metadesc);
+            $metaKey = array($content->metakey);
+            $titleTag = array($articleOSMetadataInput->title_tag);
 
             $container->saveMetatags($id, $title, $metaDesc, $metaKey, $titleTag);
         }
@@ -87,48 +77,65 @@ class PlgContentOSMetaContent extends JPlugin
      */
     public function onContentPrepareForm($form, $data)
     {
-        /*
-         * Inject the metadata fields for Joomla 2.5
-         *
-         * For Joomla 3.0, look at: plugins/system/osmetarenderer/osmetarenderer.php,
-         * into the onAfterInitialise event.
-         */
-        // Joomla 3.x Backward Compatibility
-        if (version_compare(JVERSION, '3.0', '<')) {
-            $app = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
-            if ($app->getName() === 'administrator'
-                && ($form->getName() === 'com_content.article' || $form->getName() === 'com_categories.category')) {
+        if ($app->getName() === 'administrator'
+            && ($form->getName() === 'com_content.article'
+                || $form->getName() === 'com_categories.category'
+                || $form->getName() === 'com_categories.categorycom_content')
+            ) {
 
-                jimport('joomla.filesystem.file');
+            jimport('joomla.filesystem.file');
 
-                $lang = JFactory::getLanguage();
-                $lang->load('com_osmeta');
+            $lang = JFactory::getLanguage();
+            $lang->load('com_osmeta');
 
-                $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata.xml');
-                $form->load($xml);
+            /*
+             * Inject the metadata fields for Joomla 2.5
+             *
+             * For Joomla 3.0, look at: plugins/system/osmetarenderer/osmetarenderer.php,
+             * into the onAfterInitialise event.
+             */
+            // Joomla 3.x Backward Compatibility
+            if (version_compare(JVERSION, '3.0', '<')) {
 
-                // Add Javascript code to sort the fields
-                $doc = JFactory::getDocument();
-                $doc->addScriptDeclaration('
+                $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata2.xml');
+                $js = '
                         // Native JavaScript
 
-                        /*!
-                          * domready (c) Dustin Diaz 2012 - License MIT
-                          */
-                        !function (e,t) {typeof module!="undefined"?module.exports=t():typeof define=="function"&&typeof define.amd=="object"?define(t):this[e]=t()}("domready",function (e) {function p(e) {h=1;while (e=t.shift())e()}var t=[],n,r=!1,i=document,s=i.documentElement,o=s.doScroll,u="DOMContentLoaded",a="addEventListener",f="onreadystatechange",l="readyState",c=o?/^loaded|^c/:/^loaded|c/,h=c.test(i[l]);return i[a]&&i[a](u,n=function () {i.removeEventListener(u,n,r),p()},r),o&&i.attachEvent(f,n=function () {/^c/.test(i[l])&&(i.detachEvent(f,n),p())}),e=o?function (n) {self!=top?h?n():t.push(n):function () {try {s.doScroll("left")} catch (t){return setTimeout(function () {e(n)},50)}n()}()}:function (e) {h?e():t.push(e)}})
-
                         domready(function () {
-                            var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var titleTag = document.getElementById("jform_metadata_title_tag");
+                            var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var fieldGroup = metaTitle.parentNode.parentNode;
 
                             fieldGroup.insertBefore(metaTitle.parentNode, fieldGroup.firstChild);
                             fieldGroup.insertBefore(titleTag.parentNode, fieldGroup.firstChild);
-                        });
-                    '
-                );
+                        });';
+            } else {
+                $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
+                $js = '
+                        domready(function () {
+                            var titleTag = document.getElementById("jform_metadata_title_tag");
+                            var metaTitle = document.getElementById("jform_metadata_metatitle");
+                            var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
+
+                            fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
+                            fieldGroup.insertBefore(titleTag.parentNode.parentNode, fieldGroup.firstChild);
+                        });';
             }
+
+            $form->load($xml);
+
+            // Add Javascript code to sort the fields
+            $doc = JFactory::getDocument();
+
+            $doc->addScriptDeclaration('
+                    /*!
+                      * domready (c) Dustin Diaz 2012 - License MIT
+                      */
+                    !function (e,t) {typeof module!="undefined"?module.exports=t():typeof define=="function"&&typeof define.amd=="object"?define(t):this[e]=t()}("domready",function (e) {function p(e) {h=1;while (e=t.shift())e()}var t=[],n,r=!1,i=document,s=i.documentElement,o=s.doScroll,u="DOMContentLoaded",a="addEventListener",f="onreadystatechange",l="readyState",c=o?/^loaded|^c/:/^loaded|c/,h=c.test(i[l]);return i[a]&&i[a](u,n=function () {i.removeEventListener(u,n,r),p()},r),o&&i.attachEvent(f,n=function () {/^c/.test(i[l])&&(i.detachEvent(f,n),p())}),e=o?function (n) {self!=top?h?n():t.push(n):function () {try {s.doScroll("left")} catch (t){return setTimeout(function () {e(n)},50)}n()}()}:function (e) {h?e():t.push(e)}})
+                ');
+            $doc->addScriptDeclaration($js);
         }
     }
 }
