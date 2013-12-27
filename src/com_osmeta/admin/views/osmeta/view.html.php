@@ -71,6 +71,9 @@ class OSMetaViewOSMeta extends OSView
         JToolBarHelper::save("save");
         JToolBarHelper::cancel("cancel");
 
+        $doc = JFactory::getDocument();
+        $doc->addStylesheet('../media/com_osmeta/admin/css/main.css');
+
         parent::display($tpl);
     }
 }

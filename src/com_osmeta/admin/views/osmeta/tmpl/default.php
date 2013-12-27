@@ -140,3 +140,14 @@ defined('_JEXEC') or die('Restricted access');
     <input type="hidden" name="task" value="view" />
     <input type="hidden" name="boxchecked" value="0" />
 </form>
+
+<div id="footer">
+    <div>
+        <a href="http://www.ostraining.com">
+            <img src="../media/com_osmeta/admin/images/ostraining_logo_250x50.png" />
+        </a>
+    </div>
+    <br />
+    <div>OSMeta is built by <a href="http://www.ostraining.com">OSTraining</a></div>
+    <div>OSMeta is a simplified version of <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a></div>
+</div>
