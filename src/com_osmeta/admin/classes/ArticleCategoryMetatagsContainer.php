@@ -279,6 +279,9 @@ class ArticleCategoryMetatagsContainer extends MetatagsContainer
 
             // Update the metadata
             $metadata = json_decode($result->metadata);
+            if (!is_object($metadata)) {
+                $metadata = new stdClass;
+            }
             $metadata->title_tag = $titleTags[$i];
             $metadata->metatitle = $metatitles[$i];
             $metadata = json_encode($metadata);
