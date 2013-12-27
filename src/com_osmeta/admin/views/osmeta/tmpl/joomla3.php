@@ -51,23 +51,23 @@ defined('_JEXEC') or die('Restricted access');
                     title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
-                        $this->order, "metatags_view"); ?>
+                        $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_TAG_LABEL'), 'title_tag', $this->order_Dir,
-                        $this->order, "metatags_view"); ?>
+                        $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_METATAG_LABEL'), 'meta_title',
-                        $this->order_Dir, $this->order, "metatags_view"); ?>
+                        $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_METATAG_LABEL'), 'meta_key',
-                        $this->order_Dir, $this->order, "metatags_view"); ?>
+                        $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_METATAG_LABEL'), 'meta_desc',
-                        $this->order_Dir, $this->order, "metatags_view"); ?>
+                        $this->order_Dir, $this->order, "view"); ?>
                 </th>
             </tr>
 
@@ -138,6 +138,6 @@ defined('_JEXEC') or die('Restricted access');
         </tfoot>
     </table>
     <input type="hidden" name="option" value="com_osmeta" />
-    <input type="hidden" name="task" value="metatags_view" />
+    <input type="hidden" name="task" value="view" />
     <input type="hidden" name="boxchecked" value="0" />
 </form>

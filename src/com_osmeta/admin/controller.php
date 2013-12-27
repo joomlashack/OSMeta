@@ -54,7 +54,7 @@ class OSMetaController extends OSController
      */
     public function display($cachable = false, $urlparams = array())
     {
-        $this->metatags_view();
+        $this->view();
     }
 
     /**
@@ -65,9 +65,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_view()
+    public function view()
     {
-        $this->metatags_manager('metatags_view');
+        $this->actionManager('view');
     }
 
     /**
@@ -78,9 +78,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_save()
+    public function save()
     {
-        $this->metatags_manager('metatags_save');
+        $this->actionManager('save');
     }
 
     /**
@@ -91,9 +91,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_copy_keywords_to_title()
+    public function copyKeywordsToTitle()
     {
-        $this->metatags_manager('metatags_copy_keywords_to_title');
+        $this->actionManager('copyKeywordsToTitle');
     }
 
     /**
@@ -104,9 +104,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_copy_title_to_keywords()
+    public function copyTitleToKeywords()
     {
-        $this->metatags_manager('metatags_copy_title_to_keywords');
+        $this->actionManager('copyTitleToKeywords');
     }
 
     /**
@@ -117,9 +117,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_copy_item_title_to_keywords()
+    public function copyItemTitleToKeywords()
     {
-        $this->metatags_manager('metatags_copy_item_title_to_keywords');
+        $this->actionManager('copyItemTitleToKeywords');
     }
 
     /**
@@ -130,9 +130,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_copy_item_title_to_title()
+    public function copyItemTitleToTitle()
     {
-        $this->metatags_manager('metatags_copy_item_title_to_title');
+        $this->actionManager('copyItemTitleToTitle');
     }
 
     /**
@@ -143,9 +143,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_generare_descriptions()
+    public function generateDescriptions()
     {
-        $this->metatags_manager('metatags_generare_descriptions');
+        $this->actionManager('generateDescriptions');
     }
 
     /**
@@ -156,9 +156,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function metatags_clear_browser_titles()
+    public function clearBrowserTitles()
     {
-        $this->metatags_manager('metatags_clear_browser_titles');
+        $this->actionManager('clearBrowserTitles');
     }
 
     /**
@@ -171,7 +171,7 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    private function metatags_manager($task)
+    private function actionManager($task)
     {
         $app = JFactory::getApplication();
         require_once 'classes/MetatagsContainerFactory.php';
@@ -203,7 +203,7 @@ class OSMetaController extends OSController
 
         // Execute the actions
         switch ($task) {
-            case "metatags_save":
+            case "save":
                 $ids = JRequest::getVar('ids', array(), '', 'array');
                 $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
                 $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
@@ -212,27 +212,27 @@ class OSMetaController extends OSController
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
                 break;
 
-            case "metatags_copy_keywords_to_title":
+            case "copyKeywordsToTitle":
                 $metatagsContainer->copyKeywordsToTitle(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "metatags_copy_title_to_keywords":
+            case "copyTitleToKeywords":
                 $metatagsContainer->copyTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "metatags_copy_item_title_to_keywords":
+            case "copyItemTitleToKeywords":
                 $metatagsContainer->copyItemTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "metatags_copy_item_title_to_title":
+            case "copyItemTitleToTitle":
                 $metatagsContainer->copyItemTitleToTitle(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "metatags_generare_descriptions":
+            case "generateDescriptions":
                 $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "metatags_clear_browser_titles":
+            case "clearBrowserTitles":
                 $metatagsContainer->clearBrowserTitles(JRequest::getVar('cid', array(), '', 'array'));
                 break;
         }
