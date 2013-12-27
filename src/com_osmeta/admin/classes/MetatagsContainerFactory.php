@@ -253,40 +253,6 @@ class MetatagsContainerFactory
             }
         }
 
-        require_once dirname(__FILE__) . "/Canonical.php";
-
-        $canonical = new OSMetaCanonicalURL;
-        $canonical_url = $canonical->getCanonicalURL(substr($_SERVER["REQUEST_URI"], strlen(JURI::base(true)) + 1));
-
-        if ($canonical_url != null) {
-            switch ($canonical_url->action) {
-                case OSMetaCanonicalURL::$ACTION_CANONICAL:
-                    $replaced = 0;
-                    $location = JURI::base() . $canonical_url->canonical_url;
-                    $body = preg_replace("/<link[^>]*rel[\\s]*=[\\s]*[\\\"\\\']+canonical[\\\"\\\']+[^>]*>/i",
-                        '<link rel="canonical" href="' . htmlspecialchars($location) . '" />', $body, 1, $replaced
-                    );
-
-                    if ($replaced != 1) {
-                        $body = preg_replace('/<head>/i', "<head>\n  <link rel=\"canonical\" href=\""
-                            . htmlspecialchars($location) . "\"/>", $body, 1);
-                    }
-                    break;
-
-                case OSMetaCanonicalURL::$ACTION_NOINDEX:
-                    $body = preg_replace('/<head>/i', "<head>\n  <meta name=\"robots\" content=\"noindex\"/>",
-                        $body, 1);
-                    break;
-
-                case OSMetaCanonicalURL::$ACTION_REDIRECT:
-                    $location = JURI::base() . $canonical_url->canonical_url;
-                    header('HTTP/1.1 301 Moved Permanently');
-                    header('Location: ' . $location);
-                    exit;
-                    break;
-            }
-        }
-
         return $body;
     }
 
