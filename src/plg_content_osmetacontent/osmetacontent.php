@@ -101,9 +101,8 @@ class PlgContentOSMetaContent extends JPlugin
 
                 $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata2.xml');
                 $js = '
-                        // Native JavaScript
-
                         domready(function () {
+                            // Browser title and Meta title fields
                             var titleTag = document.getElementById("jform_metadata_title_tag");
                             var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var fieldGroup = metaTitle.parentNode.parentNode;
@@ -115,6 +114,7 @@ class PlgContentOSMetaContent extends JPlugin
                 $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
                 $js = '
                         domready(function () {
+                            // Browser title and Meta title fields
                             var titleTag = document.getElementById("jform_metadata_title_tag");
                             var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
@@ -124,7 +124,7 @@ class PlgContentOSMetaContent extends JPlugin
                         });';
             }
 
-            $form->load($xml);
+            $form->load($xml, true);
 
             // Add Javascript code to sort the fields
             $doc = JFactory::getDocument();

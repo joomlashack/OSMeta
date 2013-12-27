@@ -54,19 +54,19 @@ defined('_JEXEC') or die('Restricted access');
                         $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_TAG_LABEL'), 'title_tag', $this->order_Dir,
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_BROWSER_TITLE_LABEL'), 'title_tag', $this->order_Dir,
                         $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_METATAG_LABEL'), 'meta_title',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_METATAG_LABEL'), 'meta_key',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_LABEL'), 'meta_key',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_METATAG_LABEL'), 'meta_desc',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
             </tr>
@@ -78,16 +78,16 @@ defined('_JEXEC') or die('Restricted access');
 
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_TITLE_TAG_DESC'); ?>
+                <?php echo JText::_('COM_OSMETA_BROWSER_TITLE_DESC'); ?>
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_TITLE_METATAG_DESC') ?>
+                <?php echo JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC') ?>
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_KEYWORDS_METATAG_DESC') ?>
+                <?php echo JText::_('COM_OSMETA_KEYWORDS_DESC') ?>
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_DESCRIPTION_METATAG_DESC') ?>
+                <?php echo JText::_('COM_OSMETA_DESCRIPTION_DESC') ?>
             </td>
         </tr>
         <?php
