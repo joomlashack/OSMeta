@@ -34,7 +34,6 @@
             <folder>models</folder>
             <folder>views</folder>
             <folder>sql</folder>
-            <filename>admin.osmeta.php</filename>
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
         </files>

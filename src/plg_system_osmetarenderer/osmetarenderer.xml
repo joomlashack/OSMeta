@@ -12,7 +12,6 @@
 
     <files>
         <filename plugin="osmetarenderer">osmetarenderer.php</filename>
-        <folder>override</folder>
     </files>
 
     <updateservers>
