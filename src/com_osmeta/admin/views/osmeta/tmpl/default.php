@@ -53,23 +53,23 @@ defined('_JEXEC') or die('Restricted access');
                     onclick="checkAll(<?php echo count($this->metatagsData); ?>);" />
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE'), 'title', $this->order_Dir,
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "metatags_view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_TAG'), 'title_tag', $this->order_Dir,
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_TAG_LABEL'), 'title_tag', $this->order_Dir,
                         $this->order, "metatags_view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_METATAG'), 'meta_title',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_METATAG_LABEL'), 'meta_title',
                         $this->order_Dir, $this->order, "metatags_view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_METATAG'), 'meta_key',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_METATAG_LABEL'), 'meta_key',
                         $this->order_Dir, $this->order, "metatags_view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_METATAG'), 'meta_desc',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_METATAG_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "metatags_view"); ?>
                 </th>
             </tr>
