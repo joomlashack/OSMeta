@@ -246,6 +246,10 @@ class MetatagsContainerFactory
                 $body = preg_replace("/<title[^>]*>.*<\\/title>/i",
                     '<title>' . htmlspecialchars($metadata["title_tag"]) . '</title>', $body, 1, $replaced
                 );
+
+                // Remove the meta tag: title_tag
+                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title_tag[\\\"\\\']+[^>]*>/i", '',
+                    $body, 1, $replaced);
             }
         }
 
