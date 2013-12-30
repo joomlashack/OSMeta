@@ -99,3 +99,4 @@ _notes/
 desktop.ini
 *~
 *.bak
+.phing_targets
