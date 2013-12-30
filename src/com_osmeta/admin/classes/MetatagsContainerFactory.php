@@ -81,7 +81,6 @@ class MetatagsContainerFactory
         }
 
         $features = self::getFeatures();
-
         foreach ($features as $featureId => $feature) {
             $success = true;
 
@@ -193,7 +192,7 @@ class MetatagsContainerFactory
     {
         $container = self::getContainerByRequest($queryString);
 
-        if ($container != null) {
+        if ($container != null && is_object($container)) {
             $metadata = $container->getMetadataByRequest($queryString);
 
             // Process meta title tag
