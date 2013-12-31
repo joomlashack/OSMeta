@@ -65,11 +65,11 @@ defined('_JEXEC') or die('Restricted access');
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_LABEL'), 'meta_key',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
+                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_LABEL'), 'meta_key',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
             </tr>
@@ -87,10 +87,10 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC') ?>
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_KEYWORDS_DESC') ?>
+                <?php echo JText::_('COM_OSMETA_DESCRIPTION_DESC') ?>
             </td>
             <td valign="top">
-                <?php echo JText::_('COM_OSMETA_DESCRIPTION_DESC') ?>
+                <?php echo JText::_('COM_OSMETA_KEYWORDS_DESC') ?>
             </td>
         </tr>
         <?php
@@ -123,10 +123,10 @@ defined('_JEXEC') or die('Restricted access');
                     <textarea cols=20 rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
                 </td>
                 <td>
-                    <textarea cols=20 rows="3" name="metakey[]"><?php echo $row->metakey; ?></textarea>
+                    <textarea cols=20 rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
                 <td>
-                    <textarea cols=20 rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
+                    <textarea cols=20 rows="3" name="metakey[]"><?php echo $row->metakey; ?></textarea>
                 </td>
             </tr>
             <?php
