@@ -84,32 +84,6 @@ class OSMetaController extends OSController
     }
 
     /**
-     * Method to the Copy Keywords to Title action for Meta Tags Manager
-     *
-     * @access	public
-     * @since  1.0.0
-     *
-     * @return void
-     */
-    public function copyKeywordsToTitle()
-    {
-        $this->actionManager('copyKeywordsToTitle');
-    }
-
-    /**
-     * Method to the Copy Title to Keywords action for Meta Tags Manager
-     *
-     * @access	public
-     * @since  1.0.0
-     *
-     * @return void
-     */
-    public function copyTitleToKeywords()
-    {
-        $this->actionManager('copyTitleToKeywords');
-    }
-
-    /**
      * Method to the Copy Item Title to Keywords action for Meta Tags Manager
      *
      * @access	public
@@ -210,14 +184,6 @@ class OSMetaController extends OSController
                 $metakeys = JRequest::getVar('metakey', array(), '', 'array');
                 $title_tags = JRequest::getVar('title_tag', array(), '', 'array');
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
-                break;
-
-            case "copyKeywordsToTitle":
-                $metatagsContainer->copyKeywordsToTitle(JRequest::getVar('cid', array(), '', 'array'));
-                break;
-
-            case "copyTitleToKeywords":
-                $metatagsContainer->copyTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
             case "copyItemTitleToKeywords":
