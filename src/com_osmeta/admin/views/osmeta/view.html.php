@@ -52,13 +52,21 @@ class OSMetaViewOSMeta extends OSView
 
         JToolBarHelper::apply("save");
 
-        JToolBarHelper::custom('copyBrowserTitleToKeywords', 'shuffle', '',
+        if (version_compare(JVERSION, '3.0', '>=')) {
+            $iconShuffle = 'shuffle';
+            $iconEdit = 'pencil-2';
+        } else {
+            $iconShuffle = 'refresh';
+            $iconEdit = 'edit';
+        }
+
+        JToolBarHelper::custom('copyBrowserTitleToKeywords', $iconShuffle, '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
 
-        JToolBarHelper::custom('copyItemTitleToSearchEngineTitle', 'shuffle', '',
+        JToolBarHelper::custom('copyItemTitleToSearchEngineTitle', $iconShuffle, '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
 
-        JToolBarHelper::custom('generateDescriptions', 'pencil-2', '',
+        JToolBarHelper::custom('generateDescriptions', $iconEdit, '',
             JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'), true);
 
         JToolBarHelper::custom('clearBrowserTitles', 'remove', '',
