@@ -1,4 +1,4 @@
-[![OS Training](http://www.ostraining.com/templates/ostraining/images/logo.png)](http://www.ostraining.com)
+[![OSTraining](http://www.ostraining.com/templates/ostraining/images/logo.png)](http://www.ostraining.com)
 OS Meta
 ===============
 

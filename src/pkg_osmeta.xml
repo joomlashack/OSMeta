@@ -3,7 +3,7 @@
     <name>OSMeta Installation Bundle</name>
     <packagename>osmeta</packagename>
     <creationDate>December 20, 2013</creationDate>
-    <packager>OS Training</packager>
+    <packager>OSTraining</packager>
     <packagerurl>http://ostraining.com</packagerurl>
     <copyright>(C) 2013 OS Training. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
