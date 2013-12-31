@@ -380,7 +380,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
      *
      * @return void
      */
-    public function copyItemTitleToTitle($ids)
+    public function copyItemTitleToSearchEngineTitle($ids)
     {
         $db = JFactory::getDBO();
 
@@ -420,7 +420,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
      *
      * @return void
      */
-    public function copyItemTitleToKeywords($ids)
+    public function copyBrowserTitleToKeywords($ids)
     {
         $db = JFactory::getDBO();
 
@@ -430,7 +430,11 @@ class ArticleMetatagsContainer extends MetatagsContainer
             }
         }
 
-        $sql = "UPDATE #__content SET metakey=title WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = "UPDATE #__content as c" .
+            " LEFT JOIN #__osmeta_metadata as m ON (c.id = m.item_id)" .
+            " SET c.metakey = (IF(m.title_tag IS NULL OR m.title_tag = '', c.title, m.title_tag))" .
+            " WHERE m.item_type = 1 AND c.id IN (" . implode(",", $ids) . ")";
+
         $db->setQuery($sql);
         $items = $db->query();
     }

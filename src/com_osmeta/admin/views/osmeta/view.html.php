@@ -52,10 +52,10 @@ class OSMetaViewOSMeta extends OSView
 
         JToolBarHelper::apply("save");
 
-        JToolBarHelper::custom('copyItemTitleToKeywords', 'shuffle', '',
+        JToolBarHelper::custom('copyBrowserTitleToKeywords', 'shuffle', '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
 
-        JToolBarHelper::custom('copyItemTitleToTitle', 'shuffle', '',
+        JToolBarHelper::custom('copyItemTitleToSearchEngineTitle', 'shuffle', '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
 
         JToolBarHelper::custom('generateDescriptions', 'pencil-2', '',

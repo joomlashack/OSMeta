@@ -84,16 +84,16 @@ class OSMetaController extends OSController
     }
 
     /**
-     * Method to the Copy Item Title to Keywords action for Meta Tags Manager
+     * Method to the Copy Browser Title to Keywords action for Meta Tags Manager
      *
      * @access	public
      * @since  1.0.0
      *
      * @return void
      */
-    public function copyItemTitleToKeywords()
+    public function copyBrowserTitleToKeywords()
     {
-        $this->actionManager('copyItemTitleToKeywords');
+        $this->actionManager('copyBrowserTitleToKeywords');
     }
 
     /**
@@ -104,9 +104,9 @@ class OSMetaController extends OSController
      *
      * @return void
      */
-    public function copyItemTitleToTitle()
+    public function copyItemTitleToSearchEngineTitle()
     {
-        $this->actionManager('copyItemTitleToTitle');
+        $this->actionManager('copyItemTitleToSearchEngineTitle');
     }
 
     /**
@@ -186,12 +186,12 @@ class OSMetaController extends OSController
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
                 break;
 
-            case "copyItemTitleToKeywords":
-                $metatagsContainer->copyItemTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
+            case "copyBrowserTitleToKeywords":
+                $metatagsContainer->copyBrowserTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
-            case "copyItemTitleToTitle":
-                $metatagsContainer->copyItemTitleToTitle(JRequest::getVar('cid', array(), '', 'array'));
+            case "copyItemTitleToSearchEngineTitle":
+                $metatagsContainer->copyItemTitleToSearchEngineTitle(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
             case "generateDescriptions":
