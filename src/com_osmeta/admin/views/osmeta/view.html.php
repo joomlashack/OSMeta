@@ -50,12 +50,6 @@ class OSMetaViewOSMeta extends OSView
     {
         JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'));
 
-        JToolBarHelper::custom('copyKeywordsToTitle', 'apply', '',
-            JText::_('COM_OSMETA_COPY_KEYWORDS_TO_TITLE'), true);
-
-        JToolBarHelper::custom('copyTitleToKeywords', 'apply', '',
-            JText::_('COM_OSMETA_COPY_TITLE_TO_KEYWORDS'), true);
-
         JToolBarHelper::custom('copyItemTitleToKeywords', 'apply', '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
 
