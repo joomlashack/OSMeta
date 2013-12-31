@@ -7,7 +7,7 @@
     <license>GPL v3</license>
     <authorEmail>info@ostraining.com</authorEmail>
     <authorUrl>http://www.ostraining.com</authorUrl>
-    <version>1.0-beta.3</version>
+    <version>1.0-beta.4</version>
     <description>System plugin which perform content preparation to add meta data 'on the fly'. Based on SEOBoss Pro (http://joomboss.com)</description>
 
     <files>
