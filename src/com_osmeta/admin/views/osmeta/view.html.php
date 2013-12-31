@@ -50,19 +50,20 @@ class OSMetaViewOSMeta extends OSView
     {
         JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'));
 
-        JToolBarHelper::custom('copyItemTitleToKeywords', 'apply', '',
+        JToolBarHelper::apply("save");
+
+        JToolBarHelper::custom('copyItemTitleToKeywords', 'shuffle', '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
 
-        JToolBarHelper::custom('copyItemTitleToTitle', 'apply', '',
+        JToolBarHelper::custom('copyItemTitleToTitle', 'shuffle', '',
             JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
 
-        JToolBarHelper::custom('generateDescriptions', 'apply', '',
+        JToolBarHelper::custom('generateDescriptions', 'pencil-2', '',
             JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'), true);
 
-        JToolBarHelper::custom('clearBrowserTitles', 'apply', '',
+        JToolBarHelper::custom('clearBrowserTitles', 'remove', '',
             JText::_('COM_OSMETA_CLEAR_BROWSER_TITLES'), true);
 
-        JToolBarHelper::save("save");
         JToolBarHelper::cancel("cancel");
 
         $doc = JFactory::getDocument();
