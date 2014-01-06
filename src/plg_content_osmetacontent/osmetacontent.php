@@ -29,25 +29,29 @@ class PlgContentOSMetaContent extends JPlugin
      */
     public function onContentAfterSave($context, $content, $isNew)
     {
-        $app = JFactory::getApplication();
-        $input = $app->input;
+        if ($context === 'com_content.article' || $context === 'com_categories.category') {
+            $app = JFactory::getApplication();
+            $input = $app->input;
 
-        $option = $input->getCmd('option');
+            $option = $input->getCmd('option');
 
-        if (is_object($content) && isset($content->id)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/MetatagsContainerFactory.php';
+            if (is_object($content) && isset($content->id)) {
+                require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/MetatagsContainerFactory.php';
 
-            $container = MetatagsContainerFactory::getContainerByComponentName($option);
-            $container->saveKeywords($content->metakey, $content->id);
+                $container = MetatagsContainerFactory::getContainerByComponentName($option);
+                if (is_object($container)) {
+                    $container->saveKeywords($content->metakey, $content->id);
 
-            $articleOSMetadataInput = json_decode($content->metadata);
-            $id = array($content->id);
-            $title = array($articleOSMetadataInput->metatitle);
-            $metaDesc = array($content->metadesc);
-            $metaKey = array($content->metakey);
-            $titleTag = array($articleOSMetadataInput->title_tag);
+                    $articleOSMetadataInput = json_decode($content->metadata);
+                    $id = array($content->id);
+                    $title = array($articleOSMetadataInput->metatitle);
+                    $metaDesc = array($content->metadesc);
+                    $metaKey = array($content->metakey);
+                    $titleTag = array($articleOSMetadataInput->title_tag);
 
-            $container->saveMetatags($id, $title, $metaDesc, $metaKey, $titleTag);
+                    $container->saveMetatags($id, $title, $metaDesc, $metaKey, $titleTag);
+                }
+            }
         }
 
         return true;
