@@ -83,10 +83,9 @@ class PlgContentOSMetaContent extends JPlugin
     {
         $app = JFactory::getApplication();
 
-        if ($app->getName() === 'administrator'
-            && ($form->getName() === 'com_content.article'
+        if ($form->getName() === 'com_content.article'
                 || $form->getName() === 'com_categories.category'
-                || $form->getName() === 'com_categories.categorycom_content')
+                || $form->getName() === 'com_categories.categorycom_content'
             ) {
 
             jimport('joomla.filesystem.file');
