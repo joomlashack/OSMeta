@@ -66,8 +66,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
-            "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -153,7 +152,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
 
             default:
                 $sql .= " ORDER BY title ";
-            break;
+                break;
 
         }
 
@@ -207,8 +206,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
         $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
-            "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -528,8 +526,7 @@ class ArticleMetatagsContainer extends MetatagsContainer
         $author_id = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
         $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions",
-            "-1");
+        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
