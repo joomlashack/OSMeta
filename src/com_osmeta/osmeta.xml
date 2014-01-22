@@ -36,6 +36,7 @@
             <folder>sql</folder>
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
+            <filename>config.xml</filename>
         </files>
 
         <languages folder="admin/language">

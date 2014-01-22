@@ -11,3 +11,28 @@ section#content td {
     padding-left: 2px;
     padding-right: 2px;
 }
+
+tr.subheader {
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(100%, rgba(237,237,237,1)));
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+}
+
+tr.subheader td {
+    color: rgb(12, 25, 46);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+    line-height: 20px;
+    text-shadow: 0 1px 0 #FFF;
+    padding-left: 20px;
+    font-style: italic;
+}
+
+th.title-column {
+    min-width: 170px;
+}

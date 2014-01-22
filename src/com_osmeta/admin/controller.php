@@ -149,6 +149,7 @@ class OSMetaController extends OSController
     {
         $app = JFactory::getApplication();
         require_once 'classes/MetatagsContainerFactory.php';
+        require_once 'classes/HomeMetatagsContainer.php';
 
         $itemType = $app->input->getString('type', null);
 
@@ -181,12 +182,27 @@ class OSMetaController extends OSController
         // Execute the actions
         switch ($task) {
             case "save":
+                // Content
                 $ids = JRequest::getVar('ids', array(), '', 'array');
                 $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
                 $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
                 $metakeys = JRequest::getVar('metakey', array(), '', 'array');
                 $title_tags = JRequest::getVar('title_tag', array(), '', 'array');
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
+
+                // Home data
+                $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');
+                $homeTitleTag = JRequest::getVar('home_title_tag', '', '', 'string');
+                $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
+                $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
+                $homeMetaKey = JRequest::getVar('home_metakey', '', '', 'string');
+                HomeMetatagsContainer::saveMetatags(
+                    $homeSource,
+                    $homeMetaTitle,
+                    $homeMetaDescription,
+                    $homeMetaKey,
+                    $homeTitleTag
+                );
                 break;
 
             case "copyBrowserTitleToKeywords":
@@ -232,9 +248,17 @@ class OSMetaController extends OSController
             $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
         }
 
+        $itemTypeShort = $itemType === 'com_content:Article' ? 'articles' : 'categories';
+
+        // Get Homepage data
+        $home = HomeMetatagsContainer::getMetatags();
+
+        $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
+
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
         $view->assignRef('metatagsData', $tags);
+        $view->assignRef('homeMetatagsData', $home);
         $view->assignRef('page', $page);
         $view->assignRef('itemsOnPage', $itemsOnPage);
         $view->assignRef('filter', $filter);
@@ -242,6 +266,8 @@ class OSMetaController extends OSController
         $view->assignRef('pageNav', $pageNav);
         $view->assignRef('order', $order);
         $view->assignRef('order_Dir', $orderDir);
+        $view->assignRef('itemTypeShort', $itemTypeShort);
+        $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
         $view->display();
     }
 }

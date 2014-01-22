@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <th width="20"><input type="checkbox" name="checkall-toggle" value=""
                     title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
-                <th class="title" width="20%">
+                <th class="title title-column">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "view"); ?>
                 </th>
@@ -92,9 +92,50 @@ defined('_JEXEC') or die('Restricted access');
                 <?php echo JText::_('COM_OSMETA_KEYWORDS_DESC') ?>
             </td>
         </tr>
+
+        <tr class="subheader">
+            <td colspan="6"><?php echo JText::_('COM_OSMETA_HOMEPAGE_METADATA'); ?></td>
+        </tr>
+        <tr id="homeMetaDataRow" class="row0">
+            <td></td>
+            <td>
+                <input type="radio" name="home_metadata_source" id="home_metadata_source_default" value="default"
+                    <?php echo $this->homeMetatagsData->source === 'default' ? 'checked="checked"' : ''; ?> />
+                <label for="home_metadata_source_default"><?php echo JText::_('COM_OSMETA_DEFAULT_VALUES'); ?></label>
+
+                <br />
+                <input type="radio" name="home_metadata_source" id="home_metadata_source_custom" value="custom"
+                    <?php echo $this->homeMetatagsData->source === 'custom' ? 'checked="checked"' : ''; ?> />
+                <label for="home_metadata_source_custom"><?php echo JText::_('COM_OSMETA_CUSTOM_VALUES'); ?></label>
+
+                <br />
+                <input type="radio" name="home_metadata_source" id="home_metadata_source_featured" value="featured"
+                    <?php echo $this->homeMetatagsData->source === 'featured' ? 'checked="checked"' : ''; ?> />
+                <label for="home_metadata_source_featured"><?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?></label>
+            </td>
+            <td valign="top">
+                <textarea id="home_title_tag" cols="20" rows="3"
+                    name="home_title_tag" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->titleTag; ?></textarea>
+            </td>
+            <td>
+                <textarea cols="20" rows="3" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaTitle; ?></textarea>
+            </td>
+            <td>
+                <textarea cols="20" rows="3" name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
+            </td>
+            <td>
+                <textarea cols="20" rows="3" name="home_metakey" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaKey; ?></textarea>
+            </td>
+        </tr>
+
+        <tr class="subheader">
+            <td colspan="6" rowspan="" headers=""><?php echo JText::_(ucfirst($this->itemTypeShort)); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
+        </tr>
+
         <?php
         jimport('joomla.filter.output');
-        $k = 0;
+
+        $k = 1;
         for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
             $row = $this->metatagsData[$i];
             $checked = JHTML::_('grid.id', $i, $row->id);
@@ -109,23 +150,21 @@ defined('_JEXEC') or die('Restricted access');
                     </a>
                 </td>
                 <td valign="top">
-                    <?php
-                    ?>
                     <a title="Copy contents from item Title" style="float:left" href="#"
                         onclick="createTitleTag('<?php echo $row->id ?>');return false;">
                         <img src="../media/com_osmeta/admin/images/rightarrow.png"/>
                     </a>
-                    <textarea id="title_tag_<?php echo $row->id ?>" cols=20 rows="3"
+                    <textarea id="title_tag_<?php echo $row->id ?>" cols="20" rows="3"
                         name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
                 </td>
                 <td>
-                    <textarea cols=20 rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
+                    <textarea cols="20" rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
                 </td>
                 <td>
-                    <textarea cols=20 rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
+                    <textarea cols="20" rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
                 <td>
-                    <textarea cols=20 rows="3" name="metakey[]"><?php echo $row->metakey; ?></textarea>
+                    <textarea cols="20" rows="3" name="metakey[]"><?php echo $row->metakey; ?></textarea>
                 </td>
             </tr>
             <?php
@@ -159,3 +198,20 @@ defined('_JEXEC') or die('Restricted access');
         <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a>
     </div>
 </div>
+
+<script>
+    (function($) {
+        var homeMetadataSourceChange = function() {
+            var $this = $(this);
+            var fields = $('#homeMetaDataRow textarea');
+            var value = $this.val();
+
+            fields.attr('readonly', !($this.val() === 'custom'));
+        };
+
+        $('#home_metadata_source_default, #home_metadata_source_custom, #home_metadata_source_featured').on(
+            'change',
+            homeMetadataSourceChange
+        );
+    })(jQuery);
+</script>

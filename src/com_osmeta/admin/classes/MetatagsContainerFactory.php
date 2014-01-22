@@ -195,6 +195,19 @@ class MetatagsContainerFactory
         if ($container != null && is_object($container)) {
             $metadata = $container->getMetadataByRequest($queryString);
 
+            if (static::isFrontPage()) {
+                require_once 'HomeMetatagsContainer.php';
+
+                $homeMetadata = HomeMetatagsContainer::getMetatags();
+
+                if ($homeMetadata->source !== 'default') {
+                    $metadata['metatitle'] = $homeMetadata->metaTitle;
+                    $metadata['metadescription'] = $homeMetadata->metaDesc;
+                    $metadata['metakeywords'] = $homeMetadata->metaKey;
+                    $metadata['title_tag'] = $homeMetadata->titleTag;
+                }
+            }
+
             // Process meta title tag
             if ($metadata && $metadata["metatitle"]) {
                 $replaced = 0;
@@ -301,5 +314,72 @@ class MetatagsContainerFactory
         }
 
         return self::$features;
+    }
+
+    /**
+     * Check if the user is on the front page, not only the default menu
+     *
+     * @access protected
+     *
+     * @return boolean
+     */
+    protected static function isFrontPage()
+    {
+        $app = JFactory::getApplication();
+        $lang = JFactory::getLanguage();
+        $config = JFactory::getConfig();
+
+        $menu = $app->getMenu();
+        $defaultMenu = $menu->getDefault($lang->getTag());
+        $defaultMenuLink = $defaultMenu->link;
+        $sefEnabled = (bool)$config->get('sef');
+        $sefRewriteEnabled = (bool)$config->get('sef_rewrite');
+
+        $frontPage = $menu->getActive() == $menu->getDefault($lang->getTag());
+
+
+        $path = JURI::getInstance()->getPath();
+        $uri = JRequest::getURI();
+
+        if ($sefEnabled) {
+            $defaultMenuLink = JRoute::_($defaultMenu->link);
+            $defaultMenuLink = preg_replace('/(index\.php)?[\/]?component\/content\//', '', $defaultMenuLink);
+        }
+
+        if ($frontPage) {
+            if ($sefEnabled) {
+                if ($sefRewriteEnabled) {
+                    if (substr($uri, -1) === '/') {
+                        if (substr($defaultMenuLink, -1) !== '/') {
+                            $defaultMenuLink .= '/';
+                        }
+                    }
+                }
+
+                if (substr_count($uri, '/index.php')) {
+                    if (!substr_count($defaultMenuLink, '/index.php')) {
+                        $defaultMenuLink .= '/index.php';
+                    }
+                } else {
+                    if (substr_count($uri, 'index.php')) {
+                        if (!substr_count($defaultMenuLink, 'index.php')) {
+                            $defaultMenuLink .= 'index.php';
+                        }
+                    }
+                }
+
+                $defaultMenuLink = str_replace('//', '/', $defaultMenuLink);
+
+                $frontPage = ($uri === $path) && ($uri === $defaultMenuLink);
+            } else {
+                $frontPage = substr_count($uri, $defaultMenuLink) > 0;
+
+                if (!$frontPage) {
+                    $frontPage = $uri === $path;
+                }
+            }
+        }
+
+        return $frontPage;
     }
 }
