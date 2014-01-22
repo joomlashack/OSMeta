@@ -253,6 +253,15 @@ class OSMetaController extends OSController
         // Get Homepage data
         $home = HomeMetatagsContainer::getMetatags();
 
+        // Get the first featured article id
+        $firstFeaturedArticle = HomeMetatagsContainer::getFirstFeaturedArticle();
+
+        if ($firstFeaturedArticle) {
+            $firstFeaturedArticleId = $firstFeaturedArticle->id;
+        } else {
+            $firstFeaturedArticleId = 0;
+        }
+
         $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
 
         $view = $this->getView('OSMeta', 'html');
@@ -268,6 +277,7 @@ class OSMetaController extends OSController
         $view->assignRef('order_Dir', $orderDir);
         $view->assignRef('itemTypeShort', $itemTypeShort);
         $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
+        $view->assignRef('firstFeaturedArticleId', $firstFeaturedArticleId);
         $view->display();
     }
 }

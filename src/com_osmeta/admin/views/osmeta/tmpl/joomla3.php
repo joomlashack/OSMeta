@@ -101,17 +101,23 @@ defined('_JEXEC') or die('Restricted access');
             <td>
                 <input type="radio" name="home_metadata_source" id="home_metadata_source_default" value="default"
                     <?php echo $this->homeMetatagsData->source === 'default' ? 'checked="checked"' : ''; ?> />
-                <label for="home_metadata_source_default"><?php echo JText::_('COM_OSMETA_DEFAULT_VALUES'); ?></label>
+                <label for="home_metadata_source_default" title="<?php echo JText::_('COM_OSMETA_FEATURED_DEFAULT_VALUES'); ?>">
+                    <?php echo JText::_('COM_OSMETA_DEFAULT_VALUES'); ?>
+                </label>
 
                 <br />
                 <input type="radio" name="home_metadata_source" id="home_metadata_source_custom" value="custom"
                     <?php echo $this->homeMetatagsData->source === 'custom' ? 'checked="checked"' : ''; ?> />
-                <label for="home_metadata_source_custom"><?php echo JText::_('COM_OSMETA_CUSTOM_VALUES'); ?></label>
+                <label for="home_metadata_source_custom" title="<?php echo JText::_('COM_OSMETA_FEATURED_CUSTOM_VALUES'); ?>">
+                    <?php echo JText::_('COM_OSMETA_CUSTOM_VALUES'); ?>
+                </label>
 
                 <br />
                 <input type="radio" name="home_metadata_source" id="home_metadata_source_featured" value="featured"
                     <?php echo $this->homeMetatagsData->source === 'featured' ? 'checked="checked"' : ''; ?> />
-                <label for="home_metadata_source_featured"><?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?></label>
+                <label for="home_metadata_source_featured" title="<?php echo JText::_('COM_OSMETA_FEATURED_VALUES_TITLE'); ?>">
+                    <?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?>
+                </label>
             </td>
             <td valign="top">
                 <textarea id="home_title_tag" cols="20" rows="3"
@@ -139,12 +145,19 @@ defined('_JEXEC') or die('Restricted access');
         for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
             $row = $this->metatagsData[$i];
             $checked = JHTML::_('grid.id', $i, $row->id);
+
+            $isTheFirstFeatured = $row->id == $this->firstFeaturedArticleId;
+            $featuredClasses = $isTheFirstFeatured ? 'first-featured' : '';
+
+            if ($this->homeMetatagsData->source === 'featured' && $isTheFirstFeatured) {
+                $featuredClasses .= ' first-featured-on';
+            }
             ?>
-            <tr class="<?php echo "row$k"; ?>">
+            <tr class="<?php echo "row$k"; ?> <?php echo $featuredClasses; ?>">
                 <td><?php echo $checked; ?>
                     <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                 </td>
-                <td>
+                <td class="<?php echo $featuredClasses; ?>">
                     <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
                         <?php echo $row->title; ?>
                     </a>
@@ -207,6 +220,13 @@ defined('_JEXEC') or die('Restricted access');
             var value = $this.val();
 
             fields.attr('readonly', !($this.val() === 'custom'));
+
+            // Update the highlighted line for the first featured article
+            if (value === 'featured') {
+                $('.first-featured').addClass('first-featured-on');
+            } else {
+                $('.first-featured').removeClass('first-featured-on');
+            }
         };
 
         $('#home_metadata_source_default, #home_metadata_source_custom, #home_metadata_source_featured').on(

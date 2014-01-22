@@ -36,3 +36,11 @@ tr.subheader td {
 th.title-column {
     min-width: 170px;
 }
+
+tr.first-featured-on {
+    background: #fff2c2;
+}
+
+td.first-featured-on {
+    font-style: italic;
+}

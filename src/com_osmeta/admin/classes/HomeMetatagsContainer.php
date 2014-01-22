@@ -64,22 +64,15 @@ abstract class HomeMetatagsContainer
 
         if ($data->source === 'featured' && !$app->isAdmin()) {
             // Get meta data from the first featured article
-            require_once realpath(dirname(__FILE__) . '/../models/model.php');
+            $firstItem = static::getFirstFeaturedArticle();
 
-            $model = OSModel::getInstance("featured", "contentModel", array());
-            $featuredItems = $model->getItems();
+            if ($firstItem) {
+                $metadata = json_decode($firstItem->metadata);
 
-            if (!empty($featuredItems)) {
-                $firstItem = $featuredItems[0];
-
-                if ($firstItem) {
-                    $metadata = json_decode($firstItem->metadata);
-
-                    $data->titleTag = @$metadata->title_tag;
-                    $data->metaTitle = @$metadata->metatitle;
-                    $data->metaDesc = $firstItem->metadesc;
-                    $data->metaKey = $firstItem->metakey;
-                }
+                $data->titleTag = @$metadata->title_tag;
+                $data->metaTitle = @$metadata->metatitle;
+                $data->metaDesc = $firstItem->metadesc;
+                $data->metaKey = $firstItem->metakey;
             }
         } else {
             // Get custom metadata
@@ -129,5 +122,46 @@ abstract class HomeMetatagsContainer
         $db->execute();
 
         static::setParams();
+    }
+
+    /**
+     * Get the first featured article
+     *
+     * @access  public
+     *
+     * @return stdClass
+     */
+    public static function getFirstFeaturedArticle()
+    {
+        $firstItem = null;
+
+        require_once realpath(dirname(__FILE__) . '/../models/model.php');
+
+        if (JFactory::getApplication()->isAdmin()) {
+            $classPrefix = "OSContentModel";
+        } else {
+            $classPrefix = "ContentModel";
+        }
+
+        $model = OSModel::getInstance("featured", $classPrefix, array());
+        $featuredItems = $model->getItems();
+
+        if (!empty($featuredItems)) {
+            jimport('joomla.database.table');
+
+            $count = count($featuredItems);
+            for ($i = 0; $i < $count; $i++) {
+                $item = $featuredItems[$i];
+                $id = $item->id;
+                $article = JTable::getInstance("content");
+                $article->load($id);
+                if ($article->get("state") == 1) {
+                    $firstItem = $item;
+                    break;
+                }
+            }
+        }
+
+        return $firstItem;
     }
 }
