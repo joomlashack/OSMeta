@@ -41,6 +41,10 @@ tr.first-featured-on td {
     background: #fff2c2 !important;
 }
 
+tr.first-featured-on:hover td {
+    background: #f8edbc !important;
+}
+
 td.first-featured-on {
     font-style: italic;
 }
