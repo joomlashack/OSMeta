@@ -36,9 +36,9 @@ class PlgContentOSMetaContent extends JPlugin
             $option = $input->getCmd('option');
 
             if (is_object($content) && isset($content->id)) {
-                require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/MetatagsContainerFactory.php';
+                require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/classes/OSMetatagsContainerFactory.php';
 
-                $container = MetatagsContainerFactory::getContainerByComponentName($option);
+                $container = OSMetatagsContainerFactory::getContainerByComponentName($option);
                 if (is_object($container)) {
                     $container->saveKeywords($content->metakey, $content->id);
 

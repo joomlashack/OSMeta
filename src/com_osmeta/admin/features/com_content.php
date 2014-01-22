@@ -16,8 +16,8 @@ defined('_JEXEC') or die('Restricted access');
 $features['com_content:Article'] = array(
     'name' => 'Article',
     'priority' => 1,
-    'file' => 'ArticleMetatagsContainer.php',
-    'class' => 'ArticleMetatagsContainer',
+    'file' => 'OSArticleMetatagsContainer.php',
+    'class' => 'OSArticleMetatagsContainer',
         'params' => array(array('option' => 'com_content', 'view' => 'article'),
             array('option' => 'com_content', 'view' => 'frontpage'),
             array('option' => 'com_content', 'view' => 'featured'))
@@ -26,7 +26,7 @@ $features['com_content:Article'] = array(
 $features['com_content:ArticleCategory'] = array(
     'name' => 'Article Category',
     'priority' => 1,
-    'file' => 'ArticleCategoryMetatagsContainer.php',
-    'class' => 'ArticleCategoryMetatagsContainer',
+    'file' => 'OSArticleCategoryMetatagsContainer.php',
+    'class' => 'OSArticleCategoryMetatagsContainer',
         'params' => array(array('option' => 'com_content', 'view' => 'category'))
 );

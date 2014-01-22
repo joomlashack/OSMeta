@@ -39,8 +39,8 @@ class PlgSystemOSMetaRenderer extends JPlugin
             $buffer = JResponse::getBody();
 
             // Metatags processing on the response body
-            require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/MetatagsContainerFactory.php";
-            $buffer = MetatagsContainerFactory::processBody($buffer, $url);
+            require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/OSMetatagsContainerFactory.php";
+            $buffer = OSMetatagsContainerFactory::processBody($buffer, $url);
 
             JResponse::setBody($buffer);
         }

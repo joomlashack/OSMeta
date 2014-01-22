@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  1.0.0
  */
-abstract class MetatagsContainer
+abstract class OSMetatagsContainer
 {
     /**
      * Method to set the Metadata

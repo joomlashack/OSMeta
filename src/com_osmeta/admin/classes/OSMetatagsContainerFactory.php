@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @since  1.0.0
  */
-class MetatagsContainerFactory
+class OSMetatagsContainerFactory
 {
     /**
      * Features cache
@@ -137,9 +137,9 @@ class MetatagsContainerFactory
         $container = false;
 
         if ($component === 'com_content') {
-            $containerName = 'ArticleMetatagsContainer';
+            $containerName = 'OSArticleMetatagsContainer';
         } elseif ($component === 'com_categories') {
-            $containerName = 'ArticleCategoryMetatagsContainer';
+            $containerName = 'OSArticleCategoryMetatagsContainer';
         }
 
         if ($containerName) {
@@ -196,9 +196,9 @@ class MetatagsContainerFactory
             $metadata = $container->getMetadataByRequest($queryString);
 
             if (static::isFrontPage()) {
-                require_once 'HomeMetatagsContainer.php';
+                require_once 'OSHomeMetatagsContainer.php';
 
-                $homeMetadata = HomeMetatagsContainer::getMetatags();
+                $homeMetadata = OSHomeMetatagsContainer::getMetatags();
 
                 if ($homeMetadata->source !== 'default') {
                     $metadata['metatitle'] = $homeMetadata->metaTitle;

@@ -148,13 +148,13 @@ class OSMetaController extends OSController
     private function actionManager($task)
     {
         $app = JFactory::getApplication();
-        require_once 'classes/MetatagsContainerFactory.php';
-        require_once 'classes/HomeMetatagsContainer.php';
+        require_once 'classes/OSMetatagsContainerFactory.php';
+        require_once 'classes/OSHomeMetatagsContainer.php';
 
         $itemType = $app->input->getString('type', null);
 
         if (!$itemType) {
-            $itemType = key(MetatagsContainerFactory::getFeatures());
+            $itemType = key(OSMetatagsContainerFactory::getFeatures());
 
             if (empty($itemType)) {
                 // Enable com_content
@@ -162,18 +162,18 @@ class OSMetaController extends OSController
 
                 $db = JFactory::getDBO();
                 $db->setQuery(
-                    "UPDATE #__osmeta_meta_extensions" .
-                    "SET available = 1" .
+                    "UPDATE #__osmeta_meta_extensions " .
+                    "SET available = 1 " .
                     "WHERE component LIKE '{$component}'"
                 );
                 $db->execute();
 
                 // Get the features again
-                $itemType = key(MetatagsContainerFactory::getFeatures());
+                $itemType = key(OSMetatagsContainerFactory::getFeatures());
             }
         }
 
-        $metatagsContainer = MetatagsContainerFactory::getContainerById($itemType);
+        $metatagsContainer = OSMetatagsContainerFactory::getContainerById($itemType);
 
         if (!is_object($metatagsContainer)) {
             // TODO: throw error here.
@@ -196,7 +196,7 @@ class OSMetaController extends OSController
                 $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
                 $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
                 $homeMetaKey = JRequest::getVar('home_metakey', '', '', 'string');
-                HomeMetatagsContainer::saveMetatags(
+                OSHomeMetatagsContainer::saveMetatags(
                     $homeSource,
                     $homeMetaTitle,
                     $homeMetaDescription,
@@ -235,7 +235,7 @@ class OSMetaController extends OSController
         $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
-        $features = MetatagsContainerFactory::getFeatures();
+        $features = OSMetatagsContainerFactory::getFeatures();
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -251,10 +251,10 @@ class OSMetaController extends OSController
         $itemTypeShort = $itemType === 'com_content:Article' ? 'articles' : 'categories';
 
         // Get Homepage data
-        $home = HomeMetatagsContainer::getMetatags();
+        $home = OSHomeMetatagsContainer::getMetatags();
 
         // Get the first featured article id
-        $firstFeaturedArticle = HomeMetatagsContainer::getFirstFeaturedArticle();
+        $firstFeaturedArticle = OSHomeMetatagsContainer::getFirstFeaturedArticle();
 
         if ($firstFeaturedArticle) {
             $firstFeaturedArticleId = $firstFeaturedArticle->id;
