@@ -23,7 +23,10 @@ if (!class_exists('OSView')) {
          *
          * @since  1.0.0
          */
-        class OSView extends JView {}
+        class OSView extends JView
+        {
+
+        }
     } else {
         /**
          * Alias Class for JViewLegacy in Joomla! >= 3.0
@@ -32,21 +35,7 @@ if (!class_exists('OSView')) {
          */
         class OSView extends JViewLegacy
         {
-            /**
-             * Method to display a view with the Joomla 3 template.
-             *
-             * @param   string  $tpl  Template file
-             *
-             * @access	public
-             *
-             * @return  void
-             */
-            public function display($tpl = null)
-            {
-                $this->setLayout("joomla3");
 
-                parent::display($tpl);
-            }
         }
     }
 }

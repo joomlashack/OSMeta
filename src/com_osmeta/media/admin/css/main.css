@@ -37,10 +37,14 @@ th.title-column {
     min-width: 170px;
 }
 
-tr.first-featured-on {
-    background: #fff2c2;
+tr.first-featured-on td {
+    background: #fff2c2 !important;
 }
 
 td.first-featured-on {
     font-style: italic;
+}
+
+textarea[readonly] {
+    background: #e4e4e4;
 }
