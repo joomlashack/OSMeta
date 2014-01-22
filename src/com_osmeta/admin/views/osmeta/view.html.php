@@ -60,17 +60,37 @@ class OSMetaViewOSMeta extends OSView
             $iconEdit = 'edit';
         }
 
-        JToolBarHelper::custom('copyBrowserTitleToKeywords', $iconShuffle, '',
-            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'), true);
+        JToolBarHelper::custom(
+            'copyBrowserTitleToKeywords',
+            $iconShuffle,
+            '',
+            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'),
+            true
+        );
 
-        JToolBarHelper::custom('copyItemTitleToSearchEngineTitle', $iconShuffle, '',
-            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'), true);
+        JToolBarHelper::custom(
+            'copyItemTitleToSearchEngineTitle',
+            $iconShuffle,
+            '',
+            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'),
+            true
+        );
 
-        JToolBarHelper::custom('generateDescriptions', $iconEdit, '',
-            JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'), true);
+        JToolBarHelper::custom(
+            'generateDescriptions',
+            $iconEdit,
+            '',
+            JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
+            true
+        );
 
-        JToolBarHelper::custom('clearBrowserTitles', 'remove', '',
-            JText::_('COM_OSMETA_CLEAR_BROWSER_TITLES'), true);
+        JToolBarHelper::custom(
+            'clearBrowserTitles',
+            'remove',
+            '',
+            JText::_('COM_OSMETA_CLEAR_BROWSER_TITLES'),
+            true
+        );
 
         JToolBarHelper::cancel("cancel");
 

@@ -65,10 +65,10 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.extension='com_content'";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -78,8 +78,8 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
-        if ($author_id > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($author_id);
+        if ($authorId > 0) {
+            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
         }
 
         switch ($state) {
@@ -91,11 +91,11 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 break;
         }
 
-        if ($com_content_filter_show_empty_keywords != "-1") {
+        if ($comContentFilterShowEmptyKeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
-        if ($com_content_filter_show_empty_descriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
@@ -192,10 +192,10 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             #__categories c WHERE c.extension='com_content'";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -205,8 +205,8 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
-        if ($author_id > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($author_id);
+        if ($authorId > 0) {
+            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
         }
 
         switch ($state) {
@@ -219,11 +219,11 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 break;
         }
 
-        if ($com_content_filter_show_empty_keywords != "-1") {
+        if ($comContentFilterShowEmptyKeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
-        if ($com_content_filter_show_empty_descriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
@@ -472,10 +472,10 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
         $db = JFactory::getDBO();
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
@@ -490,8 +490,8 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
 
             &nbsp;&nbsp;&nbsp;';
 
-        $keywordChecked = $com_content_filter_show_empty_keywords != "-1" ? 'checked="yes" ' : '';
-        $descriptionChecked = $com_content_filter_show_empty_descriptions != "-1" ? 'checked="yes" ' : '';
+        $keywordChecked = $comContentFilterShowEmptyKeywords != "-1" ? 'checked="yes" ' : '';
+        $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
 
         $result .= '
             <select name="com_content_filter_state" id="filter_state"

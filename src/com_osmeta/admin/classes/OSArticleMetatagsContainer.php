@@ -53,12 +53,12 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
             #__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $cat_id = JRequest::getVar("com_content_filter_catid", "0");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -70,8 +70,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
 
         $baselevel = 1;
 
-        if ($cat_id > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($cat_id));
+        if ($catId > 0) {
+            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
             $cat_tbl = $db->loadObject();
             $rgt = $cat_tbl->rgt;
             $lft = $cat_tbl->lft;
@@ -84,8 +84,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
             $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
         }
 
-        if ($author_id > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($author_id);
+        if ($authorId > 0) {
+            $sql .= " AND c.created_by=" . $db->quote($authorId);
         }
 
         switch ($state) {
@@ -113,11 +113,11 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
                 break;
         }
 
-        if ($com_content_filter_show_empty_keywords != "-1") {
+        if ($comContentFilterShowEmptykeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
-        if ($com_content_filter_show_empty_descriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
@@ -193,12 +193,12 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
             ";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $cat_id = JRequest::getVar("com_content_filter_catid", "0");
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -210,8 +210,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
 
         $baselevel = 1;
 
-        if ($cat_id > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($cat_id));
+        if ($catId > 0) {
+            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
             $cat_tbl = $db->loadObject();
             $rgt = $cat_tbl->rgt;
             $lft = $cat_tbl->lft;
@@ -224,8 +224,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
             $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
         }
 
-        if ($author_id > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($author_id);
+        if ($authorId > 0) {
+            $sql .= " AND c.created_by=" . $db->quote($authorId);
         }
 
         switch ($state) {
@@ -253,11 +253,11 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
                 break;
         }
 
-        if ($com_content_filter_show_empty_keywords != "-1") {
+        if ($comContentFilterShowEmptykeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
-        if ($com_content_filter_show_empty_descriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
@@ -499,7 +499,7 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
     {
         $db = JFactory::getDBO();
         $search = JRequest::getVar("com_content_filter_search", "");
-        $cat_id = JRequest::getVar("com_content_filter_catid", "0");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
 
         // Levels filter.
@@ -515,10 +515,10 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
         $levels[]   = JHtml::_('select.option', '9', JText::_('J9'));
         $levels[]   = JHtml::_('select.option', '10', JText::_('J10'));
 
-        $author_id = JRequest::getVar("com_content_filter_authorid", "0");
+        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $com_content_filter_show_empty_keywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
-        $com_content_filter_show_empty_descriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
@@ -535,7 +535,7 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
 
         $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
                         '<option value="">Select category</option>' .
-        JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $cat_id) .
+        JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $catId) .
                     '</select>';
 
         $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
@@ -543,8 +543,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
                 JHtml::_('select.options', $levels, 'value', 'text', $level) .
             '</select>';
 
-        $keywordChecked = $com_content_filter_show_empty_keywords != "-1" ? 'checked="yes" ' : '';
-        $descriptionChecked = $com_content_filter_show_empty_descriptions != "-1" ? 'checked="yes" ' : '';
+        $keywordChecked = $comContentFilterShowEmptykeywords != "-1" ? 'checked="yes" ' : '';
+        $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
 
         $result .= '
 

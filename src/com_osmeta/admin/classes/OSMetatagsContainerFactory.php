@@ -211,57 +211,92 @@ class OSMetatagsContainerFactory
             // Process meta title tag
             if ($metadata && $metadata["metatitle"]) {
                 $replaced = 0;
-                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
+                $body = preg_replace(
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
                     '<meta name="title" content="' . htmlspecialchars($metadata["metatitle"]) . '" />',
-                    $body, 1, $replaced
+                    $body,
+                    1,
+                    $replaced
                 );
 
                 if ($replaced != 1) {
-                    $body = preg_replace('/<head>/i', "<head>\n  <meta name=\"title\" content=\""
-                        . htmlspecialchars($metadata["metatitle"]) . '" />', $body, 1);
+                    $body = preg_replace(
+                        '/<head>/i',
+                        "<head>\n  <meta name=\"title\" content=\"" . htmlspecialchars($metadata["metatitle"]) . '" />',
+                        $body,
+                        1
+                    );
                 }
             } elseif ($metadata) {
-                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i", '',
-                    $body, 1, $replaced);
+                $body = preg_replace(
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
+                    '',
+                    $body,
+                    1,
+                    $replaced
+                );
             }
 
             // Process meta description tag
             if ($metadata && $metadata["metadescription"]) {
                 $replaced = 0;
-                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
+                $body = preg_replace(
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
                     '<meta name="description" content="' . htmlspecialchars($metadata["metadescription"]) . '" />',
-                    $body, 1, $replaced
+                    $body,
+                    1,
+                    $replaced
                 );
 
                 if ($replaced != 1) {
-                    $body = preg_replace('/<head>/i', "<head>\n  <meta name=\"description\" content=\""
-                        . htmlspecialchars($metadata["metadescription"]) . '" />', $body, 1);
+                    $body = preg_replace(
+                        '/<head>/i',
+                        "<head>\n  <meta name=\"description\" content=\"" . htmlspecialchars($metadata["metadescription"]) . '" />',
+                        $body,
+                        1
+                    );
                 }
             }
 
             // Process meta keywords tag
             if ($metadata && $metadata["metakeywords"]) {
                 $replaced = 0;
-                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+keywords[\\\"\\\']+[^>]*>/i",
+                $body = preg_replace(
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+keywords[\\\"\\\']+[^>]*>/i",
                     '<meta name="keywords" content="' . htmlspecialchars($metadata["metakeywords"]) . '" />',
-                    $body, 1, $replaced
+                    $body,
+                    1,
+                    $replaced
                 );
 
                 if ($replaced != 1) {
-                    $body = preg_replace('/<head>/i', "<head>\n  <meta name=\"keywords\" content=\""
-                        . htmlspecialchars($metadata["metakeywords"]) . '" />', $body, 1);
+                    $body = preg_replace(
+                        '/<head>/i',
+                        "<head>\n  <meta name=\"keywords\" content=\"" . htmlspecialchars($metadata["metakeywords"]) . '" />',
+                        $body,
+                        1
+                    );
                 }
             }
 
             if ($metadata && $metadata["title_tag"]) {
                 $replaced = 0;
-                $body = preg_replace("/<title[^>]*>.*<\\/title>/i",
-                    '<title>' . htmlspecialchars($metadata["title_tag"]) . '</title>', $body, 1, $replaced
+                $body = preg_replace(
+                    "/<title[^>]*>.*<\\/title>/i",
+                    '<title>' . htmlspecialchars($metadata["title_tag"]) . '</title>',
+                    $body,
+                    1,
+                    $replaced
                 );
 
                 // Remove the meta tag: title_tag
-                $body = preg_replace("/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title_tag[\\\"\\\']+[^>]*>/i", '',
-                    $body, 1, $replaced);
+                $body = preg_replace(
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title_tag[\\\"\\\']+[^>]*>/i",
+                    '',
+                    $body,
+                    1,
+                    $replaced
+                );
             }
         }
 
@@ -301,9 +336,11 @@ class OSMetatagsContainerFactory
 
             $directoryName = dirname(dirname(__FILE__)) . '/features';
             $db = JFactory::getDBO();
-            $db->setQuery("SELECT component FROM
-                    #__osmeta_meta_extensions
-                    WHERE available=1 AND enabled=1");
+            $db->setQuery(
+                "SELECT component FROM " .
+                "#__osmeta_meta_extensions " .
+                "WHERE available=1 AND enabled=1"
+            );
             $items = $db->loadObjectList();
 
             foreach ($items as $item) {

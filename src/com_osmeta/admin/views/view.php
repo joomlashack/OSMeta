@@ -23,19 +23,13 @@ if (!class_exists('OSView')) {
          *
          * @since  1.0.0
          */
-        class OSView extends JView
-        {
-
-        }
+        class OSView extends JView {}
     } else {
         /**
          * Alias Class for JViewLegacy in Joomla! >= 3.0
          *
          * @since  1.0.0
          */
-        class OSView extends JViewLegacy
-        {
-
-        }
+        class OSView extends JViewLegacy {}
     }
 }
