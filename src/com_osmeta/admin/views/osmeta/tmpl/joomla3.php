@@ -78,9 +78,7 @@ defined('_JEXEC') or die('Restricted access');
         </thead>
         <tr>
             <td width="20"></td>
-            <td class="title">
-
-            </td>
+            <td class="title"></td>
             <td valign="top">
                 <?php echo JText::_('COM_OSMETA_BROWSER_TITLE_DESC'); ?>
             </td>

@@ -3,10 +3,6 @@ CREATE TABLE IF NOT EXISTS `#__osmeta_keywords` (
     `name` varchar(255) NOT NULL,
     `published` tinyint(4) NOT NULL default '1',
     `url` varchar(255) NOT NULL,
-    `google_rank` int(11) NOT NULL,
-    `google_rank_change` int(11) NOT NULL,
-    `google_rank_change_date` datetime NOT NULL,
-    `sticky` tinyint(4) NOT NULL default '0',
     PRIMARY KEY  (`id`),
     UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

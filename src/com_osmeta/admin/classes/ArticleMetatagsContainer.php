@@ -23,14 +23,6 @@ require_once 'MetatagsContainer.php';
 class ArticleMetatagsContainer extends MetatagsContainer
 {
     /**
-     * Is front page?
-     *
-     * @var    bool
-     * @since  1.0.0
-     */
-    private $isFrontpage = false;
-
-    /**
      * Code
      *
      * @var    int
