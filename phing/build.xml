@@ -42,7 +42,7 @@
     </if>
 
     <!-- version for this build file -->
-    <property name="build.version" value="1.0.0"/>
+    <property name="build.version" value="1.0"/>
     <echo message="Version ${build.version} for Joomla! packages"/>
 
     <target name="new-release" description="Update version/creation and create package">

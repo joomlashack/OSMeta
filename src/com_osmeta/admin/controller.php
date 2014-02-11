@@ -7,7 +7,7 @@
  * @copyright  2013 Open Source Training, LLC. All rights reserved
  * @contact    www.ostraining.com, support@ostraining.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.0
+ * @version    1.0
  */
 
 // No direct access
@@ -18,7 +18,7 @@ jimport('cms.view.legacy');
 /**
  * OSMetaController component Controller
  *
- * @since  1.0.0
+ * @since  1.0
  */
 class OSMetaController extends JControllerLegacy
 {
@@ -41,7 +41,7 @@ class OSMetaController extends JControllerLegacy
      * Method to display the Meta Tags Manager's view
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -54,7 +54,7 @@ class OSMetaController extends JControllerLegacy
      * Method to the Save action for Meta Tags Manager
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class OSMetaController extends JControllerLegacy
      * Method to the Copy Browser Title to Keywords action for Meta Tags Manager
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class OSMetaController extends JControllerLegacy
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class OSMetaController extends JControllerLegacy
      * Method to the Generate Descriptions action for Meta Tags Manager
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -106,7 +106,7 @@ class OSMetaController extends JControllerLegacy
      * Method to the Clear Browser Titles action for Meta Tags Manager
      *
      * @access	public
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */
@@ -121,7 +121,7 @@ class OSMetaController extends JControllerLegacy
      * @param string $task Task name
      *
      * @access	private
-     * @since  1.0.0
+     * @since  1.0
      *
      * @return void
      */

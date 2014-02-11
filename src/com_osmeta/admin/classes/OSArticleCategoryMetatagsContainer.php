@@ -7,7 +7,7 @@
  * @copyright  2013 Open Source Training, LLC. All rights reserved
  * @contact    www.ostraining.com, support@ostraining.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.0
+ * @version    1.0
  */
 
 // No direct access
@@ -18,7 +18,7 @@ require_once 'OSMetatagsContainer.php';
 /**
  * Article Category Metatags Container for Joomla >= 2.5 Class
  *
- * @since  1.0.0
+ * @since  1.0
  */
 class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
 {
@@ -26,7 +26,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
      * Code
      *
      * @var    int
-     * @since  1.0.0
+     * @since  1.0
      */
     public $code = 4;
 

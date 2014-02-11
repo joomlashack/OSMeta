@@ -7,7 +7,7 @@
  * @copyright  2013 Open Source Training, LLC. All rights reserved
  * @contact    www.ostraining.com, support@ostraining.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.0
+ * @version    1.0
  */
 
 // No direct access
@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Homepage Metatags Container
  *
- * @since  1.0.0
+ * @since  1.0
  */
 abstract class OSHomeMetatagsContainer
 {
@@ -24,7 +24,7 @@ abstract class OSHomeMetatagsContainer
      * Params
      *
      * @var    Object
-     * @since  1.0.0
+     * @since  1.0
      */
     public static $params = null;
 

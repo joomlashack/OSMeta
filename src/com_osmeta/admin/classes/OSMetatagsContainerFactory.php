@@ -7,7 +7,7 @@
  * @copyright  2013 Open Source Training, LLC. All rights reserved
  * @contact    www.ostraining.com, support@ostraining.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.0
+ * @version    1.0
  */
 
 // No direct access
@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Metatags Container Factory Class
  *
- * @since  1.0.0
+ * @since  1.0
  */
 class OSMetatagsContainerFactory
 {
@@ -25,7 +25,7 @@ class OSMetatagsContainerFactory
      *
      * @var     array
      * @access  private
-     * @since   1.0.0
+     * @since   1.0
      */
     private static $features = null;
 
@@ -34,7 +34,7 @@ class OSMetatagsContainerFactory
      *
      * @var     array
      * @access  public
-     * @since   1.0.0
+     * @since   1.0
      */
     public static $metadataByQueryMap = array();
 

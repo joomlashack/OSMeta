@@ -7,7 +7,7 @@
  * @copyright  2013 Open Source Training, LLC. All rights reserved
  * @contact    www.ostraining.com, support@ostraining.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.0
+ * @version    1.0
  */
 
 // No direct access
@@ -18,7 +18,7 @@ jimport('cms.model.legacy');
 /**
  * Model Options
  *
- * @since  1.0.0
+ * @since  1.0
  */
 class OSModelOptions extends JModelLegacy
 {
@@ -26,7 +26,7 @@ class OSModelOptions extends JModelLegacy
      * Get Options (fixed options, for now)
      *
      * @access	public
-     * @since   1.0.0
+     * @since   1.0
      *
      * @return Object
      */
