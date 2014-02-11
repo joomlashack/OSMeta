@@ -13,34 +13,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.controller');
-
-/**
- * Extend the JController for J3.0 compatibility
- *
- */
-if (version_compare(JVERSION, "3.0", "<")) {
-    /**
-     * Alias Class for JController in Joomla! < 3.0
-     *
-     * @since  1.0.0
-     */
-    class OSController extends JController {}
-} else {
-    /**
-     * Alias Class for JControllerLegacy in Joomla! >= 3.0
-     *
-     * @since  1.0.0
-     */
-    class OSController extends JControllerLegacy {}
-}
+jimport('cms.view.legacy');
 
 /**
  * OSMetaController component Controller
  *
  * @since  1.0.0
  */
-class OSMetaController extends OSController
+class OSMetaController extends JControllerLegacy
 {
     /**
      * Method to display the controller's view

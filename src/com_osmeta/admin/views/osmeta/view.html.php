@@ -13,14 +13,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_COMPONENT . '/views/view.php';
+jimport('cms.view.legacy');
 
 /**
  * Metatags Manager Default View
  *
  * @since  1.0.0
  */
-class OSMetaViewOSMeta extends OSView
+class OSMetaViewOSMeta extends JViewLegacy
 {
     /**
      * Class constructor method

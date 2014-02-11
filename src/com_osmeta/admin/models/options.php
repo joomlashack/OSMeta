@@ -13,14 +13,14 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_ADMINISTRATOR . '/components/com_osmeta/models/model.php';
+jimport('cms.model.legacy');
 
 /**
  * Model Options
  *
  * @since  1.0.0
  */
-class OSModelOptions extends OSModel
+class OSModelOptions extends JModelLegacy
 {
     /**
      * Get Options (fixed options, for now)
