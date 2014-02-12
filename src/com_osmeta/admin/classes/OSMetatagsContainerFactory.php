@@ -199,12 +199,16 @@ class OSMetatagsContainerFactory
                 require_once 'OSHomeMetatagsContainer.php';
 
                 $homeMetadata = OSHomeMetatagsContainer::getMetatags();
-
                 if ($homeMetadata->source !== 'default') {
-                    $metadata['metatitle'] = $homeMetadata->metaTitle;
-                    $metadata['metadescription'] = $homeMetadata->metaDesc;
-                    $metadata['metakeywords'] = $homeMetadata->metaKey;
-                    $metadata['title_tag'] = $homeMetadata->titleTag;
+
+                    if (isset($homeMetadata->metaTitle) && isset($homeMetadata->metaDesc)
+                        && isset($homeMetadata->metaKey) && isset($homeMetadata->titleTag)) {
+
+                        $metadata['metatitle'] = $homeMetadata->metaTitle;
+                        $metadata['metadescription'] = $homeMetadata->metaDesc;
+                        $metadata['metakeywords'] = $homeMetadata->metaKey;
+                        $metadata['title_tag'] = $homeMetadata->titleTag;
+                    }
                 }
             }
 
