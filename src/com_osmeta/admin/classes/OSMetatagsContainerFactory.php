@@ -201,14 +201,10 @@ class OSMetatagsContainerFactory
                 $homeMetadata = OSHomeMetatagsContainer::getMetatags();
                 if ($homeMetadata->source !== 'default') {
 
-                    if (isset($homeMetadata->metaTitle) && isset($homeMetadata->metaDesc)
-                        && isset($homeMetadata->metaKey) && isset($homeMetadata->titleTag)) {
-
-                        $metadata['metatitle'] = $homeMetadata->metaTitle;
-                        $metadata['metadescription'] = $homeMetadata->metaDesc;
-                        $metadata['metakeywords'] = $homeMetadata->metaKey;
-                        $metadata['title_tag'] = $homeMetadata->titleTag;
-                    }
+                    $metadata['metatitle'] = @$homeMetadata->metaTitle;
+                    $metadata['metadescription'] = @$homeMetadata->metaDesc;
+                    $metadata['metakeywords'] = @$homeMetadata->metaKey;
+                    $metadata['title_tag'] = @$homeMetadata->titleTag;
                 }
             }
 
