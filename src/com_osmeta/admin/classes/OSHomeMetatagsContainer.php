@@ -13,6 +13,8 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+jimport('cms.model.legacy');
+
 /**
  * Homepage Metatags Container
  *
@@ -135,15 +137,13 @@ abstract class OSHomeMetatagsContainer
     {
         $firstItem = null;
 
-        require_once realpath(dirname(__FILE__) . '/../models/model.php');
-
         if (JFactory::getApplication()->isAdmin()) {
             $classPrefix = "OSContentModel";
         } else {
             $classPrefix = "ContentModel";
         }
 
-        $model = OSModel::getInstance("featured", $classPrefix, array());
+        $model = JModelLegacy::getInstance("featured", $classPrefix, array());
         $featuredItems = $model->getItems();
 
         if (!empty($featuredItems)) {

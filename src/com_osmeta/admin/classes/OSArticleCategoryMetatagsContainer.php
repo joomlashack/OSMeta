@@ -14,6 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 require_once 'OSMetatagsContainer.php';
+jimport('cms.model.legacy');
 
 /**
  * Article Category Metatags Container for Joomla >= 2.5 Class
@@ -413,7 +414,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
     public function generateDescriptions($ids)
     {
         $max_description_length = 500;
-        $model = OSModel::getInstance("options", "OsmetaModel");
+        $model = JModelLegacy::getInstance("options", "OSModel");
         $params = $model->getOptions();
         $max_description_length = $params->max_description_length ?
             $params->max_description_length : $max_description_length;
