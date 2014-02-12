@@ -2,7 +2,7 @@ OS Meta
 ===============
 OSMeta is an extension for easily managing titles, descriptions and keywords for Joomla content articles.
 
-![OSTraining](http://f.cl.ly/items/0b1v282Q002c3k0m3O3T/osmeta.png)
+![OSTraining](http://f.cl.ly/items/3I46400m021U0C1G0S2f/Screenshot%202014-02-12%2011.34.19.png)
 
 ## Requirements
 
