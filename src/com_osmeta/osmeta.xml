@@ -52,6 +52,6 @@
     </media>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMeta Package"><![CDATA[http://54.236.173.70/updates/joomla/com_osmeta.xml]]></server>
+        <server type="extension" priority="1" name="OSMeta Package"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osmeta.xml]]></server>
     </updateservers>
 </extension>
