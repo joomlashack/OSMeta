@@ -2,7 +2,7 @@
 <extension version="2.5.5" type="plugin" group="content" method="upgrade">
     <name>Content - OSMeta Content</name>
     <author>OSTraining</author>
-    <creationDate>December 2013</creationDate>
+    <creationDate>Jan 11, 2014</creationDate>
     <copyright>Copyright (C) 2011, 2014 OSTraining.com. All rights reserved.</copyright>
     <license>GPL v3</license>
     <authorEmail>info@ostraining.com</authorEmail>

@@ -2,7 +2,7 @@
 <extension type="component" version="2.5.5" method="upgrade">
     <name>OSMeta</name>
     <author>OSTraining</author>
-    <creationDate>December 2013</creationDate>
+    <creationDate>Jan 11, 2014</creationDate>
     <copyright>Copyright (C) 2014 OSTraining.com</copyright>
     <license>GPL</license>
     <authorEmail>info@ostraining.com</authorEmail>
