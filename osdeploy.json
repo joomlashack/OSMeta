@@ -1,0 +1,7 @@
+{
+    "system": "joomla",
+    "type": "component",
+    "name": "OSMeta",
+    "element": "com_osmeta",
+    "description": "A component for Meta Tag adjustments - Based on SEOBoss Pro (http://joomboss.com)"
+}
