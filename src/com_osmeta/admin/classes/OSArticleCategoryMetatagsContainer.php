@@ -127,7 +127,9 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 break;
         }
 
-        if ($order_dir == "asc") {
+        $order_dir = strtoupper($order_dir);
+
+        if ($order_dir === "ASC") {
             $sql .= " ASC";
         } else {
             $sql .= " DESC";
