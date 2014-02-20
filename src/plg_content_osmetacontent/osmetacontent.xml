@@ -8,7 +8,7 @@
     <authorEmail>info@ostraining.com</authorEmail>
     <authorUrl>http://www.ostraining.com</authorUrl>
     <version>1.0-beta.7</version>
-    <description>Content plugin which keeps Keywords information for content items - Based on SEOBoss Pro (http://joomboss.com)</description>
+    <description>OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles</description>
 
     <files>
         <filename plugin="osmetacontent">osmetacontent.php</filename>

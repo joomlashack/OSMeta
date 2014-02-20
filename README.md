@@ -1,8 +1,6 @@
-OS Meta
+OSMeta
 ===============
-OSMeta is an extension for easily managing titles, descriptions and keywords for Joomla content articles.
-
-![OSTraining](http://f.cl.ly/items/3I46400m021U0C1G0S2f/Screenshot%202014-02-12%2011.34.19.png)
+OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.
 
 ## Requirements
 
@@ -14,7 +12,5 @@ Joomla 2.5.x or 3.x
 
 ## Details
 
-Released by [OSTraining](http://www.ostraining.com), this is a very, very simplified version of SEOBoss, by [JoomBoss](http://joomboss.com)
-
-
+Released by [OSTraining](http://www.ostraining.com)
 
