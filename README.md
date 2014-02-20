@@ -12,7 +12,5 @@ Joomla 2.5.x or 3.x
 
 ## Details
 
-Released by [OSTraining](http://www.ostraining.com), this is a very, very simplified version of SEOBoss, by [JoomBoss](http://joomboss.com)
-
-
+Released by [OSTraining](http://www.ostraining.com)
 
