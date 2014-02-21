@@ -60,6 +60,7 @@ class OSMetaController extends JControllerLegacy
      */
     public function save()
     {
+        JFactory::getApplication()->enqueueMessage(JText::_('COM_OSMETA_SAVED_WITH_SUCCESS'), 'message');
         $this->actionManager('save');
     }
 
