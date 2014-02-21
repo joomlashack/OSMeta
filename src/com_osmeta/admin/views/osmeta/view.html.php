@@ -79,11 +79,13 @@ class OSMetaViewOSMeta extends JViewLegacy
         JToolBarHelper::cancel("cancel");
 
         $doc = JFactory::getDocument();
-        $doc->addStylesheet('../media/com_osmeta/admin/css/main.css');
 
         if (version_compare(JVERSION, '3.0', 'ge')) {
+            $doc->addStylesheet('../media/com_osmeta/admin/css/main-j3.css');
             // Add the icon font for the logo
             $doc->addStylesheet('../media/com_osmeta/admin/css/ostraining.css');
+        } else {
+            $doc->addStylesheet('../media/com_osmeta/admin/css/main-j2.css');
         }
 
         parent::display($tpl);
