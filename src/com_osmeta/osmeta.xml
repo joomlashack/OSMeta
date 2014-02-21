@@ -28,7 +28,7 @@
     </files>
 
     <administration>
-        <menu img="class:component">OSMeta</menu>
+        <menu img="../media/com_osmeta/admin/images/ostraining_logo_16x16.png">OSMeta</menu>
 
         <files folder="admin">
             <folder>classes</folder>

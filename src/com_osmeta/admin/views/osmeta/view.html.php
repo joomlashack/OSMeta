@@ -48,7 +48,7 @@ class OSMetaViewOSMeta extends JViewLegacy
      */
     public function display($tpl = null)
     {
-        JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'));
+        JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'), 'logo');
 
         JToolBarHelper::apply("save");
 
@@ -96,6 +96,11 @@ class OSMetaViewOSMeta extends JViewLegacy
 
         $doc = JFactory::getDocument();
         $doc->addStylesheet('../media/com_osmeta/admin/css/main.css');
+
+        if (version_compare(JVERSION, '3.0', 'ge')) {
+            // Add the icon font for the logo
+            $doc->addStylesheet('../media/com_osmeta/admin/css/ostraining.css');
+        }
 
         parent::display($tpl);
     }
