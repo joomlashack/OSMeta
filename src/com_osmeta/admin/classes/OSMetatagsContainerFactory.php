@@ -204,7 +204,6 @@ class OSMetatagsContainerFactory
                     $metadata['metatitle'] = @$homeMetadata->metaTitle;
                     $metadata['metadescription'] = @$homeMetadata->metaDesc;
                     $metadata['metakeywords'] = @$homeMetadata->metaKey;
-                    $metadata['title_tag'] = @$homeMetadata->titleTag;
                 }
             }
 
@@ -277,26 +276,6 @@ class OSMetatagsContainerFactory
                         1
                     );
                 }
-            }
-
-            if ($metadata && $metadata["title_tag"]) {
-                $replaced = 0;
-                $body = preg_replace(
-                    "/<title[^>]*>.*<\\/title>/i",
-                    '<title>' . htmlspecialchars($metadata["title_tag"]) . '</title>',
-                    $body,
-                    1,
-                    $replaced
-                );
-
-                // Remove the meta tag: title_tag
-                $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title_tag[\\\"\\\']+[^>]*>/i",
-                    '',
-                    $body,
-                    1,
-                    $replaced
-                );
             }
         }
 

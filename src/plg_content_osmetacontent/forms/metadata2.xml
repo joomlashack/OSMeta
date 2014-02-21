@@ -2,12 +2,6 @@
 <form>
     <fields name="metadata">
         <field
-            name="title_tag"
-            type="text"
-            label="COM_OSMETA_BROWSER_TITLE_LABEL"
-            description="COM_OSMETA_BROWSER_TITLE_DESC" />
-
-        <field
             type="text"
             name="metatitle"
             label="COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL"

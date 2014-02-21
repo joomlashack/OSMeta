@@ -71,14 +71,12 @@ abstract class OSHomeMetatagsContainer
             if ($firstItem) {
                 $metadata = json_decode($firstItem->metadata);
 
-                $data->titleTag = @$metadata->title_tag;
                 $data->metaTitle = @$metadata->metatitle;
                 $data->metaDesc = $firstItem->metadesc;
                 $data->metaKey = $firstItem->metakey;
             }
         } else {
             // Get custom metadata
-            $data->titleTag = static::$params->get('home_titletag');
             $data->metaTitle = static::$params->get('home_metatitle');
             $data->metaDesc = static::$params->get('home_metadesc');
             $data->metaKey = static::$params->get('home_metakey');
@@ -94,13 +92,12 @@ abstract class OSHomeMetatagsContainer
      * @param string $metaTitle       Meta title
      * @param string $metaDescription Meta Description
      * @param string $metaKey         Meta Key
-     * @param string $titleTag        Title tag
      *
      * @access  public
      *
      * @return void
      */
-    public static function saveMetatags($source, $metaTitle, $metaDescription, $metaKey, $titleTag)
+    public static function saveMetatags($source, $metaTitle, $metaDescription, $metaKey)
     {
         if (!static::$params) {
             static::setParams();
@@ -110,7 +107,6 @@ abstract class OSHomeMetatagsContainer
         static::$params->set('home_metatitle', $metaTitle);
         static::$params->set('home_metadesc', $metaDescription);
         static::$params->set('home_metakey', $metaKey);
-        static::$params->set('home_titletag', $titleTag);
 
         $json = static::$params->toString();
 

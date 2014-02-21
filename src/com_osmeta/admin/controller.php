@@ -65,19 +65,6 @@ class OSMetaController extends JControllerLegacy
     }
 
     /**
-     * Method to the Copy Browser Title to Keywords action for Meta Tags Manager
-     *
-     * @access	public
-     * @since  1.0
-     *
-     * @return void
-     */
-    public function copyBrowserTitleToKeywords()
-    {
-        $this->actionManager('copyBrowserTitleToKeywords');
-    }
-
-    /**
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
      * @access	public
@@ -101,19 +88,6 @@ class OSMetaController extends JControllerLegacy
     public function generateDescriptions()
     {
         $this->actionManager('generateDescriptions');
-    }
-
-    /**
-     * Method to the Clear Browser Titles action for Meta Tags Manager
-     *
-     * @access	public
-     * @since  1.0
-     *
-     * @return void
-     */
-    public function clearBrowserTitles()
-    {
-        $this->actionManager('clearBrowserTitles');
     }
 
     /**
@@ -168,12 +142,10 @@ class OSMetaController extends JControllerLegacy
                 $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
                 $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
                 $metakeys = JRequest::getVar('metakey', array(), '', 'array');
-                $title_tags = JRequest::getVar('title_tag', array(), '', 'array');
-                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $title_tags);
+                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $metakeys);
 
                 // Home data
                 $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');
-                $homeTitleTag = JRequest::getVar('home_title_tag', '', '', 'string');
                 $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
                 $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
                 $homeMetaKey = JRequest::getVar('home_metakey', '', '', 'string');
@@ -181,13 +153,8 @@ class OSMetaController extends JControllerLegacy
                     $homeSource,
                     $homeMetaTitle,
                     $homeMetaDescription,
-                    $homeMetaKey,
-                    $homeTitleTag
+                    $homeMetaKey
                 );
-                break;
-
-            case "copyBrowserTitleToKeywords":
-                $metatagsContainer->copyBrowserTitleToKeywords(JRequest::getVar('cid', array(), '', 'array'));
                 break;
 
             case "copyItemTitleToSearchEngineTitle":
@@ -196,10 +163,6 @@ class OSMetaController extends JControllerLegacy
 
             case "generateDescriptions":
                 $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
-                break;
-
-            case "clearBrowserTitles":
-                $metatagsContainer->clearBrowserTitles(JRequest::getVar('cid', array(), '', 'array'));
                 break;
         }
 

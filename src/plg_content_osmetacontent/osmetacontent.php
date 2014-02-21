@@ -47,9 +47,8 @@ class PlgContentOSMetaContent extends JPlugin
                     $title = array($articleOSMetadataInput->metatitle);
                     $metaDesc = array($content->metadesc);
                     $metaKey = array($content->metakey);
-                    $titleTag = array($articleOSMetadataInput->title_tag);
 
-                    $container->saveMetatags($id, $title, $metaDesc, $metaKey, $titleTag);
+                    $container->saveMetatags($id, $title, $metaDesc, $metaKey);
                 }
             }
         }
@@ -106,24 +105,20 @@ class PlgContentOSMetaContent extends JPlugin
                 $js = '
                         domready(function () {
                             // Browser title and Meta title fields
-                            var titleTag = document.getElementById("jform_metadata_title_tag");
                             var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var fieldGroup = metaTitle.parentNode.parentNode;
 
                             fieldGroup.insertBefore(metaTitle.parentNode, fieldGroup.firstChild);
-                            fieldGroup.insertBefore(titleTag.parentNode, fieldGroup.firstChild);
                         });';
             } else {
                 $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
                 $js = '
                         domready(function () {
                             // Browser title and Meta title fields
-                            var titleTag = document.getElementById("jform_metadata_title_tag");
                             var metaTitle = document.getElementById("jform_metadata_metatitle");
                             var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
 
                             fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
-                            fieldGroup.insertBefore(titleTag.parentNode.parentNode, fieldGroup.firstChild);
                         });';
             }
 

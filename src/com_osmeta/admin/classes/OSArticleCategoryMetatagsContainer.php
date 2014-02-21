@@ -59,7 +59,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
             c.metadesc, m.title as metatitle , c.extension
-            ,m.title_tag as title_tag
             FROM
             #__categories c
             LEFT JOIN
@@ -116,10 +115,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
 
             case "meta_desc":
                 $sql .= " ORDER BY metadesc ";
-                break;
-
-            case "title_tag":
-                $sql .= " ORDER BY title_tag ";
                 break;
 
             default:
@@ -261,13 +256,12 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
      * @param array $metakeys         Meta Keys
-     * @param array $titleTags        Title tags
      *
      * @access  public
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys, $titleTags = null)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys)
     {
         $db = JFactory::getDBO();
 
@@ -283,7 +277,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             if (!is_object($metadata)) {
                 $metadata = new stdClass;
             }
-            $metadata->title_tag = $titleTags[$i];
             $metadata->metatitle = $metatitles[$i];
             $metadata = json_encode($metadata);
 
@@ -297,18 +290,16 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
 
             // Insert/Update OS Metadata
             $sql = "INSERT INTO #__osmeta_metadata (item_id,
-                item_type, title, description, title_tag )
+                item_type, title, description)
                 VALUES (
                 " . $db->quote($ids[$i]) . ",
                 '{$this->code}',
                 " . $db->quote($metatitles[$i]) . ",
                 " . $db->quote($metadescriptions[$i]) . "
-                ," . $db->quote($titleTags != null ? $titleTags[$i] : '') . "
                 ) ON DUPLICATE KEY
                     UPDATE
                     title=" . $db->quote($metatitles[$i]) . " ,
-                    description=" . $db->quote($metadescriptions[$i])
-                . ", title_tag=" . $db->quote($titleTags != null ? $titleTags[$i] : '');
+                    description=" . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
             $db->query();
@@ -374,34 +365,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 $db->query();
             }
         }
-    }
-
-    /**
-     * Method to copy the item title to keywords
-     *
-     * @param array $ids IDs list
-     *
-     * @access  public
-     *
-     * @return void
-     */
-    public function copyBrowserTitleToKeywords($ids)
-    {
-        $db = JFactory::getDBO();
-
-        foreach ($ids as $key => $value) {
-            if (!is_numeric($value)) {
-                unset($ids[$key]);
-            }
-        }
-
-        $sql = "UPDATE #__categories as c" .
-            " LEFT JOIN #__osmeta_metadata as m ON (c.id = m.item_id)" .
-            " SET c.metakey = (IF(m.title_tag IS NULL OR m.title_tag = '', c.title, m.title_tag))" .
-            " WHERE m.item_type = 4 AND c.id IN (" . implode(",", $ids) . ")";
-
-        $db->setQuery($sql);
-        $items = $db->query();
     }
 
     /**

@@ -41,12 +41,6 @@ defined('_JEXEC') or die('Restricted access');
             </td>
         </tr>
     </table>
-    <script>
-        function createTitleTag(id)
-        {
-            $('title_tag_' + id).value = $('title_' + id).innerHTML.trim();
-        }
-    </script>
     <table class="table table-striped adminlist" id="articleList">
         <thead>
             <tr>
@@ -62,10 +56,6 @@ defined('_JEXEC') or die('Restricted access');
                 <th class="title title-column">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "view"); ?>
-                </th>
-                <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_BROWSER_TITLE_LABEL'), 'title_tag',
-                        $this->order_Dir, $this->order, "view"); ?>
                 </th>
                 <th class="title" width="20%">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
@@ -86,9 +76,6 @@ defined('_JEXEC') or die('Restricted access');
         <tr>
             <td width="20"></td>
             <td class="title"></td>
-            <td valign="top">
-                <?php echo JText::_('COM_OSMETA_BROWSER_TITLE_DESC'); ?>
-            </td>
             <td valign="top">
                 <?php echo JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC') ?>
             </td>
@@ -126,10 +113,6 @@ defined('_JEXEC') or die('Restricted access');
                     <?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?>
                 </label>
             </td>
-            <td valign="top">
-                <textarea id="home_title_tag" cols="20" rows="3"
-                    name="home_title_tag" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->titleTag; ?></textarea>
-            </td>
             <td>
                 <textarea cols="20" rows="3" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaTitle; ?></textarea>
             </td>
@@ -161,14 +144,6 @@ defined('_JEXEC') or die('Restricted access');
                     <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
                         <?php echo $row->title; ?>
                     </a>
-                </td>
-                <td valign="top">
-                    <a title="Copy contents from item Title" style="float:left" href="#"
-                        onclick="createTitleTag('<?php echo $row->id ?>');return false;">
-                        <img src="../media/com_osmeta/admin/images/rightarrow.png"/>
-                    </a>
-                    <textarea id="title_tag_<?php echo $row->id ?>" cols="20" rows="3"
-                        name="title_tag[]"><?php echo $row->title_tag; ?></textarea>
                 </td>
                 <td>
                     <textarea cols="20" rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>

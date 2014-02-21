@@ -40,18 +40,15 @@ abstract class OSMetatagsContainer
         // Save metatitles and metadata
         $sql = "INSERT INTO #__osmeta_metadata
             (title,
-             title_tag,
              description,
              item_id,
              item_type)
             VALUES (
               " . $db->quote($data["metatitle"]) . " ,
-              " . $db->quote($data["title_tag"]) . " ,
               " . $db->quote($data["metadescription"]) . ",
               " . $db->quote($itemId) . ",
               " . $db->quote($itemTypeId) . ")
             ON DUPLICATE KEY UPDATE title=" . $db->quote($data["metatitle"]) . ",
-            title_tag=" . $db->quote($data["title_tag"]) . ",
             description = " . $db->quote($data["metadescription"]);
         $db->setQuery($sql);
         $db->query();
@@ -147,7 +144,6 @@ abstract class OSMetatagsContainer
         $db = JFactory::getDBO();
 
         $sql = "SELECT m.item_id as id, m.item_id,
-            m.title_tag as title_tag,
             (SELECT GROUP_CONCAT(k.name SEPARATOR ',')
                 FROM #__osmeta_keywords k,
                     #__osmeta_keywords_items ki
@@ -164,34 +160,6 @@ abstract class OSMetatagsContainer
         $db->setQuery($sql);
 
         return $db->loadAssoc();
-    }
-
-    /**
-     * Method to clear browser titles
-     *
-     * @param int $ids Item IDs
-     *
-     * @access	public
-     *
-     * @return void
-     */
-    public function clearBrowserTitles($ids)
-    {
-        foreach ($ids as $key => $value) {
-            if (!is_numeric($value)) {
-                unset($ids[$key]);
-            }
-        }
-
-        if (count($ids) > 0) {
-            $db = JFactory::getDBO();
-            $db->setQuery("UPDATE #__osmeta_metadata SET title_tag=''
-                WHERE item_id IN ('" . implode("','", $ids) . "')
-                AND item_type=" . $db->quote($this->getTypeId())
-            );
-
-            $db->query();
-        }
     }
 
     /**
@@ -219,7 +187,6 @@ abstract class OSMetatagsContainer
      *
      * $data should contain followin keys:
      * - metatitle
-     * - title_tag
      * - metakeywords
      * - metadescription
      *

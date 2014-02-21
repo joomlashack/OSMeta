@@ -8,11 +8,6 @@
             default="default" />
 
         <field
-            name="home_titletag"
-            type="hidden"
-            default="" />
-
-        <field
             name="home_metatitle"
             type="hidden"
             default="" />

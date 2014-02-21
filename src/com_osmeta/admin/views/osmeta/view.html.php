@@ -61,14 +61,6 @@ class OSMetaViewOSMeta extends JViewLegacy
         }
 
         JToolBarHelper::custom(
-            'copyBrowserTitleToKeywords',
-            $iconShuffle,
-            '',
-            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_KEYWORDS'),
-            true
-        );
-
-        JToolBarHelper::custom(
             'copyItemTitleToSearchEngineTitle',
             $iconShuffle,
             '',
@@ -81,14 +73,6 @@ class OSMetaViewOSMeta extends JViewLegacy
             $iconEdit,
             '',
             JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
-            true
-        );
-
-        JToolBarHelper::custom(
-            'clearBrowserTitles',
-            'remove',
-            '',
-            JText::_('COM_OSMETA_CLEAR_BROWSER_TITLES'),
             true
         );
 
