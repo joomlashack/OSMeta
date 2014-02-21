@@ -527,8 +527,8 @@ class OSArticleMetatagsContainer extends OSMetatagsContainer
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
             . '" class="text_area" onchange="document.adminForm.submit();" '
             . ' title="Filter by Title or enter an Article ID"/>
-            <button id="Go" onclick="this.form.submit();">Go</button>
-            <button onclick="document.getElementById(\'search\').value=\'\';
+            <button id="Go" class="btn btn-small" onclick="this.form.submit();">Go</button>
+            <button class="btn btn-small" onclick="document.getElementById(\'search\').value=\'\';
                 this.form.getElementById(\'filter_sectionid\').value=\'-1\';
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';

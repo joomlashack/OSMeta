@@ -57,3 +57,7 @@ textarea[readonly] {
 .icon-48-logo {
     background: url('../images/ostraining_logo_48x48.png');
 }
+
+#adminForm .btn {
+    margin-top: -10px;
+}
