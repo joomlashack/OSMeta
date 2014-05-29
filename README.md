@@ -1,3 +1,4 @@
+[![OS Training](http://www.ostraining.com/templates/ostraining/images/logo.png)](http://www.ostraining.com)
 OSMeta
 ===============
 OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.
