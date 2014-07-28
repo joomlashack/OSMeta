@@ -42,8 +42,8 @@
         </files>
 
         <languages folder="admin/language">
-            <language tag="en-GB">en-GB.com_osmeta.ini</language>
-            <language tag="en-GB">en-GB.com_osmeta.sys.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osmeta.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osmeta.sys.ini</language>
         </languages>
     </administration>
 
