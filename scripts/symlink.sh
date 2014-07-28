@@ -59,8 +59,8 @@ create_symlink com_osmeta/admin administrator/components/$EXTENSION_NAME
 create_symlink com_osmeta/media media/$EXTENSION_NAME
 create_symlink com_osmeta/admin/language/en-GB/en-GB.$EXTENSION_NAME.sys.ini administrator/language/en-GB/en-GB.$EXTENSION_NAME.sys.ini
 create_symlink com_osmeta/admin/language/en-GB/en-GB.$EXTENSION_NAME.ini administrator/language/en-GB/en-GB.$EXTENSION_NAME.ini
-create_symlink pgl_content_osmetacontent/ plugins/content/osmetacontent
-create_symlink pgl_system_osmetarenderer/ plugins/system/osmetarenderer
+create_symlink plg_content_osmetacontent/ plugins/content/osmetacontent
+create_symlink plg_system_osmetarenderer/ plugins/system/osmetarenderer
 
 echo "Links created successfully"
 exit
