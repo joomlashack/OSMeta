@@ -207,6 +207,14 @@ class OSMetatagsContainerFactory
                 }
             }
 
+            // Process the title tag
+            $body = preg_replace(
+                "/<title[^>]*>[^<]*<\/title>/i",
+                '<title>' . htmlspecialchars($metadata["metatitle"]) . '</title>',
+                $body,
+                1
+            );
+
             // Process meta title tag
             if ($metadata && $metadata["metatitle"]) {
                 $replaced = 0;
