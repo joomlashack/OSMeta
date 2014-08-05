@@ -13,7 +13,7 @@
     <property name="local.path" value=""/>
 
     <!-- Derived properties: shouldn't have to change -->
-    <property name="app.name.long" value="pkg_${app.name.short}"/>
+    <property name="app.name.long" value="com_${app.name.short}"/>
     <property name="app.name.long.component" value="com_${app.name.short}"/>
     <property name="app.name.long.plg.system" value="plg_system_${app.name.short}renderer"/>
     <property name="app.name.long.plg.content" value="plg_content_${app.name.short}content"/>
