@@ -1,0 +1,20 @@
+{
+    "name"             : "OSTraining/OSMeta",
+    "description"      : "OSMeta",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.component",
+    "extra"            : {
+        "element": "com_osmeta",
+        "name":    "OSMeta"
+    },
+    "authors"          : [
+        {
+            "name" : "Open Source Training",
+            "email": "info@ostraining.com"
+        }
+    ],
+    "require"          : {
+        "php"       : ">= 5.3"
+    }
+}
