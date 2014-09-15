@@ -51,8 +51,4 @@
     <media destination="com_osmeta" folder="media">
         <folder>admin</folder>
     </media>
-
-    <updateservers>
-        <server type="extension" priority="1" name="OSMeta Package"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osmeta.xml]]></server>
-    </updateservers>
 </extension>

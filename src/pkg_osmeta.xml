@@ -16,4 +16,9 @@
         <file type="plugin" group="system" id="osmetarenderer">plg_system_osmetarenderer.zip</file>
         <file type="plugin" group="content" id="osmetacontent">plg_content_osmetacontent.zip</file>
     </files>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSMeta Package"><![CDATA[https://deploy.ostraining.com/updates/joomla/pkg_osmeta.xml]]></server>
+    </updateservers>
+
 </extension>
