@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.5" method="upgrade">
     <name>OSMeta</name>
-    <author>OSTraining</author>
-    <creationDate>Jan 11, 2014</creationDate>
-    <copyright>Copyright (C) 2014 OSTraining.com</copyright>
+    <author>Alledia</author>
+    <creationDate>October 27, 2014</creationDate>
+    <copyright>Copyright (C) 2014 Alledia.com</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <authorEmail>info@ostraining.com</authorEmail>
-    <authorUrl>http://www.ostraining.com</authorUrl>
+    <authorEmail>hello@alledia.com</authorEmail>
+    <authorUrl>https://www.alledia.com</authorUrl>
     <version>1.0.3</version>
     <description>OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.</description>
 
@@ -28,7 +28,7 @@
     </files>
 
     <administration>
-        <menu img="../media/com_osmeta/admin/images/ostraining_logo_16x16.png">OSMeta</menu>
+        <menu img="../media/com_osmeta/admin/images/alledia_logo_16x16.png">OSMeta</menu>
 
         <files folder="admin">
             <folder>classes</folder>

@@ -1,13 +1,9 @@
 <?php
 /**
- * @category   Joomla Component
- * @package    com_osmeta
- * @author     JoomBoss
- * @copyright  2012, JoomBoss. All rights reserved
- * @copyright  2013 Open Source Training, LLC. All rights reserved
- * @contact    www.ostraining.com, support@ostraining.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.3
+ * @package   OSMeta
+ * @contact   www.alledia.com, support@alledia.com
+ * @copyright 2013-2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
 // No direct access
@@ -172,14 +168,14 @@ defined('_JEXEC') or die('Restricted access');
 
 <div id="footer">
     <div>
-        <a href="http://www.ostraining.com">
-            <img src="../media/com_osmeta/admin/images/ostraining_logo_250x50.png" />
+        <a href="https://www.alledia.com">
+            <img src="../media/com_osmeta/admin/images/alledia_logo_250x50.png" />
         </a>
     </div>
     <br />
     <div>
         OSMeta is built by&nbsp;
-        <a href="http://www.ostraining.com">OSTraining</a>
+        <a href="https://www.alledia.com">Alledia</a>
     </div>
     <div>
         OSMeta is a simplified version of&nbsp;

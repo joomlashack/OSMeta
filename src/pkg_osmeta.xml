@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="package" version="2.5.5">
     <name>OSMeta Installation Bundle</name>
-    <author>OSTraining</author>
+    <author>Alledia</author>
     <packagename>osmeta</packagename>
-    <creationDate>Jan 11, 2014</creationDate>
-    <packager>OSTraining</packager>
-    <packagerurl>http://ostraining.com</packagerurl>
-    <copyright>Copyright (C) 2011, 2014 OSTraining.com. All rights reserved.</copyright>
+    <creationDate>October 27, 2014</creationDate>
+    <packager>Alledia</packager>
+    <packagerurl>http://alledia.com</packagerurl>
+    <copyright>Copyright (C) 2011, 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <version>1.0.3</version>
     <description>OSMeta Installation Bundle - OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.</description>

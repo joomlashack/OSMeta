@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="OSTraining Package Builder" default="package" basedir="../">
+<project name="Alledia Package Builder" default="package" basedir="../">
     <!-- The short name must be set appropriately -->
     <property name="app.name.short" value="osmeta"/>
 

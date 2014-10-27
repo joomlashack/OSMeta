@@ -1,13 +1,9 @@
 <?php
 /**
- * @category   Joomla Component
- * @package    com_osmeta
- * @author     JoomBoss
- * @copyright  2012, JoomBoss. All rights reserved
- * @copyright  2013 Open Source Training, LLC. All rights reserved
- * @contact    www.ostraining.com, support@ostraining.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    1.0.3
+ * @package   OSMeta
+ * @contact   www.alledia.com, support@alledia.com
+ * @copyright 2013-2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
 // No direct access
@@ -83,7 +79,7 @@ class OSMetaViewOSMeta extends JViewLegacy
         if (version_compare(JVERSION, '3.0', 'ge')) {
             $doc->addStylesheet('../media/com_osmeta/admin/css/main-j3.css');
             // Add the icon font for the logo
-            $doc->addStylesheet('../media/com_osmeta/admin/css/ostraining.css');
+            $doc->addStylesheet('../media/com_osmeta/admin/css/alledia.css');
         } else {
             $doc->addStylesheet('../media/com_osmeta/admin/css/main-j2.css');
         }
