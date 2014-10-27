@@ -100,3 +100,5 @@ desktop.ini
 *~
 *.bak
 .phing_targets
+
+phing/packages
