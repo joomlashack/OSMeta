@@ -1,0 +1,24 @@
+{
+    "name"             : "Alledia/OSMetaContent",
+    "description"      : "OSMetaContent",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.plugin",
+    "extra"            : {
+        "element"        : "plg_content_osmetacontent",
+        "element-short"  : "osmetacontent",
+        "name"           : "OSMetaContent",
+        "folder"         : "content",
+        "client"         : "site",
+        "package-license": "free"
+    },
+    "authors"          : [
+        {
+            "name" : "Alledia.com",
+            "email": "hello@alledia.com"
+        }
+    ],
+    "require"          : {
+        "php"       : ">= 5.3"
+    }
+}

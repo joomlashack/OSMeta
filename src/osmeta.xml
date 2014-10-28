@@ -17,24 +17,32 @@
         <relatedExtensions>
             <extension
                 type="library"
-                element="allediaframework">AllediaFramework</extension>
+                element="allediaframework"
+                >AllediaFramework</extension>
 
             <extension
                 type="plugin"
                 group="system"
                 element="ossystem"
                 publish="true"
-                ordering="first">OSSystem</extension>
+                ordering="first"
+                >OSSystem</extension>
 
-            <!-- <extension
+            <extension
                 type="plugin"
                 group="content"
-                element="osmetacontent">OSMetaContent</extension>
+                publish="true"
+                element="osmetacontent"
+                ordering="last"
+                >OSMetaContent</extension>
 
             <extension
                 type="plugin"
                 group="system"
-                element="osmetarenderer">OSMetaRenderer</extension> -->
+                publish="true"
+                element="osmetarenderer"
+                ordering="last"
+                >OSMetaRenderer</extension>
         </relatedExtensions>
         <obsolete>
             <file>administrator/manifests/packages/pkg_osmeta.xml</file>
