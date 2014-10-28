@@ -37,7 +37,7 @@
                 element="osmetarenderer">OSMetaRenderer</extension> -->
         </relatedExtensions>
         <obsolete>
-            <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
+            <file>administrator/manifests/packages/pkg_osmeta.xml</file>
         </obsolete>
     </alledia>
 
