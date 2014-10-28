@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.5" method="upgrade">
-    <name>OSMeta</name>
+    <name>com_osmeta</name>
     <author>Alledia</author>
-    <creationDate>October 27, 2014</creationDate>
-    <copyright>Copyright (C) 2014 Alledia.com</copyright>
+    <creationDate>October 28 2014</creationDate>
+    <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>hello@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
     <description>OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.</description>
 
-    <scriptfile>script.php</scriptfile>
+    <alledia>
+        <element>osmeta</element>
+        <namespace>OSMeta</namespace>
+        <license>free</license>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
+
+            <!-- <extension
+                type="plugin"
+                group="content"
+                element="osmetacontent">OSMetaContent</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="osmetarenderer">OSMetaRenderer</extension> -->
+        </relatedExtensions>
+        <obsolete>
+            <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
+        </obsolete>
+    </alledia>
+
+    <scriptfile>script.installer.php</scriptfile>
 
     <install>
         <sql>

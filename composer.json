@@ -3,11 +3,13 @@
     "description"      : "OSMeta",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
-    "type"             : "joomla.package",
+    "type"             : "joomla.component",
     "extra"            : {
-        "element": "pkg_osmeta",
-        "name":    "OSMeta",
-        "client":  "admin"
+        "element"        : "com_osmeta",
+        "element-short"  : "osmeta",
+        "name"           : "OSMeta",
+        "client"         : "admin",
+        "package-license": "free"
     },
     "authors"          : [
         {
