@@ -31,16 +31,16 @@
             <extension
                 type="plugin"
                 group="content"
-                publish="true"
                 element="osmetacontent"
+                publish="true"
                 ordering="last"
                 >OSMetaContent</extension>
 
             <extension
                 type="plugin"
                 group="system"
-                publish="true"
                 element="osmetarenderer"
+                publish="true"
                 ordering="last"
                 >OSMetaRenderer</extension>
         </relatedExtensions>
