@@ -23,4 +23,22 @@ if (file_exists($includePath)) {
  */
 class Com_OSMetaInstallerScript extends AllediaInstallerAbstract
 {
+    /**
+     * Method to run after an install/update method
+     *
+     * @return void
+     */
+    public function postFlight($type, $parent)
+    {
+        parent::postFlight($type, $parent);
+
+        $db = JFactory::getDBO();
+
+        // Remove the old pkg_osmeta, if existent
+        $query = 'DELETE FROM `#__extensions` WHERE `type`="package" AND `element`="pkg_osmeta"';
+        $db->setQuery($query);
+        $db->execute();
+
+        return true;
+    }
 }
