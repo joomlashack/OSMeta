@@ -2,7 +2,7 @@
 <extension type="component" version="2.5.5" method="upgrade">
     <name>com_osmeta</name>
     <author>Alledia</author>
-    <creationDate>October 28 2014</creationDate>
+    <creationDate>October 31 2014</creationDate>
     <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>hello@alledia.com</authorEmail>
