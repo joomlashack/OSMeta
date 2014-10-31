@@ -31,16 +31,16 @@
             <extension
                 type="plugin"
                 group="content"
-                publish="true"
                 element="osmetacontent"
+                publish="true"
                 ordering="last"
                 >OSMetaContent</extension>
 
             <extension
                 type="plugin"
                 group="system"
-                publish="true"
                 element="osmetarenderer"
+                publish="true"
                 ordering="last"
                 >OSMetaRenderer</extension>
         </relatedExtensions>
@@ -72,10 +72,10 @@
         <files folder="admin">
             <folder>classes</folder>
             <folder>features</folder>
-            <folder>language</folder>
             <folder>models</folder>
             <folder>views</folder>
             <folder>sql</folder>
+            <folder>library</folder>
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
             <filename>config.xml</filename>
@@ -89,6 +89,8 @@
 
     <media destination="com_osmeta" folder="media">
         <folder>admin</folder>
+        <folder>css</folder>
+        <folder>js</folder>
     </media>
 
     <updateservers>
