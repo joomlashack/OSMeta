@@ -89,6 +89,8 @@
 
     <media destination="com_osmeta" folder="media">
         <folder>admin</folder>
+        <folder>css</folder>
+        <folder>js</folder>
     </media>
 
     <updateservers>
