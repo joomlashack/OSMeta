@@ -1,4 +1,5 @@
-[![OS Training](https://www.alledia.com/templates/alledia/images/logo.png)](https://www.alledia.com)
+[![Alledia](https://www.alledia.com/images/logo_circle_small.png)](https://www.alledia.com)
+
 OSMeta
 ===============
 OSMeta is an extension to easily manage titles, descriptions and keywords for Joomla articles.
