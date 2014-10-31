@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 require_once 'OSMetatagsContainer.php';
 jimport('cms.model.legacy');

@@ -7,7 +7,7 @@
  */
 
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 $includePath = __DIR__ . '/admin/library/installer/include.php';
 if (file_exists($includePath)) {

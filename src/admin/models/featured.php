@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 require_once JPATH_ADMINISTRATOR . '/components/com_content/models/featured.php';
 

@@ -7,7 +7,7 @@
  */
 
 // No direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 $features['com_content:Article'] = array(
     'name' => 'Article',
