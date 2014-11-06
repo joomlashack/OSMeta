@@ -347,61 +347,35 @@ class OSMetatagsContainerFactory
      */
     protected static function isFrontPage()
     {
-        $app = JFactory::getApplication();
-        $lang = JFactory::getLanguage();
-        $config = JFactory::getConfig();
+        $app    = JFactory::getApplication();
+        $lang   = JFactory::getLanguage();
+        $menu   = $app->getMenu();
 
-        $menu = $app->getMenu();
-        $defaultMenu = $menu->getDefault($lang->getTag());
-        $defaultMenuLink = $defaultMenu->link;
-        $sefEnabled = (bool)$config->get('sef');
-        $sefRewriteEnabled = (bool)$config->get('sef_rewrite');
+        $isFrontPage = $menu->getActive() == $menu->getDefault($lang->getTag());
 
-        $frontPage = $menu->getActive() == $menu->getDefault($lang->getTag());
+        // The page for featured articles can be treated as front page as well, so let's filter that
+        if ($isFrontPage) {
+            $defaultMenu     = $menu->getDefault($lang->getTag());
+            $defaultMenuLink = $defaultMenu->link;
 
+            $sefEnabled = (bool) JFactory::getConfig()->get('sef');
+            $uri        = JRequest::getURI();
 
-        $path = JURI::getInstance()->getPath();
-        $uri = JRequest::getURI();
-
-        if ($sefEnabled) {
-            $defaultMenuLink = JRoute::_($defaultMenu->link);
-            $defaultMenuLink = preg_replace('/(index\.php)?[\/]?component\/content\//', '', $defaultMenuLink);
-        }
-
-        if ($frontPage) {
+            // Compare the current URI with the default menu URI
             if ($sefEnabled) {
-                if ($sefRewriteEnabled) {
-                    if (substr($uri, -1) === '/') {
-                        if (substr($defaultMenuLink, -1) !== '/') {
-                            $defaultMenuLink .= '/';
-                        }
-                    }
-                }
+                $router = $app::getRouter();
+                $defaultMenuLinkURI = JURI::getInstance($defaultMenuLink);
+                $router->parse($defaultMenuLinkURI);
+                $defaultMenuLinkRouted = JRoute::_($defaultMenuLink);
 
-                if (substr_count($uri, '/index.php')) {
-                    if (!substr_count($defaultMenuLink, '/index.php')) {
-                        $defaultMenuLink .= '/index.php';
-                    }
-                } else {
-                    if (substr_count($uri, 'index.php')) {
-                        if (!substr_count($defaultMenuLink, 'index.php')) {
-                            $defaultMenuLink .= 'index.php';
-                        }
-                    }
-                }
-
-                $defaultMenuLink = str_replace('//', '/', $defaultMenuLink);
-
-                $frontPage = ($uri === $path) && ($uri === $defaultMenuLink);
+                $isFrontPage = $defaultMenuLinkRouted === $uri;
             } else {
-                $frontPage = substr_count($uri, $defaultMenuLink) > 0;
+                $path = JURI::getInstance()->getPath();
 
-                if (!$frontPage) {
-                    $frontPage = $uri === $path;
-                }
+                $isFrontPage = (substr_count($uri, $defaultMenuLink) > 0) || ($uri === $path);
             }
         }
 
-        return $frontPage;
+        return $isFrontPage;
     }
 }

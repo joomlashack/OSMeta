@@ -15,4 +15,3 @@ Joomla 2.5.x or 3.x
 ## Details
 
 Released by [Alledia](https://www.alledia.com)
-
