@@ -169,7 +169,7 @@ defined('_JEXEC') or die();
 <div id="footer">
     <div>
         <a href="https://www.alledia.com">
-            <img src="../media/com_osmeta/admin/images/alledia_logo_250x50.png" />
+            <img src="../media/com_osmeta/admin/images/alledia_logo_150x43.png" />
         </a>
     </div>
     <br />
