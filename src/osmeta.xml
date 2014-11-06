@@ -2,7 +2,7 @@
 <extension type="component" version="2.5.5" method="upgrade">
     <name>com_osmeta</name>
     <author>Alledia</author>
-    <creationDate>October 31 2014</creationDate>
+    <creationDate>November 10 2014</creationDate>
     <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>hello@alledia.com</authorEmail>
@@ -91,6 +91,7 @@
         <folder>admin</folder>
         <folder>css</folder>
         <folder>js</folder>
+        <folder>images</folder>
     </media>
 
     <updateservers>
