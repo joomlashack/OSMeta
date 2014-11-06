@@ -368,6 +368,10 @@ class OSMetatagsContainerFactory
                 $router->parse($defaultMenuLinkURI);
                 $defaultMenuLinkRouted = JRoute::_($defaultMenuLink);
 
+                if (version_compare(JVERSION, '3.0', '<')) {
+                    $defaultMenuLinkRouted = str_replace('?view=featured', '', $defaultMenuLinkRouted);
+                }
+
                 $isFrontPage = $defaultMenuLinkRouted === $uri;
             } else {
                 $path = JURI::getInstance()->getPath();
