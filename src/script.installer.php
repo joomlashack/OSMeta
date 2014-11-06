@@ -9,19 +9,21 @@
 // No direct access to this file
 defined('_JEXEC') or die();
 
-$includePath = __DIR__ . '/admin/library/installer/include.php';
-if (file_exists($includePath)) {
-    require_once $includePath;
-} else {
-    require_once __DIR__ . '/library/installer/include.php';
+$includePath = __DIR__ . '/admin/library/Installer/include.php';
+if (! file_exists($includePath)) {
+    $includePath = __DIR__ . '/library/Installer/include.php';
 }
+
+require_once $includePath;
+
+use Alledia\Installer\AbstractScript;
 
 /**
  * OSMeta Installer Script
  *
  * @since  1.0
  */
-class Com_OSMetaInstallerScript extends AllediaInstallerAbstract
+class Com_OSMetaInstallerScript extends AbstractScript
 {
     /**
      * Method to run after an install/update method
