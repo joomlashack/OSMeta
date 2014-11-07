@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta\Free\Container\Factory as ContainerFactory;
 
-require_once 'include.php';
+require_once __DIR__ . '/include.php';
 
 if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
     /**

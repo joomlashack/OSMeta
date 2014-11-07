@@ -18,6 +18,7 @@
 
     <files>
         <filename plugin="osmetacontent">osmetacontent.php</filename>
+        <filename>include.php</filename>
         <folder>sql</folder>
         <folder>forms</folder>
     </files>

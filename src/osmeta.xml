@@ -79,6 +79,7 @@
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
             <filename>config.xml</filename>
+            <filename>include.php</filename>
         </files>
 
         <languages folder="admin/language">
