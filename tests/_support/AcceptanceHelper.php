@@ -10,6 +10,18 @@ class AcceptanceHelper extends \Codeception\Module
 
     protected $builtPackageFile;
 
+    public function createJoomlaSiteForTests($siteName = 'tests_osmeta', $version = '3.3.6')
+    {
+        $output = shell_exec("joomla site:delete {$siteName}") . "\n";
+        $output .= shell_exec("joomla site:create --joomla={$version} {$siteName}");
+
+        $this->debug($output);
+        $this->debug("Joomla site created: {$siteName}}");
+
+        // Install database with dummy data
+        // shell_exec('mysql -u root -proot sites_tests_osmeta < tests/_data/sites_tests_osmeta.sql');
+    }
+
     public function buildProjectUsingPhing($task = 'build')
     {
         $output = shell_exec('phing ' . $task);
@@ -48,7 +60,7 @@ class AcceptanceHelper extends \Codeception\Module
 
     public function unzipBuiltPackageToTmp()
     {
-        $tmpPath = '/var/www/osmeta/tmp/test_' . uniqid();
+        $tmpPath = '/var/www/tests_osmeta/tmp/test_' . uniqid();
 
         shell_exec("unzip {$this->builtPackagePath} -d {$tmpPath}");
         $this->debug('Unzipping package to: ' . $tmpPath);
