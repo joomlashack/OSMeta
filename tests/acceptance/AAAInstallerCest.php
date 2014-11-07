@@ -1,13 +1,16 @@
 <?php
 use \AcceptanceTester;
 
-class InstallerCest
+class AAAInstallerCest
 {
     protected $packagePath = '';
 
     public function _before(AcceptanceTester $I)
     {
         $I->resizeWindow(1280, 900);
+
+        // Remove and create Joomla site
+        $I->createJoomlaSiteForTests('tests_osmeta', '3.3.6');
 
         // Build a new package
         $I->buildProjectUsingPhing();
