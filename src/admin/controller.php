@@ -9,6 +9,9 @@
 // No direct access
 defined('_JEXEC') or die();
 
+use Alledia\OSMeta\Free\Container\Factory as ContainerFactory;
+use Alledia\OSMeta\Free\Container\AbstractHome as AbstractHomeContainer;
+
 jimport('cms.view.legacy');
 
 /**
@@ -99,13 +102,11 @@ class OSMetaController extends JControllerLegacy
     private function actionManager($task)
     {
         $app = JFactory::getApplication();
-        require_once 'classes/OSMetatagsContainerFactory.php';
-        require_once 'classes/OSHomeMetatagsContainer.php';
 
         $itemType = $app->input->getString('type', null);
 
         if (!$itemType) {
-            $itemType = key(OSMetatagsContainerFactory::getFeatures());
+            $itemType = key(ContainerFactory::getFeatures());
 
             if (empty($itemType)) {
                 // Enable com_content
@@ -120,11 +121,11 @@ class OSMetaController extends JControllerLegacy
                 $db->execute();
 
                 // Get the features again
-                $itemType = key(OSMetatagsContainerFactory::getFeatures());
+                $itemType = key(ContainerFactory::getFeatures());
             }
         }
 
-        $metatagsContainer = OSMetatagsContainerFactory::getContainerById($itemType);
+        $metatagsContainer = ContainerFactory::getContainerById($itemType);
 
         if (!is_object($metatagsContainer)) {
             // TODO: throw error here.
@@ -145,7 +146,7 @@ class OSMetaController extends JControllerLegacy
                 $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
                 $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
                 $homeMetaKey = JRequest::getVar('home_metakey', '', '', 'string');
-                OSHomeMetatagsContainer::saveMetatags(
+                AbstractHomeContainer::saveMetatags(
                     $homeSource,
                     $homeMetaTitle,
                     $homeMetaDescription,
@@ -175,7 +176,7 @@ class OSMetaController extends JControllerLegacy
         $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
-        $features = OSMetatagsContainerFactory::getFeatures();
+        $features = ContainerFactory::getFeatures();
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -191,7 +192,7 @@ class OSMetaController extends JControllerLegacy
         $itemTypeShort = $itemType === 'com_content:Article' ? 'articles' : 'categories';
 
         // Get Homepage data
-        $home = OSHomeMetatagsContainer::getMetatags();
+        $home = AbstractHomeContainer::getMetatags();
 
         $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
 

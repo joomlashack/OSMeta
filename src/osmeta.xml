@@ -70,7 +70,7 @@
         <menu img="../media/com_osmeta/admin/images/alledia_logo_16x16.png">OSMeta</menu>
 
         <files folder="admin">
-            <folder>classes</folder>
+            <folder>library</folder>
             <folder>features</folder>
             <folder>models</folder>
             <folder>views</folder>

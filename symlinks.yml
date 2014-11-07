@@ -4,7 +4,7 @@ mkdir:
     - plugins/content/osmetacontent
     - plugins/system/osmetarenderer
 symlinks:
-    - src/admin/classes administrator/components/com_osmeta/classes
+    - src/admin/library administrator/components/com_osmeta/library
     - src/admin/features administrator/components/com_osmeta/features
     - src/admin/language administrator/components/com_osmeta/language
     - src/admin/models administrator/components/com_osmeta/models
@@ -17,5 +17,5 @@ symlinks:
     - src/script.installer.php administrator/components/com_osmeta/script.installer.php
     - src/media media/com_osmeta
     - src/site/osmeta.php components/com_osmeta/osmeta.php
-    - src/extensions/osmetacontent plugins/content/osmetacontent
-    - src/extensions/osmetarenderer plugins/system/osmetarenderer
+    - src/extensions/OSMetaContent plugins/content/osmetacontent
+    - src/extensions/OSMetaRenderer plugins/system/osmetarenderer

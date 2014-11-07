@@ -9,38 +9,43 @@
 // No direct access
 defined('_JEXEC') or die();
 
-/**
- * OSMeta System Plugin - Renderer
- *
- * @since  1.0
- */
-class PlgSystemOSMetaRenderer extends JPlugin
-{
+use Alledia\Framework\Joomla\Extension\AbstractPlugin;
+
+require_once 'include.php';
+
+if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
     /**
-     * Event method onAfterRender, to process the metadata on the front-end
+     * OSMeta System Plugin - Renderer
      *
-     * @access  public
-     *
-     * @return bool
+     * @since  1.0
      */
-    public function onAfterRender()
+    class PlgSystemOSMetaRenderer extends AbstractPlugin
     {
-        $app = JFactory::getApplication();
+        /**
+         * Event method onAfterRender, to process the metadata on the front-end
+         *
+         * @access  public
+         *
+         * @return bool
+         */
+        public function onAfterRender()
+        {
+            $app = JFactory::getApplication();
 
-        if ($app->getName() === 'site') {
-            $queryData = $_REQUEST;
-            ksort($queryData);
-            $url = http_build_query($queryData);
+            if ($app->getName() === 'site') {
+                $queryData = $_REQUEST;
+                ksort($queryData);
+                $url = http_build_query($queryData);
 
-            $buffer = JResponse::getBody();
+                $buffer = JResponse::getBody();
 
-            // Metatags processing on the response body
-            require_once JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/OSMetatagsContainerFactory.php";
-            $buffer = OSMetatagsContainerFactory::processBody($buffer, $url);
+                // Metatags processing on the response body
+                $buffer = Alledia\OSMeta\Free\Container\Factory::processBody($buffer, $url);
 
-            JResponse::setBody($buffer);
+                JResponse::setBody($buffer);
+            }
+
+            return true;
         }
-
-        return true;
     }
 }

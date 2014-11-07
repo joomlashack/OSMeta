@@ -6,17 +6,24 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
+namespace Alledia\OSMeta\Free\Container;
+
+use Alledia\OSMeta\Free\Container\AbstractContainer;
+use JRequest;
+use JFactory;
+use JComponentHelper;
+use stdClass;
+
 // No direct access
 defined('_JEXEC') or die();
 
-jimport('cms.model.legacy');
 
 /**
  * Homepage Metatags Container
  *
  * @since  1.0
  */
-abstract class OSHomeMetatagsContainer
+abstract class AbstractHome
 {
     /**
      * Params

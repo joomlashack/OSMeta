@@ -6,18 +6,23 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
+namespace Alledia\OSMeta\Free\Container\Content;
+
+use Alledia\OSMeta\Free\Container\AbstractContainer;
+use JRequest;
+use JFactory;
+use JHtml;
+use JText;
+
 // No direct access
 defined('_JEXEC') or die();
 
-require_once 'OSMetatagsContainer.php';
-jimport('cms.model.legacy');
-
 /**
- * Article Category Metatags Container for Joomla >= 2.5 Class
+ * Article Metatags Container
  *
  * @since  1.0
  */
-class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
+class Article extends AbstractContainer
 {
     /**
      * Code
@@ -25,22 +30,10 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
      * @var    int
      * @since  1.0
      */
-    public $code = 4;
+    private $code = 1;
 
     /**
-     * Method to get type Id
-     *
-     * @access  public
-     *
-     * @return int
-     */
-    public function getTypeId()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Get meta tags
+     * Get Meta Tags
      *
      * @param int $lim0   Offset
      * @param int $lim    Limit
@@ -54,16 +47,19 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
     {
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
-            c.metadesc, m.title as metatitle , c.extension
+            c.metadesc, m.title as metatitle
             FROM
-            #__categories c
+            #__content c
+            LEFT JOIN #__categories cc ON cc.id=c.catid
             LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.extension='com_content'";
+            #__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
 
         $search = JRequest::getVar("com_content_filter_search", "");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
+        $level = JRequest::getVar("com_content_filter_level", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -74,20 +70,52 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
+        $baselevel = 1;
+
+        if ($catId > 0) {
+            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
+            $cat_tbl = $db->loadObject();
+            $rgt = $cat_tbl->rgt;
+            $lft = $cat_tbl->lft;
+            $baselevel = (int) $cat_tbl->level;
+            $sql .= ' AND cc.lft >= ' . (int) $lft;
+            $sql .= ' AND cc.rgt <= ' . (int) $rgt;
+        }
+
+        if ($level > 0) {
+            $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
+        }
+
         if ($authorId > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
+            $sql .= " AND c.created_by=" . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.published=1";
+                $sql .= " AND c.state=1";
                 break;
+
             case 'U':
-                $sql .= " AND c.published=0";
+                $sql .= " AND c.state=0";
+                break;
+
+            case 'A':
+                $sql .= " AND c.state=-1";
+                break;
+
+            case 'D':
+                $sql .= " AND c.state=-2";
+                break;
+
+            case 'All':
+                break;
+
+            default:
+                $sql .= " AND c.state=1";
                 break;
         }
 
-        if ($comContentFilterShowEmptyKeywords != "-1") {
+        if ($comContentFilterShowEmptykeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
@@ -96,7 +124,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
         }
 
         // Sorting
-
         $order = JRequest::getCmd("filter_order", "title");
         $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -116,6 +143,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             default:
                 $sql .= " ORDER BY title ";
                 break;
+
         }
 
         $order_dir = strtoupper($order_dir);
@@ -136,33 +164,10 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}"
-                . "&extension={$rows[$i]->extension}";
+            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
         }
 
         return $rows;
-    }
-
-    /**
-     * Get meta data by request
-     *
-     * @param string $query Query
-     *
-     * @access  public
-     *
-     * @return array
-     */
-    public function getMetadataByRequest($query)
-    {
-        $params = array();
-        parse_str($query, $params);
-        $metadata = null;
-
-        if (isset($params["id"])) {
-            $metadata = $this->getMetadata($params["id"]);
-        }
-
-        return $metadata;
     }
 
     /**
@@ -179,16 +184,20 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
     public function getPages($lim0, $lim, $filter = null)
     {
         $db = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS
-            c.id, c.title, c.metakey, c.published,
-        c.description AS content
-            FROM
-            #__categories c WHERE c.extension='com_content'";
+
+        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey, c.state,
+            if (c.fulltext != '', c.fulltext, c.introtext) AS content
+            FROM #__content c
+            LEFT JOIN #__categories cc ON cc.id=c.catid
+            WHERE 1
+            ";
 
         $search = JRequest::getVar("com_content_filter_search", "");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
+        $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -199,21 +208,52 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
+        $baselevel = 1;
+
+        if ($catId > 0) {
+            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
+            $cat_tbl = $db->loadObject();
+            $rgt = $cat_tbl->rgt;
+            $lft = $cat_tbl->lft;
+            $baselevel = (int) $cat_tbl->level;
+            $sql .= ' AND cc.lft >= ' . (int) $lft;
+            $sql .= ' AND cc.rgt <= ' . (int) $rgt;
+        }
+
+        if ($level > 0) {
+            $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
+        }
+
         if ($authorId > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
+            $sql .= " AND c.created_by=" . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.published=1";
+                $sql .= " AND c.state=1";
                 break;
 
             case 'U':
-                $sql .= " AND c.published=0";
+                $sql .= " AND c.state=0";
+                break;
+
+            case 'A':
+                $sql .= " AND c.state=-1";
+                break;
+
+            case 'D':
+                $sql .= " AND c.state=-2";
+                break;
+
+            case 'All':
+                break;
+
+            default:
+                $sql .= " AND c.state=1";
                 break;
         }
 
-        if ($comContentFilterShowEmptyKeywords != "-1") {
+        if ($comContentFilterShowEmptykeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
@@ -238,8 +278,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 $rows[$i]->metakey = array("");
             }
 
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&"
-                . "extension={$rows[$i]->extension}";
+            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
         }
 
         return $rows;
@@ -262,8 +301,8 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
         $db = JFactory::getDBO();
 
         for ($i = 0; $i < count($ids); $i++) {
-            // Get current category metadata
-            $sql = "SELECT metadata FROM #__categories"
+            // Get current article metadata
+            $sql = "SELECT metadata FROM #__content"
                 . " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $result = $db->loadObject();
@@ -276,7 +315,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             $metadata->metatitle = $metatitles[$i];
             $metadata = json_encode($metadata);
 
-            $sql = "UPDATE #__categories SET "
+            $sql = "UPDATE #__content SET "
                 . " metakey=" . $db->quote($metakeys[$i]) . ", "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
                 . " metadata=" . $db->quote($metadata)
@@ -289,18 +328,16 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 item_type, title, description)
                 VALUES (
                 " . $db->quote($ids[$i]) . ",
-                '{$this->code}',
+                1,
                 " . $db->quote($metatitles[$i]) . ",
                 " . $db->quote($metadescriptions[$i]) . "
-                ) ON DUPLICATE KEY
-                    UPDATE
-                    title=" . $db->quote($metatitles[$i]) . " ,
+                ) ON DUPLICATE KEY UPDATE title=" . $db->quote($metatitles[$i]) . " ,
                     description=" . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
             $db->query();
 
-            parent::saveKeywords($metakeys[$i], $ids[$i], $this->code);
+            parent::saveKeywords($metakeys[$i], $ids[$i], 1);
         }
     }
 
@@ -317,7 +354,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
      */
     public function saveKeywords($keywords, $itemId, $itemTypeId = null)
     {
-        parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : $this->code);
+        parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : 1);
     }
 
     /**
@@ -339,10 +376,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
-        $sql = "SELECT id, title
-            FROM  #__categories
-            WHERE id IN (" . implode(",", $ids) . ")";
-
+        $sql = "SELECT id, title FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -352,7 +386,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                     item_type, title, description)
                     VALUES (
                     " . $db->quote($item->id) . ",
-                    '{$this->code}',
+                    1,
                     " . $db->quote($item->title) . ",
                     ''
                     ) ON DUPLICATE KEY UPDATE title=" . $db->quote($item->title);
@@ -388,7 +422,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             }
         }
 
-        $sql = "SELECT id, description as introtext FROM  #__categories WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = "SELECT id, introtext FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -396,15 +430,15 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
             if ($item->introtext != '') {
                 $introtext = strip_tags($item->introtext);
 
-                if (strlen($introtext) > max_description_length) {
-                    $introtext = substr($introtext, 0, max_description_length);
+                if (strlen($introtext) > $max_description_length) {
+                    $introtext = substr($introtext, 0, $max_description_length);
                 }
 
                 $sql = "INSERT INTO #__osmeta_metadata (item_id,
                     item_type, title, description)
                     VALUES (
                     " . $db->quote($item->id) . ",
-                    '{$this->code}',
+                    1,
 
                     '',
                     " . $db->quote($introtext) . "
@@ -413,7 +447,7 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
                 $db->setQuery($sql);
                 $db->query();
 
-                $sql = "UPDATE #__categories SET metadesc=" . $db->quote($introtext) . "
+                $sql = "UPDATE #__content SET metadesc=" . $db->quote($introtext) . "
                     WHERE id=" . $db->quote($item->id);
 
                 $db->setQuery($sql);
@@ -432,11 +466,26 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
     public function getFilter()
     {
         $db = JFactory::getDBO();
-
         $search = JRequest::getVar("com_content_filter_search", "");
+        $catId = JRequest::getVar("com_content_filter_catid", "0");
+        $level = JRequest::getVar("com_content_filter_level", "0");
+
+        // Levels filter.
+        $levels = array();
+        $levels[]   = JHtml::_('select.option', '1', JText::_('J1'));
+        $levels[]   = JHtml::_('select.option', '2', JText::_('J2'));
+        $levels[]   = JHtml::_('select.option', '3', JText::_('J3'));
+        $levels[]   = JHtml::_('select.option', '4', JText::_('J4'));
+        $levels[]   = JHtml::_('select.option', '5', JText::_('J5'));
+        $levels[]   = JHtml::_('select.option', '6', JText::_('J6'));
+        $levels[]   = JHtml::_('select.option', '7', JText::_('J7'));
+        $levels[]   = JHtml::_('select.option', '8', JText::_('J8'));
+        $levels[]   = JHtml::_('select.option', '9', JText::_('J9'));
+        $levels[]   = JHtml::_('select.option', '10', JText::_('J10'));
+
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
@@ -452,21 +501,35 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
 
             &nbsp;&nbsp;&nbsp;';
 
-        $keywordChecked = $comContentFilterShowEmptyKeywords != "-1" ? 'checked="yes" ' : '';
+        $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
+                        '<option value="">Select category</option>' .
+        JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $catId) .
+                    '</select>';
+
+        $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
+                '<option value="">Select max levels</option>' .
+                JHtml::_('select.options', $levels, 'value', 'text', $level) .
+            '</select>';
+
+        $keywordChecked = $comContentFilterShowEmptykeywords != "-1" ? 'checked="yes" ' : '';
         $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
 
         $result .= '
-            <select name="com_content_filter_state" id="filter_state"
-                class="inputbox" size="1" onchange="submitform();">
+
+            <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
+            onchange="submitform();">
                 <option value=""  >- Select State -</option>
                 <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>Published</option>
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
+                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>Archived</option>
+                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>Trashed</option>
+                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>All</option>
             </select>
             <br/>
-            <label>Show only Article Categories with empty keywords</label>
+            <label>Show only Articles with empty keywords</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_keywords" ' . $keywordChecked . '/>
-            <label>Show only Article Categories with empty descriptions</label>
+            <label>Show only Articles with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
 
@@ -474,49 +537,62 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
     }
 
     /**
-     * Method to get the item data
+     * Method to set Metadata
      *
-     * @param int $id Item Id
-     *
-     * @access  public
-     *
-     * @return array
-     */
-    public function getItemData($id)
-    {
-        $db = JFactory::getDBO();
-        $sql = "SELECT c.id as id, c.title as title, c.metakey as metakeywords,
-            c.metadesc as metadescription, m.title as metatitle
-            FROM
-            #__categories c
-            LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.id=" . $db->quote($id);
-        $db->setQuery($sql);
-
-        return $db->loadAssoc();
-    }
-
-    /**
-     * Method to set the item data
-     *
-     * @param int   $id   Item Id
-     * @param array $data Item Data
+     * @param int   $id   ID
+     * @param array $data Data
      *
      * @access  public
      *
      * @return void
      */
-    public function setItemData($id, $data)
+    public function setMetadata($id, $data)
     {
         $db = JFactory::getDBO();
-        $sql = "UPDATE #__categories SET
-            `title` = " . $db->quote($data["title"]) . ",
+        $sql = "UPDATE #__content SET " .
+            (isset($data["title"])&&$data["title"]?
+            "`title` = " . $db->quote($data["title"]) . ",":"") . "
             `metakey` = " . $db->quote($data["metakeywords"]) . ",
             `metadesc` = " . $db->quote($data["metadescription"]) . "
             WHERE `id`=" . $db->quote($id);
         $db->setQuery($sql);
         $db->query();
-        $this->saveMetadata($id, $this->code, $data);
+
+        parent::setMetadata($id, $data);
+    }
+
+    /**
+     * Method to get the type id
+     *
+     * @access  public
+     *
+     * @return int
+     */
+    public function getTypeId()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Method to get Metadata
+     *
+     * @param string $query Query
+     *
+     * @access  public
+     *
+     * @return array
+     */
+    public function getMetadataByRequest($query)
+    {
+        $params = array();
+        parse_str($query, $params);
+        $metadata = null;
+
+        if (isset($params["id"])) {
+            $metadata = $this->getMetadata($params["id"]);
+        }
+
+        return $metadata;
     }
 
     /**
@@ -548,8 +624,6 @@ class OSArticleCategoryMetatagsContainer extends OSMetatagsContainer
      */
     public function isAvailable()
     {
-        require_once dirname(__FILE__) . "/OSMetatagsContainerFactory.php";
-
-        return version_compare(JVERSION, "1.6", "ge");
+        return true;
     }
 }

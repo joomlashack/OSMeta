@@ -6,6 +6,13 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
+namespace Alledia\OSMeta\Free\Container;
+
+use JRequest;
+use JFactory;
+use JURI;
+use JRoute;
+
 // No direct access
 defined('_JEXEC') or die();
 
@@ -14,7 +21,7 @@ defined('_JEXEC') or die();
  *
  * @since  1.0
  */
-class OSMetatagsContainerFactory
+class Factory
 {
     /**
      * Features cache
@@ -49,8 +56,6 @@ class OSMetatagsContainerFactory
         $container = 'com_content:Article';
 
         if (isset($features[$type])) {
-            require_once $features[$type]["file"];
-
             eval('$container = new ' . $features[$type]["class"] . '();');
         }
 
@@ -133,14 +138,12 @@ class OSMetatagsContainerFactory
         $container = false;
 
         if ($component === 'com_content') {
-            $containerName = 'OSArticleMetatagsContainer';
+            $containerName = 'Alledia\OSMeta\Free\Container\Content\Article';
         } elseif ($component === 'com_categories') {
-            $containerName = 'OSArticleCategoryMetatagsContainer';
+            $containerName = 'Alledia\OSMeta\Free\Container\Content\Category';
         }
 
         if ($containerName) {
-            $file = JPATH_ADMINISTRATOR . "/components/com_osmeta/classes/" . $containerName . ".php";
-            require_once $file;
             $container = new $containerName;
         }
 
@@ -192,9 +195,8 @@ class OSMetatagsContainerFactory
             $metadata = $container->getMetadataByRequest($queryString);
 
             if (static::isFrontPage()) {
-                require_once 'OSHomeMetatagsContainer.php';
 
-                $homeMetadata = OSHomeMetatagsContainer::getMetatags();
+                $homeMetadata = AbstractHome::getMetatags();
                 if ($homeMetadata->source !== 'default') {
 
                     $metadata['metatitle'] = @$homeMetadata->metaTitle;
@@ -319,7 +321,7 @@ class OSMetatagsContainerFactory
         if (self::$features == null) {
             $features  = array();
 
-            $directoryName = dirname(dirname(__FILE__)) . '/features';
+            $directoryName = JPATH_SITE . '/administrator/components/com_osmeta/features';
             $db = JFactory::getDBO();
             $db->setQuery(
                 "SELECT component FROM " .

@@ -6,15 +6,19 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
+namespace Alledia\OSMeta\Free\Container;
+
+use JFactory;
+
 // No direct access
 defined('_JEXEC') or die();
 
 /**
- * Metatags Container Class
+ * Abstract Metatags Container Class
  *
  * @since  1.0
  */
-abstract class OSMetatagsContainer
+abstract class AbstractContainer
 {
     /**
      * Method to set the Metadata
