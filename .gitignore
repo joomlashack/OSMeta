@@ -59,3 +59,5 @@ phing/.DS_Store
 vendor
 
 build.properties
+
+tests/_output/*
