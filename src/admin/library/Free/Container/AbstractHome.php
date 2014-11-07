@@ -13,6 +13,8 @@ use JRequest;
 use JFactory;
 use JComponentHelper;
 use stdClass;
+use JModelLegacy;
+use JTable;
 
 // No direct access
 defined('_JEXEC') or die();

@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 $features['com_content:Article'] = array(
     'name' => 'Article',
     'priority' => 1,
-    'class' => 'Alledia\OSMeta\Free\Container\Content\Article',
+    'class' => 'Alledia\OSMeta\Free\Container\Component\Content',
         'params' => array(array('option' => 'com_content', 'view' => 'article'),
             array('option' => 'com_content', 'view' => 'frontpage'),
             array('option' => 'com_content', 'view' => 'featured'))
@@ -21,6 +21,6 @@ $features['com_content:Article'] = array(
 $features['com_content:ArticleCategory'] = array(
     'name' => 'Article Category',
     'priority' => 1,
-    'class' => 'Alledia\OSMeta\Free\Container\Content\Category',
+    'class' => 'Alledia\OSMeta\Free\Container\Component\Categories',
         'params' => array(array('option' => 'com_content', 'view' => 'category'))
 );

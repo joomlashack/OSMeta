@@ -6,23 +6,22 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
-namespace Alledia\OSMeta\Free\Container\Content;
+namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
 use JRequest;
 use JFactory;
-use JHtml;
-use JText;
+use JModelLegacy;
 
 // No direct access
 defined('_JEXEC') or die();
 
 /**
- * Article Metatags Container
+ * Article Category Metatags Container
  *
  * @since  1.0
  */
-class Article extends AbstractContainer
+class Categories extends AbstractContainer
 {
     /**
      * Code
@@ -30,10 +29,10 @@ class Article extends AbstractContainer
      * @var    int
      * @since  1.0
      */
-    private $code = 1;
+    public $code = 4;
 
     /**
-     * Get Meta Tags
+     * Get meta tags
      *
      * @param int $lim0   Offset
      * @param int $lim    Limit
@@ -47,19 +46,16 @@ class Article extends AbstractContainer
     {
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
-            c.metadesc, m.title as metatitle
+            c.metadesc, m.title as metatitle , c.extension
             FROM
-            #__content c
-            LEFT JOIN #__categories cc ON cc.id=c.catid
+            #__categories c
             LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
+            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.extension='com_content'";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $catId = JRequest::getVar("com_content_filter_catid", "0");
-        $level = JRequest::getVar("com_content_filter_level", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -70,52 +66,20 @@ class Article extends AbstractContainer
             }
         }
 
-        $baselevel = 1;
-
-        if ($catId > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
-            $cat_tbl = $db->loadObject();
-            $rgt = $cat_tbl->rgt;
-            $lft = $cat_tbl->lft;
-            $baselevel = (int) $cat_tbl->level;
-            $sql .= ' AND cc.lft >= ' . (int) $lft;
-            $sql .= ' AND cc.rgt <= ' . (int) $rgt;
-        }
-
-        if ($level > 0) {
-            $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
-        }
-
         if ($authorId > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($authorId);
+            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.state=1";
+                $sql .= " AND c.published=1";
                 break;
-
             case 'U':
-                $sql .= " AND c.state=0";
-                break;
-
-            case 'A':
-                $sql .= " AND c.state=-1";
-                break;
-
-            case 'D':
-                $sql .= " AND c.state=-2";
-                break;
-
-            case 'All':
-                break;
-
-            default:
-                $sql .= " AND c.state=1";
+                $sql .= " AND c.published=0";
                 break;
         }
 
-        if ($comContentFilterShowEmptykeywords != "-1") {
+        if ($comContentFilterShowEmptyKeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
@@ -124,6 +88,7 @@ class Article extends AbstractContainer
         }
 
         // Sorting
+
         $order = JRequest::getCmd("filter_order", "title");
         $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -143,7 +108,6 @@ class Article extends AbstractContainer
             default:
                 $sql .= " ORDER BY title ";
                 break;
-
         }
 
         $order_dir = strtoupper($order_dir);
@@ -164,10 +128,33 @@ class Article extends AbstractContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
+            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}"
+                . "&extension={$rows[$i]->extension}";
         }
 
         return $rows;
+    }
+
+    /**
+     * Get meta data by request
+     *
+     * @param string $query Query
+     *
+     * @access  public
+     *
+     * @return array
+     */
+    public function getMetadataByRequest($query)
+    {
+        $params = array();
+        parse_str($query, $params);
+        $metadata = null;
+
+        if (isset($params["id"])) {
+            $metadata = $this->getMetadata($params["id"]);
+        }
+
+        return $metadata;
     }
 
     /**
@@ -184,20 +171,16 @@ class Article extends AbstractContainer
     public function getPages($lim0, $lim, $filter = null)
     {
         $db = JFactory::getDBO();
-
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey, c.state,
-            if (c.fulltext != '', c.fulltext, c.introtext) AS content
-            FROM #__content c
-            LEFT JOIN #__categories cc ON cc.id=c.catid
-            WHERE 1
-            ";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+            c.id, c.title, c.metakey, c.published,
+        c.description AS content
+            FROM
+            #__categories c WHERE c.extension='com_content'";
 
         $search = JRequest::getVar("com_content_filter_search", "");
-        $catId = JRequest::getVar("com_content_filter_catid", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
-        $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -208,52 +191,21 @@ class Article extends AbstractContainer
             }
         }
 
-        $baselevel = 1;
-
-        if ($catId > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
-            $cat_tbl = $db->loadObject();
-            $rgt = $cat_tbl->rgt;
-            $lft = $cat_tbl->lft;
-            $baselevel = (int) $cat_tbl->level;
-            $sql .= ' AND cc.lft >= ' . (int) $lft;
-            $sql .= ' AND cc.rgt <= ' . (int) $rgt;
-        }
-
-        if ($level > 0) {
-            $sql .= ' AND cc.level <=' . ((int) $level + (int) $baselevel - 1);
-        }
-
         if ($authorId > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($authorId);
+            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.state=1";
+                $sql .= " AND c.published=1";
                 break;
 
             case 'U':
-                $sql .= " AND c.state=0";
-                break;
-
-            case 'A':
-                $sql .= " AND c.state=-1";
-                break;
-
-            case 'D':
-                $sql .= " AND c.state=-2";
-                break;
-
-            case 'All':
-                break;
-
-            default:
-                $sql .= " AND c.state=1";
+                $sql .= " AND c.published=0";
                 break;
         }
 
-        if ($comContentFilterShowEmptykeywords != "-1") {
+        if ($comContentFilterShowEmptyKeywords != "-1") {
             $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
         }
 
@@ -278,7 +230,8 @@ class Article extends AbstractContainer
                 $rows[$i]->metakey = array("");
             }
 
-            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
+            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&"
+                . "extension={$rows[$i]->extension}";
         }
 
         return $rows;
@@ -301,8 +254,8 @@ class Article extends AbstractContainer
         $db = JFactory::getDBO();
 
         for ($i = 0; $i < count($ids); $i++) {
-            // Get current article metadata
-            $sql = "SELECT metadata FROM #__content"
+            // Get current category metadata
+            $sql = "SELECT metadata FROM #__categories"
                 . " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $result = $db->loadObject();
@@ -315,7 +268,7 @@ class Article extends AbstractContainer
             $metadata->metatitle = $metatitles[$i];
             $metadata = json_encode($metadata);
 
-            $sql = "UPDATE #__content SET "
+            $sql = "UPDATE #__categories SET "
                 . " metakey=" . $db->quote($metakeys[$i]) . ", "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
                 . " metadata=" . $db->quote($metadata)
@@ -328,16 +281,18 @@ class Article extends AbstractContainer
                 item_type, title, description)
                 VALUES (
                 " . $db->quote($ids[$i]) . ",
-                1,
+                '{$this->code}',
                 " . $db->quote($metatitles[$i]) . ",
                 " . $db->quote($metadescriptions[$i]) . "
-                ) ON DUPLICATE KEY UPDATE title=" . $db->quote($metatitles[$i]) . " ,
+                ) ON DUPLICATE KEY
+                    UPDATE
+                    title=" . $db->quote($metatitles[$i]) . " ,
                     description=" . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
             $db->query();
 
-            parent::saveKeywords($metakeys[$i], $ids[$i], 1);
+            parent::saveKeywords($metakeys[$i], $ids[$i], $this->code);
         }
     }
 
@@ -354,7 +309,7 @@ class Article extends AbstractContainer
      */
     public function saveKeywords($keywords, $itemId, $itemTypeId = null)
     {
-        parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : 1);
+        parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : $this->code);
     }
 
     /**
@@ -376,7 +331,10 @@ class Article extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, title FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = "SELECT id, title
+            FROM  #__categories
+            WHERE id IN (" . implode(",", $ids) . ")";
+
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -386,7 +344,7 @@ class Article extends AbstractContainer
                     item_type, title, description)
                     VALUES (
                     " . $db->quote($item->id) . ",
-                    1,
+                    '{$this->code}',
                     " . $db->quote($item->title) . ",
                     ''
                     ) ON DUPLICATE KEY UPDATE title=" . $db->quote($item->title);
@@ -408,6 +366,8 @@ class Article extends AbstractContainer
      */
     public function generateDescriptions($ids)
     {
+        jimport('legacy.model.legacy');
+
         $max_description_length = 500;
         $model = JModelLegacy::getInstance("options", "OSModel");
         $params = $model->getOptions();
@@ -422,7 +382,7 @@ class Article extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, introtext FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = "SELECT id, description as introtext FROM  #__categories WHERE id IN (" . implode(",", $ids) . ")";
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -438,7 +398,7 @@ class Article extends AbstractContainer
                     item_type, title, description)
                     VALUES (
                     " . $db->quote($item->id) . ",
-                    1,
+                    '{$this->code}',
 
                     '',
                     " . $db->quote($introtext) . "
@@ -447,7 +407,7 @@ class Article extends AbstractContainer
                 $db->setQuery($sql);
                 $db->query();
 
-                $sql = "UPDATE #__content SET metadesc=" . $db->quote($introtext) . "
+                $sql = "UPDATE #__categories SET metadesc=" . $db->quote($introtext) . "
                     WHERE id=" . $db->quote($item->id);
 
                 $db->setQuery($sql);
@@ -466,26 +426,11 @@ class Article extends AbstractContainer
     public function getFilter()
     {
         $db = JFactory::getDBO();
+
         $search = JRequest::getVar("com_content_filter_search", "");
-        $catId = JRequest::getVar("com_content_filter_catid", "0");
-        $level = JRequest::getVar("com_content_filter_level", "0");
-
-        // Levels filter.
-        $levels = array();
-        $levels[]   = JHtml::_('select.option', '1', JText::_('J1'));
-        $levels[]   = JHtml::_('select.option', '2', JText::_('J2'));
-        $levels[]   = JHtml::_('select.option', '3', JText::_('J3'));
-        $levels[]   = JHtml::_('select.option', '4', JText::_('J4'));
-        $levels[]   = JHtml::_('select.option', '5', JText::_('J5'));
-        $levels[]   = JHtml::_('select.option', '6', JText::_('J6'));
-        $levels[]   = JHtml::_('select.option', '7', JText::_('J7'));
-        $levels[]   = JHtml::_('select.option', '8', JText::_('J8'));
-        $levels[]   = JHtml::_('select.option', '9', JText::_('J9'));
-        $levels[]   = JHtml::_('select.option', '10', JText::_('J10'));
-
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
+        $comContentFilterShowEmptyKeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
@@ -501,35 +446,21 @@ class Article extends AbstractContainer
 
             &nbsp;&nbsp;&nbsp;';
 
-        $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
-                        '<option value="">Select category</option>' .
-        JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $catId) .
-                    '</select>';
-
-        $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
-                '<option value="">Select max levels</option>' .
-                JHtml::_('select.options', $levels, 'value', 'text', $level) .
-            '</select>';
-
-        $keywordChecked = $comContentFilterShowEmptykeywords != "-1" ? 'checked="yes" ' : '';
+        $keywordChecked = $comContentFilterShowEmptyKeywords != "-1" ? 'checked="yes" ' : '';
         $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
 
         $result .= '
-
-            <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
-            onchange="submitform();">
+            <select name="com_content_filter_state" id="filter_state"
+                class="inputbox" size="1" onchange="submitform();">
                 <option value=""  >- Select State -</option>
                 <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>Published</option>
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
-                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>Archived</option>
-                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>Trashed</option>
-                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>All</option>
             </select>
             <br/>
-            <label>Show only Articles with empty keywords</label>
+            <label>Show only Article Categories with empty keywords</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_keywords" ' . $keywordChecked . '/>
-            <label>Show only Articles with empty descriptions</label>
+            <label>Show only Article Categories with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
 
@@ -537,62 +468,49 @@ class Article extends AbstractContainer
     }
 
     /**
-     * Method to set Metadata
+     * Method to get the item data
      *
-     * @param int   $id   ID
-     * @param array $data Data
-     *
-     * @access  public
-     *
-     * @return void
-     */
-    public function setMetadata($id, $data)
-    {
-        $db = JFactory::getDBO();
-        $sql = "UPDATE #__content SET " .
-            (isset($data["title"])&&$data["title"]?
-            "`title` = " . $db->quote($data["title"]) . ",":"") . "
-            `metakey` = " . $db->quote($data["metakeywords"]) . ",
-            `metadesc` = " . $db->quote($data["metadescription"]) . "
-            WHERE `id`=" . $db->quote($id);
-        $db->setQuery($sql);
-        $db->query();
-
-        parent::setMetadata($id, $data);
-    }
-
-    /**
-     * Method to get the type id
-     *
-     * @access  public
-     *
-     * @return int
-     */
-    public function getTypeId()
-    {
-        return $this->code;
-    }
-
-    /**
-     * Method to get Metadata
-     *
-     * @param string $query Query
+     * @param int $id Item Id
      *
      * @access  public
      *
      * @return array
      */
-    public function getMetadataByRequest($query)
+    public function getItemData($id)
     {
-        $params = array();
-        parse_str($query, $params);
-        $metadata = null;
+        $db = JFactory::getDBO();
+        $sql = "SELECT c.id as id, c.title as title, c.metakey as metakeywords,
+            c.metadesc as metadescription, m.title as metatitle
+            FROM
+            #__categories c
+            LEFT JOIN
+            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.id=" . $db->quote($id);
+        $db->setQuery($sql);
 
-        if (isset($params["id"])) {
-            $metadata = $this->getMetadata($params["id"]);
-        }
+        return $db->loadAssoc();
+    }
 
-        return $metadata;
+    /**
+     * Method to set the item data
+     *
+     * @param int   $id   Item Id
+     * @param array $data Item Data
+     *
+     * @access  public
+     *
+     * @return void
+     */
+    public function setItemData($id, $data)
+    {
+        $db = JFactory::getDBO();
+        $sql = "UPDATE #__categories SET
+            `title` = " . $db->quote($data["title"]) . ",
+            `metakey` = " . $db->quote($data["metakeywords"]) . ",
+            `metadesc` = " . $db->quote($data["metadescription"]) . "
+            WHERE `id`=" . $db->quote($id);
+        $db->setQuery($sql);
+        $db->query();
+        $this->saveMetadata($id, $this->code, $data);
     }
 
     /**
@@ -613,17 +531,5 @@ class Article extends AbstractContainer
         if (isset($params["id"]) && $params["id"]) {
             $this->setMetadata($params["id"], $data);
         }
-    }
-
-    /**
-     * Method to get check if the container is available
-     *
-     * @access  public
-     *
-     * @return bool
-     */
-    public function isAvailable()
-    {
-        return true;
     }
 }

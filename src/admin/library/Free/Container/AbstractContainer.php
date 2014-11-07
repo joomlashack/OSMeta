@@ -21,6 +21,13 @@ defined('_JEXEC') or die();
 abstract class AbstractContainer
 {
     /**
+     * Container priority
+     *
+     * @var integer
+     */
+    public $priority = 1;
+
+    /**
      * Method to set the Metadata
      *
      * @param int   $itemId Item ID
@@ -163,13 +170,16 @@ abstract class AbstractContainer
     }
 
     /**
-     * Method to get the Type Id
+     * Method to get the type id
      *
-     * @access	public
+     * @access  public
      *
-     * @return void
+     * @return int
      */
-    abstract public function getTypeId();
+    public function getTypeId()
+    {
+        return $this->code;
+    }
 
     /**
      * Method to get the Metadata By Request
@@ -198,13 +208,4 @@ abstract class AbstractContainer
      * @return void
      */
     abstract public function setMetadataByRequest($url, $data);
-
-    /**
-     * Method to check if the container is available
-     *
-     * @access	public
-     *
-     * @return void
-     */
-    abstract public function isAvailable();
 }

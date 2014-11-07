@@ -21,7 +21,7 @@ defined('_JEXEC') or die();
  *
  * @since  1.0
  */
-class Factory
+abstract class Factory
 {
     /**
      * Features cache
@@ -134,17 +134,13 @@ class Factory
      */
     public static function getContainerByComponentName($component)
     {
-        $containerName = false;
         $container = false;
 
-        if ($component === 'com_content') {
-            $containerName = 'Alledia\OSMeta\Free\Container\Content\Article';
-        } elseif ($component === 'com_categories') {
-            $containerName = 'Alledia\OSMeta\Free\Container\Content\Category';
-        }
+        $component = str_replace('com_', '', $component);
+        $className = "Alledia\OSMeta\Free\Container\Component\{$component}";
 
-        if ($containerName) {
-            $container = new $containerName;
+        if (class_exists($className)) {
+            $container = new $className;
         }
 
         return $container;
@@ -318,11 +314,11 @@ class Factory
      */
     public static function getFeatures()
     {
-        if (self::$features == null) {
+        if (empty(self::$features)) {
             $features  = array();
 
-            $directoryName = JPATH_SITE . '/administrator/components/com_osmeta/features';
             $db = JFactory::getDBO();
+            $directoryName = JPATH_SITE . '/administrator/components/com_osmeta/features';
             $db->setQuery(
                 "SELECT component FROM " .
                 "#__osmeta_meta_extensions " .
