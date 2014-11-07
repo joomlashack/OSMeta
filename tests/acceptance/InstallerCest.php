@@ -39,6 +39,7 @@ class InstallerCest
         $I->click('//*[@id="directory"]/fieldset/div[2]/input');
         $I->makeScreenshot('post_install');
 
+        $I->see('Installing component was successful');
         $I->see('Thanks for');
         $I->see('OSMeta');
         $I->see('Show more details...');
