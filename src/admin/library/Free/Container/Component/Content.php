@@ -31,7 +31,7 @@ class Content extends AbstractContainer
      * @var    int
      * @since  1.0
      */
-    private $code = 1;
+    public $code = 1;
 
     /**
      * Get Meta Tags
