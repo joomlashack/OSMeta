@@ -13,6 +13,7 @@ symlinks:
     - src/admin/config.xml administrator/components/com_osmeta/config.xml
     - src/admin/controller.php administrator/components/com_osmeta/controller.php
     - src/admin/osmeta.php administrator/components/com_osmeta/osmeta.php
+    - src/admin/include.php administrator/components/com_osmeta/include.php
     - src/osmeta.xml administrator/components/com_osmeta/osmeta.xml
     - src/script.installer.php administrator/components/com_osmeta/script.installer.php
     - src/media media/com_osmeta
