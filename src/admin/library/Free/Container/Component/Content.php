@@ -49,11 +49,9 @@ class Content extends AbstractContainer
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
             c.metadesc, m.title as metatitle
-            FROM
-            #__content c
-            LEFT JOIN #__categories cc ON cc.id=c.catid
-            LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type=1 WHERE 1";
+            FROM `#__content` c
+            LEFT JOIN `#__categories` cc ON cc.id=c.catid
+            LEFT JOIN `#__osmeta_metadata` m ON m.item_id=c.id and m.item_type=1 WHERE 1";
 
         $search = JRequest::getVar("com_content_filter_search", "");
         $catId = JRequest::getVar("com_content_filter_catid", "0");

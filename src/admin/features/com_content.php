@@ -13,14 +13,18 @@ $features['com_content:Article'] = array(
     'name' => 'Article',
     'priority' => 1,
     'class' => 'Alledia\OSMeta\Free\Container\Component\Content',
-        'params' => array(array('option' => 'com_content', 'view' => 'article'),
+        'params' => array(
+            array('option' => 'com_content', 'view' => 'article'),
             array('option' => 'com_content', 'view' => 'frontpage'),
-            array('option' => 'com_content', 'view' => 'featured'))
+            array('option' => 'com_content', 'view' => 'featured')
+        )
 );
 
 $features['com_content:ArticleCategory'] = array(
     'name' => 'Article Category',
     'priority' => 1,
     'class' => 'Alledia\OSMeta\Free\Container\Component\Categories',
-        'params' => array(array('option' => 'com_content', 'view' => 'category'))
+        'params' => array(
+            array('option' => 'com_content', 'view' => 'category')
+        )
 );
