@@ -19,7 +19,6 @@
     <files>
         <filename plugin="osmetarenderer">osmetarenderer.php</filename>
         <filename>include.php</filename>
-        <folder>sql</folder>
     </files>
 
     <install>
