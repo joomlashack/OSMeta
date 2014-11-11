@@ -12,6 +12,7 @@ use JRequest;
 use JFactory;
 use JURI;
 use JRoute;
+use JFolder;
 
 // No direct access
 defined('_JEXEC') or die();
