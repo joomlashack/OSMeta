@@ -318,17 +318,23 @@ abstract class Factory
         if (empty(self::$features)) {
             $features  = array();
 
-            $db = JFactory::getDBO();
-            $directoryName = JPATH_SITE . '/administrator/components/com_osmeta/features';
-            $db->setQuery(
-                "SELECT component FROM " .
-                "#__osmeta_meta_extensions " .
-                "WHERE available=1 AND enabled=1"
-            );
-            $items = $db->loadObjectList();
+            jimport('joomla.filesystem.folder');
 
-            foreach ($items as $item) {
-                include $directoryName . "/" . $item->component . ".php";
+            $path    = JPATH_SITE . '/administrator/components/com_osmeta/features';
+            $files = JFolder::files($path, '.php');
+
+            $features = array();
+
+            foreach ($files as $file) {
+                include $path . '/' . $file;
+            }
+
+            // Check what features are enabled
+            foreach ($features as $key => $value) {
+                $class = $value['class'];
+                if (! $class::isAvailable()) {
+                    unset($features[$key]);
+                }
             }
 
             self::$features = $features;

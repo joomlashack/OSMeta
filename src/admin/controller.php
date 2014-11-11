@@ -107,22 +107,6 @@ class OSMetaController extends JControllerLegacy
 
         if (!$itemType) {
             $itemType = key(ContainerFactory::getFeatures());
-
-            if (empty($itemType)) {
-                // Enable com_content
-                $component = 'com_content';
-
-                $db = JFactory::getDBO();
-                $db->setQuery(
-                    "UPDATE #__osmeta_meta_extensions " .
-                    "SET available = 1 " .
-                    "WHERE component LIKE '{$component}'"
-                );
-                $db->execute();
-
-                // Get the features again
-                $itemType = key(ContainerFactory::getFeatures());
-            }
         }
 
         $metatagsContainer = ContainerFactory::getContainerById($itemType);

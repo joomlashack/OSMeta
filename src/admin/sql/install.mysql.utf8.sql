@@ -25,15 +25,3 @@ CREATE TABLE IF NOT EXISTS `#__osmeta_metadata` (
     PRIMARY KEY  (`id`),
     UNIQUE KEY `UniqueItemIdAndItemType` (`item_id`,`item_type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE  IF NOT EXISTS `#__osmeta_meta_extensions` (
-    `component` VARCHAR(50) NOT NULL ,
-    `name` VARCHAR(50) NOT NULL ,
-    `description` VARCHAR(255) NOT NULL ,
-    `enabled` TINYINT NOT NULL ,
-    `available` TINYINT NOT NULL ,
-    PRIMARY KEY ( `component`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-INSERT IGNORE INTO `#__osmeta_meta_extensions` VALUES
-    ('com_content','Joomla Articles', 'Manage metadata for standard Joomla Articles and Categories',1,0);

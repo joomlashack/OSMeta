@@ -601,4 +601,14 @@ class Content extends AbstractContainer
             $this->setMetadata($params["id"], $data);
         }
     }
+
+    /**
+     * Check if the component is available
+     *
+     * @return boolean
+     */
+    public static function isAvailable()
+    {
+        return true;
+    }
 }
