@@ -78,6 +78,7 @@
             <folder>views</folder>
             <folder>sql</folder>
             <folder>library</folder>
+            <folder>language</folder>
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
             <filename>config.xml</filename>
