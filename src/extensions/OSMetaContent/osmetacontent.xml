@@ -2,7 +2,7 @@
 <extension version="2.5.5" type="plugin" group="content" method="upgrade">
     <name>Content - OSMeta Content</name>
     <author>Alledia</author>
-    <creationDate>October 27, 2014</creationDate>
+    <creationDate>November 10, 2014</creationDate>
     <copyright>Copyright (C) 2011, 2014 Alledia.com. All rights reserved.</copyright>
     <license>GPL v3</license>
     <authorEmail>hello@alledia.com</authorEmail>
