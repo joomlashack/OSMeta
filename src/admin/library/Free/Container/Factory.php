@@ -263,6 +263,11 @@ abstract class Factory
                     );
                 }
             }
+
+            // Call Pro features, if installed
+            if (class_exists('\Alledia\OSMeta\Pro\Container\Helper')) {
+                $body = \Alledia\OSMeta\Pro\Container\Helper::processBody($body, $metadata);
+            }
         }
 
         return $body;
