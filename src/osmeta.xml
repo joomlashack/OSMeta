@@ -34,6 +34,7 @@
                 element="osmetacontent"
                 publish="true"
                 ordering="last"
+                uninstall="true"
                 >OSMetaContent</extension>
 
             <extension
@@ -42,6 +43,7 @@
                 element="osmetarenderer"
                 publish="true"
                 ordering="last"
+                uninstall="true"
                 >OSMetaRenderer</extension>
         </relatedExtensions>
         <obsolete>
