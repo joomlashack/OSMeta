@@ -41,10 +41,18 @@ class Com_OSMetaInstallerScript extends AbstractScript
         $db->setQuery($query);
         $db->execute();
 
-        // Remove the old table #__osmeta_extensions, if existent
-        $query = 'DROP TABLE IF EXISTS #__osmeta_extensions';
-        $db->setQuery($query);
-        $db->execute();
+        // Remove the old tables, if existent
+        $tables = array(
+            '#__osmeta_extensions',
+            '#__osmeta_meta_extensions',
+            '#__osmeta_keywords',
+            '#__osmeta_keywords_items'
+        );
+        foreach ($tables as $table) {
+            $query = "DROP TABLE IF EXISTS `{$table}`";
+            $db->setQuery($query);
+            $db->execute();
+        }
 
         return true;
     }

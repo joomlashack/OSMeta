@@ -1,21 +1,3 @@
-CREATE TABLE IF NOT EXISTS `#__osmeta_keywords` (
-    `id` int(11) NOT NULL auto_increment,
-    `name` varchar(255) NOT NULL,
-    `published` tinyint(4) NOT NULL default '1',
-    `url` varchar(255) NOT NULL,
-    PRIMARY KEY  (`id`),
-    UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `#__osmeta_keywords_items` (
-    `item_id` int(11) NOT NULL,
-    `item_type_id` int(11) NOT NULL,
-    `keyword_id` int(11) NOT NULL,
-    UNIQUE KEY `item_id` (`item_id`,`item_type_id`,`keyword_id`),
-    KEY `item_id_2` (`item_id`,`item_type_id`),
-    KEY `keyword_id` (`keyword_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `#__osmeta_metadata` (
     `id` int(11) NOT NULL auto_increment,
     `item_id` int(11) NOT NULL,

@@ -198,7 +198,6 @@ abstract class Factory
 
                     $metadata['metatitle'] = @$homeMetadata->metaTitle;
                     $metadata['metadescription'] = @$homeMetadata->metaDesc;
-                    $metadata['metakeywords'] = @$homeMetadata->metaKey;
                 }
             }
 
@@ -256,27 +255,6 @@ abstract class Factory
                     $body = preg_replace(
                         '/<head>/i',
                         "<head>\n  <meta name=\"description\" content=\"" . htmlspecialchars($metadata["metadescription"]) . '" />',
-                        $body,
-                        1
-                    );
-                }
-            }
-
-            // Process meta keywords tag
-            if ($metadata && $metadata["metakeywords"]) {
-                $replaced = 0;
-                $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+keywords[\\\"\\\']+[^>]*>/i",
-                    '<meta name="keywords" content="' . htmlspecialchars($metadata["metakeywords"]) . '" />',
-                    $body,
-                    1,
-                    $replaced
-                );
-
-                if ($replaced != 1) {
-                    $body = preg_replace(
-                        '/<head>/i',
-                        "<head>\n  <meta name=\"keywords\" content=\"" . htmlspecialchars($metadata["metakeywords"]) . '" />',
                         $body,
                         1
                     );

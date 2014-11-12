@@ -47,7 +47,7 @@ class Content extends AbstractContainer
     public function getMetatags($lim0, $lim, $filter = null)
     {
         $db = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey,
+        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle
             FROM `#__content` c
             LEFT JOIN `#__categories` cc ON cc.id=c.catid
@@ -58,7 +58,6 @@ class Content extends AbstractContainer
         $level = JRequest::getVar("com_content_filter_level", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -114,10 +113,6 @@ class Content extends AbstractContainer
                 break;
         }
 
-        if ($comContentFilterShowEmptykeywords != "-1") {
-            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
-        }
-
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
@@ -129,10 +124,6 @@ class Content extends AbstractContainer
         switch ($order) {
             case "meta_title":
                 $sql .= " ORDER BY metatitle ";
-                break;
-
-            case "meta_key":
-                $sql .= " ORDER BY metakey ";
                 break;
 
             case "meta_desc":
@@ -184,7 +175,7 @@ class Content extends AbstractContainer
     {
         $db = JFactory::getDBO();
 
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.metakey, c.state,
+        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.state,
             if (c.fulltext != '', c.fulltext, c.introtext) AS content
             FROM #__content c
             LEFT JOIN #__categories cc ON cc.id=c.catid
@@ -196,7 +187,6 @@ class Content extends AbstractContainer
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -252,10 +242,6 @@ class Content extends AbstractContainer
                 break;
         }
 
-        if ($comContentFilterShowEmptykeywords != "-1") {
-            $sql .= " AND (ISNULL(c.metakey) OR c.metakey='') ";
-        }
-
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
@@ -269,14 +255,8 @@ class Content extends AbstractContainer
             return false;
         }
 
-        // Get outgoing links and keywords density
+        // Get outgoing links
         for ($i = 0; $i < count($rows); $i++) {
-            if ($rows[$i]->metakey) {
-                $rows[$i]->metakey = explode(",", $rows[$i]->metakey);
-            } else {
-                $rows[$i]->metakey = array("");
-            }
-
             $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
         }
 
@@ -289,13 +269,12 @@ class Content extends AbstractContainer
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
-     * @param array $metakeys         Meta Keys
      *
      * @access  public
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $metakeys)
+    public function saveMetatags($ids, $metatitles, $metadescriptions)
     {
         $db = JFactory::getDBO();
 
@@ -315,7 +294,6 @@ class Content extends AbstractContainer
             $metadata = json_encode($metadata);
 
             $sql = "UPDATE #__content SET "
-                . " metakey=" . $db->quote($metakeys[$i]) . ", "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
                 . " metadata=" . $db->quote($metadata)
                 . " WHERE id=" . $db->quote($ids[$i]);
@@ -335,25 +313,7 @@ class Content extends AbstractContainer
 
             $db->setQuery($sql);
             $db->query();
-
-            parent::saveKeywords($metakeys[$i], $ids[$i], 1);
         }
-    }
-
-    /**
-     * Method to save the Keywords
-     *
-     * @param string $keywords   Keywords as CSV
-     * @param int    $itemId     Item Id
-     * @param string $itemTypeId Item Type Id
-     *
-     * @access  public
-     *
-     * @return void
-     */
-    public function saveKeywords($keywords, $itemId, $itemTypeId = null)
-    {
-        parent::saveKeywords($keywords, $itemId, $itemTypeId ? $itemTypeId : 1);
     }
 
     /**
@@ -484,7 +444,6 @@ class Content extends AbstractContainer
 
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
-        $comContentFilterShowEmptykeywords = JRequest::getVar("com_content_filter_show_empty_keywords", "-1");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
@@ -510,7 +469,6 @@ class Content extends AbstractContainer
                 JHtml::_('select.options', $levels, 'value', 'text', $level) .
             '</select>';
 
-        $keywordChecked = $comContentFilterShowEmptykeywords != "-1" ? 'checked="yes" ' : '';
         $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
 
         $result .= '
@@ -525,9 +483,6 @@ class Content extends AbstractContainer
                 <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>All</option>
             </select>
             <br/>
-            <label>Show only Articles with empty keywords</label>
-            <input type="checkbox" onchange="document.adminForm.submit();"
-                name="com_content_filter_show_empty_keywords" ' . $keywordChecked . '/>
             <label>Show only Articles with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
@@ -551,7 +506,6 @@ class Content extends AbstractContainer
         $sql = "UPDATE #__content SET " .
             (isset($data["title"])&&$data["title"]?
             "`title` = " . $db->quote($data["title"]) . ",":"") . "
-            `metakey` = " . $db->quote($data["metakeywords"]) . ",
             `metadesc` = " . $db->quote($data["metadescription"]) . "
             WHERE `id`=" . $db->quote($id);
         $db->setQuery($sql);

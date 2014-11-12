@@ -78,13 +78,11 @@ abstract class AbstractHome
 
                 $data->metaTitle = @$metadata->metatitle;
                 $data->metaDesc = $firstItem->metadesc;
-                $data->metaKey = $firstItem->metakey;
             }
         } else {
             // Get custom metadata
             $data->metaTitle = static::$params->get('home_metatitle');
             $data->metaDesc = static::$params->get('home_metadesc');
-            $data->metaKey = static::$params->get('home_metakey');
         }
 
         return $data;
@@ -96,13 +94,12 @@ abstract class AbstractHome
      * @param string $source          Source (default, custom, featured)
      * @param string $metaTitle       Meta title
      * @param string $metaDescription Meta Description
-     * @param string $metaKey         Meta Key
      *
      * @access  public
      *
      * @return void
      */
-    public static function saveMetatags($source, $metaTitle, $metaDescription, $metaKey)
+    public static function saveMetatags($source, $metaTitle, $metaDescription)
     {
         if (!static::$params) {
             static::setParams();
@@ -111,7 +108,6 @@ abstract class AbstractHome
         static::$params->set('home_metadata_source', $source);
         static::$params->set('home_metatitle', $metaTitle);
         static::$params->set('home_metadesc', $metaDescription);
-        static::$params->set('home_metakey', $metaKey);
 
         $json = static::$params->toString();
 

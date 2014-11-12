@@ -16,10 +16,5 @@
             name="home_metadesc"
             type="hidden"
             default="" />
-
-        <field
-            name="home_metakey"
-            type="hidden"
-            default="" />
     </fieldset>
 </config>

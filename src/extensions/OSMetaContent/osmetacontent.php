@@ -40,15 +40,13 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
                 if (is_object($content) && isset($content->id)) {
                     $container = ContainerFactory::getContainerByComponentName($option);
                     if (is_object($container)) {
-                        $container->saveKeywords($content->metakey, $content->id);
 
                         $articleOSMetadataInput = json_decode($content->metadata);
                         $id = array($content->id);
                         $title = array($articleOSMetadataInput->metatitle);
                         $metaDesc = array($content->metadesc);
-                        $metaKey = array($content->metakey);
 
-                        $container->saveMetatags($id, $title, $metaDesc, $metaKey);
+                        $container->saveMetatags($id, $title, $metaDesc);
                     }
                 }
             }

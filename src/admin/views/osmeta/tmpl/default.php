@@ -62,10 +62,6 @@ defined('_JEXEC') or die();
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
-                <th class="title" width="20%">
-                    <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_KEYWORDS_LABEL'), 'meta_key',
-                        $this->order_Dir, $this->order, "view"); ?>
-                </th>
             </tr>
 
         </thead>
@@ -77,9 +73,6 @@ defined('_JEXEC') or die();
             </td>
             <td valign="top">
                 <?php echo JText::_('COM_OSMETA_DESCRIPTION_DESC') ?>
-            </td>
-            <td valign="top">
-                <?php echo JText::_('COM_OSMETA_KEYWORDS_DESC') ?>
             </td>
         </tr>
 
@@ -115,13 +108,10 @@ defined('_JEXEC') or die();
             <td>
                 <textarea cols="20" rows="3" name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
             </td>
-            <td>
-                <textarea cols="20" rows="3" name="home_metakey" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaKey; ?></textarea>
-            </td>
         </tr>
 
         <tr class="subheader">
-            <td colspan="6" rowspan="" headers=""><?php echo JText::_(ucfirst($this->itemTypeShort)); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
+            <td colspan="4" rowspan="" headers=""><?php echo JText::_(ucfirst($this->itemTypeShort)); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
         </tr>
 
         <?php
@@ -147,9 +137,6 @@ defined('_JEXEC') or die();
                 <td>
                     <textarea cols="20" rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
-                <td>
-                    <textarea cols="20" rows="3" name="metakey[]"><?php echo $row->metakey; ?></textarea>
-                </td>
             </tr>
             <?php
             $k = 1 - $k;
@@ -157,7 +144,7 @@ defined('_JEXEC') or die();
         ?>
         <tfoot>
             <tr>
-                <td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+                <td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
             </tr>
         </tfoot>
     </table>
