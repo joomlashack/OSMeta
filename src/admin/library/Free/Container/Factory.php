@@ -137,8 +137,8 @@ abstract class Factory
     {
         $container = false;
 
-        $component = str_replace('com_', '', $component);
-        $className = "Alledia\OSMeta\Free\Container\Component\{$component}";
+        $component = ucfirst(str_replace('com_', '', $component));
+        $className = "Alledia\OSMeta\Free\Container\Component\\{$component}";
 
         if (class_exists($className)) {
             $container = new $className;
