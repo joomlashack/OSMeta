@@ -201,7 +201,7 @@ abstract class Factory
                 }
             }
 
-            // Process meta title tag
+            // Meta title
             if ($metadata && $metadata["metatitle"]) {
                 $replaced = 0;
 
@@ -214,6 +214,7 @@ abstract class Factory
                     $replaced
                 );
 
+                // Process the meta title
                 $body = preg_replace(
                     "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
                     '<meta name="title" content="' . htmlspecialchars($metadata["metatitle"]) . '" />',
@@ -240,9 +241,11 @@ abstract class Factory
                 );
             }
 
-            // Process meta description tag
+            // Meta description
             if ($metadata && $metadata["metadescription"]) {
                 $replaced = 0;
+
+                // Meta description tag
                 $body = preg_replace(
                     "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
                     '<meta name="description" content="' . htmlspecialchars($metadata["metadescription"]) . '" />',
