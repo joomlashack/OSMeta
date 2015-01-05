@@ -53,12 +53,12 @@ defined('_JEXEC') or die();
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "view"); ?>
                 </th>
-                <th class="title" width="20%">
+                <th class="title">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
 
-                <th class="title" width="20%">
+                <th class="title">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
@@ -103,10 +103,10 @@ defined('_JEXEC') or die();
                 </label>
             </td>
             <td>
-                <textarea cols="20" rows="3" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaTitle; ?></textarea>
+                <input type="text" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?> value="<?php echo $this->homeMetatagsData->metaTitle; ?>">
             </td>
             <td>
-                <textarea cols="20" rows="3" name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
+                <textarea name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
             </td>
         </tr>
 
@@ -132,10 +132,10 @@ defined('_JEXEC') or die();
                     </a>
                 </td>
                 <td>
-                    <textarea cols="20" rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
+                    <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>">
                 </td>
                 <td>
-                    <textarea cols="20" rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
+                    <textarea name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
             </tr>
             <?php
