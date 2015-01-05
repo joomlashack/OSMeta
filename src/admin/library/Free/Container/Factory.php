@@ -13,6 +13,7 @@ use JFactory;
 use JURI;
 use JRoute;
 use JFolder;
+use JText;
 
 // No direct access
 defined('_JEXEC') or die();
@@ -205,10 +206,31 @@ abstract class Factory
             if ($metadata && $metadata["metatitle"]) {
                 $replaced = 0;
 
+                $config = JFactory::getConfig();
+
+                $metaTitle           = $metadata["metatitle"];
+                $metaDescription     = $metadata["metadescription"];
+                $configSiteNameTitle = $config->get('sitename_pagetitles');
+                $configSiteName      = $config->get('sitename');
+                $siteNameSeparator   = '-';
+                $browserTitle        = '';
+
+                // Check the site name title global setting
+                if ($configSiteNameTitle == 1) {
+                    // Add site name before
+                    $browserTitle = $configSiteName . ' ' . $siteNameSeparator . ' ' . $metaTitle;
+                } elseif ($configSiteNameTitle == 2) {
+                    // Add site name after
+                    $browserTitle = $metaTitle . ' ' . $siteNameSeparator . ' ' . $configSiteName;
+                } else {
+                    // No site name
+                    $browserTitle = $metaTitle;
+                }
+
                 // Process the window title tag
                 $body = preg_replace(
                     "/<title[^>]*>[^<]*<\/title>/i",
-                    '<title>' . htmlspecialchars($metadata["metatitle"]) . '</title>',
+                    '<title>' . htmlspecialchars($browserTitle) . '</title>',
                     $body,
                     1,
                     $replaced
@@ -217,7 +239,7 @@ abstract class Factory
                 // Process the meta title
                 $body = preg_replace(
                     "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
-                    '<meta name="title" content="' . htmlspecialchars($metadata["metatitle"]) . '" />',
+                    '<meta name="title" content="' . htmlspecialchars($metaTitle) . '" />',
                     $body,
                     1,
                     $replaced
@@ -226,7 +248,7 @@ abstract class Factory
                 if ($replaced != 1) {
                     $body = preg_replace(
                         '/<head>/i',
-                        "<head>\n  <meta name=\"title\" content=\"" . htmlspecialchars($metadata["metatitle"]) . '" />',
+                        "<head>\n  <meta name=\"title\" content=\"" . htmlspecialchars($metaTitle) . '" />',
                         $body,
                         1
                     );
@@ -248,7 +270,7 @@ abstract class Factory
                 // Meta description tag
                 $body = preg_replace(
                     "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
-                    '<meta name="description" content="' . htmlspecialchars($metadata["metadescription"]) . '" />',
+                    '<meta name="description" content="' . htmlspecialchars($metaDescription) . '" />',
                     $body,
                     1,
                     $replaced
@@ -257,7 +279,7 @@ abstract class Factory
                 if ($replaced != 1) {
                     $body = preg_replace(
                         '/<head>/i',
-                        "<head>\n  <meta name=\"description\" content=\"" . htmlspecialchars($metadata["metadescription"]) . '" />',
+                        "<head>\n  <meta name=\"description\" content=\"" . htmlspecialchars($metaDescription) . '" />',
                         $body,
                         1
                     );
