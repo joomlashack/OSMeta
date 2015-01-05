@@ -167,12 +167,19 @@ defined('_JEXEC') or die();
 </div>
 
 <script>
+    var hashCode = function(s) {
+        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    }
+
+    var hashedInitialValues = '',
+        getHashedValues;
+
     <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
-        (function($) {
+        (function($, $$) {
             var homeMetadataSourceChange = function() {
                 var $this = $(this);
-                var fields = $$('#homeMetaDataRow textarea');
-                var value = $this.value;
+                var fields = $$('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
+                var value = $this.get('value');
 
                 fields.each(function(el) {
                     el.readOnly = !(value === 'custom');
@@ -183,12 +190,24 @@ defined('_JEXEC') or die();
                 'change',
                 homeMetadataSourceChange
             );
-        })($);
+
+            // Get a hash from the value of all fields, concatenated
+            getHashedValues = function() {
+                var str = ''
+
+                $$('#articleList input, #articleList textarea').each(function(el) {
+                    str += el.get('value');
+                });
+
+                return hashCode(str);
+            };
+        })($, $$);
     <?php else: ?>
+
         (function($) {
             var homeMetadataSourceChange = function() {
                 var $this = $(this);
-                var fields = $('#homeMetaDataRow textarea');
+                var fields = $('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
                 var value = $this.val();
 
                 fields.attr('readonly', !(value === 'custom'));
@@ -199,6 +218,37 @@ defined('_JEXEC') or die();
                 'change',
                 homeMetadataSourceChange
             );
+
+            // Get a hash from the value of all fields, concatenated
+            getHashedValues = function() {
+                var str = ''
+
+                $('#articleList input, #articleList textarea').each(function() {
+                    str += $(this).val();
+                });
+
+                return hashCode(str);
+            };
         })(jQuery);
     <?php endif; ?>
+
+    // Store the initial hash
+    hashedInitialValues = getHashedValues();
+
+    // Overwrite the native submit action, to catch the cancel task
+    var nativeSubmitButton = Joomla.submitbutton;
+    Joomla.submitbutton = function(pressbutton) {
+        if (pressbutton === 'cancel') {
+            var hashedValues = getHashedValues();
+
+            // Do we have any modified field?
+            if (hashedInitialValues !== hashedValues) {
+                if (!confirm('<?php echo JText::_("COM_OSMETA_CONFIRM_CANCEL"); ?>')) {
+                    return;
+                }
+            }
+        }
+
+        nativeSubmitButton(pressbutton);
+    }
 </script>
