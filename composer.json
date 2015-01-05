@@ -8,12 +8,12 @@
         "element"        : "com_osmeta",
         "element-short"  : "osmeta",
         "name"           : "OSMeta",
-        "client"         : "admin",
+        "client"         : "administrator",
         "package-license": "free"
     },
     "authors"          : [
         {
-            "name" : "Open Source Training",
+            "name" : "Alledia",
             "email": "hello@alledia.com"
         }
     ],

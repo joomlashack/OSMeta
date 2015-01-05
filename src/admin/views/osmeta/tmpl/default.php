@@ -53,12 +53,12 @@ defined('_JEXEC') or die();
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "view"); ?>
                 </th>
-                <th class="title" width="20%">
+                <th class="title">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
 
-                <th class="title" width="20%">
+                <th class="title">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
@@ -103,10 +103,10 @@ defined('_JEXEC') or die();
                 </label>
             </td>
             <td>
-                <textarea cols="20" rows="3" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaTitle; ?></textarea>
+                <input type="text" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?> value="<?php echo $this->homeMetatagsData->metaTitle; ?>">
             </td>
             <td>
-                <textarea cols="20" rows="3" name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
+                <textarea name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
             </td>
         </tr>
 
@@ -132,10 +132,10 @@ defined('_JEXEC') or die();
                     </a>
                 </td>
                 <td>
-                    <textarea cols="20" rows="3" name="metatitle[]"><?php echo $row->metatitle; ?></textarea>
+                    <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>">
                 </td>
                 <td>
-                    <textarea cols="20" rows="3" name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
+                    <textarea name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
             </tr>
             <?php
@@ -164,19 +164,22 @@ defined('_JEXEC') or die();
         OSMeta is built by&nbsp;
         <a href="https://www.alledia.com">Alledia</a>
     </div>
-    <div>
-        OSMeta is a simplified version of&nbsp;
-        <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a>
-    </div>
 </div>
 
 <script>
+    var hashCode = function(s) {
+        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    }
+
+    var hashedInitialValues = '',
+        getHashedValues;
+
     <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
-        (function($) {
+        (function($, $$) {
             var homeMetadataSourceChange = function() {
                 var $this = $(this);
-                var fields = $$('#homeMetaDataRow textarea');
-                var value = $this.value;
+                var fields = $$('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
+                var value = $this.get('value');
 
                 fields.each(function(el) {
                     el.readOnly = !(value === 'custom');
@@ -187,12 +190,24 @@ defined('_JEXEC') or die();
                 'change',
                 homeMetadataSourceChange
             );
-        })($);
+
+            // Get a hash from the value of all fields, concatenated
+            getHashedValues = function() {
+                var str = ''
+
+                $$('#articleList input, #articleList textarea').each(function(el) {
+                    str += el.get('value');
+                });
+
+                return hashCode(str);
+            };
+        })($, $$);
     <?php else: ?>
+
         (function($) {
             var homeMetadataSourceChange = function() {
                 var $this = $(this);
-                var fields = $('#homeMetaDataRow textarea');
+                var fields = $('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
                 var value = $this.val();
 
                 fields.attr('readonly', !(value === 'custom'));
@@ -203,6 +218,37 @@ defined('_JEXEC') or die();
                 'change',
                 homeMetadataSourceChange
             );
+
+            // Get a hash from the value of all fields, concatenated
+            getHashedValues = function() {
+                var str = ''
+
+                $('#articleList input, #articleList textarea').each(function() {
+                    str += $(this).val();
+                });
+
+                return hashCode(str);
+            };
         })(jQuery);
     <?php endif; ?>
+
+    // Store the initial hash
+    hashedInitialValues = getHashedValues();
+
+    // Overwrite the native submit action, to catch the cancel task
+    var nativeSubmitButton = Joomla.submitbutton;
+    Joomla.submitbutton = function(pressbutton) {
+        if (pressbutton === 'cancel') {
+            var hashedValues = getHashedValues();
+
+            // Do we have any modified field?
+            if (hashedInitialValues !== hashedValues) {
+                if (!confirm('<?php echo JText::_("COM_OSMETA_CONFIRM_CANCEL"); ?>')) {
+                    return;
+                }
+            }
+        }
+
+        nativeSubmitButton(pressbutton);
+    }
 </script>
