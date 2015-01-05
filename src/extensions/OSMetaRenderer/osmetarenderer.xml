@@ -7,7 +7,7 @@
     <license>GPL v3</license>
     <authorEmail>hello@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.1.1-beta.1</version>
+    <version>1.1.1</version>
     <description>This system plugin prepares the content so that OSMeta can add meta data 'on the fly'.</description>
 
     <alledia>
