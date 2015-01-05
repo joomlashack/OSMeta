@@ -111,7 +111,7 @@ defined('_JEXEC') or die();
         </tr>
 
         <tr class="subheader">
-            <td colspan="4" rowspan="" headers=""><?php echo JText::_(ucfirst($this->itemTypeShort)); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
+            <td colspan="4" rowspan="" headers=""><?php echo JText::_($this->itemTypeShort); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
         </tr>
 
         <?php

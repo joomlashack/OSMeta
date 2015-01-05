@@ -170,7 +170,7 @@ class OSMetaController extends JControllerLegacy
             $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
         }
 
-        $itemTypeShort = $itemType === 'com_content:Article' ? 'articles' : 'categories';
+        $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
         // Get Homepage data
         $home = AbstractHomeContainer::getMetatags();
