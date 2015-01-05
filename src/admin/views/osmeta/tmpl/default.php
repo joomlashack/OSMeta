@@ -164,10 +164,6 @@ defined('_JEXEC') or die();
         OSMeta is built by&nbsp;
         <a href="https://www.alledia.com">Alledia</a>
     </div>
-    <div>
-        OSMeta is a simplified version of&nbsp;
-        <a href="http://extensions.joomla.org/extensions/site-management/seo-a-metadata/meta-data/16440">SEOBoss</a>
-    </div>
 </div>
 
 <script>
