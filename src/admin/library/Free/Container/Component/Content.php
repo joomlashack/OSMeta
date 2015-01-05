@@ -14,6 +14,7 @@ use JFactory;
 use JHtml;
 use JText;
 use JModelLegacy;
+use stdClass;
 
 // No direct access
 defined('_JEXEC') or die();

@@ -12,6 +12,7 @@ use Alledia\OSMeta\Free\Container\AbstractContainer;
 use JRequest;
 use JFactory;
 use JModelLegacy;
+use stdClass;
 
 // No direct access
 defined('_JEXEC') or die();
