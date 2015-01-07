@@ -15,9 +15,16 @@ use JHtml;
 use JText;
 use JModelLegacy;
 use stdClass;
+use JRoute;
+use ContentHelperRoute;
+use JUri;
 
 // No direct access
 defined('_JEXEC') or die();
+
+if (!class_exists('ContentHelperRoute')) {
+    require JPATH_SITE . '/components/com_content/helpers/route.php';
+}
 
 /**
  * Article Metatags Container
@@ -49,7 +56,7 @@ class Content extends AbstractContainer
     {
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
-            c.metadesc, m.title as metatitle
+            c.metadesc, m.title as metatitle, c.alias, c.catid
             FROM `#__content` c
             LEFT JOIN `#__categories` cc ON cc.id=c.catid
             LEFT JOIN `#__osmeta_metadata` m ON m.item_id=c.id and m.item_type=1 WHERE 1";
@@ -155,7 +162,18 @@ class Content extends AbstractContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
+            $row = $rows[$i];
+
+            $row->edit_url = "index.php?option=com_content&task=article.edit&id={$row->id}";
+
+            // Get the article view url
+            $url    = ContentHelperRoute::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid);
+            $url    = JRoute::_($url);
+            $uri    = JUri::getInstance();
+            $url    = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url    = str_replace('/administrator/', '/', $url);
+
+            $row->view_url = $url;
         }
 
         return $rows;

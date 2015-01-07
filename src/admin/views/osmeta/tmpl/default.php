@@ -130,6 +130,13 @@ defined('_JEXEC') or die();
                     <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
                         <?php echo $row->title; ?>
                     </a>
+                    <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
+                        <?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
+                            <img src="../media/com_osmeta/images/external-link.png" width="14" height="14" />
+                        <?php else : ?>
+                            <span class="icon-out-2"></span>
+                        <?php endif; ?>
+                    </a>
                 </td>
                 <td class="field-column">
                     <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>">

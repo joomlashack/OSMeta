@@ -13,9 +13,16 @@ use JRequest;
 use JFactory;
 use JModelLegacy;
 use stdClass;
+use JRoute;
+use ContentHelperRoute;
+use JUri;
 
 // No direct access
 defined('_JEXEC') or die();
+
+if (!class_exists('ContentHelperRoute')) {
+    require JPATH_SITE . '/components/com_content/helpers/route.php';
+}
 
 /**
  * Article Category Metatags Container
@@ -120,8 +127,19 @@ class Categories extends AbstractContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}"
-                . "&extension={$rows[$i]->extension}";
+            $row = $rows[$i];
+
+            $row->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$row->id}"
+                . "&extension={$row->extension}";
+
+            // Get the category view url
+            $url    = ContentHelperRoute::getCategoryRoute($row->id);
+            $url    = JRoute::_($url);
+            $uri    = JUri::getInstance();
+            $url    = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url    = str_replace('/administrator/', '/', $url);
+
+            $row->view_url = $url;
         }
 
         return $rows;
