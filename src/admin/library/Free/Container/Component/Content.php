@@ -300,12 +300,13 @@ class Content extends AbstractContainer
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
+     * @param array $aliases          Aliases
      *
      * @access  public
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
     {
         $db = JFactory::getDBO();
 
@@ -326,8 +327,13 @@ class Content extends AbstractContainer
 
             $sql = "UPDATE #__content SET "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
-                . " metadata=" . $db->quote($metadata)
-                . " WHERE id=" . $db->quote($ids[$i]);
+                . " metadata=" . $db->quote($metadata);
+
+            if (isset($aliases[$i])) {
+                $sql .= ", alias=" . $db->quote($aliases[$i]);
+            }
+
+            $sql .= " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
 

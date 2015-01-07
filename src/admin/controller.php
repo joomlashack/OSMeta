@@ -124,7 +124,8 @@ class OSMetaController extends JControllerLegacy
                 $ids = JRequest::getVar('ids', array(), '', 'array');
                 $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
                 $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions);
+                $aliases = JRequest::getVar('alias', array(), '', 'array');
+                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
 
                 // Home data
                 $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');

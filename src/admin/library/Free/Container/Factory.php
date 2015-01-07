@@ -58,7 +58,9 @@ abstract class Factory
         $container = 'com_content:Article';
 
         if (isset($features[$type])) {
-            eval('$container = new ' . $features[$type]["class"] . '();');
+            if (class_exists($features[$type]["class"])) {
+                eval('$container = new ' . $features[$type]["class"] . '();');
+            }
         }
 
         return $container;
@@ -340,8 +342,11 @@ abstract class Factory
             // Check what features are enabled
             foreach ($features as $key => $value) {
                 $class = $value['class'];
-                if (! $class::isAvailable()) {
-                    unset($features[$key]);
+
+                if (class_exists($class)) {
+                    if (! $class::isAvailable()) {
+                        unset($features[$key]);
+                    }
                 }
             }
 

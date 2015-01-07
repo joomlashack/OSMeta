@@ -55,7 +55,7 @@ class Categories extends AbstractContainer
     {
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
-            c.metadesc, m.title as metatitle , c.extension
+            c.metadesc, m.title as metatitle , c.extension, c.alias
             FROM
             #__categories c
             LEFT JOIN
@@ -254,12 +254,13 @@ class Categories extends AbstractContainer
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
+     * @param array $aliases          Aliases
      *
      * @access  public
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
     {
         $db = JFactory::getDBO();
 
@@ -280,8 +281,13 @@ class Categories extends AbstractContainer
 
             $sql = "UPDATE #__categories SET "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
-                . " metadata=" . $db->quote($metadata)
-                . " WHERE id=" . $db->quote($ids[$i]);
+                . " metadata=" . $db->quote($metadata);
+
+            if (isset($aliases[$i])) {
+                $sql .= ", alias=" . $db->quote($aliases[$i]);
+            }
+
+            $sql .= " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
 

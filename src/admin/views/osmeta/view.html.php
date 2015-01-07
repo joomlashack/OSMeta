@@ -84,6 +84,8 @@ class OSMetaViewOSMeta extends JViewLegacy
             $doc->addStylesheet('../media/com_osmeta/admin/css/main-j2.css');
         }
 
+        $this->extension = Alledia\Framework\Factory::getExtension('OSMeta', 'component');
+
         parent::display($tpl);
     }
 }

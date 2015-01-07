@@ -41,24 +41,31 @@ defined('_JEXEC') or die();
         <thead>
             <tr>
                 <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
-                    <th width="20"><input type="checkbox" name="toggle" value=""
+                    <th width="2%"><input type="checkbox" name="toggle" value=""
                         onclick="checkAll(<?php echo count($this->metatagsData); ?>);" />
                     </th>
                 <?php else : ?>
-                    <th width="20"><input type="checkbox" name="checkall-toggle" value=""
+                    <th width="2%"><input type="checkbox" name="checkall-toggle" value=""
                         title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
                     </th>
                 <?php endif; ?>
-                <th class="title title-column">
+
+                <th class="title title-column" width="<?php echo $this->extension->isPro() ? '20%' : '25%'; ?>">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
                         $this->order, "view"); ?>
                 </th>
-                <th class="title">
+
+
+                <?php if ($this->extension->isPro()) : ?>
+                    <?php echo Alledia\OSMeta\Pro\Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
+                <?php endif; ?>
+
+                <th class="title" width="<?php echo $this->extension->isPro() ? '24%' : '35%'; ?>">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
 
-                <th class="title">
+                <th class="title" width="<?php echo $this->extension->isPro() ? '24%' : '35%'; ?>">
                     <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
                         $this->order_Dir, $this->order, "view"); ?>
                 </th>
@@ -68,6 +75,11 @@ defined('_JEXEC') or die();
         <tr>
             <td width="20"></td>
             <td class="title"></td>
+
+            <?php if ($this->extension->isPro()) : ?>
+                <td></td>
+            <?php endif; ?>
+
             <td valign="top">
                 <?php echo JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC') ?>
             </td>
@@ -77,7 +89,7 @@ defined('_JEXEC') or die();
         </tr>
 
         <tr class="subheader">
-            <td colspan="6"><?php echo JText::_('COM_OSMETA_HOMEPAGE_METADATA'); ?></td>
+            <td colspan="<?php echo $this->extension->isPro() ? '5' : '4'; ?>"><?php echo JText::_('COM_OSMETA_HOMEPAGE_METADATA'); ?></td>
         </tr>
         <tr id="homeMetaDataRow" class="row0">
             <td></td>
@@ -102,16 +114,21 @@ defined('_JEXEC') or die();
                     <?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?>
                 </label>
             </td>
+
+            <?php if ($this->extension->isPro()) : ?>
+                <td></td>
+            <?php endif; ?>
+
             <td class="field-column">
-                <input type="text" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?> value="<?php echo $this->homeMetatagsData->metaTitle; ?>">
+                <input type="text" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?> value="<?php echo $this->homeMetatagsData->metaTitle; ?>" class="char-count">
             </td>
             <td class="field-column">
-                <textarea name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
+                <textarea name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?> class="char-count"><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
             </td>
         </tr>
 
         <tr class="subheader">
-            <td colspan="4" rowspan="" headers=""><?php echo JText::_($this->itemTypeShort); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
+            <td colspan="<?php echo $this->extension->isPro() ? '5' : '4'; ?>" rowspan="" headers=""><?php echo JText::_($this->itemTypeShort); ?> <?php echo JText::_('COM_OSMETA_METADATA'); ?></td>
         </tr>
 
         <?php
@@ -138,11 +155,16 @@ defined('_JEXEC') or die();
                         <?php endif; ?>
                     </a>
                 </td>
+
+                <?php if ($this->extension->isPro()) : ?>
+                    <?php echo Alledia\OSMeta\Pro\Fields::additionalFields($row); ?>
+                <?php endif; ?>
+
                 <td class="field-column">
-                    <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>">
+                    <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>" class="char-count">
                 </td>
                 <td class="field-column">
-                    <textarea name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
+                    <textarea name="metadesc[]" class="char-count"><?php echo $row->metadesc; ?></textarea>
                 </td>
             </tr>
             <?php
@@ -151,7 +173,7 @@ defined('_JEXEC') or die();
         ?>
         <tfoot>
             <tr>
-                <td colspan="4"><?php echo $this->pageNav->getListFooter(); ?></td>
+                <td colspan="<?php echo $this->extension->isPro() ? '5' : '4'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
             </tr>
         </tfoot>
     </table>
@@ -213,14 +235,14 @@ defined('_JEXEC') or die();
             return hashCode(str);
         };
 
-        $('#articleList input[type="text"]').osmetaCharCount({
+        $('#articleList input[type="text"].char-count').osmetaCharCount({
             limit: 70,
             message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
 
-        $('#articleList textarea').osmetaCharCount({
+        $('#articleList textarea.char-count').osmetaCharCount({
             limit: 160,
             message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
