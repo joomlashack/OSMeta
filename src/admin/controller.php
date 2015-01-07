@@ -115,6 +115,8 @@ class OSMetaController extends JControllerLegacy
             // TODO: throw error here.
         }
 
+        $cid = JRequest::getVar('cid', array(), '', 'array');
+
         // Execute the actions
         switch ($task) {
             case "save":
@@ -136,11 +138,11 @@ class OSMetaController extends JControllerLegacy
                 break;
 
             case "copyItemTitleToSearchEngineTitle":
-                $metatagsContainer->copyItemTitleToSearchEngineTitle(JRequest::getVar('cid', array(), '', 'array'));
+                $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
                 break;
 
             case "generateDescriptions":
-                $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
+                $metatagsContainer->GenerateDescriptions($cid);
                 break;
         }
 
