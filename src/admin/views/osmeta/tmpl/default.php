@@ -102,10 +102,10 @@ defined('_JEXEC') or die();
                     <?php echo JText::_('COM_OSMETA_FEATURED_VALUES'); ?>
                 </label>
             </td>
-            <td>
+            <td class="field-column">
                 <input type="text" name="home_metatitle" <?php echo $this->homeFieldsDisabledAttribute; ?> value="<?php echo $this->homeMetatagsData->metaTitle; ?>">
             </td>
-            <td>
+            <td class="field-column">
                 <textarea name="home_metadesc" <?php echo $this->homeFieldsDisabledAttribute; ?>><?php echo $this->homeMetatagsData->metaDesc; ?></textarea>
             </td>
         </tr>
@@ -131,10 +131,10 @@ defined('_JEXEC') or die();
                         <?php echo $row->title; ?>
                     </a>
                 </td>
-                <td>
+                <td class="field-column">
                     <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>">
                 </td>
-                <td>
+                <td class="field-column">
                     <textarea name="metadesc[]"><?php echo $row->metadesc; ?></textarea>
                 </td>
             </tr>
@@ -166,6 +166,12 @@ defined('_JEXEC') or die();
     </div>
 </div>
 
+<?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
+    <script src="../media/com_osmeta/js/jquery.js"></script>
+<?php endif; ?>
+
+<script src="../media/com_osmeta/js/jquery.osmetacharcount.min.js"></script>
+
 <script>
     var hashCode = function(s) {
         return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
@@ -174,63 +180,46 @@ defined('_JEXEC') or die();
     var hashedInitialValues = '',
         getHashedValues;
 
-    <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
-        (function($, $$) {
-            var homeMetadataSourceChange = function() {
-                var $this = $(this);
-                var fields = $$('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
-                var value = $this.get('value');
+    (function($) {
+        var homeMetadataSourceChange = function() {
+            var $this = $(this);
+            var fields = $('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
+            var value = $this.val();
 
-                fields.each(function(el) {
-                    el.readOnly = !(value === 'custom');
-                });
-            };
+            fields.attr('readonly', !(value === 'custom'));
 
-            $$('#home_metadata_source_default, #home_metadata_source_custom, #home_metadata_source_featured').addEvent(
-                'change',
-                homeMetadataSourceChange
-            );
+        };
 
-            // Get a hash from the value of all fields, concatenated
-            getHashedValues = function() {
-                var str = ''
+        $('#home_metadata_source_default, #home_metadata_source_custom, #home_metadata_source_featured').on(
+            'change',
+            homeMetadataSourceChange
+        );
 
-                $$('#articleList input, #articleList textarea').each(function(el) {
-                    str += el.get('value');
-                });
+        // Get a hash from the value of all fields, concatenated
+        getHashedValues = function() {
+            var str = ''
 
-                return hashCode(str);
-            };
-        })($, $$);
-    <?php else: ?>
+            $('#articleList input, #articleList textarea').each(function() {
+                str += $(this).val();
+            });
 
-        (function($) {
-            var homeMetadataSourceChange = function() {
-                var $this = $(this);
-                var fields = $('#homeMetaDataRow textarea, #homeMetaDataRow input[type="text"]');
-                var value = $this.val();
+            return hashCode(str);
+        };
 
-                fields.attr('readonly', !(value === 'custom'));
+        $('#articleList input[type="text"]').osmetaCharCount({
+            limit: 70,
+            message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
+            charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
+            charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
+        });
 
-            };
-
-            $('#home_metadata_source_default, #home_metadata_source_custom, #home_metadata_source_featured').on(
-                'change',
-                homeMetadataSourceChange
-            );
-
-            // Get a hash from the value of all fields, concatenated
-            getHashedValues = function() {
-                var str = ''
-
-                $('#articleList input, #articleList textarea').each(function() {
-                    str += $(this).val();
-                });
-
-                return hashCode(str);
-            };
-        })(jQuery);
-    <?php endif; ?>
+        $('#articleList textarea').osmetaCharCount({
+            limit: 160,
+            message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
+            charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
+            charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
+        });
+    })(jQuery);
 
     // Store the initial hash
     hashedInitialValues = getHashedValues();
@@ -250,5 +239,5 @@ defined('_JEXEC') or die();
         }
 
         nativeSubmitButton(pressbutton);
-    }
+    };
 </script>
