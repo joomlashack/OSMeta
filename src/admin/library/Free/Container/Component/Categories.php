@@ -16,6 +16,7 @@ use stdClass;
 use JRoute;
 use ContentHelperRoute;
 use JUri;
+use JHtml;
 
 // No direct access
 defined('_JEXEC') or die();
@@ -63,6 +64,8 @@ class Categories extends AbstractContainer
         $search = JRequest::getVar("com_content_filter_search", "");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -90,8 +93,11 @@ class Categories extends AbstractContainer
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
-        // Sorting
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
+        }
 
+        // Sorting
         $order = JRequest::getCmd("filter_order", "title");
         $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -190,6 +196,8 @@ class Categories extends AbstractContainer
         $search = JRequest::getVar("com_content_filter_search", "");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -216,6 +224,10 @@ class Categories extends AbstractContainer
 
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
+        }
+
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -409,6 +421,7 @@ class Categories extends AbstractContainer
         $search = JRequest::getVar("com_content_filter_search", "");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         $result = 'Filter:
@@ -436,7 +449,9 @@ class Categories extends AbstractContainer
             <br/>
             <label>Show only Article Categories with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
-                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
+                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
+
+        $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
         return $result;
     }

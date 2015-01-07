@@ -66,6 +66,8 @@ class Content extends AbstractContainer
         $level = JRequest::getVar("com_content_filter_level", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -123,6 +125,10 @@ class Content extends AbstractContainer
 
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
+        }
+
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
         }
 
         // Sorting
@@ -206,6 +212,8 @@ class Content extends AbstractContainer
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -263,6 +271,10 @@ class Content extends AbstractContainer
 
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
+        }
+
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -447,6 +459,7 @@ class Content extends AbstractContainer
         $search = JRequest::getVar("com_content_filter_search", "");
         $catId = JRequest::getVar("com_content_filter_catid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
+        $access = JRequest::getVar("com_content_filter_access", "");
 
         // Levels filter.
         $levels = array();
@@ -504,7 +517,9 @@ class Content extends AbstractContainer
             <br/>
             <label>Show only Articles with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
-                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
+                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
+
+        $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
         return $result;
     }
