@@ -27,7 +27,7 @@ class OSMetaController extends JControllerLegacy
      * @param bool  $cachable  Cachable
      * @param array $urlparams URL Params
      *
-     * @access	public
+     * @access  public
      *
      * @return void
      */
@@ -39,7 +39,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to display the Meta Tags Manager's view
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -52,7 +52,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Save action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -66,7 +66,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -79,7 +79,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Generate Descriptions action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -94,7 +94,7 @@ class OSMetaController extends JControllerLegacy
      *
      * @param string $task Task name
      *
-     * @access	private
+     * @access  private
      * @since  1.0
      *
      * @return void
