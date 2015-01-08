@@ -10,21 +10,33 @@
 defined('_JEXEC') or die();
 
 $features['com_content:Article'] = array(
-    'name' => 'Article',
+    'name'     => 'Article',
     'priority' => 1,
-    'class' => 'Alledia\OSMeta\Free\Container\Component\Content',
-        'params' => array(
-            array('option' => 'com_content', 'view' => 'article'),
-            array('option' => 'com_content', 'view' => 'frontpage'),
-            array('option' => 'com_content', 'view' => 'featured')
+    'class'    => 'Alledia\OSMeta\Free\Container\Component\Content',
+    'params'   => array(
+        array(
+            'option' => 'com_content',
+            'view'   => 'article'
+        ),
+        array(
+            'option' => 'com_content',
+            'view'   => 'frontpage'
+        ),
+        array(
+            'option' => 'com_content',
+            'view'   => 'featured'
         )
+    )
 );
 
 $features['com_content:ArticleCategory'] = array(
-    'name' => 'Article Category',
+    'name'     => 'Article Category',
     'priority' => 1,
-    'class' => 'Alledia\OSMeta\Free\Container\Component\Categories',
-        'params' => array(
-            array('option' => 'com_content', 'view' => 'category')
+    'class'    => 'Alledia\OSMeta\Free\Container\Component\Categories',
+    'params'   => array(
+        array(
+            'option' => 'com_content',
+            'view' => 'category'
         )
+    )
 );
