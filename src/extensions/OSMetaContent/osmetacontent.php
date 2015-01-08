@@ -38,7 +38,13 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
                 $option = $input->getCmd('option');
 
                 if (is_object($content) && isset($content->id)) {
-                    $container = ContainerFactory::getContainerByComponentName($option);
+                    if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+                        $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+                    } else {
+                        $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
+                    }
+
+                    $container = $factory->getContainerByComponentName($option);
                     if (is_object($container)) {
 
                         $articleOSMetadataInput = json_decode($content->metadata);

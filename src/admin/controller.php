@@ -9,7 +9,6 @@
 // No direct access
 defined('_JEXEC') or die();
 
-use Alledia\OSMeta\Free\Container\Factory as ContainerFactory;
 use Alledia\OSMeta\Free\Container\AbstractHome as AbstractHomeContainer;
 
 jimport('cms.view.legacy');
@@ -105,11 +104,17 @@ class OSMetaController extends JControllerLegacy
 
         $itemType = $app->input->getString('type', null);
 
-        if (!$itemType) {
-            $itemType = key(ContainerFactory::getFeatures());
+        if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+            $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+        } else {
+            $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
         }
 
-        $metatagsContainer = ContainerFactory::getContainerById($itemType);
+        if (!$itemType) {
+            $itemType = key($factory->getFeatures());
+        }
+
+        $metatagsContainer = $factory->getContainerById($itemType);
 
         if (!is_object($metatagsContainer)) {
             // TODO: throw error here.
@@ -143,7 +148,9 @@ class OSMetaController extends JControllerLegacy
                 break;
 
             case "generateDescriptions":
-                $metatagsContainer->GenerateDescriptions($cid);
+                if ($metatagsContainer->supportGenerateDescription) {
+                    $metatagsContainer->GenerateDescriptions($cid);
+                }
                 break;
         }
 
@@ -160,7 +167,7 @@ class OSMetaController extends JControllerLegacy
         $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
-        $features = ContainerFactory::getFeatures();
+        $features = $factory->getFeatures();
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -193,6 +200,8 @@ class OSMetaController extends JControllerLegacy
         $view->assignRef('order_Dir', $orderDir);
         $view->assignRef('itemTypeShort', $itemTypeShort);
         $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
+        $view->assignRef('metatagsContainer', $metatagsContainer);
+
         $view->display();
     }
 }

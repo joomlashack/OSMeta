@@ -23,8 +23,15 @@ defined('_JEXEC') or die();
  *
  * @since  1.0
  */
-abstract class Factory
+class Factory
 {
+    /**
+     * Class instance
+     *
+     * @var Factory
+     */
+    private static $instance;
+
     /**
      * Features cache
      *
@@ -32,7 +39,7 @@ abstract class Factory
      * @access  private
      * @since   1.0
      */
-    private static $features = null;
+    private $features = null;
 
     /**
      * Metadata By Query Map
@@ -41,20 +48,35 @@ abstract class Factory
      * @access  public
      * @since   1.0
      */
-    public static $metadataByQueryMap = array();
+    public $metadataByQueryMap = array();
+
+    /**
+     * Get the singleton instance of this class
+     *
+     * @return Factory The instance
+     */
+    public static function getInstance()
+    {
+        if (empty(self::$instance)) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
 
     /**
      * Method to get container by ID
      *
-     * @param string $type Container Type
+     * @param string $type   Container Type
+     * @param array  $params Request params
      *
      * @access  public
      *
      * @return mixed
      */
-    public static function getContainerById($type)
+    public function getContainerById($type, $params = null)
     {
-        $features = self::getFeatures();
+        $features = $this->getFeatures();
         $container = 'com_content:Article';
 
         if (isset($features[$type])) {
@@ -75,7 +97,7 @@ abstract class Factory
      *
      * @return mixed
      */
-    public static function getContainerByRequest($queryString = null)
+    public function getContainerByRequest($queryString = null)
     {
         $params = array();
         $resultFeatureId = null;
@@ -85,7 +107,7 @@ abstract class Factory
             parse_str($queryString, $params);
         }
 
-        $features = self::getFeatures();
+        $features = $this->getFeatures();
         foreach ($features as $featureId => $feature) {
             $success = true;
 
@@ -124,7 +146,7 @@ abstract class Factory
             }
         }
 
-        return self::getContainerById($resultFeatureId);
+        return $this->getContainerById($resultFeatureId, $params);
     }
 
     /**
@@ -136,7 +158,7 @@ abstract class Factory
      *
      * @return Object
      */
-    public static function getContainerByComponentName($component)
+    public function getContainerByComponentName($component)
     {
         $container = false;
 
@@ -159,18 +181,18 @@ abstract class Factory
      *
      * @return array
      */
-    public static function getMetadata($queryString)
+    public function getMetadata($queryString)
     {
         $result = array();
 
-        if (isset(self::$metadataByQueryMap[$queryString])) {
-            $result = self::$metadataByQueryMap[$queryString];
+        if (isset($this->$metadataByQueryMap[$queryString])) {
+            $result = $this->$metadataByQueryMap[$queryString];
         } else {
-            $container = self::getContainerByRequest($queryString);
+            $container = $this->getContainerByRequest($queryString);
 
             if ($container != null) {
                 $result = $container->getMetadataByRequest($queryString);
-                self::$metadataByQueryMap[$queryString] = $result;
+                $this->$metadataByQueryMap[$queryString] = $result;
             }
         }
 
@@ -187,14 +209,16 @@ abstract class Factory
      *
      * @return string
      */
-    public static function processBody($body, $queryString)
+    public function processBody($body, $queryString)
     {
-        $container = self::getContainerByRequest($queryString);
+        $container = $this->getContainerByRequest($queryString);
 
         if ($container != null && is_object($container)) {
             $metadata = $container->getMetadataByRequest($queryString);
 
-            if (static::isFrontPage()) {
+            $this->processMetadata($metadata, $queryString);
+
+            if ($this->isFrontPage()) {
 
                 $homeMetadata = AbstractHome::getMetatags();
                 if ($homeMetadata->source !== 'default') {
@@ -307,9 +331,9 @@ abstract class Factory
      *
      * @return void
      */
-    public static function setMetadataByRequest($query, $metadata)
+    public function setMetadataByRequest($query, $metadata)
     {
-        $container = self::getContainerByRequest($query);
+        $container = $this->getContainerByRequest($query);
 
         if ($container != null) {
             $container->setMetadataByRequest($query, $metadata);
@@ -323,9 +347,9 @@ abstract class Factory
      *
      * @return array
      */
-    public static function getFeatures()
+    public function getFeatures()
     {
-        if (empty(self::$features)) {
+        if (empty($this->features)) {
             $features  = array();
 
             jimport('joomla.filesystem.folder');
@@ -350,10 +374,10 @@ abstract class Factory
                 }
             }
 
-            self::$features = $features;
+            $this->features = $features;
         }
 
-        return self::$features;
+        return $this->features;
     }
 
     /**
@@ -363,7 +387,7 @@ abstract class Factory
      *
      * @return boolean
      */
-    protected static function isFrontPage()
+    protected function isFrontPage()
     {
         $app    = JFactory::getApplication();
         $lang   = JFactory::getLanguage();
@@ -399,5 +423,16 @@ abstract class Factory
         }
 
         return $isFrontPage;
+    }
+
+    /**
+     * Process the metada
+     *
+     * @param  array  $metadata    The metadata
+     * @param  string $queryString Request query string
+     * @return void
+     */
+    protected function processMetadata(&$metadata, $queryString)
+    {
     }
 }

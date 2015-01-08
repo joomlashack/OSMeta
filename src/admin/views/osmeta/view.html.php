@@ -64,13 +64,15 @@ class OSMetaViewOSMeta extends JViewLegacy
             true
         );
 
-        JToolBarHelper::custom(
-            'generateDescriptions',
-            $iconEdit,
-            '',
-            JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
-            true
-        );
+        if ($this->metatagsContainer->supportGenerateDescription) {
+            JToolBarHelper::custom(
+                'generateDescriptions',
+                $iconEdit,
+                '',
+                JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
+                true
+            );
+        }
 
         JToolBarHelper::cancel("cancel");
 
