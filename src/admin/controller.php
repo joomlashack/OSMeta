@@ -183,6 +183,7 @@ class OSMetaController extends JControllerLegacy
 
         $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
+        $this->addSubmenu($features, $itemType);
 
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
@@ -198,5 +199,52 @@ class OSMetaController extends JControllerLegacy
         $view->assignRef('metatagsContainer', $metatagsContainer);
 
         $view->display();
+    }
+
+    /**
+     * Insert the submenu items
+     *
+     * @param array  $contentTypes An array of the available content types
+     * @param string $itemType     The current
+     */
+    protected function addSubmenu($contentTypes, $itemType)
+    {
+        if (version_compare(JVERSION, '3.0', 'lt')) {
+            JSubMenuHelper::addEntry(
+                'Homepage',
+                'index.php?option=com_osmeta&type=home',
+                $itemType === 'home'
+            );
+
+            foreach ($contentTypes as $type => $data) {
+                if ($type === 'home') {
+                    continue;
+                }
+
+                JSubMenuHelper::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        } else {
+            JHtmlSidebar::addEntry(
+                'Homepage',
+                'index.php?option=com_osmeta&type=home',
+                $itemType === 'home'
+            );
+
+            foreach ($contentTypes as $type => $data) {
+                if ($type === 'home') {
+                    continue;
+                }
+
+                JHtmlSidebar::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        }
     }
 }
