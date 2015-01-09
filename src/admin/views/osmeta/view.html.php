@@ -10,6 +10,7 @@
 defined('_JEXEC') or die();
 
 jimport('cms.view.legacy');
+jimport('joomla.application.component.helper');
 
 /**
  * Metatags Manager Default View
@@ -56,13 +57,15 @@ class OSMetaViewOSMeta extends JViewLegacy
             $iconEdit = 'edit';
         }
 
-        JToolBarHelper::custom(
-            'copyItemTitleToSearchEngineTitle',
-            $iconShuffle,
-            '',
-            JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'),
-            true
-        );
+        if ($this->metatagsContainer->supportGenerateTitle) {
+            JToolBarHelper::custom(
+                'copyItemTitleToSearchEngineTitle',
+                $iconShuffle,
+                '',
+                JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'),
+                true
+            );
+        }
 
         if ($this->metatagsContainer->supportGenerateDescription) {
             JToolBarHelper::custom(
@@ -77,6 +80,14 @@ class OSMetaViewOSMeta extends JViewLegacy
         JToolBarHelper::cancel("cancel");
 
         $doc = JFactory::getDocument();
+        $app = JFactory::getApplication();
+
+        $itemType = $app->input->getString('type', null);
+        if ($itemType === 'home') {
+            $params = JComponentHelper::getParams('com_osmeta');
+            $this->home_data_source = $params->get('home_metadata_source', 'default');
+        }
+        $this->itemType = $itemType;
 
         if (version_compare(JVERSION, '3.0', 'ge')) {
             $doc->addStylesheet('../media/com_osmeta/admin/css/main-j3.css');

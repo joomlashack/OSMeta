@@ -9,8 +9,6 @@
 // No direct access
 defined('_JEXEC') or die();
 
-use Alledia\OSMeta\Free\Container\AbstractHome as AbstractHomeContainer;
-
 jimport('cms.view.legacy');
 
 /**
@@ -125,32 +123,35 @@ class OSMetaController extends JControllerLegacy
         // Execute the actions
         switch ($task) {
             case "save":
-                // Content
-                $ids = JRequest::getVar('ids', array(), '', 'array');
-                $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
-                $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                $aliases = JRequest::getVar('alias', array(), '', 'array');
-                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
+                if ($itemType !== 'home') {
+                    // Content
+                    $ids              = JRequest::getVar('ids', array(), '', 'array');
+                    $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
+                    $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
+                    $aliases          = JRequest::getVar('alias', array(), '', 'array');
+                    $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
+                } else {
+                    // Home data
+                    $homeSource          = JRequest::getVar('home_metadata_source', 'default', '', 'string');
+                    $homeMetaTitle       = JRequest::getVar('home_metatitle', '', '', 'string');
+                    $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
+                    $metatagsContainer->saveMetatags($homeSource, $homeMetaTitle, $homeMetaDescription);
+                }
 
-                // Home data
-                $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');
-                $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
-                $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
-                AbstractHomeContainer::saveMetatags(
-                    $homeSource,
-                    $homeMetaTitle,
-                    $homeMetaDescription
-                );
                 break;
 
             case "copyItemTitleToSearchEngineTitle":
-                $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
+                if ($metatagsContainer->supportGenerateTitle) {
+                    $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
+                }
+
                 break;
 
             case "generateDescriptions":
                 if ($metatagsContainer->supportGenerateDescription) {
                     $metatagsContainer->GenerateDescriptions($cid);
                 }
+
                 break;
         }
 
@@ -182,15 +183,10 @@ class OSMetaController extends JControllerLegacy
 
         $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
-        // Get Homepage data
-        $home = AbstractHomeContainer::getMetatags();
-
-        $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
 
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
         $view->assignRef('metatagsData', $tags);
-        $view->assignRef('homeMetatagsData', $home);
         $view->assignRef('page', $page);
         $view->assignRef('itemsOnPage', $itemsOnPage);
         $view->assignRef('filter', $filter);
@@ -199,7 +195,6 @@ class OSMetaController extends JControllerLegacy
         $view->assignRef('order', $order);
         $view->assignRef('order_Dir', $orderDir);
         $view->assignRef('itemTypeShort', $itemTypeShort);
-        $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
         $view->assignRef('metatagsContainer', $metatagsContainer);
 
         $view->display();

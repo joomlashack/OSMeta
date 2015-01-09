@@ -51,6 +51,13 @@ class Factory
     public $metadataByQueryMap = array();
 
     /**
+     * A cache for the metadata
+     *
+     * @var array
+     */
+    protected $metadata;
+
+    /**
      * Get the singleton instance of this class
      *
      * @return Factory The instance
@@ -214,28 +221,28 @@ class Factory
         $container = $this->getContainerByRequest($queryString);
 
         if ($container != null && is_object($container)) {
-            $metadata = $container->getMetadataByRequest($queryString);
+            $this->metadata = $container->getMetadataByRequest($queryString);
 
-            $this->processMetadata($metadata, $queryString);
+            $this->processMetadata($this->metadata, $queryString);
 
             if ($this->isFrontPage()) {
+                $homeContainer    = new Component\Home;
+                $homeMetadata = $homeContainer->getMetatags();
 
-                $homeMetadata = AbstractHome::getMetatags();
                 if ($homeMetadata->source !== 'default') {
 
-                    $metadata['metatitle'] = @$homeMetadata->metaTitle;
-                    $metadata['metadescription'] = @$homeMetadata->metaDesc;
+                    $this->metadata['metatitle'] = @$homeMetadata->metaTitle;
+                    $this->metadata['metadescription'] = @$homeMetadata->metaDesc;
                 }
             }
 
             // Meta title
-            if ($metadata && $metadata["metatitle"]) {
+            if ($this->metadata && isset($this->metadata["metatitle"]) && !empty($this->metadata["metatitle"])) {
                 $replaced = 0;
 
                 $config = JFactory::getConfig();
 
-                $metaTitle           = $metadata["metatitle"];
-                $metaDescription     = $metadata["metadescription"];
+                $metaTitle           = $this->metadata["metatitle"];
                 $configSiteNameTitle = $config->get('sitename_pagetitles');
                 $configSiteName      = $config->get('sitename');
                 $siteNameSeparator   = '-';
@@ -279,7 +286,7 @@ class Factory
                         1
                     );
                 }
-            } elseif ($metadata) {
+            } elseif ($this->metadata) {
                 $body = preg_replace(
                     "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
                     '',
@@ -290,8 +297,10 @@ class Factory
             }
 
             // Meta description
-            if ($metadata && $metadata["metadescription"]) {
+            if ($this->metadata && isset($this->metadata["metadescription"]) && !empty($this->metadata["metadescription"])) {
                 $replaced = 0;
+
+                $metaDescription = $this->metadata["metadescription"];
 
                 // Meta description tag
                 $body = preg_replace(
@@ -310,11 +319,6 @@ class Factory
                         1
                     );
                 }
-            }
-
-            // Call Pro features, if installed
-            if (class_exists('\Alledia\OSMeta\Pro\Container\Helper')) {
-                $body = \Alledia\OSMeta\Pro\Container\Helper::processBody($body, $metadata);
             }
         }
 

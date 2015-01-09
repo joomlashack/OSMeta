@@ -29,6 +29,14 @@ abstract class AbstractContainer
 
     /**
      * True, if this content allow to automatically generate
+     * title from the content
+     *
+     * @var boolean
+     */
+    public $supportGenerateTitle = true;
+
+    /**
+     * True, if this content allow to automatically generate
      * description from the content
      *
      * @var boolean
@@ -137,4 +145,13 @@ abstract class AbstractContainer
      * @return void
      */
     abstract public function setMetadataByRequest($url, $data);
+
+    /**
+     * Method to get Filter
+     *
+     * @access  public
+     *
+     * @return string
+     */
+    abstract public function getFilter();
 }
