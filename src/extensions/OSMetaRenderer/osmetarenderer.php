@@ -40,7 +40,14 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
                 $buffer = JResponse::getBody();
 
                 // Metatags processing on the response body
-                $buffer = Alledia\OSMeta\Free\Container\Factory::processBody($buffer, $url);
+                $factory = null;
+                if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+                    $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+                } else {
+                    $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
+                }
+
+                $buffer = $factory->processBody($buffer, $url);
 
                 JResponse::setBody($buffer);
             }

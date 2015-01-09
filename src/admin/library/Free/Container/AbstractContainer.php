@@ -28,12 +28,28 @@ abstract class AbstractContainer
     public $priority = 1;
 
     /**
+     * True, if this content allow to automatically generate
+     * title from the content
+     *
+     * @var boolean
+     */
+    public $supportGenerateTitle = true;
+
+    /**
+     * True, if this content allow to automatically generate
+     * description from the content
+     *
+     * @var boolean
+     */
+    public $supportGenerateDescription = true;
+
+    /**
      * Method to set the Metadata
      *
      * @param int   $itemId Item ID
      * @param array $data   Data
      *
-     * @access	public
+     * @access  public
      *
      * @return void
      */
@@ -70,7 +86,7 @@ abstract class AbstractContainer
      *
      * @param int $id Item ID
      *
-     * @access	public
+     * @access  public
      *
      * @return array
      */
@@ -108,7 +124,7 @@ abstract class AbstractContainer
      *
      * @param string $query Query
      *
-     * @access	public
+     * @access  public
      *
      * @return void
      */
@@ -129,4 +145,13 @@ abstract class AbstractContainer
      * @return void
      */
     abstract public function setMetadataByRequest($url, $data);
+
+    /**
+     * Method to get Filter
+     *
+     * @access  public
+     *
+     * @return string
+     */
+    abstract public function getFilter();
 }

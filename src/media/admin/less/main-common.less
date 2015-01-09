@@ -1,3 +1,5 @@
+@colorInvalid: #f33b38;
+
 #footer {
     text-align: center;
     margin-top: 20px;
@@ -58,13 +60,47 @@ textarea[readonly] {
 }
 
 #articleList {
+    td.field-column {
+        padding-right: 10px;
+    }
+
     input[type="text"] {
-        width: 97%;
+        width: 100%;
+        box-sizing: border-box;
+        height: 30px;
     }
 
     textarea {
-        width: 97%;
         min-height: 65px;
         box-sizing: border-box;
+        width: 100%;
+    }
+
+    .char-count-container {
+        text-align: right;
+
+        div {
+            display: inline-block;
+        }
+
+        .char-count-counter {
+            margin-left: 10px;
+            margin-right: 4px;
+            color: gray;
+        }
+
+        .char-count-counter.invalid {
+            color: @colorInvalid;
+            font-weight: bold;
+        }
+
+        .char-count-counter-text {
+            color: gray;
+        }
+
+        .char-count-warning {
+            color: @colorInvalid;
+            font-style: italic;
+        }
     }
 }

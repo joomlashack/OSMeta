@@ -15,9 +15,16 @@ use JHtml;
 use JText;
 use JModelLegacy;
 use stdClass;
+use JRoute;
+use ContentHelperRoute;
+use JUri;
 
 // No direct access
 defined('_JEXEC') or die();
+
+if (!class_exists('ContentHelperRoute')) {
+    require JPATH_SITE . '/components/com_content/helpers/route.php';
+}
 
 /**
  * Article Metatags Container
@@ -49,7 +56,7 @@ class Content extends AbstractContainer
     {
         $db = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
-            c.metadesc, m.title as metatitle
+            c.metadesc, m.title as metatitle, c.alias, c.catid
             FROM `#__content` c
             LEFT JOIN `#__categories` cc ON cc.id=c.catid
             LEFT JOIN `#__osmeta_metadata` m ON m.item_id=c.id and m.item_type=1 WHERE 1";
@@ -59,6 +66,8 @@ class Content extends AbstractContainer
         $level = JRequest::getVar("com_content_filter_level", "0");
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -116,6 +125,10 @@ class Content extends AbstractContainer
 
         if ($comContentFilterShowEmptyDescriptions != "-1") {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
+        }
+
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
         }
 
         // Sorting
@@ -155,7 +168,18 @@ class Content extends AbstractContainer
         }
 
         for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
+            $row = $rows[$i];
+
+            $row->edit_url = "index.php?option=com_content&task=article.edit&id={$row->id}";
+
+            // Get the article view url
+            $url    = ContentHelperRoute::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid);
+            $url    = JRoute::_($url);
+            $uri    = JUri::getInstance();
+            $url    = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url    = str_replace('/administrator/', '/', $url);
+
+            $row->view_url = $url;
         }
 
         return $rows;
@@ -188,6 +212,8 @@ class Content extends AbstractContainer
         $authorId = JRequest::getVar("com_content_filter_authorid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
         $state = JRequest::getVar("com_content_filter_state", "");
+        $access = JRequest::getVar("com_content_filter_access", "");
+
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
@@ -247,6 +273,10 @@ class Content extends AbstractContainer
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
+        if (!empty($access)) {
+            $sql .= " AND c.access = " . $db->quote($access);
+        }
+
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
@@ -270,12 +300,13 @@ class Content extends AbstractContainer
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
+     * @param array $aliases          Aliases
      *
      * @access  public
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
     {
         $db = JFactory::getDBO();
 
@@ -296,8 +327,13 @@ class Content extends AbstractContainer
 
             $sql = "UPDATE #__content SET "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
-                . " metadata=" . $db->quote($metadata)
-                . " WHERE id=" . $db->quote($ids[$i]);
+                . " metadata=" . $db->quote($metadata);
+
+            if (isset($aliases[$i])) {
+                $sql .= ", alias=" . $db->quote($aliases[$i]);
+            }
+
+            $sql .= " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->query();
 
@@ -429,6 +465,7 @@ class Content extends AbstractContainer
         $search = JRequest::getVar("com_content_filter_search", "");
         $catId = JRequest::getVar("com_content_filter_catid", "0");
         $level = JRequest::getVar("com_content_filter_level", "0");
+        $access = JRequest::getVar("com_content_filter_access", "");
 
         // Levels filter.
         $levels = array();
@@ -486,7 +523,9 @@ class Content extends AbstractContainer
             <br/>
             <label>Show only Articles with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
-                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>';
+                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
+
+        $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
         return $result;
     }

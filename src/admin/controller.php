@@ -9,9 +9,6 @@
 // No direct access
 defined('_JEXEC') or die();
 
-use Alledia\OSMeta\Free\Container\Factory as ContainerFactory;
-use Alledia\OSMeta\Free\Container\AbstractHome as AbstractHomeContainer;
-
 jimport('cms.view.legacy');
 
 /**
@@ -27,7 +24,7 @@ class OSMetaController extends JControllerLegacy
      * @param bool  $cachable  Cachable
      * @param array $urlparams URL Params
      *
-     * @access	public
+     * @access  public
      *
      * @return void
      */
@@ -39,7 +36,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to display the Meta Tags Manager's view
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -52,7 +49,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Save action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -66,7 +63,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -79,7 +76,7 @@ class OSMetaController extends JControllerLegacy
     /**
      * Method to the Generate Descriptions action for Meta Tags Manager
      *
-     * @access	public
+     * @access  public
      * @since  1.0
      *
      * @return void
@@ -94,7 +91,7 @@ class OSMetaController extends JControllerLegacy
      *
      * @param string $task Task name
      *
-     * @access	private
+     * @access  private
      * @since  1.0
      *
      * @return void
@@ -105,42 +102,56 @@ class OSMetaController extends JControllerLegacy
 
         $itemType = $app->input->getString('type', null);
 
-        if (!$itemType) {
-            $itemType = key(ContainerFactory::getFeatures());
+        if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+            $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+        } else {
+            $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
         }
 
-        $metatagsContainer = ContainerFactory::getContainerById($itemType);
+        if (!$itemType) {
+            $itemType = key($factory->getFeatures());
+        }
+
+        $metatagsContainer = $factory->getContainerById($itemType);
 
         if (!is_object($metatagsContainer)) {
             // TODO: throw error here.
         }
 
+        $cid = JRequest::getVar('cid', array(), '', 'array');
+
         // Execute the actions
         switch ($task) {
             case "save":
-                // Content
-                $ids = JRequest::getVar('ids', array(), '', 'array');
-                $metatitles = JRequest::getVar('metatitle', array(), '', 'array');
-                $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions);
+                if ($itemType !== 'home') {
+                    // Content
+                    $ids              = JRequest::getVar('ids', array(), '', 'array');
+                    $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
+                    $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
+                    $aliases          = JRequest::getVar('alias', array(), '', 'array');
+                    $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
+                } else {
+                    // Home data
+                    $homeSource          = JRequest::getVar('home_metadata_source', 'default', '', 'string');
+                    $homeMetaTitle       = JRequest::getVar('home_metatitle', '', '', 'string');
+                    $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
+                    $metatagsContainer->saveMetatags($homeSource, $homeMetaTitle, $homeMetaDescription);
+                }
 
-                // Home data
-                $homeSource = JRequest::getVar('home_metadata_source', 'default', '', 'string');
-                $homeMetaTitle = JRequest::getVar('home_metatitle', '', '', 'string');
-                $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
-                AbstractHomeContainer::saveMetatags(
-                    $homeSource,
-                    $homeMetaTitle,
-                    $homeMetaDescription
-                );
                 break;
 
             case "copyItemTitleToSearchEngineTitle":
-                $metatagsContainer->copyItemTitleToSearchEngineTitle(JRequest::getVar('cid', array(), '', 'array'));
+                if ($metatagsContainer->supportGenerateTitle) {
+                    $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
+                }
+
                 break;
 
             case "generateDescriptions":
-                $metatagsContainer->GenerateDescriptions(JRequest::getVar('cid', array(), '', 'array'));
+                if ($metatagsContainer->supportGenerateDescription) {
+                    $metatagsContainer->GenerateDescriptions($cid);
+                }
+
                 break;
         }
 
@@ -157,7 +168,7 @@ class OSMetaController extends JControllerLegacy
         $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
-        $features = ContainerFactory::getFeatures();
+        $features = $factory->getFeatures();
         $order = JRequest::getCmd("filter_order", "title");
         $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
 
@@ -172,15 +183,11 @@ class OSMetaController extends JControllerLegacy
 
         $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
-        // Get Homepage data
-        $home = AbstractHomeContainer::getMetatags();
-
-        $homeFieldsDisabledAttribute = $home->source === 'custom' ? '' : 'readonly';
+        $this->addSubmenu($features, $itemType);
 
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
         $view->assignRef('metatagsData', $tags);
-        $view->assignRef('homeMetatagsData', $home);
         $view->assignRef('page', $page);
         $view->assignRef('itemsOnPage', $itemsOnPage);
         $view->assignRef('filter', $filter);
@@ -189,7 +196,55 @@ class OSMetaController extends JControllerLegacy
         $view->assignRef('order', $order);
         $view->assignRef('order_Dir', $orderDir);
         $view->assignRef('itemTypeShort', $itemTypeShort);
-        $view->assignRef('homeFieldsDisabledAttribute', $homeFieldsDisabledAttribute);
+        $view->assignRef('metatagsContainer', $metatagsContainer);
+
         $view->display();
+    }
+
+    /**
+     * Insert the submenu items
+     *
+     * @param array  $contentTypes An array of the available content types
+     * @param string $itemType     The current
+     */
+    protected function addSubmenu($contentTypes, $itemType)
+    {
+        if (version_compare(JVERSION, '3.0', 'lt')) {
+            JSubMenuHelper::addEntry(
+                'Homepage',
+                'index.php?option=com_osmeta&type=home',
+                $itemType === 'home'
+            );
+
+            foreach ($contentTypes as $type => $data) {
+                if ($type === 'home') {
+                    continue;
+                }
+
+                JSubMenuHelper::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        } else {
+            JHtmlSidebar::addEntry(
+                'Homepage',
+                'index.php?option=com_osmeta&type=home',
+                $itemType === 'home'
+            );
+
+            foreach ($contentTypes as $type => $data) {
+                if ($type === 'home') {
+                    continue;
+                }
+
+                JHtmlSidebar::addEntry(
+                    $data['name'],
+                    'index.php?option=com_osmeta&type=' . urlencode($type),
+                    $itemType === $type
+                );
+            }
+        }
     }
 }
