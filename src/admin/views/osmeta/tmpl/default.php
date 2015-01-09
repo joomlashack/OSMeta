@@ -270,7 +270,7 @@ if ($this->itemType === 'home') {
     // Overwrite the native submit action, to catch the cancel task
     var nativeSubmitButton = Joomla.submitbutton;
     Joomla.submitbutton = function(pressbutton) {
-        if (pressbutton === 'cancel') {
+        if (pressbutton !== 'save') {
             var hashedValues = getHashedValues();
 
             // Do we have any modified field?
