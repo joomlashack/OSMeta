@@ -2,7 +2,9 @@
 
 OSMeta
 ===============
-OSMeta is an extension to easily manage titles, descriptions for Joomla articles.
+OSMeta is an extension to easily manage titles, descriptions and alias for Joomla articles.
+
+## Test cases
 
 ## Requirements
 
