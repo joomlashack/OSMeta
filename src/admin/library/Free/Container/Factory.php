@@ -226,12 +226,12 @@ class Factory
             $this->processMetadata($this->metadata, $queryString);
 
             if ($this->isFrontPage()) {
-                $homeContainer    = new Component\Home;
-                $homeMetadata = $homeContainer->getMetatags();
+                $homeContainer = new Component\Home;
+                $homeMetadata  = $homeContainer->getMetatags();
 
                 if ($homeMetadata->source !== 'default') {
 
-                    $this->metadata['metatitle'] = @$homeMetadata->metaTitle;
+                    $this->metadata['metatitle']       = @$homeMetadata->metaTitle;
                     $this->metadata['metadescription'] = @$homeMetadata->metaDesc;
                 }
             }
