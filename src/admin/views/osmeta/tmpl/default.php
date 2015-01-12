@@ -16,7 +16,7 @@ if ($this->itemType === 'home') {
 }
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php?option=com_osmeta&type=<?php echo $this->itemType; ?>" method="post" name="adminForm" id="adminForm">
 
     <?php if (version_compare(JVERSION, '3.0', 'ge')) : ?>
         <div id="j-sidebar-container" class="span2">
@@ -25,8 +25,6 @@ if ($this->itemType === 'home') {
     <?php endif; ?>
 
     <div id="j-main-container" class="span10">
-        <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>" />
         <table width="100%">
             <tr>
                 <td align="right">
@@ -186,7 +184,10 @@ if ($this->itemType === 'home') {
         </table>
         <input type="hidden" name="option" value="com_osmeta" />
         <input type="hidden" name="task" value="view" />
+        <input type="hidden" name="type" value="<?php echo $this->itemType; ?>" />
         <input type="hidden" name="boxchecked" value="0" />
+        <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
+        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>" />
     </div>
 
 </form>

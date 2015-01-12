@@ -101,6 +101,10 @@ class OSMetaController extends JControllerLegacy
         $app = JFactory::getApplication();
 
         $itemType = $app->input->getString('type', null);
+        if (empty($itemType)) {
+            $itemType = 'home';
+            $app->input->set('type', $itemType);
+        }
 
         if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
             $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
