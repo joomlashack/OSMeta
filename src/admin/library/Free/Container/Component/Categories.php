@@ -70,11 +70,13 @@ class Categories extends AbstractContainer
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
         if ($search != "") {
-            if (is_numeric($search)) {
-                $sql .= " AND c.id=" . $db->quote($search);
-            } else {
-                $sql .= " AND c.title LIKE " . $db->quote('%' . $search . '%');
-            }
+            $sql .= " AND (";
+            $sql .= " c.title LIKE " . $db->quote('%' . $search . '%');
+            $sql .= " OR m.title LIKE " . $db->quote('%' . $search . '%');
+            $sql .= " OR c.metadesc LIKE " . $db->quote('%' . $search . '%');
+            $sql .= " OR c.alias LIKE " . $db->quote('%' . $search . '%');
+            $sql .= " OR c.id = " . $db->quote($search);
+            $sql .= ")";
         }
 
         if ($authorId > 0) {
