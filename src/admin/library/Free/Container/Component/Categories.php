@@ -133,6 +133,10 @@ class Categories extends AbstractContainer
             return false;
         }
 
+        // Get the total
+        $db->setQuery('SELECT FOUND_ROWS();');
+        $total = $db->loadResult();
+
         for ($i = 0; $i < count($rows); $i++) {
             $row = $rows[$i];
 
@@ -149,7 +153,10 @@ class Categories extends AbstractContainer
             $row->view_url = $url;
         }
 
-        return $rows;
+        return array(
+            'rows'  => $rows,
+            'total' => $total
+        );
     }
 
     /**

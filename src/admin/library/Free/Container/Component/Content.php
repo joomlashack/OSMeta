@@ -161,11 +161,16 @@ class Content extends AbstractContainer
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
+
         if ($db->getErrorNum()) {
             echo $db->stderr();
 
             return false;
         }
+
+        // Get the total
+        $db->setQuery('SELECT FOUND_ROWS();');
+        $total = $db->loadResult();
 
         for ($i = 0; $i < count($rows); $i++) {
             $row = $rows[$i];
@@ -182,7 +187,10 @@ class Content extends AbstractContainer
             $row->view_url = $url;
         }
 
-        return $rows;
+        return array(
+            'rows'  => $rows,
+            'total' => $total
+        );
     }
 
     /**
