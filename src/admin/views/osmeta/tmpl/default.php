@@ -76,10 +76,14 @@ if ($this->itemType === 'home') {
             <tr>
                 <?php if ($this->itemType !== 'home') : ?>
                     <td width="20"></td>
-                    <td class="title"></td>
+                    <td class="title">
+                        <?php echo JText::_('COM_OSMETA_TITLE_DESC') ?>
+                    </td>
 
                     <?php if ($this->extension->isPro()) : ?>
-                        <td></td>
+                        <td>
+                            <?php echo JText::_('COM_OSMETA_ALIAS_DESC') ?>
+                        </td>
                     <?php endif; ?>
                 <?php else: ?>
                     <td></td>
