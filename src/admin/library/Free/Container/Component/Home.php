@@ -99,7 +99,10 @@ class Home extends AbstractContainer
             $data->metaDesc = $this->params->get('home_metadesc');
         }
 
-        return $data;
+        return array(
+            'total' => 1,
+            'rows' => $data
+        );
     }
 
     /**
