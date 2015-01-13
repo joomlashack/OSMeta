@@ -330,7 +330,14 @@ class Content extends AbstractContainer
                 . " metadata=" . $db->quote($metadata);
 
             if (isset($aliases[$i])) {
-                $sql .= ", alias=" . $db->quote($aliases[$i]);
+                if (!empty($aliases[$i])) {
+                    $sql .= ", alias=" . $db->quote($aliases[$i]);
+                } else {
+                    JFactory::getApplication()->enqueueMessage(
+                        JText::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
+                        'warning'
+                    );
+                }
             }
 
             $sql .= " WHERE id=" . $db->quote($ids[$i]);
