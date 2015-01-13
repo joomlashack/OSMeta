@@ -169,7 +169,7 @@ if ($this->itemType === 'home') {
                         <?php endif; ?>
 
                         <td class="field-column">
-                            <input type="text" name="metatitle[]" value="<?php echo $row->metatitle; ?>" class="char-count">
+                            <textarea name="metatitle[]" class="char-count"><?php echo $row->metatitle; ?></textarea>
                         </td>
                         <td class="field-column">
                             <textarea name="metadesc[]" class="char-count"><?php echo $row->metadesc; ?></textarea>
