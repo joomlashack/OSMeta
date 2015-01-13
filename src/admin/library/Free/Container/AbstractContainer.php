@@ -159,7 +159,7 @@ abstract class AbstractContainer
     /**
      * Stores item metadata
      *
-     * $data should contain following keys:
+     * $data should contain followin keys:
      * - metatitle
      * - metadescription
      *
