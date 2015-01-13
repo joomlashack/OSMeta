@@ -218,6 +218,17 @@ class Home extends AbstractContainer
     }
 
     /**
+     * Method to check if an alias already exists
+     *
+     * @param  string $alias The original alias
+     * @return string        The new alias, incremented, if needed
+     */
+    public function isUniqueAlias($alias)
+    {
+        return $alias;
+    }
+
+    /**
      * Check if the component is available
      *
      * @return boolean

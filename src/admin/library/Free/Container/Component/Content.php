@@ -308,17 +308,18 @@ class Content extends AbstractContainer
      */
     public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
     {
-        $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
+        $db  = JFactory::getDBO();
 
         for ($i = 0; $i < count($ids); $i++) {
             // Get current article metadata
-            $sql = "SELECT metadata FROM #__content"
+            $sql = "SELECT metadata, alias FROM #__content"
                 . " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
-            $result = $db->loadObject();
+            $current = $db->loadObject();
 
             // Update the metadata
-            $metadata = json_decode($result->metadata);
+            $metadata = json_decode($current->metadata);
             if (!is_object($metadata)) {
                 $metadata = new stdClass;
             }
@@ -331,7 +332,19 @@ class Content extends AbstractContainer
 
             if (isset($aliases[$i])) {
                 if (!empty($aliases[$i])) {
-                    $sql .= ", alias=" . $db->quote($aliases[$i]);
+                    $alias = $this->stringURLSafe($aliases[$i]);
+
+                    if ($current->alias !== $alias) {
+                        // Check if the alias already exists and ignore it
+                        if ($this->isUniqueAlias($alias)) {
+                            $sql .= ", alias=" . $db->quote($alias);
+                        } else {
+                            $app->enqueueMessage(
+                                JText::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
+                                'warning'
+                            );
+                        }
+                    }
                 } else {
                     JFactory::getApplication()->enqueueMessage(
                         JText::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
@@ -605,6 +618,27 @@ class Content extends AbstractContainer
         if (isset($params["id"]) && $params["id"]) {
             $this->setMetadata($params["id"], $data);
         }
+    }
+
+    /**
+     * Method to check if an alias already exists
+     *
+     * @param  string $alias The original alias
+     * @return string        The new alias, incremented, if needed
+     */
+    public function isUniqueAlias($alias)
+    {
+        $db = JFactory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from('#__content')
+            ->where('alias = ' . $db->quote($alias));
+
+        $db->setQuery($query);
+        $count = (int) $db->loadResult();
+
+        return $count === 0;
     }
 
     /**

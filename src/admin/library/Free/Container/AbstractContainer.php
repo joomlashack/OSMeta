@@ -120,6 +120,32 @@ abstract class AbstractContainer
     }
 
     /**
+     * Returns an alias, based on a string
+     *
+     * @param  string $string The original string
+     * @return string         The alias
+     */
+    public function stringURLSafe($string)
+    {
+        if (version_compare(JVERSION, '3.0', 'lt')) {
+            $string = \JApplication::stringURLSafe($string);
+        } else {
+            jimport('joomla.filter.output');
+            $string = \JFilterOutput::stringURLSafe($string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * Method to check if an alias already exists
+     *
+     * @param  string $alias The original alias
+     * @return string        The new alias, incremented, if needed
+     */
+    abstract public function isUniqueAlias($alias);
+
+    /**
      * Method to get the Metadata By Request
      *
      * @param string $query Query
@@ -133,7 +159,7 @@ abstract class AbstractContainer
     /**
      * Stores item metadata
      *
-     * $data should contain followin keys:
+     * $data should contain following keys:
      * - metatitle
      * - metadescription
      *
