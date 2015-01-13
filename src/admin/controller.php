@@ -163,13 +163,10 @@ class OSMetaController extends JControllerLegacy
         $limitstart = JRequest::getVar('limitstart', 0);
 
         $db = JFactory::getDBO();
-        $tags = $metatagsContainer->getMetatags($limitstart, $limit);
-
-        // No reloading the query! Just asking for total without limit
-        $db->setQuery('SELECT FOUND_ROWS();');
+        $result = $metatagsContainer->getMetatags($limitstart, $limit);
 
         jimport('joomla.html.pagination');
-        $pageNav = new JPagination($db->loadResult(), $limitstart, $limit);
+        $pageNav = new JPagination($result['total'], $limitstart, $limit);
 
         $filter = $metatagsContainer->getFilter();
         $features = $factory->getFeatures();
@@ -191,7 +188,7 @@ class OSMetaController extends JControllerLegacy
 
         $view = $this->getView('OSMeta', 'html');
         $view->assignRef('itemType', $itemType);
-        $view->assignRef('metatagsData', $tags);
+        $view->assignRef('metatagsData', $result['rows']);
         $view->assignRef('page', $page);
         $view->assignRef('itemsOnPage', $itemsOnPage);
         $view->assignRef('filter', $filter);
