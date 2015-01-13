@@ -551,7 +551,7 @@ class Content extends AbstractContainer
                 <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>All</option>
             </select>
             <br/>
-            <label>Show only Articles with empty descriptions</label>
+            <label>Show only items with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
 

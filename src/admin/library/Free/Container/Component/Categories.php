@@ -484,7 +484,7 @@ class Categories extends AbstractContainer
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
             </select>
             <br/>
-            <label>Show only Article Categories with empty descriptions</label>
+            <label>Show only items with empty descriptions</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
 
