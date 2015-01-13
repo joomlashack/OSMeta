@@ -567,7 +567,11 @@ class Content extends AbstractContainer
     {
         $params = array();
         parse_str($query, $params);
-        $metadata = null;
+
+        $metadata = array(
+            'metatitle' => '',
+            'metadescription' => ''
+        );
 
         if (isset($params["id"])) {
             $metadata = $this->getMetadata($params["id"]);
