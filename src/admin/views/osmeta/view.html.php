@@ -83,10 +83,6 @@ class OSMetaViewOSMeta extends JViewLegacy
         $app = JFactory::getApplication();
 
         $itemType = $app->input->getString('type', null);
-        if ($itemType === 'home') {
-            $params = JComponentHelper::getParams('com_osmeta');
-            $this->home_data_source = $params->get('home_metadata_source', 'default');
-        }
         $this->itemType = $itemType;
 
         if (version_compare(JVERSION, '3.0', 'ge')) {

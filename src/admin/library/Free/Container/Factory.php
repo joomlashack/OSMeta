@@ -225,17 +225,6 @@ class Factory
 
             $this->processMetadata($this->metadata, $queryString);
 
-            if ($this->isFrontPage()) {
-                $homeContainer = new Component\Home;
-                $homeMetadata  = $homeContainer->getMetatags();
-
-                if ($homeMetadata['rows']->source !== 'default') {
-
-                    $this->metadata['metatitle']       = @$homeMetadata['rows']->metaTitle;
-                    $this->metadata['metadescription'] = @$homeMetadata['rows']->metaDesc;
-                }
-            }
-
             // Meta title
             if ($this->metadata && isset($this->metadata["metatitle"]) && !empty($this->metadata["metatitle"])) {
                 $replaced = 0;
@@ -382,52 +371,6 @@ class Factory
         }
 
         return $this->features;
-    }
-
-    /**
-     * Check if the user is on the front page, not only the default menu
-     *
-     * @access protected
-     *
-     * @return boolean
-     */
-    protected function isFrontPage()
-    {
-        $app  = JFactory::getApplication();
-        $lang = JFactory::getLanguage();
-        $menu = $app->getMenu();
-
-        $isFrontPage = $menu->getActive() == $menu->getDefault($lang->getTag());
-
-
-        // The page for featured articles can be treated as front page as well, so let's filter that
-        if ($isFrontPage) {
-            $defaultMenu     = $menu->getDefault($lang->getTag());
-            $defaultMenuLink = $defaultMenu->link;
-
-            $sefEnabled = (bool) JFactory::getConfig()->get('sef');
-            $uri        = JRequest::getURI();
-
-            // Compare the current URI with the default menu URI
-            if ($sefEnabled) {
-                $router = $app::getRouter();
-                $defaultMenuLinkURI = JURI::getInstance($defaultMenuLink);
-                $router->parse($defaultMenuLinkURI);
-                $defaultMenuLinkRouted = JRoute::_($defaultMenuLink);
-
-                if (version_compare(JVERSION, '3.0', '<')) {
-                    $defaultMenuLinkRouted = str_replace('?view=featured', '', $defaultMenuLinkRouted);
-                }
-
-                $isFrontPage = $defaultMenuLinkRouted === $uri;
-            } else {
-                $path = JURI::getInstance()->getPath();
-
-                $isFrontPage = (substr_count($uri, $defaultMenuLink) > 0) || ($uri === $path);
-            }
-        }
-
-        return $isFrontPage;
     }
 
     /**

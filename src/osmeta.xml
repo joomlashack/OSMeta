@@ -7,7 +7,7 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>hello@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.2.1</version>
+    <version>1.2.2b1</version>
     <description>OSMeta is an extension to easily manage titles, descriptions and alias for Joomla articles.</description>
 
     <alledia>
@@ -48,6 +48,10 @@
         </relatedExtensions>
         <obsolete>
             <file>administrator/manifests/packages/pkg_osmeta.xml</file>
+            <file>administrator/components/com_osmeta/config.xml</file>
+            <file>administrator/components/com_osmeta/features/home.php</file>
+            <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
+            <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
         </obsolete>
     </alledia>
 
@@ -81,7 +85,6 @@
             <folder>language</folder>
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
-            <filename>config.xml</filename>
             <filename>include.php</filename>
         </files>
 

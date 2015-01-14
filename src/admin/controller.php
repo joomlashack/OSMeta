@@ -102,7 +102,7 @@ class OSMetaController extends JControllerLegacy
 
         $itemType = $app->input->getString('type', null);
         if (empty($itemType)) {
-            $itemType = 'home';
+            $itemType = 'com_content:Article';
             $app->input->set('type', $itemType);
         }
 
@@ -127,20 +127,12 @@ class OSMetaController extends JControllerLegacy
         // Execute the actions
         switch ($task) {
             case "save":
-                if ($itemType !== 'home') {
-                    // Content
-                    $ids              = JRequest::getVar('ids', array(), '', 'array');
-                    $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
-                    $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                    $aliases          = JRequest::getVar('alias', array(), '', 'array');
-                    $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
-                } else {
-                    // Home data
-                    $homeSource          = JRequest::getVar('home_metadata_source', 'default', '', 'string');
-                    $homeMetaTitle       = JRequest::getVar('home_metatitle', '', '', 'string');
-                    $homeMetaDescription = JRequest::getVar('home_metadesc', '', '', 'string');
-                    $metatagsContainer->saveMetatags($homeSource, $homeMetaTitle, $homeMetaDescription);
-                }
+                // Content
+                $ids              = JRequest::getVar('ids', array(), '', 'array');
+                $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
+                $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
+                $aliases          = JRequest::getVar('alias', array(), '', 'array');
+                $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
 
                 break;
 
@@ -211,17 +203,7 @@ class OSMetaController extends JControllerLegacy
     protected function addSubmenu($contentTypes, $itemType)
     {
         if (version_compare(JVERSION, '3.0', 'lt')) {
-            JSubMenuHelper::addEntry(
-                'Homepage',
-                'index.php?option=com_osmeta&type=home',
-                $itemType === 'home'
-            );
-
             foreach ($contentTypes as $type => $data) {
-                if ($type === 'home') {
-                    continue;
-                }
-
                 JSubMenuHelper::addEntry(
                     $data['name'],
                     'index.php?option=com_osmeta&type=' . urlencode($type),
@@ -229,17 +211,7 @@ class OSMetaController extends JControllerLegacy
                 );
             }
         } else {
-            JHtmlSidebar::addEntry(
-                'Homepage',
-                'index.php?option=com_osmeta&type=home',
-                $itemType === 'home'
-            );
-
             foreach ($contentTypes as $type => $data) {
-                if ($type === 'home') {
-                    continue;
-                }
-
                 JHtmlSidebar::addEntry(
                     $data['name'],
                     'index.php?option=com_osmeta&type=' . urlencode($type),
