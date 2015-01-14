@@ -229,10 +229,10 @@ class Factory
                 $homeContainer = new Component\Home;
                 $homeMetadata  = $homeContainer->getMetatags();
 
-                if ($homeMetadata->source !== 'default') {
+                if ($homeMetadata['rows']->source !== 'default') {
 
-                    $this->metadata['metatitle']       = @$homeMetadata->metaTitle;
-                    $this->metadata['metadescription'] = @$homeMetadata->metaDesc;
+                    $this->metadata['metatitle']       = @$homeMetadata['rows']->metaTitle;
+                    $this->metadata['metadescription'] = @$homeMetadata['rows']->metaDesc;
                 }
             }
 
