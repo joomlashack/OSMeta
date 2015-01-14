@@ -393,11 +393,12 @@ class Factory
      */
     protected function isFrontPage()
     {
-        $app    = JFactory::getApplication();
-        $lang   = JFactory::getLanguage();
-        $menu   = $app->getMenu();
+        $app  = JFactory::getApplication();
+        $lang = JFactory::getLanguage();
+        $menu = $app->getMenu();
 
         $isFrontPage = $menu->getActive() == $menu->getDefault($lang->getTag());
+
 
         // The page for featured articles can be treated as front page as well, so let's filter that
         if ($isFrontPage) {
