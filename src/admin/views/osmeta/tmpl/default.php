@@ -112,10 +112,10 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     <?php endif; ?>
 
                     <td class="field-column">
-                        <textarea name="metatitle[]" class="char-count"><?php echo $row->metatitle; ?></textarea>
+                        <textarea name="metatitle[]" class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
                     </td>
                     <td class="field-column">
-                        <textarea name="metadesc[]" class="char-count"><?php echo $row->metadesc; ?></textarea>
+                        <textarea name="metadesc[]" class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
                     </td>
                 </tr>
                 <?php
@@ -177,14 +177,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             return hashCode(str);
         };
 
-        $('#articleList input[type="text"].char-count').osmetaCharCount({
+        $('#articleList textarea.char-count.metatitle').osmetaCharCount({
             limit: 70,
             message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
 
-        $('#articleList textarea.char-count').osmetaCharCount({
+        $('#articleList textarea.char-count.metadesc').osmetaCharCount({
             limit: 160,
             message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
