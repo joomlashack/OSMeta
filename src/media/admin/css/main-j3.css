@@ -9,8 +9,17 @@
     }
     .ost-filters {
         text-align: left;
+        margin: 20px 0;
     }
     .ost-filters select {
         display: none !important;
+    }
+    #articleList textarea.metadesc {
+        min-height: 85px;
+    }
+}
+@media (max-width: 480px) {
+    .ost-filters #search {
+        display: block;
     }
 }
