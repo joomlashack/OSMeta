@@ -3,7 +3,17 @@
     text-align: right;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
+    #articleList td {
+        border-top: none;
+    }
+    #articleList tr {
+        border-top: 1px solid #ddd;
+    }
+    section#content td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
     section#content td {
         display: block;
     }
@@ -15,24 +25,11 @@
         display: none !important;
     }
     #articleList textarea.metadesc {
-        min-height: 85px;
-    }
-    #articleList td {
-        border-top: none;
-    }
-    #articleList tr {
-        border-top: 1px solid #ddd;
-    }
-    section#content td {
-        padding-left: 10px;
-        padding-right: 10px;
+        min-height: 140px;
     }
 }
 @media (max-width: 480px) {
     .ost-filters #search {
         display: block;
-    }
-    #articleList textarea.metadesc {
-        min-height: 140px;
     }
 }
