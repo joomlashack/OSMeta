@@ -23,7 +23,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
     <div id="j-main-container" class="span10">
         <table width="100%">
             <tr>
-                <td align="right">
+                <td class="ost-filters">
                     <?php echo $this->filter; ?>
                 </td>
             </tr>
@@ -91,7 +91,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 $checked = JHTML::_('grid.id', $i, $row->id);
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
-                    <td><?php echo $checked; ?>
+                    <td class="hidden-phone"><?php echo $checked; ?>
                         <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                     </td>
                     <td>
