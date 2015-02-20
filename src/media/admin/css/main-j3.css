@@ -17,9 +17,22 @@
     #articleList textarea.metadesc {
         min-height: 85px;
     }
+    #articleList td {
+        border-top: none;
+    }
+    #articleList tr {
+        border-top: 1px solid #ddd;
+    }
+    section#content td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 @media (max-width: 480px) {
     .ost-filters #search {
         display: block;
+    }
+    #articleList textarea.metadesc {
+        min-height: 140px;
     }
 }
