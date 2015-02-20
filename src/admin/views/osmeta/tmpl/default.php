@@ -23,14 +23,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
     <div id="j-main-container" class="span10">
         <table width="100%">
             <tr>
-                <td align="right">
+                <td class="ost-filters">
                     <?php echo $this->filter; ?>
                 </td>
             </tr>
         </table>
 
         <table class="table table-striped adminlist" id="articleList">
-            <thead>
+            <thead class="hidden-phone">
                 <tr>
                     <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
                         <th width="2%"><input type="checkbox" name="toggle" value=""
@@ -63,7 +63,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 </tr>
 
             </thead>
-            <tr>
+            <tr class="hidden-phone">
                 <td width="20"></td>
                 <td class="title">
                     <?php echo JText::_('COM_OSMETA_TITLE_DESC') ?>
@@ -91,7 +91,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 $checked = JHTML::_('grid.id', $i, $row->id);
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
-                    <td><?php echo $checked; ?>
+                    <td class="hidden-phone"><?php echo $checked; ?>
                         <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                     </td>
                     <td>
@@ -112,10 +112,10 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     <?php endif; ?>
 
                     <td class="field-column">
-                        <textarea name="metatitle[]" class="char-count"><?php echo $row->metatitle; ?></textarea>
+                        <textarea name="metatitle[]" class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
                     </td>
                     <td class="field-column">
-                        <textarea name="metadesc[]" class="char-count"><?php echo $row->metadesc; ?></textarea>
+                        <textarea name="metadesc[]" class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
                     </td>
                 </tr>
                 <?php
@@ -177,14 +177,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             return hashCode(str);
         };
 
-        $('#articleList input[type="text"].char-count').osmetaCharCount({
+        $('#articleList textarea.char-count.metatitle').osmetaCharCount({
             limit: 70,
             message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
 
-        $('#articleList textarea.char-count').osmetaCharCount({
+        $('#articleList textarea.char-count.metadesc').osmetaCharCount({
             limit: 160,
             message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
