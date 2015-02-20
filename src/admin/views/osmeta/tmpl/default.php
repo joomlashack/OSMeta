@@ -30,7 +30,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
         </table>
 
         <table class="table table-striped adminlist" id="articleList">
-            <thead>
+            <thead class="hidden-phone">
                 <tr>
                     <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
                         <th width="2%"><input type="checkbox" name="toggle" value=""
@@ -63,7 +63,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 </tr>
 
             </thead>
-            <tr>
+            <tr class="hidden-phone">
                 <td width="20"></td>
                 <td class="title">
                     <?php echo JText::_('COM_OSMETA_TITLE_DESC') ?>
