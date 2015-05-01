@@ -2,10 +2,10 @@
 <extension type="component" version="2.5.5" method="upgrade">
     <name>com_osmeta</name>
     <author>Alledia</author>
-    <creationDate>November 10, 2014</creationDate>
-    <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
+    <creationDate>May 01, 2015</creationDate>
+    <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <authorEmail>hello@alledia.com</authorEmail>
+    <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
     <version>1.2.4</version>
     <description>OSMeta is an extension to easily manage titles, descriptions and alias for Joomla articles.</description>
