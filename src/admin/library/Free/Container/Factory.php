@@ -239,11 +239,24 @@ class Factory
 
                 // Check the site name title global setting
                 if ($configSiteNameTitle == 1) {
-                    // Add site name before
-                    $browserTitle = $configSiteName . ' ' . $siteNameSeparator . ' ' . $metaTitle;
+                    $stringToAppend = "{$configSiteName} {$siteNameSeparator} ";
+
+                    // Check if the sitename is already there
+                    if (! preg_match('#^' . preg_quote($stringToAppend) . '#', $metaTitle)) {
+                        // Add site name before
+                        $browserTitle = $stringToAppend;
+                    }
+
+                    $browserTitle .=  $metaTitle;
                 } elseif ($configSiteNameTitle == 2) {
-                    // Add site name after
-                    $browserTitle = $metaTitle . ' ' . $siteNameSeparator . ' ' . $configSiteName;
+                    $browserTitle = $metaTitle;
+                    $stringToAppend = " {$siteNameSeparator} {$configSiteName}";
+
+                    // Check if the sitename is already there
+                    if (! preg_match('#' . preg_quote($stringToAppend) . '$#', $metaTitle)) {
+                        // Add site name after
+                        $browserTitle .= $stringToAppend;
+                    }
                 } else {
                     // No site name
                     $browserTitle = $metaTitle;
