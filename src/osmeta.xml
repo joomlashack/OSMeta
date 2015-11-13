@@ -48,11 +48,12 @@
         </relatedExtensions>
         <obsolete>
             <file>administrator/manifests/packages/pkg_osmeta.xml</file>
-            <file>administrator/components/com_osmeta/config.xml</file>
             <file>administrator/components/com_osmeta/features/home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
         </obsolete>
+
+        <include>AllediaFreeDefaultFiles</include>
     </alledia>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -79,6 +80,7 @@
             <folder>library</folder>
             <folder>features</folder>
             <folder>models</folder>
+            <folder>form</folder>
             <folder>views</folder>
             <folder>sql</folder>
             <folder>library</folder>
@@ -86,6 +88,7 @@
             <filename>controller.php</filename>
             <filename>osmeta.php</filename>
             <filename>include.php</filename>
+            <filename>config.xml</filename>
         </files>
 
         <languages folder="admin/language">
@@ -99,6 +102,7 @@
         <folder>css</folder>
         <folder>js</folder>
         <folder>images</folder>
+        <folder>fonts</folder>
     </media>
 
     <updateservers>

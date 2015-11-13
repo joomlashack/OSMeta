@@ -138,18 +138,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
 </form>
 
-<div id="footer" class="span12">
-    <div>
-        <a href="https://www.alledia.com">
-            <img src="../media/com_osmeta/admin/images/alledia_logo_150x43.png" />
-        </a>
-    </div>
-    <br />
-    <div>
-        OSMeta is built by&nbsp;
-        <a href="https://www.alledia.com">Alledia</a>
-    </div>
-</div>
+<?php echo $this->extension->getFooterMarkup(); ?>
 
 <?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
     <script src="../media/com_osmeta/js/jquery.js"></script>
