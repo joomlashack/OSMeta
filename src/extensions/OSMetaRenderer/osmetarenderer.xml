@@ -18,7 +18,6 @@
 
     <files>
         <filename plugin="osmetarenderer">osmetarenderer.php</filename>
-        <filename>include.php</filename>
     </files>
 
 </extension>

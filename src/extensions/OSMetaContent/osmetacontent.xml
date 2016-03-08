@@ -18,7 +18,6 @@
 
     <files>
         <filename plugin="osmetacontent">osmetacontent.php</filename>
-        <filename>include.php</filename>
         <folder>forms</folder>
     </files>
 

@@ -6,20 +6,20 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
-// No direct access
+use Alledia\Framework\Joomla\Extension;
+use Alledia\OSMeta;
+
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Extension\AbstractPlugin;
+include_once JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
 
-require_once __DIR__ . '/include.php';
-
-if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
+if (defined('OSMETA_LOADED')) {
     /**
      * OSMeta System Plugin - Renderer
      *
      * @since  1.0
      */
-    class PlgSystemOSMetaRenderer extends AbstractPlugin
+    class PlgSystemOSMetaRenderer extends Extension\AbstractPlugin
     {
         /**
          * Event method onAfterRender, to process the metadata on the front-end
@@ -42,9 +42,9 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
                 // Metatags processing on the response body
                 $factory = null;
                 if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
-                    $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+                    $factory = OSMeta\Pro\Container\Factory::getInstance();
                 } else {
-                    $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
+                    $factory = OSMeta\Free\Container\Factory::getInstance();
                 }
 
                 $buffer = $factory->processBody($buffer, $url);

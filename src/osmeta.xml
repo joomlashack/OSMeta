@@ -51,6 +51,8 @@
             <file>administrator/components/com_osmeta/features/home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
+            <file>plugins/system/osmetarenderer/include.php</file>
+            <file>plugins/content/osmetacontent/include.php</file>
         </obsolete>
 
         <include>AllediaFreeDefaultFiles</include>

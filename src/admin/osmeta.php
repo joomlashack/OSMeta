@@ -6,15 +6,14 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
-// No direct access
+use Alledia\Framework\Joomla\Extension;
+
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Extension\Component;
+include_once 'include.php';
 
-require_once 'include.php';
-
-if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
-    $component = new Component('OSMeta');
+if (defined('OSMETA_LOADED')) {
+    $component = new Extension\Component('OSMeta');
     $component->loadController();
     $component->executeTask();
 }

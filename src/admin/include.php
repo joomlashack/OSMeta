@@ -6,7 +6,8 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
-// No direct access
+use Alledia\Framework;
+
 defined('_JEXEC') or die();
 
 // Alledia Framework
@@ -16,7 +17,19 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     if (file_exists($allediaFrameworkPath)) {
         require_once $allediaFrameworkPath;
     } else {
-        JFactory::getApplication()
-            ->enqueueMessage('[OSMeta] Alledia framework not found', 'error');
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin()) {
+            $app->enqueueMessage('[OSMeta] Alledia framework not found', 'error');
+        }
     }
+}
+
+if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
+    define('OSMETA_ADMIN', __DIR__);
+    define('OSMETA_LIBRARY', OSMETA_ADMIN . '/library');
+
+    Framework\AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
+
+    define('OSMETA_LOADED', 1);
 }

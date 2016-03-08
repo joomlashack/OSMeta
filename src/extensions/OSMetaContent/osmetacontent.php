@@ -6,21 +6,24 @@
  * @license   http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  */
 
+use Alledia\Framework\Joomla\Extension;
+use Alledia\Framework;
+use Alledia\OSMeta;
+
 // No direct access
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Extension\AbstractPlugin;
-use Alledia\OSMeta\Free\Container\Factory as ContainerFactory;
+include_once JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
 
-require_once __DIR__ . '/include.php';
+jimport('joomla.filesystem.file');
 
-if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
+if (defined('OSMETA_LOADED')) {
     /**
      * OSMeta Content Plugin - Content
      *
      * @since  1.0
      */
-    class PlgContentOSMetaContent extends AbstractPlugin
+    class PlgContentOSMetaContent extends Extension\AbstractPlugin
     {
         /**
          * Event method onContentAfterSave, to store the meta data from the article form
@@ -32,24 +35,24 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
         public function onContentAfterSave($context, $content, $isNew)
         {
             if ($context === 'com_content.article' || $context === 'com_categories.category') {
-                $app = JFactory::getApplication();
+                $app = Framework\Factory::getApplication();
                 $input = $app->input;
 
                 $option = $input->getCmd('option');
 
                 if (is_object($content) && isset($content->id)) {
                     if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
-                        $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
+                        $factory = OSMeta\Pro\Container\Factory::getInstance();
                     } else {
-                        $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
+                        $factory = OSMeta\Free\Container\Factory::getInstance();
                     }
 
                     $container = $factory->getContainerByComponentName($option);
                     if (is_object($container)) {
-
                         $articleOSMetadataInput = json_decode($content->metadata);
-                        $id = array($content->id);
-                        $title = array($articleOSMetadataInput->metatitle);
+
+                        $id       = array($content->id);
+                        $title    = array($articleOSMetadataInput->metatitle);
                         $metaDesc = array($content->metadesc);
 
                         $container->saveMetatags($id, $title, $metaDesc);
@@ -84,17 +87,13 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
          */
         public function onContentPrepareForm($form, $data)
         {
-            $app = JFactory::getApplication();
+            $app = Framework\Factory::getApplication();
 
             if ($form->getName() === 'com_content.article'
                     || $form->getName() === 'com_categories.category'
                     || $form->getName() === 'com_categories.categorycom_content'
                 ) {
-
-                jimport('joomla.filesystem.file');
-
-                $lang = JFactory::getLanguage();
-                $lang->load('com_osmeta');
+                Framework\Factory::getLanguage()->load('com_osmeta');
 
                 /*
                  * Inject the metadata fields for Joomla 2.5
@@ -129,7 +128,7 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
                 $form->load($xml, true);
 
                 // Add Javascript code to sort the fields
-                $doc = JFactory::getDocument();
+                $doc = Framework\Factory::getDocument();
 
                 $doc->addScriptDeclaration(
                     '/*!
