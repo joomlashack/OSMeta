@@ -54,6 +54,14 @@ class Com_OSMetaInstallerScript extends AbstractScript
             $db->execute();
         }
 
+        // If Joomla 3.5, fix table collation
+        if (version_compare(JVERSION, '3.5', '>=')) {
+            $query = 'ALTER TABLE `#__osmeta_metadata` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+            $db->setQuery($query);
+            $db->execute();
+            var_dump(1); die();
+        }
+
         return true;
     }
 }
