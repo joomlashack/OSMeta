@@ -94,7 +94,8 @@ abstract class AbstractContainer
     {
         $db = JFactory::getDBO();
 
-        $sql = "SELECT m.item_id as id, m.item_id,
+        $sql = "SELECT m.item_id as id,
+                m.item_id,
                 m.description as metadescription,
                 m.description,
                 m.title as metatitle,
