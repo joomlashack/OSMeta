@@ -105,7 +105,20 @@ abstract class AbstractContainer
                     AND m.item_type=" . $db->quote($this->getTypeId());
         $db->setQuery($sql);
 
-        return $db->loadAssoc();
+        $data = $db->loadAssoc();
+
+        if (empty($data)) {
+            $data = array(
+                'id' => 0,
+                'item_id' => 0,
+                'metadescription' => '',
+                'description' => '',
+                'title' => '',
+                'metatitle' => ''
+            );
+        }
+
+        return $data;
     }
 
     /**
