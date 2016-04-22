@@ -10,7 +10,7 @@
 defined('_JEXEC') or die();
 
 $features['com_content:Article'] = array(
-    'name'     => 'Articles',
+    'name'     => 'COM_OSMETA_ARTICLES',
     'priority' => 1,
     'class'    => 'Alledia\OSMeta\Free\Container\Component\Content',
     'params'   => array(
@@ -30,7 +30,7 @@ $features['com_content:Article'] = array(
 );
 
 $features['com_content:ArticleCategory'] = array(
-    'name'     => 'Article Categories',
+    'name'     => 'COM_OSMETA_ARTICLE_CATEGORIES',
     'priority' => 1,
     'class'    => 'Alledia\OSMeta\Free\Container\Component\Categories',
     'params'   => array(

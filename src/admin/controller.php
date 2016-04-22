@@ -205,7 +205,7 @@ class OSMetaController extends JControllerLegacy
         if (version_compare(JVERSION, '3.0', 'lt')) {
             foreach ($contentTypes as $type => $data) {
                 JSubMenuHelper::addEntry(
-                    $data['name'],
+                    JText::_($data['name']),
                     'index.php?option=com_osmeta&type=' . urlencode($type),
                     $itemType === $type
                 );
@@ -213,7 +213,7 @@ class OSMetaController extends JControllerLegacy
         } else {
             foreach ($contentTypes as $type => $data) {
                 JHtmlSidebar::addEntry(
-                    $data['name'],
+                    JText::_($data['name']),
                     'index.php?option=com_osmeta&type=' . urlencode($type),
                     $itemType === $type
                 );
