@@ -514,26 +514,26 @@ class Content extends AbstractContainer
         $state = JRequest::getVar("com_content_filter_state", "");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-        $result = 'Filter:
+        $result = JText::_('COM_OSMETA_FILTER_LABEL') . ':
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
             . '" class="text_area" onchange="document.adminForm.submit();" '
-            . ' title="Filter by Title or enter an Article ID"/>
-            <button id="Go" class="btn btn-small" onclick="this.form.submit();">Go</button>
+            . ' title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
+            <button id="Go" class="btn btn-small" onclick="this.form.submit();">' . JText::_('COM_OSMETA_GO_LABEL') . '</button>
             <button class="btn btn-small" onclick="document.getElementById(\'search\').value=\'\';
                 this.form.getElementById(\'filter_sectionid\').value=\'-1\';
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';
-                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">Reset</button>
+                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . JText::_('COM_OSMETA_RESET_LABEL') . '</button>
 
             &nbsp;&nbsp;&nbsp;';
 
         $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
-                        '<option value="">Select category</option>' .
+                        '<option value="">' . JText::_('COM_OSMETA_SELECT_CATEGORY') . '</option>' .
         JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $catId) .
                     '</select>';
 
         $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
-                '<option value="">Select max levels</option>' .
+                '<option value="">' . JText::_('COM_OSMETA_SELECT_MAX_LEVELS') . '</option>' .
                 JHtml::_('select.options', $levels, 'value', 'text', $level) .
             '</select>';
 
@@ -543,15 +543,15 @@ class Content extends AbstractContainer
 
             <select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
             onchange="submitform();">
-                <option value=""  >- Select State -</option>
-                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>Published</option>
-                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>Unpublished</option>
-                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>Archived</option>
-                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>Trashed</option>
-                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>All</option>
+                <option value=""  >' . JText::_('COM_OSMETA_SELECT_STATE') . '</option>
+                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_PUBLISHED') . '</option>
+                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_UNPUBLISHED') . '</option>
+                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_ARCHIVED') . '</option>
+                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_TRASHED') . '</option>
+                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_ALL') . '</option>
             </select>
             <br/>
-            <label>Show only items with empty descriptions</label>
+            <label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
             <input type="checkbox" onchange="document.adminForm.submit();"
                 name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
 
