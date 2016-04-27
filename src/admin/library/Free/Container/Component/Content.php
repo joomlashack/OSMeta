@@ -514,7 +514,7 @@ class Content extends AbstractContainer
         $state = JRequest::getVar("com_content_filter_state", "");
         $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
 
-        $result = JText::_('COM_OSMETA_FILTER_LABEL') . ':
+        $result = '<label for="search" title="' . JText::_('COM_OSMETA_FILTER_DESC') . '">' . JText::_('COM_OSMETA_FILTER_LABEL') . '</label>:
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
             . '" class="text_area" onchange="document.adminForm.submit();" '
             . ' title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
