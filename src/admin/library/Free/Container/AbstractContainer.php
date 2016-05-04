@@ -158,7 +158,7 @@ abstract class AbstractContainer
     {
         return array(
             'metatitle'       => '',
-            'metadescription' = > ''
+            'metadescription' => ''
         );
     }
 
