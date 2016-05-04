@@ -174,7 +174,7 @@ class Categories extends AbstractContainer
     {
         $params = array();
         parse_str($query, $params);
-        $metadata = null;
+        $metadata = $this->getDefaultMetadata();
 
         if (isset($params["id"])) {
             $metadata = $this->getMetadata($params["id"]);

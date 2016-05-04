@@ -152,6 +152,33 @@ abstract class AbstractContainer
     }
 
     /**
+     * Return an array with blank metadata
+     */
+    public function getDefaultMetadata()
+    {
+        return array(
+            'metatitle'       => '',
+            'metadescription' = > ''
+        );
+    }
+
+    /**
+     * Make sure we have the required indexes.
+     */
+    public function verifyMetadata($metadata)
+    {
+        if (!isset($metadata['metatitle'])) {
+            $metadata['metatitle'] = '';
+        }
+
+        if (!isset($metadata['metadescription'])) {
+            $metadata['metadescription'] = '';
+        }
+
+        return $metadata;
+    }
+
+    /**
      * Method to check if an alias already exists
      *
      * @param  string $alias The original alias
