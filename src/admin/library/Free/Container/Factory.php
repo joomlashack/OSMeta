@@ -192,14 +192,14 @@ class Factory
     {
         $result = array();
 
-        if (isset($this->$metadataByQueryMap[$queryString])) {
-            $result = $this->$metadataByQueryMap[$queryString];
+        if (isset($this->metadataByQueryMap[$queryString])) {
+            $result = $this->metadataByQueryMap[$queryString];
         } else {
             $container = $this->getContainerByRequest($queryString);
 
             if ($container != null) {
                 $result = $container->getMetadataByRequest($queryString);
-                $this->$metadataByQueryMap[$queryString] = $result;
+                $this->metadataByQueryMap[$queryString] = $result;
             }
         }
 
