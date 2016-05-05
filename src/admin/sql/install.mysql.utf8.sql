@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS `#__osmeta_metadata` (
     `description` text NOT NULL,
     PRIMARY KEY  (`id`),
     UNIQUE KEY `UniqueItemIdAndItemType` (`item_id`,`item_type`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
