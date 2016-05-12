@@ -10,6 +10,8 @@
     <version>1.2.7</version>
     <description>COM_OSMETA_DESCRIPTION</description>
 
+    <variant>FREE</variant>
+
     <alledia>
         <element>osmeta</element>
         <namespace>OSMeta</namespace>
