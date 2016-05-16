@@ -8,58 +8,8 @@
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
     <version>1.3.0</version>
-    <description>COM_OSMETA_DESCRIPTION</description>
-
     <variant>FREE</variant>
-
-    <alledia>
-        <element>osmeta</element>
-        <namespace>OSMeta</namespace>
-        <license>free</license>
-        <targetplatform>3.*</targetplatform>
-        <relatedExtensions>
-            <extension
-                type="library"
-                element="allediaframework"
-                >AllediaFramework</extension>
-
-            <extension
-                type="plugin"
-                group="system"
-                element="ossystem"
-                publish="true"
-                ordering="first"
-                >OSSystem</extension>
-
-            <extension
-                type="plugin"
-                group="content"
-                element="osmetacontent"
-                publish="true"
-                ordering="last"
-                uninstall="true"
-                >OSMetaContent</extension>
-
-            <extension
-                type="plugin"
-                group="system"
-                element="osmetarenderer"
-                publish="true"
-                ordering="last"
-                uninstall="true"
-                >OSMetaRenderer</extension>
-        </relatedExtensions>
-        <obsolete>
-            <file>administrator/manifests/packages/pkg_osmeta.xml</file>
-            <file>administrator/components/com_osmeta/features/home.php</file>
-            <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
-            <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
-            <file>plugins/system/osmetarenderer/include.php</file>
-            <file>plugins/content/osmetacontent/include.php</file>
-        </obsolete>
-
-        <include>AllediaFreeDefaultFiles</include>
-    </alledia>
+    <description>COM_OSMETA_DESCRIPTION</description>
 
     <scriptfile>script.installer.php</scriptfile>
 
@@ -113,4 +63,53 @@
     <updateservers>
         <server type="extension" priority="1" name="OSMeta"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmeta]]></server>
     </updateservers>
+
+    <alledia>
+        <element>osmeta</element>
+        <namespace>OSMeta</namespace>
+        <license>free</license>
+        <targetplatform>3.*</targetplatform>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework"
+                >AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first"
+                >OSSystem</extension>
+
+            <extension
+                type="plugin"
+                group="content"
+                element="osmetacontent"
+                publish="true"
+                ordering="last"
+                uninstall="true"
+                >OSMetaContent</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="osmetarenderer"
+                publish="true"
+                ordering="last"
+                uninstall="true"
+                >OSMetaRenderer</extension>
+        </relatedExtensions>
+        <obsolete>
+            <file>administrator/manifests/packages/pkg_osmeta.xml</file>
+            <file>administrator/components/com_osmeta/features/home.php</file>
+            <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
+            <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
+            <file>plugins/system/osmetarenderer/include.php</file>
+            <file>plugins/content/osmetacontent/include.php</file>
+        </obsolete>
+
+        <include>AllediaFreeDefaultFiles</include>
+    </alledia>
 </extension>
