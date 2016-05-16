@@ -2,12 +2,12 @@
 <extension version="3.5" type="component" method="upgrade">
     <name>com_osmeta</name>
     <author>Alledia</author>
-    <creationDate>May 12 2016</creationDate>
+    <creationDate>May 16 2016</creationDate>
     <copyright>Copyright (C) 2015 Open Source Training, LLC. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.2.8</version>
+    <version>1.3.0</version>
     <description>COM_OSMETA_DESCRIPTION</description>
 
     <variant>FREE</variant>
