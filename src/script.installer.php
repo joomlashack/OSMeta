@@ -56,9 +56,12 @@ class Com_OSMetaInstallerScript extends AbstractScript
 
         // If Joomla 3.5, fix table collation
         if (version_compare(JVERSION, '3.5', '>=')) {
-            $query = 'ALTER TABLE `#__osmeta_metadata` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
-            $db->setQuery($query);
-            $db->execute();
+            // Check if the database supports utf8mb4
+            if (method_exists($db, 'serverClaimsUtf8mb4Support') && $db->serverClaimsUtf8mb4Support()) {
+                $query = 'ALTER TABLE `#__osmeta_metadata` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
+                $db->setQuery($query);
+                $db->execute();
+            }
         }
 
         return true;
