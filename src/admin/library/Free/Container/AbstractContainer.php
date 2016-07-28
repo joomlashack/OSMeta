@@ -67,7 +67,7 @@ abstract class AbstractContainer
             VALUES (
               " . $db->quote($data["metatitle"]) . " ,
               " . $db->quote($data["metadescription"]) . ",
-              " . $db->quote($itemId) . ",
+              " . $db->quote((int)$itemId) . ",
               " . $db->quote($itemTypeId) . ")
             ON DUPLICATE KEY UPDATE title=" . $db->quote($data["metatitle"]) . ",
             description = " . $db->quote($data["metadescription"]);
