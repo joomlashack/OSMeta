@@ -21,4 +21,18 @@
         <folder>forms</folder>
     </files>
 
+    <config>
+        <fieldset
+            name="basic"
+            addfieldpath="/administrator/components/com_osmeta/form/fields">
+
+            <field
+                type="customfooter"
+                name="customfooter"
+                media="com_osmeta"
+                showgoproad="0"
+                jedurl="http://extensions.joomla.org/extension/osmeta" />
+        </fieldset>
+    </config>
+
 </extension>
