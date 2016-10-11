@@ -1,5 +1,5 @@
 {
-    "name"             : "Alledia/OSMeta",
+    "name"             : "Joomlashack/OSMeta",
     "description"      : "OSMeta",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
@@ -14,8 +14,8 @@
     },
     "authors"          : [
         {
-            "name" : "Alledia",
-            "email": "hello@alledia.com"
+            "name" : "Joomlashack",
+            "email": "help@joomlashack.com"
         }
     ],
     "require"          : {

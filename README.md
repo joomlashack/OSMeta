@@ -1,4 +1,4 @@
-[![Alledia](https://www.alledia.com/images/logo_circle_small.png)](https://www.alledia.com)
+[![Joomlashack](https://www.joomlashack.com/images/logo_circle_small.png)](https://www.joomlashack.com)
 
 OSMeta
 ===============
@@ -13,7 +13,3 @@ Joomla 2.5.x or 3.x
 ## License
 
 [GNU General Public License v3 or later](http://www.gnu.org/copyleft/gpl.html)
-
-## Details
-
-Released by [Alledia](https://www.alledia.com)
