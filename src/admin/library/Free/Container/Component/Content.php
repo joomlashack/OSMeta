@@ -316,7 +316,7 @@ class Content extends AbstractContainer
      *
      * @return void
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = '')
     {
         $app = JFactory::getApplication();
         $db  = JFactory::getDBO();
