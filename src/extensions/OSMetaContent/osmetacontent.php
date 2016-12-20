@@ -35,7 +35,7 @@ if (defined('OSMETA_LOADED')) {
         public function onContentAfterSave($context, $content, $isNew)
         {
             if ($context === 'com_content.article' || $context === 'com_categories.category') {
-                $app = Framework\Factory::getApplication();
+                $app   = Framework\Factory::getApplication();
                 $input = $app->input;
 
                 $option = $input->getCmd('option');
@@ -54,8 +54,9 @@ if (defined('OSMETA_LOADED')) {
                         $id       = array($content->id);
                         $title    = array($articleOSMetadataInput->metatitle);
                         $metaDesc = array($content->metadesc);
+                        $alias    = array($content->alias);
 
-                        $container->saveMetatags($id, $title, $metaDesc);
+                        $container->saveMetatags($id, $title, $metaDesc, $alias);
                     }
                 }
             }
@@ -90,9 +91,9 @@ if (defined('OSMETA_LOADED')) {
             $app = Framework\Factory::getApplication();
 
             if ($form->getName() === 'com_content.article'
-                    || $form->getName() === 'com_categories.category'
-                    || $form->getName() === 'com_categories.categorycom_content'
-                ) {
+                || $form->getName() === 'com_categories.category'
+                || $form->getName() === 'com_categories.categorycom_content'
+            ) {
                 Framework\Factory::getLanguage()->load('com_osmeta');
 
                 /*
@@ -105,7 +106,7 @@ if (defined('OSMETA_LOADED')) {
                 if (version_compare(JVERSION, '3.0', '<')) {
 
                     $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata2.xml');
-                    $js = '
+                    $js  = '
                             domready(function () {
                                 // Browser title and Meta title fields
                                 var metaTitle = document.getElementById("jform_metadata_metatitle");
@@ -115,7 +116,7 @@ if (defined('OSMETA_LOADED')) {
                             });';
                 } else {
                     $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
-                    $js = '
+                    $js  = '
                             domready(function () {
                                 // Browser title and Meta title fields
                                 var metaTitle = document.getElementById("jform_metadata_metatitle");
