@@ -9,7 +9,6 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use JRequest;
 use JFactory;
 use JModelLegacy;
 use stdClass;
@@ -54,7 +53,8 @@ class Categories extends AbstractContainer
      */
     public function getMetatags($lim0, $lim, $filter = null)
     {
-        $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
+        $db  = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle , c.extension, c.alias
             FROM
@@ -62,12 +62,15 @@ class Categories extends AbstractContainer
             LEFT JOIN
             #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.extension='com_content'";
 
-        $search = JRequest::getVar("com_content_filter_search", "");
-        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
-        $state = JRequest::getVar("com_content_filter_state", "");
-        $access = JRequest::getVar("com_content_filter_access", "");
+        $search   = $app->input->getString('com_content_filter_search', '');
+        $authorId = $app->input->getString('com_content_filter_authorid', '0');
+        $state    = $app->input->getString('com_content_filter_state', '');
+        $access   = $app->input->getString('com_content_filter_access', '');
 
-        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptyDescriptions = $app->input->getString(
+            'com_content_filter_show_empty_descriptions',
+            '-1'
+        );
 
         if ($search != "") {
             $sql .= " AND (";
@@ -101,8 +104,8 @@ class Categories extends AbstractContainer
         }
 
         // Sorting
-        $order = JRequest::getCmd("filter_order", "title");
-        $order_dir = JRequest::getCmd("filter_order_Dir", "ASC");
+        $order     = $app->input->getCmd('filter_order', 'title');
+        $order_dir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         switch ($order) {
             case "meta_title":
@@ -146,11 +149,11 @@ class Categories extends AbstractContainer
                 . "&extension={$row->extension}";
 
             // Get the category view url
-            $url    = ContentHelperRoute::getCategoryRoute($row->id);
-            $url    = JRoute::_($url);
-            $uri    = JUri::getInstance();
-            $url    = $uri->toString(array('scheme', 'host', 'port')) . $url;
-            $url    = str_replace('/administrator/', '/', $url);
+            $url = ContentHelperRoute::getCategoryRoute($row->id);
+            $url = JRoute::_($url);
+            $uri = JUri::getInstance();
+            $url = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url = str_replace('/administrator/', '/', $url);
 
             $row->view_url = $url;
         }
@@ -196,19 +199,23 @@ class Categories extends AbstractContainer
      */
     public function getPages($lim0, $lim, $filter = null)
     {
-        $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
+        $db  = JFactory::getDBO();
         $sql = "SELECT SQL_CALC_FOUND_ROWS
             c.id, c.title, c.published,
         c.description AS content
             FROM
             #__categories c WHERE c.extension='com_content'";
 
-        $search = JRequest::getVar("com_content_filter_search", "");
-        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
-        $state = JRequest::getVar("com_content_filter_state", "");
-        $access = JRequest::getVar("com_content_filter_access", "");
+        $search   = $app->input->getString('com_content_filter_search', '');
+        $authorId = $app->input->getString('com_content_filter_authorid', '0');
+        $state    = $app->input->getString('com_content_filter_state', '');
+        $access   = $app->input->getString('com_content_filter_access', '');
 
-        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $comContentFilterShowEmptyDescriptions = $app->input->getString(
+            'com_content_filter_show_empty_descriptions',
+            '-1'
+        );
 
         if ($search != "") {
             if (is_numeric($search)) {
@@ -288,7 +295,7 @@ class Categories extends AbstractContainer
                 $metadata = new stdClass;
             }
             $metadata->metatitle = $metatitles[$i];
-            $metadata = json_encode($metadata);
+            $metadata            = json_encode($metadata);
 
             $sql = "UPDATE #__categories SET "
                 . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
@@ -397,8 +404,8 @@ class Categories extends AbstractContainer
         jimport('legacy.model.legacy');
 
         $max_description_length = 500;
-        $model = JModelLegacy::getInstance("options", "OSModel");
-        $params = $model->getOptions();
+        $model                  = JModelLegacy::getInstance("options", "OSModel");
+        $params                 = $model->getOptions();
         $max_description_length = $params->max_description_length ?
             $params->max_description_length : $max_description_length;
 
@@ -453,13 +460,15 @@ class Categories extends AbstractContainer
      */
     public function getFilter()
     {
-        $db = JFactory::getDBO();
+        $app = JFactory::getApplication();
 
-        $search = JRequest::getVar("com_content_filter_search", "");
-        $authorId = JRequest::getVar("com_content_filter_authorid", "0");
-        $state = JRequest::getVar("com_content_filter_state", "");
-        $access = JRequest::getVar("com_content_filter_access", "");
-        $comContentFilterShowEmptyDescriptions = JRequest::getVar("com_content_filter_show_empty_descriptions", "-1");
+        $search                                = $app->input->getString('com_content_filter_search', '');
+        $state                                 = $app->input->getString('com_content_filter_state', '');
+        $access                                = $app->input->getString('com_content_filter_access', '');
+        $comContentFilterShowEmptyDescriptions = $app->input->getString(
+            'com_content_filter_show_empty_descriptions',
+            '-1'
+        );
 
         $result = JText::_('COM_OSMETA_FILTER_LABEL') . ':
             <input type="text" name="com_content_filter_search" id="search" value="' . $search
@@ -504,7 +513,7 @@ class Categories extends AbstractContainer
      */
     public function getItemData($id)
     {
-        $db = JFactory::getDBO();
+        $db  = JFactory::getDBO();
         $sql = "SELECT c.id as id, c.title as title,
             c.metadesc as metadescription, m.title as metatitle
             FROM
@@ -528,7 +537,7 @@ class Categories extends AbstractContainer
      */
     public function setItemData($id, $data)
     {
-        $db = JFactory::getDBO();
+        $db  = JFactory::getDBO();
         $sql = "UPDATE #__categories SET
             `title` = " . $db->quote($data["title"]) . ",
             `metadesc` = " . $db->quote($data["metadescription"]) . "
@@ -562,6 +571,7 @@ class Categories extends AbstractContainer
      * Method to check if an alias already exists
      *
      * @param  string $alias The original alias
+     *
      * @return string        The new alias, incremented, if needed
      */
     public function isUniqueAlias($alias)
@@ -575,7 +585,7 @@ class Categories extends AbstractContainer
             ->where('alias = ' . $db->quote($alias));
 
         $db->setQuery($query);
-        $count = (int) $db->loadResult();
+        $count = (int)$db->loadResult();
 
         return $count === 0;
     }

@@ -122,16 +122,16 @@ class OSMetaController extends JControllerLegacy
             // TODO: throw error here.
         }
 
-        $cid = JRequest::getVar('cid', array(), '', 'array');
+        $cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 
         // Execute the actions
         switch ($task) {
             case "save":
                 // Content
-                $ids              = JRequest::getVar('ids', array(), '', 'array');
-                $metatitles       = JRequest::getVar('metatitle', array(), '', 'array');
-                $metadescriptions = JRequest::getVar('metadesc', array(), '', 'array');
-                $aliases          = JRequest::getVar('alias', array(), '', 'array');
+                $ids              = $app->input->get('ids', array(), 'array');
+                $metatitles       = $app->input->get('metatitle', array(), 'array');
+                $metadescriptions = $app->input->get('metadesc', array(), 'array');
+                $aliases          = $app->input->get('alias', array(), 'array');
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
 
                 break;
@@ -151,8 +151,8 @@ class OSMetaController extends JControllerLegacy
                 break;
         }
 
-        $limit = JRequest::getVar('limit', $app->getCfg('list_limit'));
-        $limitstart = JRequest::getVar('limitstart', 0);
+        $limit = $app->input->getInt('limit', $app->get('list_limit'));
+        $limitstart = $app->input->getInt('limitstart', 0);
 
         $db = JFactory::getDBO();
         $result = $metatagsContainer->getMetatags($limitstart, $limit);
@@ -162,8 +162,8 @@ class OSMetaController extends JControllerLegacy
 
         $filter = $metatagsContainer->getFilter();
         $features = $factory->getFeatures();
-        $order = JRequest::getCmd("filter_order", "title");
-        $orderDir = JRequest::getCmd("filter_order_Dir", "ASC");
+        $order = $app->input->getCmd("filter_order", "title");
+        $orderDir = $app->input->getCmd("filter_order_Dir", "ASC");
 
         // Add a warning message if the plugins are disabled
         if (!JPluginHelper::isEnabled('content', 'osmetacontent')) {

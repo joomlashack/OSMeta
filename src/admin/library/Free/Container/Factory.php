@@ -8,7 +8,6 @@
 
 namespace Alledia\OSMeta\Free\Container;
 
-use JRequest;
 use JFactory;
 use JURI;
 use JRoute;
@@ -83,7 +82,7 @@ class Factory
      */
     public function getContainerById($type, $params = null)
     {
-        $features = $this->getFeatures();
+        $features  = $this->getFeatures();
         $container = 'com_content:Article';
 
         if (isset($features[$type])) {
@@ -106,8 +105,9 @@ class Factory
      */
     public function getContainerByRequest($queryString = null)
     {
-        $params = array();
-        $resultFeatureId = null;
+        $app                   = JFactory::getApplication();
+        $params                = array();
+        $resultFeatureId       = null;
         $resultFeaturePriority = -1;
 
         if ($queryString != null) {
@@ -131,9 +131,9 @@ class Factory
                             }
                         } else {
                             if ($value !== null) {
-                                $success = $success && (JRequest::getCmd($key) == $value);
+                                $success = $success && ($app->input->getCmd($key) == $value);
                             } else {
-                                $success = $success && (JRequest::getCmd($key, null) !== null);
+                                $success = $success && ($app->input->getCmd($key, null) !== null);
                             }
                         }
                     }
@@ -148,7 +148,7 @@ class Factory
             $featurePriority = isset($feature['priority']) ? $feature['priority'] : 0;
 
             if ($success && $featurePriority > $resultFeaturePriority) {
-                $resultFeatureId = $featureId;
+                $resultFeatureId       = $featureId;
                 $resultFeaturePriority = $featurePriority;
             }
         }
@@ -198,7 +198,7 @@ class Factory
             $container = $this->getContainerByRequest($queryString);
 
             if ($container != null) {
-                $result = $container->getMetadataByRequest($queryString);
+                $result                                 = $container->getMetadataByRequest($queryString);
                 $this->metadataByQueryMap[$queryString] = $result;
             }
         }
@@ -242,18 +242,18 @@ class Factory
                     $stringToAppend = "{$configSiteName} {$siteNameSeparator} ";
 
                     // Check if the sitename is already there
-                    if (! preg_match('#^' . preg_quote($stringToAppend) . '#', $metaTitle)) {
+                    if (!preg_match('#^' . preg_quote($stringToAppend) . '#', $metaTitle)) {
                         // Add site name before
                         $browserTitle = $stringToAppend;
                     }
 
-                    $browserTitle .=  $metaTitle;
+                    $browserTitle .= $metaTitle;
                 } elseif ($configSiteNameTitle == 2) {
-                    $browserTitle = $metaTitle;
+                    $browserTitle   = $metaTitle;
                     $stringToAppend = " {$siteNameSeparator} {$configSiteName}";
 
                     // Check if the sitename is already there
-                    if (! preg_match('#' . preg_quote($stringToAppend) . '$#', $metaTitle)) {
+                    if (!preg_match('#' . preg_quote($stringToAppend) . '$#', $metaTitle)) {
                         // Add site name after
                         $browserTitle .= $stringToAppend;
                     }
@@ -356,11 +356,11 @@ class Factory
     public function getFeatures()
     {
         if (empty($this->features)) {
-            $features  = array();
+            $features = array();
 
             jimport('joomla.filesystem.folder');
 
-            $path    = JPATH_SITE . '/administrator/components/com_osmeta/features';
+            $path  = JPATH_SITE . '/administrator/components/com_osmeta/features';
             $files = JFolder::files($path, '.php');
 
             $features = array();
@@ -374,7 +374,7 @@ class Factory
                 $class = $value['class'];
 
                 if (class_exists($class)) {
-                    if (! $class::isAvailable()) {
+                    if (!$class::isAvailable()) {
                         unset($features[$key]);
                     }
                 }
@@ -391,6 +391,7 @@ class Factory
      *
      * @param  array  $metadata    The metadata
      * @param  string $queryString Request query string
+     *
      * @return void
      */
     protected function processMetadata(&$metadata, $queryString)
