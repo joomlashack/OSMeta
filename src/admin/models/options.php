@@ -30,7 +30,7 @@ class OSModelOptions extends JModelLegacy
     {
         $options = new stdClass;
 
-        $options->max_description_length = 160;
+        $options->max_description_length = 320;
 
         return $options;
     }
