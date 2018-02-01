@@ -174,7 +174,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
         });
 
         $('#articleList textarea.char-count.metadesc').osmetaCharCount({
-            limit: 160,
+            limit: 320,
             message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
