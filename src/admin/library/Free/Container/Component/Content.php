@@ -522,12 +522,25 @@ class Content extends AbstractContainer
         $comContentFilterShowEmptyDescriptions = $app->input->getString('com_content_filter_show_empty_descriptions',
             "-1");
 
-        $result = '<label for="search" title="' . JText::_('COM_OSMETA_FILTER_DESC') . '">' . JText::_('COM_OSMETA_FILTER_LABEL') . '</label>:
-            <input type="text" name="com_content_filter_search" id="search" value="' . $search
-            . '" class="text_area" onchange="document.adminForm.submit();" '
-            . ' title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
-            <button id="Go" class="btn btn-small" onclick="this.form.submit();">' . JText::_('COM_OSMETA_GO_LABEL') . '</button>
-            <button class="btn btn-small" onclick="document.getElementById(\'search\').value=\'\';
+        $result = '<div class="btn-wrapper input-append">
+				<input type="text"
+						name="com_content_filter_search"
+						id="search"
+						value=""
+						placeholder="' . $search . '"
+						data-original-title=""
+						title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"
+						onchange="document.adminForm.submit();">
+					<button type="submit"
+							class="btn hasTooltip"
+							id="Go"
+							title="" aria-label="' . $search . '"
+							data-original-title="' . $search . '"
+							onclick="this.form.submit();">
+					<span class="icon-search" aria-hidden="true"></span>
+				</button>
+			</div>
+            <button class="btn" onclick="document.getElementById(\'search\').value=\'\';
                 this.form.getElementById(\'filter_sectionid\').value=\'-1\';
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';
