@@ -470,20 +470,27 @@ class Categories extends AbstractContainer
             '-1'
         );
 
-        $result = JText::_('COM_OSMETA_FILTER_LABEL') . ':
-            <input type="text" name="com_content_filter_search" id="search" value="' . $search
-            . '" class="text_area" onchange="document.adminForm.submit();" '
-            . ' title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
-            <button id="Go" class="btn btn-small" onclick="this.form.submit();">' . JText::_('COM_OSMETA_GO_LABEL') . '</button>
-            <button class="btn btn-small" onclick="document.getElementById(\'search\').value=\'\';
+        $result = '<div class="btn-wrapper input-append">
+            <input type="text"
+            		name="com_content_filter_search"
+            		id="search"
+            		value="' . $search . '"
+            		placeholder="' . JText::_('COM_OSMETA_SEARCH') . '"
+            		class="text_area" onchange="document.adminForm.submit();" '. '
+            		title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
+            <button id="Go" class="btn" onclick="this.form.submit();">' . JText::_('COM_OSMETA_GO_LABEL') . '</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn" onclick="document.getElementById(\'search\').value=\'\';
                 this.form.getElementById(\'filter_sectionid\').value=\'-1\';
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';
                 this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . JText::_('COM_OSMETA_RESET_LABEL') . '</button>
-
-            &nbsp;&nbsp;&nbsp;';
+        </div>';
 
         $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
+
+	    $result .= '<div class="om-filter-container">';
 
         $result .= '
             <select name="com_content_filter_state" id="filter_state"
@@ -491,13 +498,17 @@ class Categories extends AbstractContainer
                 <option value=""  >' . JText::_('COM_OSMETA_SELECT_STATE') . '</option>
                 <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_PUBLISHED') . '</option>
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_UNPUBLISHED') . '</option>
-            </select>
-            <br/>
-            <label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
-            <input type="checkbox" onchange="document.adminForm.submit();"
-                name="com_content_filter_show_empty_descriptions" ' . $descriptionChecked . '/>&nbsp;';
+            </select>';
 
         $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
+
+	    $result .= '<label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
+            <input type="checkbox"
+                    onchange="document.adminForm.submit();"
+                    name="com_content_filter_show_empty_descriptions"
+                    ' . $descriptionChecked . '/>';
+
+	    $result .= '</div>';
 
         return $result;
     }
