@@ -29,14 +29,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             </tr>
         </table>
 
-	    <?php if(count($this->metatagsData) == 0) : ?>
+        <?php if(count($this->metatagsData) == 0) : ?>
 
 		    <div class="alert alert-warning">
 				<h4 class="alert-heading"><?php echo JText::_('MESSAGE') ?></h4>
 				<div class="alert-message"><?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
 			</div>
 
-	    <?php else : ?>
+        <?php else : ?>
 
             <table class="table table-striped adminlist" id="articleList">
             <thead class="hidden-phone">
@@ -138,7 +138,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             </tfoot>
         </table>
 
-	    <?php endif; ?>
+        <?php endif; ?>
 
         <input type="hidden" name="option" value="com_osmeta" />
         <input type="hidden" name="task" value="view" />
