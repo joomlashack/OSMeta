@@ -579,8 +579,7 @@ class Content extends AbstractContainer
 
         $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
-	    $result .= '<br/>
-            <label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
+	    $result .= '<label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
             <input type="checkbox"
                     onchange="document.adminForm.submit();"
                     name="com_content_filter_show_empty_descriptions"
