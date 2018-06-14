@@ -85,15 +85,11 @@ class OSMetaViewOSMeta extends JViewLegacy
         $itemType = $app->input->getString('type', null);
         $this->itemType = $itemType;
 
-        if (version_compare(JVERSION, '3.0', 'ge')) {
-            $doc->addStylesheet('../media/com_osmeta/admin/css/main-j3.css');
-            // Add the icon font for the logo
-            $doc->addStylesheet('../media/com_osmeta/admin/css/alledia.css');
+	    $doc->addStylesheet('../media/com_osmeta/admin/css/main-j3.css');
+	    // Add the icon font for the logo
+	    $doc->addStylesheet('../media/com_osmeta/admin/css/alledia.css');
 
-            $this->submenu = JHtmlSidebar::render();
-        } else {
-            $doc->addStylesheet('../media/com_osmeta/admin/css/main-j2.css');
-        }
+	    $this->submenu = JHtmlSidebar::render();
 
         $this->extension = Alledia\Framework\Factory::getExtension('OSMeta', 'component');
 
