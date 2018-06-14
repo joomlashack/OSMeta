@@ -140,7 +140,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
 	    <?php endif; ?>
 
-	    <input type="hidden" name="option" value="com_osmeta" />
+        <input type="hidden" name="option" value="com_osmeta" />
         <input type="hidden" name="task" value="view" />
         <input type="hidden" name="type" value="<?php echo $this->itemType; ?>" />
         <input type="hidden" name="boxchecked" value="0" />
