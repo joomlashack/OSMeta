@@ -7,7 +7,7 @@
     <license>GPL v3</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.4.7</version>
+    <version>1.4.8b1</version>
     <description>This system plugin prepares the content so that OSMeta can add meta data 'on the fly'.</description>
 
     <alledia>
