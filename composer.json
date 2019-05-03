@@ -10,7 +10,8 @@
         "name"           : "OSMeta",
         "client"         : "administrator",
         "package-license": "free",
-        "target-platform": "3.*"
+        "target-platform": "3.*",
+        "infourl"        : "/changelog/osmeta/"
     },
     "authors"          : [
         {
