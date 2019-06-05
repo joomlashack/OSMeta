@@ -2,12 +2,12 @@
 <extension version="3.7" type="component" method="upgrade">
     <name>com_osmeta</name>
     <author>Joomlashack</author>
-    <creationDate>February 11 2019</creationDate>
+    <creationDate>June 05 2019</creationDate>
     <copyright>Copyright 2013-2019 Joomlashack.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.4.8</version>
+    <version>1.4.9</version>
     <variant>FREE</variant>
     <description>COM_OSMETA_DESCRIPTION</description>
 
