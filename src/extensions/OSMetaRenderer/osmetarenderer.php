@@ -37,22 +37,19 @@ if (defined('OSMETA_LOADED')) {
     class PlgSystemOSMetaRenderer extends Extension\AbstractPlugin
     {
         /**
-         * Event method onAfterRender, to process the metadata on the front-end
-         *
-         * @access  public
-         *
          * @return bool
+         * @throws Exception
          */
         public function onAfterRender()
         {
             $app = JFactory::getApplication();
 
-            if ($app->getName() === 'site') {
+            if ($app->isClient('site')) {
                 $queryData = $_REQUEST;
                 ksort($queryData);
                 $url = http_build_query($queryData);
 
-                $buffer = JResponse::getBody();
+                $buffer = $app->getBody();
 
                 // Metatags processing on the response body
                 $factory = null;
@@ -64,7 +61,7 @@ if (defined('OSMETA_LOADED')) {
 
                 $buffer = $factory->processBody($buffer, $url);
 
-                JResponse::setBody($buffer);
+                $app->setBody($buffer);
             }
 
             return true;

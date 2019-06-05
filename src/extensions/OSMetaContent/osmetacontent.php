@@ -24,6 +24,7 @@
 use Alledia\Framework\Joomla\Extension;
 use Alledia\Framework;
 use Alledia\OSMeta;
+use Joomla\CMS\Form\Form;
 
 defined('_JEXEC') or die();
 
@@ -93,52 +94,29 @@ if (defined('OSMETA_LOADED')) {
         }
 
         /**
-         * Event method onAfterRoute, to inject the metadata fields for Joomla 2.5
-         * on the article/categories forms
+         * @param Form  $form
+         * @param array $data
          *
-         * @access  public
-         *
-         * @return bool
+         * @return void
+         * @throws Exception
          */
         public function onContentPrepareForm($form, $data)
         {
-            $app = Framework\Factory::getApplication();
-
             if ($form->getName() === 'com_content.article'
                 || $form->getName() === 'com_categories.category'
                 || $form->getName() === 'com_categories.categorycom_content'
             ) {
                 Framework\Factory::getLanguage()->load('com_osmeta');
 
-                /*
-                 * Inject the metadata fields for Joomla 2.5
-                 *
-                 * For Joomla 3.0, look at: plugins/system/osmetarenderer/osmetarenderer.php,
-                 * into the onAfterInitialise event.
-                 */
-                // Joomla 3.x Backward Compatibility
-                if (version_compare(JVERSION, '3.0', '<')) {
+                $xml = file_get_contents(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
+                $js  = '
+                        domready(function () {
+                            // Browser title and Meta title fields
+                            var metaTitle = document.getElementById("jform_metadata_metatitle");
+                            var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
 
-                    $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata2.xml');
-                    $js  = '
-                            domready(function () {
-                                // Browser title and Meta title fields
-                                var metaTitle = document.getElementById("jform_metadata_metatitle");
-                                var fieldGroup = metaTitle.parentNode.parentNode;
-
-                                fieldGroup.insertBefore(metaTitle.parentNode, fieldGroup.firstChild);
-                            });';
-                } else {
-                    $xml = JFile::read(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
-                    $js  = '
-                            domready(function () {
-                                // Browser title and Meta title fields
-                                var metaTitle = document.getElementById("jform_metadata_metatitle");
-                                var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
-
-                                fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
-                            });';
-                }
+                            fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
+                        });';
 
                 $form->load($xml, true);
 

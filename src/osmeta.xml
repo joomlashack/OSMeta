@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.5" type="component" method="upgrade">
+<extension version="3.7" type="component" method="upgrade">
     <name>com_osmeta</name>
     <author>Joomlashack</author>
     <creationDate>February 11 2019</creationDate>
@@ -29,7 +29,7 @@
     </files>
 
     <administration>
-        <menu img="../media/com_osmeta/admin/images/logo_16x16.png">OSMeta</menu>
+        <menu>OSMeta</menu>
 
         <files folder="admin">
             <folder>library</folder>
@@ -70,37 +70,30 @@
         <license>free</license>
         <targetplatform>3.*</targetplatform>
         <relatedExtensions>
-            <extension
-                type="library"
-                element="allediaframework"
-                >AllediaFramework</extension>
+            <extension type="library"
+                       element="allediaframework">AllediaFramework</extension>
 
-            <extension
-                type="plugin"
-                group="system"
-                element="ossystem"
-                publish="true"
-                ordering="first"
-                >OSSystem</extension>
+            <extension type="plugin"
+                       group="system"
+                       element="ossystem"
+                       publish="true"
+                       ordering="first">OSSystem</extension>
 
-            <extension
-                type="plugin"
-                group="content"
-                element="osmetacontent"
-                publish="true"
-                ordering="last"
-                uninstall="true"
-                >OSMetaContent</extension>
+            <extension type="plugin"
+                       group="content"
+                       element="osmetacontent"
+                       publish="true"
+                       ordering="last"
+                       uninstall="true">OSMetaContent</extension>
 
-            <extension
-                type="plugin"
-                group="system"
-                element="osmetarenderer"
-                publish="true"
-                ordering="last"
-                uninstall="true"
-                >OSMetaRenderer</extension>
+            <extension type="plugin"
+                       group="system"
+                       element="osmetarenderer"
+                       publish="true"
+                       ordering="last"
+                       uninstall="true">OSMetaRenderer</extension>
         </relatedExtensions>
+
         <obsolete>
             <file>administrator/manifests/packages/pkg_osmeta.xml</file>
             <file>administrator/components/com_osmeta/features/home.php</file>

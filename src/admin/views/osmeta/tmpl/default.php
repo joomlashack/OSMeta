@@ -71,7 +71,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     </th>
 
                     <?php if ($this->extension->isPro()) : ?>
-                        <?php echo Alledia\OSMeta\Pro\Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
+                        <?php Alledia\OSMeta\Pro\Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
                     <?php endif; ?>
 
                     <th class="title" width="<?php echo $this->extension->isPro() ? '24%' : '35%'; ?>">
@@ -131,7 +131,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     </td>
 
                     <?php if ($this->extension->isPro()) : ?>
-                        <?php echo Alledia\OSMeta\Pro\Fields::additionalFields($row); ?>
+                        <?php Alledia\OSMeta\Pro\Fields::additionalFields($row); ?>
                     <?php endif; ?>
 
                     <td class="field-column">

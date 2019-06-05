@@ -44,9 +44,9 @@ class OSMetaController extends JControllerLegacy
      * Method to display the Meta Tags Manager's view
      *
      * @access  public
-     * @since  1.0
-     *
      * @return void
+     * @since   1.0
+     *
      */
     public function view()
     {
@@ -57,9 +57,9 @@ class OSMetaController extends JControllerLegacy
      * Method to the Save action for Meta Tags Manager
      *
      * @access  public
-     * @since  1.0
-     *
      * @return void
+     * @since   1.0
+     *
      */
     public function save()
     {
@@ -71,9 +71,9 @@ class OSMetaController extends JControllerLegacy
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
      * @access  public
-     * @since  1.0
-     *
      * @return void
+     * @since   1.0
+     *
      */
     public function copyItemTitleToSearchEngineTitle()
     {
@@ -84,9 +84,9 @@ class OSMetaController extends JControllerLegacy
      * Method to the Generate Descriptions action for Meta Tags Manager
      *
      * @access  public
-     * @since  1.0
-     *
      * @return void
+     * @since   1.0
+     *
      */
     public function generateDescriptions()
     {
@@ -99,9 +99,9 @@ class OSMetaController extends JControllerLegacy
      * @param string $task Task name
      *
      * @access  private
-     * @since  1.0
-     *
      * @return void
+     * @since   1.0
+     *
      */
     private function actionManager($task)
     {
@@ -158,18 +158,17 @@ class OSMetaController extends JControllerLegacy
                 break;
         }
 
-        $limit = $app->input->getInt('limit', $app->get('list_limit'));
+        $limit      = $app->input->getInt('limit', $app->get('list_limit'));
         $limitstart = $app->input->getInt('limitstart', 0);
 
-        $db = JFactory::getDBO();
         $result = $metatagsContainer->getMetatags($limitstart, $limit);
 
         jimport('joomla.html.pagination');
         $pageNav = new JPagination($result['total'], $limitstart, $limit);
 
-        $filter = $metatagsContainer->getFilter();
+        $filter   = $metatagsContainer->getFilter();
         $features = $factory->getFeatures();
-        $order = $app->input->getCmd("filter_order", "title");
+        $order    = $app->input->getCmd("filter_order", "title");
         $orderDir = $app->input->getCmd("filter_order_Dir", "ASC");
 
         // Add a warning message if the plugins are disabled
@@ -185,18 +184,16 @@ class OSMetaController extends JControllerLegacy
 
         $this->addSubmenu($features, $itemType);
 
-        $view = $this->getView('OSMeta', 'html');
-        $view->assignRef('itemType', $itemType);
-        $view->assignRef('metatagsData', $result['rows']);
-        $view->assignRef('page', $page);
-        $view->assignRef('itemsOnPage', $itemsOnPage);
-        $view->assignRef('filter', $filter);
-        $view->assignRef('availableTypes', $features);
-        $view->assignRef('pageNav', $pageNav);
-        $view->assignRef('order', $order);
-        $view->assignRef('order_Dir', $orderDir);
-        $view->assignRef('itemTypeShort', $itemTypeShort);
-        $view->assignRef('metatagsContainer', $metatagsContainer);
+        $view                    = $this->getView('OSMeta', 'html');
+        $view->itemType          = $itemType;
+        $view->metatagsData      = $result['rows'];
+        $view->filter            = $filter;
+        $view->availableTypes    = $features;
+        $view->pageNav           = $pageNav;
+        $view->order             = $order;
+        $view->order_Dir         = $orderDir;
+        $view->itemTypeShort     = $itemTypeShort;
+        $view->metatagsContainer = $metatagsContainer;
 
         $view->display();
     }
@@ -209,22 +206,12 @@ class OSMetaController extends JControllerLegacy
      */
     protected function addSubmenu($contentTypes, $itemType)
     {
-        if (version_compare(JVERSION, '3.0', 'lt')) {
-            foreach ($contentTypes as $type => $data) {
-                JSubMenuHelper::addEntry(
-                    JText::_($data['name']),
-                    'index.php?option=com_osmeta&type=' . urlencode($type),
-                    $itemType === $type
-                );
-            }
-        } else {
-            foreach ($contentTypes as $type => $data) {
-                JHtmlSidebar::addEntry(
-                    JText::_($data['name']),
-                    'index.php?option=com_osmeta&type=' . urlencode($type),
-                    $itemType === $type
-                );
-            }
+        foreach ($contentTypes as $type => $data) {
+            JHtmlSidebar::addEntry(
+                JText::_($data['name']),
+                'index.php?option=com_osmeta&type=' . urlencode($type),
+                $itemType === $type
+            );
         }
     }
 }

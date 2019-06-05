@@ -70,7 +70,7 @@ abstract class AbstractContainer
     public function setMetadata($itemId, $data)
     {
         $itemTypeId = $this->getTypeId();
-        $db = JFactory::getDBO();
+        $db         = JFactory::getDBO();
 
         // Save metatitles and metadata
         $sql = "INSERT INTO #__osmeta_metadata
@@ -86,7 +86,7 @@ abstract class AbstractContainer
             ON DUPLICATE KEY UPDATE title=" . $db->quote($data["metatitle"]) . ",
             description = " . $db->quote($data["metadescription"]);
         $db->setQuery($sql);
-        $db->query();
+        $db->execute();
 
         if ($db->getErrorNum()) {
             echo $db->stderr();
@@ -123,12 +123,12 @@ abstract class AbstractContainer
 
         if (empty($data)) {
             $data = array(
-                'id' => 0,
-                'item_id' => 0,
+                'id'              => 0,
+                'item_id'         => 0,
                 'metadescription' => '',
-                'description' => '',
-                'title' => '',
-                'metatitle' => ''
+                'description'     => '',
+                'title'           => '',
+                'metatitle'       => ''
             );
         }
 
@@ -150,17 +150,13 @@ abstract class AbstractContainer
     /**
      * Returns an alias, based on a string
      *
-     * @param  string $string The original string
+     * @param string $string The original string
+     *
      * @return string         The alias
      */
     public function stringURLSafe($string)
     {
-        if (version_compare(JVERSION, '3.0', 'lt')) {
-            $string = \JApplication::stringURLSafe($string);
-        } else {
-            jimport('joomla.filter.output');
-            $string = \JFilterOutput::stringURLSafe($string);
-        }
+        $string = \JApplicationHelper::stringURLSafe($string);
 
         return $string;
     }
@@ -195,7 +191,8 @@ abstract class AbstractContainer
     /**
      * Method to check if an alias already exists
      *
-     * @param  string $alias The original alias
+     * @param string $alias The original alias
+     *
      * @return string        The new alias, incremented, if needed
      */
     abstract public function isUniqueAlias($alias);

@@ -341,7 +341,7 @@ class Categories extends AbstractContainer
 
             $sql .= " WHERE id=" . $db->quote($ids[$i]);
             $db->setQuery($sql);
-            $db->query();
+            $db->execute();
 
             // Insert/Update OS Metadata
             $sql = "INSERT INTO #__osmeta_metadata (item_id,
@@ -357,7 +357,7 @@ class Categories extends AbstractContainer
                     description=" . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
-            $db->query();
+            $db->execute();
         }
     }
 
@@ -399,7 +399,7 @@ class Categories extends AbstractContainer
                     ) ON DUPLICATE KEY UPDATE title=" . $db->quote($item->title);
 
                 $db->setQuery($sql);
-                $db->query();
+                $db->execute();
             }
         }
     }
@@ -454,13 +454,13 @@ class Categories extends AbstractContainer
                     ) ON DUPLICATE KEY UPDATE description=" . $db->quote($introtext);
 
                 $db->setQuery($sql);
-                $db->query();
+                $db->execute();
 
                 $sql = "UPDATE #__categories SET metadesc=" . $db->quote($introtext) . "
                     WHERE id=" . $db->quote($item->id);
 
                 $db->setQuery($sql);
-                $db->query();
+                $db->execute();
             }
         }
     }
@@ -568,7 +568,7 @@ class Categories extends AbstractContainer
             `metadesc` = " . $db->quote($data["metadescription"]) . "
             WHERE `id`=" . $db->quote($id);
         $db->setQuery($sql);
-        $db->query();
+        $db->execute();
         $this->saveMetadata($id, $this->code, $data);
     }
 
