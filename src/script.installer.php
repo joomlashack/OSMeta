@@ -21,16 +21,17 @@
  * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Installer\AbstractScript;
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die();
 
 $includePath = __DIR__ . '/admin/library/Installer/include.php';
-if (! file_exists($includePath)) {
+if (!file_exists($includePath)) {
     $includePath = __DIR__ . '/library/Installer/include.php';
 }
 
 require_once $includePath;
-
-use Alledia\Installer\AbstractScript;
 
 /**
  * OSMeta Installer Script
@@ -48,12 +49,17 @@ class Com_OSMetaInstallerScript extends AbstractScript
     {
         parent::postFlight($type, $parent);
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         // Remove the old pkg_osmeta, if existent
-        $query = 'DELETE FROM `#__extensions` WHERE `type`="package" AND `element`="pkg_osmeta"';
-        $db->setQuery($query);
-        $db->execute();
+        $query = $db->getQuery(true)
+            ->delete('#__extensions')
+            ->where([
+                'type = ' . $db->quote('package'),
+                'element = ' . $db->quote('pkg_osmeta')
+            ]);
+
+        $db->setQuery($query)->execute();
 
         // Remove the old tables, if existent
         $tables = array(
@@ -63,21 +69,10 @@ class Com_OSMetaInstallerScript extends AbstractScript
             '#__osmeta_keywords_items'
         );
         foreach ($tables as $table) {
-            $query = "DROP TABLE IF EXISTS `{$table}`";
-            $db->setQuery($query);
-            $db->execute();
+            $query = 'DROP TABLE IF EXISTS ' . $db->quoteName($table);
+
+            $db->setQuery($query)->execute();
         }
 
-        // If Joomla 3.5, fix table collation
-        if (version_compare(JVERSION, '3.5', '>=')) {
-            // Check if the database supports utf8mb4
-            if (method_exists($db, 'serverClaimsUtf8mb4Support') && $db->serverClaimsUtf8mb4Support()) {
-                $query = 'ALTER TABLE `#__osmeta_metadata` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci';
-                $db->setQuery($query);
-                $db->execute();
-            }
-        }
-
-        return true;
     }
 }
