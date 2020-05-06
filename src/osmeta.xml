@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.7" type="component" method="upgrade">
+<extension version="3.9" type="component" method="upgrade">
     <name>com_osmeta</name>
     <author>Joomlashack</author>
-    <creationDate>June 05 2019</creationDate>
-    <copyright>Copyright 2013-2019 Joomlashack.com. All rights reserved.</copyright>
-    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
-    <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.4.9</version>
-    <variant>FREE</variant>
+    <authorUrl>https://www.joomlashack.com/</authorUrl>
+    <copyright>Copyright 2013-2020 Joomlashack.com</copyright>
+    <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
+    <version>1.4.10</version>
+    <creationDate>May 06 2020</creationDate>
+    <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
 
@@ -24,40 +24,32 @@
         </sql>
     </uninstall>
 
-    <files folder="site">
-        <filename>osmeta.php</filename>
-    </files>
-
     <administration>
         <menu>OSMeta</menu>
 
         <files folder="admin">
-            <folder>library</folder>
             <folder>features</folder>
-            <folder>models</folder>
             <folder>form</folder>
-            <folder>views</folder>
-            <folder>sql</folder>
-            <folder>library</folder>
             <folder>language</folder>
-            <filename>controller.php</filename>
-            <filename>osmeta.php</filename>
-            <filename>include.php</filename>
-            <filename>config.xml</filename>
-        </files>
+            <folder>library</folder>
+            <folder>library</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>views</folder>
 
-        <languages folder="admin/language">
-            <language tag="en-GB">en-GB/en-GB.com_osmeta.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_osmeta.sys.ini</language>
-        </languages>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>include.php</filename>
+            <filename>osmeta.php</filename>
+        </files>
     </administration>
 
     <media destination="com_osmeta" folder="media">
         <folder>admin</folder>
         <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
         <folder>fonts</folder>
+        <folder>images</folder>
+        <folder>js</folder>
     </media>
 
     <updateservers>
@@ -69,6 +61,7 @@
         <namespace>OSMeta</namespace>
         <license>free</license>
         <targetplatform>3.*</targetplatform>
+
         <relatedExtensions>
             <extension type="library"
                        element="allediaframework">AllediaFramework</extension>
@@ -95,12 +88,14 @@
         </relatedExtensions>
 
         <obsolete>
-            <file>administrator/manifests/packages/pkg_osmeta.xml</file>
+            <folder>components/com_osmeta</folder>
+
             <file>administrator/components/com_osmeta/features/home.php</file>
-            <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
-            <file>plugins/system/osmetarenderer/include.php</file>
+            <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
+            <file>administrator/manifests/packages/pkg_osmeta.xml</file>
             <file>plugins/content/osmetacontent/include.php</file>
+            <file>plugins/system/osmetarenderer/include.php</file>
         </obsolete>
 
         <include>AllediaFreeDefaultFiles</include>
