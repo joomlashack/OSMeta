@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5.5" type="plugin" group="content" method="upgrade">
+<extension version="3.9" type="plugin" group="content" method="upgrade">
     <name>Content - OSMeta Content</name>
     <author>Joomlashack</author>
-    <creationDate>June 05 2019</creationDate>
-    <copyright>Copyright (C) 2011-2016 Open Source Training, LLC, All rights reserved</copyright>
-    <license>GPL v3</license>
     <authorEmail>help@joomlashack.com</authorEmail>
-    <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.4.9</version>
+    <authorUrl>https://www.joomlashack.com/</authorUrl>
+    <copyright>Copyright 2011-2020 Joomlashack.com</copyright>
+    <license>GNU GPL; see LICENSE file</license>
     <description>OSMeta is an extension to easily manage meta titles, descriptions for Joomla articles</description>
+    <version>1.4.10b1</version>
+    <creationDate>May 06 2020</creationDate>
 
     <alledia>
         <element>osmetacontent</element>
@@ -17,22 +17,20 @@
     </alledia>
 
     <files>
-        <filename plugin="osmetacontent">osmetacontent.php</filename>
         <folder>forms</folder>
+
+        <filename plugin="osmetacontent">osmetacontent.php</filename>
     </files>
 
     <config>
-        <fieldset
-            name="basic"
-            addfieldpath="/administrator/components/com_osmeta/form/fields">
+        <fieldset name="basic"
+                  addfieldpath="/administrator/components/com_osmeta/form/fields">
 
-            <field
-                type="customfooter"
-                name="customfooter"
-                media="com_osmeta"
-                showgoproad="0"
-                jedurl="http://extensions.joomla.org/extension/osmeta" />
+            <field type="customfooter"
+                   name="customfooter"
+                   media="com_osmeta"
+                   showgoproad="0"
+                   jedurl="http://extensions.joomla.org/extension/osmeta"/>
         </fieldset>
     </config>
-
 </extension>

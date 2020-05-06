@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5.5" type="plugin" group="system"  method="upgrade">
+<extension version="2.5.5" type="plugin" group="system" method="upgrade">
     <name>System - OSMeta Renderer</name>
     <author>Joomlashack</author>
-    <creationDate>June 05 2019</creationDate>
-    <copyright>Copyright (C) 2011-2016 Open Source Training, LLC, All rights reserved.</copyright>
-    <license>GPL v3</license>
     <authorEmail>help@joomlashack.com</authorEmail>
-    <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.4.9</version>
+    <authorUrl>https://www.joomlashack.com/</authorUrl>
+    <copyright>Copyright 2011-2020 Joomlashack.com</copyright>
+    <license>GNU GPL; see LICENSE file</license>
     <description>This system plugin prepares the content so that OSMeta can add meta data 'on the fly'.</description>
+    <version>1.4.10b1</version>
+    <creationDate>May 06 2020</creationDate>
 
     <alledia>
         <element>osmetarenderer</element>
@@ -21,17 +21,14 @@
     </files>
 
     <config>
-        <fieldset
-            name="basic"
-            addfieldpath="/administrator/components/com_osmeta/form/fields">
+        <fieldset name="basic"
+                  addfieldpath="/administrator/components/com_osmeta/form/fields">
 
-            <field
-                type="customfooter"
-                name="customfooter"
-                media="com_osmeta"
-                showgoproad="0"
-                jedurl="http://extensions.joomla.org/extension/osmeta" />
+            <field type="customfooter"
+                   name="customfooter"
+                   media="com_osmeta"
+                   showgoproad="0"
+                   jedurl="http://extensions.joomla.org/extension/osmeta"/>
         </fieldset>
     </config>
-
 </extension>
