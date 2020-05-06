@@ -24,10 +24,6 @@
         </sql>
     </uninstall>
 
-    <files folder="site">
-        <filename>osmeta.php</filename>
-    </files>
-
     <administration>
         <menu>OSMeta</menu>
 
@@ -92,6 +88,8 @@
         </relatedExtensions>
 
         <obsolete>
+            <folder>components/com_osmeta</folder>
+
             <file>administrator/components/com_osmeta/features/home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
