@@ -23,6 +23,7 @@
 
 use Alledia\Installer\AbstractScript;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Folder;
 
 defined('_JEXEC') or die();
 
@@ -74,5 +75,9 @@ class Com_OSMetaInstallerScript extends AbstractScript
             $db->setQuery($query)->execute();
         }
 
+        $oldLanguageFiles = Folder::files(JPATH_ADMINISTRATOR . '/language', '.*com_osmeta.*', true, true);
+        foreach ($oldLanguageFiles as $oldLanguageFile) {
+            unlink($oldLanguageFile);
+        }
     }
 }
