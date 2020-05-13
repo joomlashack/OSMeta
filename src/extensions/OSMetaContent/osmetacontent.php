@@ -106,7 +106,7 @@ if (defined('OSMETA_LOADED')) {
                 || $form->getName() === 'com_categories.category'
                 || $form->getName() === 'com_categories.categorycom_content'
             ) {
-                Framework\Factory::getLanguage()->load('com_osmeta');
+                Framework\Factory::getLanguage()->load('com_osmeta', OSMETA_ADMIN);
 
                 $xml = file_get_contents(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
                 $js  = '
