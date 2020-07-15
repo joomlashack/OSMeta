@@ -38,6 +38,7 @@
             <folder>sql</folder>
             <folder>views</folder>
 
+            <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>include.php</filename>
