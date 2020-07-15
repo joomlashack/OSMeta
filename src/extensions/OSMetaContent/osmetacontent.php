@@ -33,11 +33,6 @@ include_once JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
 jimport('joomla.filesystem.file');
 
 if (defined('OSMETA_LOADED')) {
-    /**
-     * OSMeta Content Plugin - Content
-     *
-     * @since  1.0
-     */
     class PlgContentOSMetaContent extends Extension\AbstractPlugin
     {
         /**
