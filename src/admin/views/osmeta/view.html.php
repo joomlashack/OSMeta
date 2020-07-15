@@ -113,6 +113,7 @@ class OSMetaViewOSMeta extends JViewLegacy
         }
 
         ToolBarHelper::cancel("cancel");
+        ToolbarHelper::preferences('com_osmeta');
 
         $app = Factory::getApplication();
 
