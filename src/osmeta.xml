@@ -26,7 +26,7 @@
     </uninstall>
 
     <administration>
-        <menu>OSMeta</menu>
+        <menu>COM_OSMETA</menu>
 
         <files folder="admin">
             <folder>features</folder>
@@ -54,7 +54,7 @@
     </media>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMeta"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmeta]]></server>
+        <server type="extension" priority="1" name="OSMeta Free"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmeta]]></server>
     </updateservers>
 
     <alledia>
