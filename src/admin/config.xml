@@ -6,5 +6,16 @@
            showgoproad="https://www.joomlashack.com/joomla-extensions/osmeta/"
            jedurl="https://extensions.joomla.org/extension/osmeta/"/>
 
+    <fieldset name="permissions"
+        label="JCONFIG_PERMISSIONS_LABEL"
+        description="JCONFIG_PERMISSIONS_DESC">
+
+        <field name="rules"
+            type="rules"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            validate="rules"
+            filter="rules"
+            component="com_osmeta"
+            section="component"/>
     </fieldset>
 </config>

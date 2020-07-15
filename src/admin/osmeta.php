@@ -22,8 +22,15 @@
  */
 
 use Alledia\Framework\Joomla\Extension;
+use Joomla\CMS\Access\Exception\NotAllowed;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
+
+if (!Factory::getUser()->authorise('core.manage', 'com_osmeta')) {
+    throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+}
 
 include_once 'include.php';
 

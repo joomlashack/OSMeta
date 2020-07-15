@@ -7,8 +7,8 @@
     <copyright>Copyright 2013-2020 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
-    <version>1.4.11</version>
-    <creationDate>May 13 2020</creationDate>
+    <version>1.4.12b1</version>
+    <creationDate>July 15 2020</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -26,18 +26,18 @@
     </uninstall>
 
     <administration>
-        <menu>OSMeta</menu>
+        <menu>COM_OSMETA</menu>
 
         <files folder="admin">
             <folder>features</folder>
             <folder>form</folder>
             <folder>language</folder>
             <folder>library</folder>
-            <folder>library</folder>
             <folder>models</folder>
             <folder>sql</folder>
             <folder>views</folder>
 
+            <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>include.php</filename>
@@ -54,7 +54,7 @@
     </media>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSMeta"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmeta]]></server>
+        <server type="extension" priority="1" name="OSMeta Free"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osmeta]]></server>
     </updateservers>
 
     <alledia>
