@@ -2,12 +2,10 @@
 <form>
     <fields name="metadata">
         <fieldset name="jmetadata">
-            <field
-                type="text"
-                name="metatitle"
-                label="COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL"
-                description="COM_OSMETA_SEARCH_ENGINE_TITLE_DESC" />
-
+            <field type="text"
+                   name="metatitle"
+                   label="COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL"
+                   description="COM_OSMETA_SEARCH_ENGINE_TITLE_DESC"/>
         </fieldset>
     </fields>
 </form>

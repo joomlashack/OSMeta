@@ -184,6 +184,7 @@ class OSMetaController extends JControllerLegacy
 
         $this->addSubmenu($features, $itemType);
 
+        /** @var OSMetaViewOSMeta $view */
         $view                    = $this->getView('OSMeta', 'html');
         $view->itemType          = $itemType;
         $view->metatagsData      = $result['rows'];

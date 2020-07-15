@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
-    <fieldset
-        name="general"
-        label="COM_OSMETA_GENERAL"
-        addfieldpath="/administrator/components/com_osmeta/form/fields">
+<config addfieldpath="/administrator/components/com_osmeta/form/fields">
+    <field type="customfooter"
+           name="customfooter"
+           media="com_osmeta"
+           showgoproad="https://www.joomlashack.com/joomla-extensions/osmeta/"
+           jedurl="https://extensions.joomla.org/extension/osmeta/"/>
 
-        <field
-            type="customfooter"
-            name="customfooter"
-            media="com_osmeta"
-            showgoproad="https://www.joomlashack.com/joomla-extensions/osmeta/"
-            jedurl="https://extensions.joomla.org/extension/osmeta/" />
     </fieldset>
 </config>

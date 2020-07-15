@@ -21,24 +21,61 @@
  * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMeta\Free\Container\Component\Content;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
 defined('_JEXEC') or die();
 
 class OSMetaViewOSMeta extends JViewLegacy
 {
     /**
-     * Class constructor method
-     *
-     * @param mix $config Configuration set
-     *
-     * @access  public
-     * @since   1.0
+     * @var string
      */
-    public function __construct($config = null)
-    {
-        parent::__construct($config);
+    public $itemType = null;
 
-        $this->_addPath('template', $this->_basePath . '/views/osmeta/tmpl');
-    }
+    /**
+     * @var object[]
+     */
+    public $metatagsData = null;
+
+    /**
+     * @var string
+     */
+    public $filter = null;
+
+    /**
+     * @var array[]
+     */
+    public $availableTypes = null;
+
+    /**
+     * @var Pagination
+     */
+    public $pageNav = null;
+
+    /**
+     * @var string
+     */
+    public $order = null;
+
+    /**
+     * @var string
+     */
+    public $order_Dir = null;
+
+    /**
+     * @var string
+     */
+    public $itemTypeShort = null;
+
+    /**
+     * @var Content
+     */
+    public $metatagsContainer = null;
 
     /**
      * Method to display the view
@@ -51,48 +88,39 @@ class OSMetaViewOSMeta extends JViewLegacy
      */
     public function display($tpl = null)
     {
-        JToolBarHelper::title(JText::_('COM_OSMETA_META_TAGS_MANAGER'), 'logo');
+        ToolbarHelper::title(Text::_('COM_OSMETA_META_TAGS_MANAGER'), 'logo');
 
-        JToolBarHelper::apply("save");
-
-        if (version_compare(JVERSION, '3.0', '>=')) {
-            $iconShuffle = 'shuffle';
-            $iconEdit = 'pencil-2';
-        } else {
-            $iconShuffle = 'refresh';
-            $iconEdit = 'edit';
-        }
+        ToolBarHelper::apply("save");
 
         if ($this->metatagsContainer->supportGenerateTitle) {
-            JToolBarHelper::custom(
+            ToolBarHelper::custom(
                 'copyItemTitleToSearchEngineTitle',
-                $iconShuffle,
+                'shuffle',
                 '',
-                JText::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'),
+                Text::_('COM_OSMETA_COPY_ITEM_TITLE_TO_TITLE'),
                 true
             );
         }
 
         if ($this->metatagsContainer->supportGenerateDescription) {
-            JToolBarHelper::custom(
+            ToolBarHelper::custom(
                 'generateDescriptions',
-                $iconEdit,
+                'pencil-2',
                 '',
-                JText::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
+                Text::_('COM_OSMETA_GENERATE_DESCRIPTIONS'),
                 true
             );
         }
 
-        JToolBarHelper::cancel("cancel");
+        ToolBarHelper::cancel("cancel");
 
-        $doc = JFactory::getDocument();
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
-        $itemType = $app->input->getString('type', null);
+        $itemType       = $app->input->getString('type', null);
         $this->itemType = $itemType;
 
-        JHtml::_('stylesheet', 'media/com_osmeta/admin/css/main-j3.css');
-        JHtml::_('stylesheet', 'media/com_osmeta/admin/css/alledia.css');
+        HTMLHelper::_('stylesheet', 'media/com_osmeta/admin/css/main-j3.css');
+        HTMLHelper::_('stylesheet', 'media/com_osmeta/admin/css/alledia.css');
 
         $this->submenu = JHtmlSidebar::render();
 
