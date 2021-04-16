@@ -99,10 +99,10 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 <?php endif; ?>
 
                 <td valign="top">
-                    <?php echo JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC') ?>
+                    <?php echo JText::sprintf('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC', $this->extension->params->get('meta_title_limit', 70)) ?>
                 </td>
                 <td valign="top">
-                    <?php echo JText::_('COM_OSMETA_DESCRIPTION_DESC') ?>
+                    <?php echo JText::sprintf('COM_OSMETA_DESCRIPTION_DESC', $this->extension->params->get('meta_description_limit', 160)) ?>
                 </td>
             </tr>
 
