@@ -193,14 +193,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
         };
 
         $('#articleList textarea.char-count.metatitle').osmetaCharCount({
-            limit: 70,
+            limit: <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
             message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
 
         $('#articleList textarea.char-count.metadesc').osmetaCharCount({
-            limit: 320,
+            limit: <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
             message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
             charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
