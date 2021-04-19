@@ -8,8 +8,14 @@
 
     <fieldset name="main"
               label="COM_OSMETA_CONFIGURATION_MAIN">
-        <field type="number" label="COM_OSMETA_TITLE_LIMIT_LABEL" name="meta_title_limit" default="70"></field>
-        <field type="number" label="COM_OSMETA_DESC_LIMIT_LABEL" name="meta_description_limit" default="160"></field>
+        <field type="number"
+               label="COM_OSMETA_TITLE_LIMIT_LABEL"
+               name="meta_title_limit"
+               default="70"/>
+        <field type="number"
+               label="COM_OSMETA_DESC_LIMIT_LABEL"
+               name="meta_description_limit"
+               default="160"/>
     </fieldset>
 
     <fieldset name="permissions"

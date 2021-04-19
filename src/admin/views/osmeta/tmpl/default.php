@@ -21,21 +21,23 @@
  * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMeta\Pro\Fields;
+
 defined('_JEXEC') or die();
 
 $colspan = $this->extension->isPro() ? 5 : 4;
 ?>
 
-<form action="index.php?option=com_osmeta&type=<?php echo $this->itemType; ?>" method="post" name="adminForm" id="adminForm">
-
-    <?php if (version_compare(JVERSION, '3.0', 'ge')) : ?>
-        <div id="j-sidebar-container" class="span2">
-            <?php echo $this->submenu; ?>
-        </div>
-    <?php endif; ?>
+<form action="index.php?option=com_osmeta&type=<?php echo $this->itemType; ?>"
+      method="post"
+      name="adminForm"
+      id="adminForm">
+    <div id="j-sidebar-container" class="span2">
+        <?php echo $this->submenu; ?>
+    </div>
 
     <div id="j-main-container" class="span10">
-        <table width="100%">
+        <table style="width: 100%;">
             <tr>
                 <td class="ost-filters">
                     <?php echo $this->filter; ?>
@@ -43,138 +45,154 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             </tr>
         </table>
 
-        <?php if(count($this->metatagsData) == 0) : ?>
-
-		    <div class="alert alert-warning">
-				<h4 class="alert-heading"><?php echo JText::_('MESSAGE') ?></h4>
-				<div class="alert-message"><?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
-			</div>
+        <?php if (count($this->metatagsData) == 0) : ?>
+            <div class="alert alert-warning">
+                <h4 class="alert-heading"><?php echo JText::_('MESSAGE') ?></h4>
+                <div class="alert-message"><?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
+            </div>
 
         <?php else : ?>
-
             <table class="table table-striped adminlist" id="articleList">
-            <thead class="hidden-phone">
+                <thead class="hidden-phone">
                 <tr>
-                    <?php if (version_compare(JVERSION, '3.0', 'le')) : ?>
-                        <th width="2%"><input type="checkbox" name="toggle" value=""
-                            onclick="checkAll(<?php echo count($this->metatagsData); ?>);" />
-                        </th>
-                    <?php else : ?>
-                        <th width="2%"><input type="checkbox" name="checkall-toggle" value=""
-                            title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-                        </th>
-                    <?php endif; ?>
+                    <th style="width: 2%;">
+                        <input type="checkbox"
+                               name="checkall-toggle"
+                               value=""
+                               title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+                               onclick="Joomla.checkAll(this)"/>
+                    </th>
 
-                    <th class="title title-column" width="<?php echo $this->extension->isPro() ? '20%' : '25%'; ?>">
-                        <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_TITLE_LABEL'), 'title', $this->order_Dir,
-                            $this->order, "view"); ?>
+                    <th class="title title-column"
+                        style="width: <?php echo $this->extension->isPro() ? '20%;' : '25%;'; ?>">
+                        <?php echo JHTML::_(
+                            'grid.sort',
+                            JText::_('COM_OSMETA_TITLE_LABEL'),
+                            'title',
+                            $this->order_Dir,
+                            $this->order,
+                            "view"
+                        ); ?>
                     </th>
 
                     <?php if ($this->extension->isPro()) : ?>
-                        <?php Alledia\OSMeta\Pro\Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
+                        <?php Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
                     <?php endif; ?>
 
-                    <th class="title" width="<?php echo $this->extension->isPro() ? '24%' : '35%'; ?>">
-                        <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'), 'meta_title',
-                            $this->order_Dir, $this->order, "view"); ?>
+                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
+                        <?php echo JHTML::_(
+                            'grid.sort',
+                            JText::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'),
+                            'meta_title',
+                            $this->order_Dir,
+                            $this->order,
+                            "view"
+                        ); ?>
                     </th>
 
-                    <th class="title" width="<?php echo $this->extension->isPro() ? '24%' : '35%'; ?>">
-                        <?php echo JHTML::_('grid.sort', JText::_('COM_OSMETA_DESCRIPTION_LABEL'), 'meta_desc',
-                            $this->order_Dir, $this->order, "view"); ?>
+                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
+                        <?php echo JHTML::_(
+                            'grid.sort',
+                            JText::_('COM_OSMETA_DESCRIPTION_LABEL'),
+                            'meta_desc',
+                            $this->order_Dir,
+                            $this->order,
+                            "view"
+                        ); ?>
                     </th>
                 </tr>
 
-            </thead>
-            <tr class="hidden-phone">
-                <td width="20"></td>
-                <td class="title">
-                    <?php echo JText::_('COM_OSMETA_TITLE_DESC') ?>
-                </td>
-
-                <?php if ($this->extension->isPro()) : ?>
-                    <td>
-                        <?php echo JText::_('COM_OSMETA_ALIAS_DESC') ?>
-                    </td>
-                <?php endif; ?>
-
-                <td valign="top">
-                    <?php echo JText::sprintf('COM_OSMETA_SEARCH_ENGINE_TITLE_DESC', $this->extension->params->get('meta_title_limit', 70)) ?>
-                </td>
-                <td valign="top">
-                    <?php echo JText::sprintf('COM_OSMETA_DESCRIPTION_DESC', $this->extension->params->get('meta_description_limit', 160)) ?>
-                </td>
-            </tr>
-
-
-            <?php
-            $k = 1;
-            for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
-                $row = $this->metatagsData[$i];
-                $checked = JHTML::_('grid.id', $i, $row->id);
-                ?>
-                <tr class="<?php echo "row$k"; ?>">
-                    <td class="hidden-phone"><?php echo $checked; ?>
-                        <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
-                    </td>
-                    <td>
-                        <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
-                            <?php echo $row->title; ?>
-                        </a>
-                        <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
-                            <?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
-                                <img src="../media/com_osmeta/images/external-link.png" width="14" height="14" />
-                            <?php else : ?>
-                                <span class="icon-out-2"></span>
-                            <?php endif; ?>
-                        </a>
+                </thead>
+                <tr class="hidden-phone">
+                    <td style="width: 20px;"></td>
+                    <td class="title">
+                        <?php echo JText::_('COM_OSMETA_TITLE_DESC') ?>
                     </td>
 
                     <?php if ($this->extension->isPro()) : ?>
-                        <?php Alledia\OSMeta\Pro\Fields::additionalFields($row); ?>
+                        <td>
+                            <?php echo JText::_('COM_OSMETA_ALIAS_DESC') ?>
+                        </td>
                     <?php endif; ?>
 
-                    <td class="field-column">
-                        <textarea name="metatitle[]" class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
+                    <td style="vertical-align: top;">
+                        <?php echo JText::sprintf(
+                            'COM_OSMETA_SEARCH_ENGINE_TITLE_DESC',
+                            $this->extension->params->get('meta_title_limit', 70)
+                        ); ?>
                     </td>
-                    <td class="field-column">
-                        <textarea name="metadesc[]" class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
+                    <td style="vertical-align: top;">
+                        <?php echo JText::sprintf(
+                            'COM_OSMETA_DESCRIPTION_DESC',
+                            $this->extension->params->get('meta_description_limit', 160)
+                        ); ?>
                     </td>
                 </tr>
+
                 <?php
-                $k = 1 - $k;
-            }
-            ?>
-            <tfoot>
+                $k = 1;
+                for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
+                    $row     = $this->metatagsData[$i];
+                    $checked = JHTML::_('grid.id', $i, $row->id);
+                    ?>
+                    <tr class="<?php echo "row$k"; ?>">
+                        <td class="hidden-phone"><?php echo $checked; ?>
+                            <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
+                        </td>
+                        <td>
+                            <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
+                                <?php echo $row->title; ?>
+                            </a>
+                            <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
+                                <span class="icon-out-2"></span>
+                            </a>
+                        </td>
+
+                        <?php if ($this->extension->isPro()) : ?>
+                            <?php Fields::additionalFields($row); ?>
+                        <?php endif; ?>
+
+                        <td class="field-column">
+                            <textarea name="metatitle[]"
+                                      class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
+                        </td>
+                        <td class="field-column">
+                            <textarea name="metadesc[]"
+                                      class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
+                        </td>
+                    </tr>
+                    <?php
+                    $k = 1 - $k;
+                }
+                ?>
+                <tfoot>
                 <tr>
                     <td colspan="<?php echo $colspan; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
                 </tr>
-            </tfoot>
-        </table>
-
+                </tfoot>
+            </table>
         <?php endif; ?>
 
-        <input type="hidden" name="option" value="com_osmeta" />
-        <input type="hidden" name="task" value="view" />
-        <input type="hidden" name="type" value="<?php echo $this->itemType; ?>" />
-        <input type="hidden" name="boxchecked" value="0" />
-        <input type="hidden" name="filter_order" value="<?php echo $this->order ?>" />
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>" />
+        <input type="hidden" name="option" value="com_osmeta"/>
+        <input type="hidden" name="task" value="view"/>
+        <input type="hidden" name="type" value="<?php echo $this->itemType; ?>"/>
+        <input type="hidden" name="boxchecked" value="0"/>
+        <input type="hidden" name="filter_order" value="<?php echo $this->order ?>"/>
+        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>"/>
     </div>
 
 </form>
 
 <?php echo $this->extension->getFooterMarkup(); ?>
 
-<?php if (version_compare(JVERSION, '3.0', 'lt')) : ?>
-    <script src="../media/com_osmeta/js/jquery.js"></script>
-<?php endif; ?>
-
 <script src="../media/com_osmeta/js/jquery.osmetacharcount.min.js"></script>
 
 <script>
     var hashCode = function(s) {
-        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+        return s.split("").reduce(function(a, b) {
+            a = ((a << 5) - a) + b.charCodeAt(0);
+            return a & a
+        }, 0);
     }
 
     var hashedInitialValues = '',
@@ -193,16 +211,16 @@ $colspan = $this->extension->isPro() ? 5 : 4;
         };
 
         $('#articleList textarea.char-count.metatitle').osmetaCharCount({
-            limit: <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
-            message: '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
-            charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
+            limit        : <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
+            message      : '<?php echo JText::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
+            charStr      : '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
 
         $('#articleList textarea.char-count.metadesc').osmetaCharCount({
-            limit: <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
-            message: '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
-            charStr: '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
+            limit        : <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
+            message      : '<?php echo JText::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
+            charStr      : '<?php echo JText::_("COM_OSMETA_CHAR"); ?>',
             charPluralStr: '<?php echo JText::_("COM_OSMETA_CHARS"); ?>'
         });
     })(jQuery);
@@ -212,7 +230,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
     // Overwrite the native submit action, to catch the cancel task
     var nativeSubmitButton = Joomla.submitbutton;
-    Joomla.submitbutton = function(pressbutton) {
+    Joomla.submitbutton    = function(pressbutton) {
         if (pressbutton !== 'save') {
             var hashedValues = getHashedValues();
 
