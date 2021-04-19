@@ -69,13 +69,13 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
                     <th class="title title-column"
                         style="width: <?php echo $this->extension->isPro() ? '20%;' : '25%;'; ?>">
-                        <?php echo JHTML::_(
+                        <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_TITLE_LABEL'),
                             'title',
                             $this->order_Dir,
                             $this->order,
-                            "view"
+                            'view'
                         ); ?>
                     </th>
 
@@ -84,24 +84,24 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     <?php endif; ?>
 
                     <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
-                        <?php echo JHTML::_(
+                        <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'),
                             'meta_title',
                             $this->order_Dir,
                             $this->order,
-                            "view"
+                            'view'
                         ); ?>
                     </th>
 
                     <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
-                        <?php echo JHTML::_(
+                        <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_DESCRIPTION_LABEL'),
                             'meta_desc',
                             $this->order_Dir,
                             $this->order,
-                            "view"
+                            'view'
                         ); ?>
                     </th>
                 </tr>
@@ -137,9 +137,9 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                 $k = 1;
                 for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
                     $row     = $this->metatagsData[$i];
-                    $checked = JHTML::_('grid.id', $i, $row->id);
+                    $checked = HTMLHelper::_('grid.id', $i, $row->id);
                     ?>
-                    <tr class="<?php echo "row$k"; ?>">
+                    <tr class="<?php echo 'row' . $k; ?>">
                         <td class="hidden-phone"><?php echo $checked; ?>
                             <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                         </td>
@@ -191,7 +191,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
 <script>
     let hashCode = function(s) {
-        return s.split("").reduce(function(a, b) {
+        return s.split('').reduce(function(a, b) {
             a = ((a << 5) - a) + b.charCodeAt(0);
             return a & a
         }, 0);
@@ -214,16 +214,16 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
         $('#articleList textarea.char-count.metatitle').osmetaCharCount({
             limit        : <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
-            message      : '<?php echo Text::_("COM_OSMETA_TITLE_TOO_LONG"); ?>',
-            charStr      : '<?php echo Text::_("COM_OSMETA_CHAR"); ?>',
-            charPluralStr: '<?php echo Text::_("COM_OSMETA_CHARS"); ?>'
+            message      : '<?php echo Text::_('COM_OSMETA_TITLE_TOO_LONG'); ?>',
+            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
+            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
         });
 
         $('#articleList textarea.char-count.metadesc').osmetaCharCount({
             limit        : <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
-            message      : '<?php echo Text::_("COM_OSMETA_DESCR_TOO_LONG"); ?>',
-            charStr      : '<?php echo Text::_("COM_OSMETA_CHAR"); ?>',
-            charPluralStr: '<?php echo Text::_("COM_OSMETA_CHARS"); ?>'
+            message      : '<?php echo Text::_('COM_OSMETA_DESCR_TOO_LONG'); ?>',
+            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
+            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
         });
     })(jQuery);
 
@@ -238,7 +238,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
             // Do we have any modified field?
             if (hashedInitialValues !== hashedValues) {
-                if (!confirm('<?php echo Text::_("COM_OSMETA_CONFIRM_CANCEL"); ?>')) {
+                if (!confirm('<?php echo Text::_('COM_OSMETA_CONFIRM_CANCEL'); ?>')) {
                     return;
                 }
             }
