@@ -1,23 +1,23 @@
-(function osmetaCharCountClosure($) {
-    $.fn.osmetaCharCount = function charCount(options) {
-        var defaults = {
+(function($) {
+    $.fn.osmetaCharCount = function charCount(args) {
+        let defaults = {
             limit        : 100,
             message      : 'Your text is too long',
             charStr      : 'char',
             charPluralStr: 'chars',
         };
 
-        var options = $.extend({}, defaults, options);
+        let options = $.extend({}, defaults, args);
 
         if (this.length) {
             return $(this).each(function charCountEachElement() {
-                var $this = $(this);
+                let $this = $(this);
 
-                var addElements = function() {
-                    $this.container    = $('<div>').addClass('char-count-container');
-                    $this.warning      = $('<div>').addClass('char-count-warning').text(options.message);
-                    $this.counter      = $('<div>').addClass('char-count-counter');
-                    $this.counterText  = $('<div>').addClass('char-count-counter-text');
+                let addElements = function() {
+                    $this.container   = $('<div>').addClass('char-count-container');
+                    $this.warning     = $('<div>').addClass('char-count-warning').text(options.message);
+                    $this.counter     = $('<div>').addClass('char-count-counter');
+                    $this.counterText = $('<div>').addClass('char-count-counter-text');
 
                     $this.after($this.container);
                     $this.container.append($this.warning);
@@ -28,7 +28,7 @@
                 };
 
                 $this.update = function() {
-                    var length = $this.val().length;
+                    let length = $this.val().length;
                     if (options.limit < length) {
                         $this.warning.show();
                         $this.counter.text((length - options.limit) * -1);
@@ -46,7 +46,7 @@
                     }
                 };
 
-                $this.on('keyup', function(event) {
+                $this.on('keyup', function() {
                     $this.update();
                 });
 

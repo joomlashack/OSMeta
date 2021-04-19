@@ -22,9 +22,12 @@
  */
 
 use Alledia\OSMeta\Pro\Fields;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
+
+HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
 
 $colspan = $this->extension->isPro() ? 5 : 4;
 ?>
@@ -185,8 +188,6 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 </form>
 
 <?php echo $this->extension->getFooterMarkup(); ?>
-
-<script src="../media/com_osmeta/js/jquery.osmetacharcount.min.js"></script>
 
 <script>
     let hashCode = function(s) {

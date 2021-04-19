@@ -63,6 +63,10 @@
         <license>free</license>
         <targetplatform>3.*</targetplatform>
 
+        <minify>
+            <script>media/js/jquery.osmetacharcount.js</script>
+        </minify>
+
         <relatedExtensions>
             <extension type="library"
                        element="allediaframework">AllediaFramework</extension>
