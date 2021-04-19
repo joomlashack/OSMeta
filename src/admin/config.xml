@@ -6,6 +6,12 @@
            showgoproad="https://www.joomlashack.com/joomla-extensions/osmeta/"
            jedurl="https://extensions.joomla.org/extension/osmeta/"/>
 
+    <fieldset name="main"
+              label="COM_OSMETA_CONFIGURATION_MAIN">
+        <field type="number" label="COM_OSMETA_TITLE_LIMIT_LABEL" name="meta_title_limit" default="70"></field>
+        <field type="number" label="COM_OSMETA_DESC_LIMIT_LABEL" name="meta_description_limit" default="160"></field>
+    </fieldset>
+
     <fieldset name="permissions"
         label="JCONFIG_PERMISSIONS_LABEL"
         description="JCONFIG_PERMISSIONS_DESC">
