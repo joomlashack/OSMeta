@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="component" method="upgrade">
+<extension type="component" method="upgrade">
     <name>com_osmeta</name>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
