@@ -3,7 +3,7 @@
     "description"      : "OSMeta",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
-    "type"             : "joomla.component",
+    "type"             : "joomla-component",
     "extra"            : {
         "element"        : "com_osmeta",
         "element-short"  : "osmeta",

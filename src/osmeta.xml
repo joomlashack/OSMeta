@@ -7,8 +7,8 @@
     <copyright>Copyright 2013-2021 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
-    <version>1.4.15</version>
-    <creationDate>April 19 2021</creationDate>
+    <version>1.4.15a11</version>
+    <creationDate>October 27 2021</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -69,13 +69,12 @@
 
         <relatedExtensions>
             <extension type="library"
-                       element="allediaframework">AllediaFramework</extension>
+                       element="allediaframework">ShackFramework</extension>
 
             <extension type="plugin"
                        group="system"
-                       element="ossystem"
-                       publish="true"
-                       ordering="first">OSSystem</extension>
+                       element="osmylicensesmanager"
+                       ordering="last">ShackExtensionSupport</extension>
 
             <extension type="plugin"
                        group="content"
@@ -103,6 +102,6 @@
             <file>plugins/system/osmetarenderer/include.php</file>
         </obsolete>
 
-        <include>AllediaFreeDefaultFiles</include>
+        <include>ShackDefaultFiles</include>
     </alledia>
 </extension>
