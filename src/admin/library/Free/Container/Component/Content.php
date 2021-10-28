@@ -32,6 +32,7 @@ use stdClass;
 use JRoute;
 use ContentHelperRoute;
 use JUri;
+use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
@@ -180,11 +181,12 @@ class Content extends AbstractContainer
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
+        if (Version::MAJOR_VERSION < 4) {
+            if ($db->getErrorNum()) {
+                echo $db->stderr();
 
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
-
-            return false;
+                return false;
+            }
         }
 
         // Get the total
@@ -311,10 +313,12 @@ class Content extends AbstractContainer
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
+        if (Version::MAJOR_VERSION < 4) {
+            if ($db->getErrorNum()) {
+                echo $db->stderr();
 
-            return false;
+                return false;
+            }
         }
 
         // Get outgoing links

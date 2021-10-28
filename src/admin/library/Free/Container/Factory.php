@@ -101,7 +101,7 @@ class Factory
 
         if (isset($features[$type])) {
             if (class_exists($features[$type]["class"])) {
-                eval('$container = new ' . $features[$type]["class"] . '();');
+                $container = new $features[$type]["class"];
             }
         }
 
