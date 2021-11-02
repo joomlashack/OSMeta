@@ -7,8 +7,8 @@
     <copyright>Copyright 2013-2021 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
-    <version>1.4.15a11</version>
-    <creationDate>October 27 2021</creationDate>
+    <version>1.4.15a14</version>
+    <creationDate>October 28 2021</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -27,6 +27,10 @@
 
     <administration>
         <menu>COM_OSMETA</menu>
+        <submenu>
+            <menu link="option=com_osmeta&amp;type=com_content:Article">COM_CONTENT_ARTICLES</menu>
+            <menu link="option=com_osmeta&amp;type=com_content:ArticleCategory">COM_CATEGORIES</menu>
+        </submenu>
 
         <files folder="admin">
             <folder>features</folder>
@@ -48,7 +52,6 @@
     <media destination="com_osmeta" folder="media">
         <folder>admin</folder>
         <folder>css</folder>
-        <folder>fonts</folder>
         <folder>images</folder>
         <folder>js</folder>
     </media>

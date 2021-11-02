@@ -27,10 +27,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Alledia\Framework\Joomla\View\Admin\AbstractBase;
 
 defined('_JEXEC') or die();
 
-class OSMetaViewOSMeta extends JViewLegacy
+class OSMetaViewOSMeta extends AbstractBase
 {
     /**
      * @var string
