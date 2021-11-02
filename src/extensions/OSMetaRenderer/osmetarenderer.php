@@ -45,7 +45,7 @@ if (defined('OSMETA_LOADED')) {
             $app = JFactory::getApplication();
 
             if ($app->isClient('site')) {
-                $queryData = $_REQUEST;
+                $queryData = $_REQUEST ?? $app->getMenu()->getActive()->query;
                 ksort($queryData);
                 $url = http_build_query($queryData);
 

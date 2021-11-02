@@ -140,7 +140,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     $checked = HTMLHelper::_('grid.id', $i, $row->id);
                     ?>
                     <tr class="<?php echo 'row' . $k; ?>">
-                        <td class="hidden-phone"><?php echo $checked; ?>
+                        <td class="hidden-phone text-center"><?php echo $checked; ?>
                             <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                         </td>
                         <td>
@@ -148,7 +148,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                                 <?php echo $row->title; ?>
                             </a>
                             <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
-                                <span class="icon-out-2"></span>
+
                             </a>
                         </td>
 
@@ -187,8 +187,6 @@ $colspan = $this->extension->isPro() ? 5 : 4;
     </div>
 
 </form>
-
-<?php echo $this->extension->getFooterMarkup(); ?>
 
 <script>
     let hashCode = function(s) {

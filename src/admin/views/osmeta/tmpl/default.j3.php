@@ -187,8 +187,6 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
 </form>
 
-<?php echo $this->extension->getFooterMarkup(); ?>
-
 <script>
     let hashCode = function(s) {
         return s.split('').reduce(function(a, b) {
