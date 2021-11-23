@@ -64,7 +64,7 @@
         <element>osmeta</element>
         <namespace>OSMeta</namespace>
         <license>free</license>
-        <targetplatform>3.*</targetplatform>
+        <targetplatform>3.9</targetplatform>
 
         <minify>
             <script>media/js/jquery.osmetacharcount.js</script>
