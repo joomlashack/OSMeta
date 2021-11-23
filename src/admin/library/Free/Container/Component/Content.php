@@ -3,7 +3,7 @@
  * @package   OSMeta
  * @contact   www.joomlashack.com, help@joomlashack.com
  * @copyright 2013-2021 Joomlashack.com. All rights reserved
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSMeta.
  *
@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 namespace Alledia\OSMeta\Free\Container\Component;
