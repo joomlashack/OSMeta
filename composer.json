@@ -2,15 +2,15 @@
     "name"             : "joomlashack/osmeta",
     "description"      : "OSMeta",
     "minimum-stability": "stable",
-    "license"          : "GPL-2+",
-    "type"             : "joomla.component",
+    "license"          : "GPL-2.0-or-later",
+    "type"             : "joomla-component",
     "extra"            : {
         "element"        : "com_osmeta",
         "element-short"  : "osmeta",
         "name"           : "OSMeta",
         "client"         : "administrator",
         "package-license": "free",
-        "target-platform": "3.*",
+        "target-platform": ".*",
         "infourl"        : "/changelog/osmeta/"
     },
     "authors"          : [
@@ -20,7 +20,7 @@
         }
     ],
     "require"          : {
-        "php"     : ">= 5.6",
+        "php"     : ">=7.2.5",
         "ext-json": "*"
     }
 }

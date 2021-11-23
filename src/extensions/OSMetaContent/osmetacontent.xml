@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="plugin" group="content" method="upgrade">
+<extension type="plugin" group="content" method="upgrade">
     <name>Content - OSMeta Content</name>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
@@ -7,8 +7,8 @@
     <copyright>Copyright 2011-2020 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>OSMeta is an extension to easily manage meta titles, descriptions for Joomla articles</description>
-    <version>1.4.15</version>
-    <creationDate>April 19 2021</creationDate>
+    <version>2.0.0rc1</version>
+    <creationDate>November 23 2021</creationDate>
 
     <alledia>
         <element>osmetacontent</element>

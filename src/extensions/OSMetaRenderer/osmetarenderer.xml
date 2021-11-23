@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5.5" type="plugin" group="system" method="upgrade">
+<extension type="plugin" group="system" method="upgrade">
     <name>System - OSMeta Renderer</name>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
@@ -7,8 +7,8 @@
     <copyright>Copyright 2011-2020 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>This system plugin prepares the content so that OSMeta can add meta data 'on the fly'.</description>
-    <version>1.4.15</version>
-    <creationDate>April 19 2021</creationDate>
+    <version>2.0.0rc1</version>
+    <creationDate>November 23 2021</creationDate>
 
     <alledia>
         <element>osmetarenderer</element>

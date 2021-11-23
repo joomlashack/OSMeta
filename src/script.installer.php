@@ -3,7 +3,7 @@
  * @package   OSMeta
  * @contact   www.joomlashack.com, help@joomlashack.com
  * @copyright 2013-2021 Joomlashack.com. All rights reserved
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSMeta.
  *
@@ -18,39 +18,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 use Alledia\Installer\AbstractScript;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\InstallerAdapter;
 
 defined('_JEXEC') or die();
 
-$includePath = __DIR__ . '/admin/library/Installer/include.php';
-if (!file_exists($includePath)) {
-    $includePath = __DIR__ . '/library/Installer/include.php';
-}
+$installPath = __DIR__ . (is_dir(__DIR__ . '/admin') ? '/admin' : '');
+require_once $installPath . '/library/Installer/include.php';
 
-require_once $includePath;
-
-/**
- * OSMeta Installer Script
- *
- * @since  1.0
- */
-class Com_OSMetaInstallerScript extends AbstractScript
+class Com_osmetainstallerScript extends AbstractScript
 {
     /**
-     * Method to run after an install/update method
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function postFlight($type, $parent)
+    protected function customPostFlight(string $type, InstallerAdapter $parent)
     {
-        parent::postFlight($type, $parent);
-
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         // Remove the old pkg_osmeta, if existent
         $query = $db->getQuery(true)
@@ -63,12 +51,12 @@ class Com_OSMetaInstallerScript extends AbstractScript
         $db->setQuery($query)->execute();
 
         // Remove the old tables, if existent
-        $tables = array(
+        $tables = [
             '#__osmeta_extensions',
             '#__osmeta_meta_extensions',
             '#__osmeta_keywords',
-            '#__osmeta_keywords_items'
-        );
+            '#__osmeta_keywords_items',
+        ];
         foreach ($tables as $table) {
             $query = 'DROP TABLE IF EXISTS ' . $db->quoteName($table);
 

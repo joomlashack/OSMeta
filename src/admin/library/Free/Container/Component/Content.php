@@ -3,7 +3,7 @@
  * @package   OSMeta
  * @contact   www.joomlashack.com, help@joomlashack.com
  * @copyright 2013-2021 Joomlashack.com. All rights reserved
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSMeta.
  *
@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OSMeta.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 namespace Alledia\OSMeta\Free\Container\Component;
@@ -32,6 +32,7 @@ use stdClass;
 use JRoute;
 use ContentHelperRoute;
 use JUri;
+use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
@@ -180,11 +181,12 @@ class Content extends AbstractContainer
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
+        if (Version::MAJOR_VERSION < 4) {
+            if ($db->getErrorNum()) {
+                echo $db->stderr();
 
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
-
-            return false;
+                return false;
+            }
         }
 
         // Get the total
@@ -311,10 +313,12 @@ class Content extends AbstractContainer
         $db->setQuery($sql, $lim0, $lim);
         $rows = $db->loadObjectList();
 
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
+        if (Version::MAJOR_VERSION < 4) {
+            if ($db->getErrorNum()) {
+                echo $db->stderr();
 
-            return false;
+                return false;
+            }
         }
 
         // Get outgoing links

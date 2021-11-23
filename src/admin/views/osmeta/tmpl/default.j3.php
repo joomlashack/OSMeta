@@ -28,8 +28,6 @@ use Joomla\CMS\Language\Text;
 defined('_JEXEC') or die();
 
 HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
-HTMLHelper::_('behavior.core');
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 $colspan = $this->extension->isPro() ? 5 : 4;
 ?>
@@ -38,9 +36,11 @@ $colspan = $this->extension->isPro() ? 5 : 4;
       method="post"
       name="adminForm"
       id="adminForm">
+    <div id="j-sidebar-container" class="span2">
+        <?php echo $this->submenu; ?>
+    </div>
 
-    <div class="row">
-        <div class="col-md-12">
+    <div id="j-main-container" class="span10">
         <table style="width: 100%;">
             <tr>
                 <td class="ost-filters">
@@ -140,7 +140,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     $checked = HTMLHelper::_('grid.id', $i, $row->id);
                     ?>
                     <tr class="<?php echo 'row' . $k; ?>">
-                        <td class="hidden-phone text-center"><?php echo $checked; ?>
+                        <td class="hidden-phone"><?php echo $checked; ?>
                             <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                         </td>
                         <td>
@@ -148,7 +148,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                                 <?php echo $row->title; ?>
                             </a>
                             <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
-
+                                <span class="icon-out-2"></span>
                             </a>
                         </td>
 
@@ -183,7 +183,6 @@ $colspan = $this->extension->isPro() ? 5 : 4;
         <input type="hidden" name="boxchecked" value="0"/>
         <input type="hidden" name="filter_order" value="<?php echo $this->order ?>"/>
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>"/>
-    </div>
     </div>
 
 </form>
