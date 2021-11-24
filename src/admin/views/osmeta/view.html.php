@@ -91,10 +91,10 @@ class OSMetaViewOSMeta extends AbstractBase
     {
         ToolbarHelper::title(Text::_('COM_OSMETA_META_TAGS_MANAGER'), 'logo');
 
-        ToolBarHelper::apply("save");
+        ToolbarHelper::apply("save");
 
         if ($this->metatagsContainer->supportGenerateTitle) {
-            ToolBarHelper::custom(
+            ToolbarHelper::custom(
                 'copyItemTitleToSearchEngineTitle',
                 'shuffle',
                 '',
@@ -104,7 +104,7 @@ class OSMetaViewOSMeta extends AbstractBase
         }
 
         if ($this->metatagsContainer->supportGenerateDescription) {
-            ToolBarHelper::custom(
+            ToolbarHelper::custom(
                 'generateDescriptions',
                 'pencil-2',
                 '',
@@ -113,7 +113,7 @@ class OSMetaViewOSMeta extends AbstractBase
             );
         }
 
-        ToolBarHelper::cancel("cancel");
+        ToolbarHelper::cancel();
         ToolbarHelper::preferences('com_osmeta');
 
         $app = Factory::getApplication();
