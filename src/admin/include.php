@@ -21,30 +21,35 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework;
+use Alledia\Framework\AutoLoader;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
 
-// Alledia Framework
-if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
-    $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
-
-    if (file_exists($allediaFrameworkPath)) {
-        require_once $allediaFrameworkPath;
-    } else {
-        $app = JFactory::getApplication();
+try {
+    $frameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
+    if (!(is_file($frameworkPath) && include $frameworkPath)) {
+        $app = Factory::getApplication();
 
         if ($app->isClient('administrator')) {
-            $app->enqueueMessage('[OSMeta] Alledia framework not found', 'error');
+            $app->enqueueMessage('[OSMeta] Joomlashack framework not found', 'error');
         }
+        return false;
     }
+
+    if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSMETA_LOADED')) {
+        define('OSMETA_ADMIN', __DIR__);
+        define('OSMETA_LIBRARY', OSMETA_ADMIN . '/library');
+
+        AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
+
+        define('OSMETA_LOADED', 1);
+    }
+
+} catch (Throwable $error) {
+    Factory::getApplication()->enqueueMessage('[OSMap] Unable to initialize: ' . $error->getMessage(), 'error');
+
+    return false;
 }
 
-if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
-    define('OSMETA_ADMIN', __DIR__);
-    define('OSMETA_LIBRARY', OSMETA_ADMIN . '/library');
-
-    Framework\AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
-
-    define('OSMETA_LOADED', 1);
-}
+return defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSMETA_LOADED');

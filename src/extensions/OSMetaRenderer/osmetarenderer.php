@@ -23,17 +23,12 @@
 
 use Alledia\Framework\Joomla\Extension;
 use Alledia\OSMeta;
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
 
-include_once JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
-
-if (defined('OSMETA_LOADED')) {
-    /**
-     * OSMeta System Plugin - Renderer
-     *
-     * @since  1.0
-     */
+$includePath = JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
+if (is_file($includePath) && (include $includePath)) {
     class PlgSystemOSMetaRenderer extends Extension\AbstractPlugin
     {
         /**
@@ -42,7 +37,7 @@ if (defined('OSMETA_LOADED')) {
          */
         public function onAfterRender()
         {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
 
             if ($app->isClient('site')) {
                 $queryData = $_REQUEST ?? $app->getMenu()->getActive()->query;
@@ -51,8 +46,6 @@ if (defined('OSMETA_LOADED')) {
 
                 $buffer = $app->getBody();
 
-                // Metatags processing on the response body
-                $factory = null;
                 if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
                     $factory = OSMeta\Pro\Container\Factory::getInstance();
                 } else {

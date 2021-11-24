@@ -23,62 +23,41 @@
 
 namespace Alledia\OSMeta\Free\Container;
 
-use JFactory;
-use JURI;
-use JRoute;
-use JFolder;
-use JText;
+use Joomla\CMS\Filesystem\Folder;
 
 defined('_JEXEC') or die();
 
-/**
- * Metatags Container Factory Class
- *
- * @since  1.0
- */
 class Factory
 {
     /**
      * Class instance
      *
-     * @var Factory
+     * @var self
      */
-    private static $instance;
+    protected static $instance = null;
 
     /**
-     * Features cache
-     *
-     * @var     array
-     * @access  private
-     * @since   1.0
-     */
-    private $features = null;
-
-    /**
-     * Metadata By Query Map
-     *
-     * @var     array
-     * @access  public
-     * @since   1.0
-     */
-    public $metadataByQueryMap = array();
-
-    /**
-     * A cache for the metadata
-     *
      * @var array
      */
-    protected $metadata;
+    protected $features = null;
 
     /**
-     * Get the singleton instance of this class
-     *
-     * @return Factory The instance
+     * @var array
+     */
+    public $metadataByQueryMap = [];
+
+    /**
+     * @var array
+     */
+    protected $metadata = null;
+
+    /**
+     * @return self
      */
     public static function getInstance()
     {
-        if (empty(self::$instance)) {
-            self::$instance = new self;
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -87,21 +66,18 @@ class Factory
     /**
      * Method to get container by ID
      *
-     * @param string $type   Container Type
-     * @param array  $params Request params
-     *
-     * @access  public
+     * @param string $type Container Type
      *
      * @return mixed
      */
-    public function getContainerById($type, $params = null)
+    public function getContainerById($type)
     {
         $features  = $this->getFeatures();
         $container = 'com_content:Article';
 
         if (isset($features[$type])) {
-            if (class_exists($features[$type]["class"])) {
-                $container = new $features[$type]["class"];
+            if (class_exists($features[$type]['class'])) {
+                $container = new $features[$type]['class']();
             }
         }
 
@@ -109,18 +85,15 @@ class Factory
     }
 
     /**
-     * Method to get container by Request
-     *
      * @param string $queryString Query String
      *
-     * @access  public
-     *
      * @return mixed
+     * @throws \Exception
      */
     public function getContainerByRequest($queryString = null)
     {
-        $app                   = JFactory::getApplication();
-        $params                = array();
+        $app                   = \Joomla\CMS\Factory::getApplication();
+        $params                = [];
         $resultFeatureId       = null;
         $resultFeaturePriority = -1;
 
@@ -132,8 +105,8 @@ class Factory
         foreach ($features as $featureId => $feature) {
             $success = true;
 
-            if (isset($feature["params"])) {
-                foreach ($feature["params"] as $paramsArray) {
+            if (isset($feature['params'])) {
+                foreach ($feature['params'] as $paramsArray) {
                     $success = true;
 
                     foreach ($paramsArray as $key => $value) {
@@ -143,12 +116,10 @@ class Factory
                             } else {
                                 $success = $success && isset($params[$key]);
                             }
+                        } elseif ($value !== null) {
+                            $success = $success && ($app->input->getCmd($key) == $value);
                         } else {
-                            if ($value !== null) {
-                                $success = $success && ($app->input->getCmd($key) == $value);
-                            } else {
-                                $success = $success && ($app->input->getCmd($key, null) !== null);
-                            }
+                            $success = $success && ($app->input->getCmd($key) !== null);
                         }
                     }
 
@@ -159,7 +130,7 @@ class Factory
                 }
             }
 
-            $featurePriority = isset($feature['priority']) ? $feature['priority'] : 0;
+            $featurePriority = $feature['priority'] ?? 0;
 
             if ($success && $featurePriority > $resultFeaturePriority) {
                 $resultFeatureId       = $featureId;
@@ -167,7 +138,7 @@ class Factory
             }
         }
 
-        return $this->getContainerById($resultFeatureId, $params);
+        return $this->getContainerById($resultFeatureId);
     }
 
     /**
@@ -184,27 +155,24 @@ class Factory
         $container = false;
 
         $component = ucfirst(str_replace('com_', '', $component));
-        $className = "Alledia\OSMeta\Free\Container\Component\\{$component}";
+        $className = "\\Alledia\\OSMeta\\Free\\Container\\Component\\{$component}";
 
         if (class_exists($className)) {
-            $container = new $className;
+            $container = new $className();
         }
 
         return $container;
     }
 
     /**
-     * Method to get metadata from the container
-     *
      * @param string $queryString Query string
      *
-     * @access  public
-     *
      * @return array
+     * @throws \Exception
      */
     public function getMetadata($queryString)
     {
-        $result = array();
+        $result = [];
 
         if (isset($this->metadataByQueryMap[$queryString])) {
             $result = $this->metadataByQueryMap[$queryString];
@@ -221,14 +189,11 @@ class Factory
     }
 
     /**
-     * Method to process the body, injecting the metadata
-     *
      * @param string $body        Body buffer
      * @param string $queryString Query string
      *
-     * @access  public
-     *
      * @return string
+     * @throws \Exception
      */
     public function processBody($body, $queryString)
     {
@@ -240,12 +205,12 @@ class Factory
             $this->processMetadata($this->metadata, $queryString);
 
             // Meta title
-            if ($this->metadata && isset($this->metadata["metatitle"]) && !empty($this->metadata["metatitle"])) {
+            if ($this->metadata && isset($this->metadata['metatitle']) && !empty($this->metadata['metatitle'])) {
                 $replaced = 0;
 
-                $config = JFactory::getConfig();
+                $config = \Joomla\CMS\Factory::getConfig();
 
-                $metaTitle           = $this->metadata["metatitle"];
+                $metaTitle           = $this->metadata['metatitle'];
                 $configSiteNameTitle = $config->get('sitename_pagetitles');
                 $configSiteName      = $config->get('sitename');
                 $siteNameSeparator   = '-';
@@ -278,7 +243,7 @@ class Factory
 
                 // Process the window title tag
                 $body = preg_replace(
-                    "/<title[^>]*>[^<]*<\/title>/i",
+                    '/<title[^>]*>[^<]*<\/title>/i',
                     '<title>' . htmlspecialchars($browserTitle) . '</title>',
                     $body,
                     1,
@@ -287,7 +252,7 @@ class Factory
 
                 // Process the meta title
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+title[\"\\\']+[^>]*>/i",
                     '<meta name="title" content="' . htmlspecialchars($metaTitle) . '" />',
                     $body,
                     1,
@@ -304,7 +269,7 @@ class Factory
                 }
             } elseif ($this->metadata) {
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+title[\\\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+title[\"\\\']+[^>]*>/i",
                     '',
                     $body,
                     1,
@@ -313,14 +278,14 @@ class Factory
             }
 
             // Meta description
-            if ($this->metadata && isset($this->metadata["metadescription"]) && !empty($this->metadata["metadescription"])) {
+            if ($this->metadata && isset($this->metadata['metadescription']) && !empty($this->metadata['metadescription'])) {
                 $replaced = 0;
 
-                $metaDescription = $this->metadata["metadescription"];
+                $metaDescription = $this->metadata['metadescription'];
 
                 // Meta description tag
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\\\"\\\']+description[\\\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+description[\"\\\']+[^>]*>/i",
                     '<meta name="description" content="' . htmlspecialchars($metaDescription) . '" />',
                     $body,
                     1,
@@ -342,14 +307,11 @@ class Factory
     }
 
     /**
-     * Method to set the metadata by request
-     *
      * @param string $query    Query
      * @param string $metadata Metadata
      *
-     * @access  public
-     *
      * @return void
+     * @throws \Exception
      */
     public function setMetadataByRequest($query, $metadata)
     {
@@ -370,14 +332,12 @@ class Factory
     public function getFeatures()
     {
         if (empty($this->features)) {
-            $features = array();
-
-            jimport('joomla.filesystem.folder');
+            $features = [];
 
             $path  = JPATH_SITE . '/administrator/components/com_osmeta/features';
-            $files = JFolder::files($path, '.php');
+            $files = Folder::files($path, '.php');
 
-            $features = array();
+            $features = [];
 
             foreach ($files as $file) {
                 include $path . '/' . $file;
@@ -403,8 +363,8 @@ class Factory
     /**
      * Process the metada
      *
-     * @param  array  $metadata    The metadata
-     * @param  string $queryString Request query string
+     * @param array  $metadata    The metadata
+     * @param string $queryString Request query string
      *
      * @return void
      */

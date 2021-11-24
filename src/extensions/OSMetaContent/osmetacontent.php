@@ -21,37 +21,35 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Extension;
-use Alledia\Framework;
+use Alledia\Framework\Factory;
+use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta;
 use Joomla\CMS\Form\Form;
 
 defined('_JEXEC') or die();
 
-include_once JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
+$includePath = JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
 
-jimport('joomla.filesystem.file');
-
-if (defined('OSMETA_LOADED')) {
-    class PlgContentOSMetaContent extends Extension\AbstractPlugin
+if (is_file($includePath) && (include $includePath)) {
+    class PlgContentOSMetaContent extends AbstractPlugin
     {
         /**
-         * Event method onContentAfterSave, to store the meta data from the article form
-         *
-         * @access  public
+         * @param string $context
+         * @param object $content
          *
          * @return bool
+         * @throws Exception
          */
-        public function onContentAfterSave($context, $content, $isNew)
+        public function onContentAfterSave($context, $content)
         {
             if ($context === 'com_content.article' || $context === 'com_categories.category') {
-                $app   = Framework\Factory::getApplication();
+                $app   = Factory::getApplication();
                 $input = $app->input;
 
                 $option = $input->getCmd('option');
 
                 if (is_object($content) && isset($content->id)) {
-                    if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
+                    if (class_exists('\\Alledia\\OSMeta\\Pro\\Container\\Factory')) {
                         $factory = OSMeta\Pro\Container\Factory::getInstance();
                     } else {
                         $factory = OSMeta\Free\Container\Factory::getInstance();
@@ -61,29 +59,15 @@ if (defined('OSMETA_LOADED')) {
                     if (is_object($container)) {
                         $articleOSMetadataInput = json_decode($content->metadata);
 
-                        $id       = array($content->id);
-                        $title    = array($articleOSMetadataInput->metatitle);
-                        $metaDesc = array($content->metadesc);
-                        $alias    = array($content->alias);
+                        $id       = [$content->id];
+                        $title    = [$articleOSMetadataInput->metatitle];
+                        $metaDesc = [$content->metadesc];
+                        $alias    = [$content->alias];
 
                         $container->saveMetatags($id, $title, $metaDesc, $alias);
                     }
                 }
             }
-
-            return true;
-        }
-
-        /**
-         * Event method onAfterContentSave, to store the meta data from the article form
-         *
-         * @access  public
-         *
-         * @return bool
-         */
-        public function onAfterContentSave($content, $isNew)
-        {
-            $this->onContentAfterSave('', $content, $isNew);
 
             return true;
         }
@@ -101,7 +85,7 @@ if (defined('OSMETA_LOADED')) {
                 || $form->getName() === 'com_categories.category'
                 || $form->getName() === 'com_categories.categorycom_content'
             ) {
-                Framework\Factory::getLanguage()->load('com_osmeta', OSMETA_ADMIN);
+                Factory::getLanguage()->load('com_osmeta', OSMETA_ADMIN);
 
                 $xml = file_get_contents(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
                 $js  = '
@@ -116,7 +100,7 @@ if (defined('OSMETA_LOADED')) {
                 $form->load($xml, true);
 
                 // Add Javascript code to sort the fields
-                $doc = Framework\Factory::getDocument();
+                $doc = Factory::getDocument();
 
                 $doc->addScriptDeclaration(
                     '/*!

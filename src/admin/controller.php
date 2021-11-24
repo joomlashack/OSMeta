@@ -21,32 +21,27 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Plugin\PluginHelper;
+
 defined('_JEXEC') or die();
 
 class OSMetaController extends JControllerLegacy
 {
     /**
-     * Method to display the controller's view
-     *
-     * @param bool  $cachable  Cachable
-     * @param array $urlparams URL Params
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
+     * @throws Exception
      */
-    public function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = [])
     {
         $this->view();
     }
 
     /**
-     * Method to display the Meta Tags Manager's view
-     *
-     * @access  public
      * @return void
-     * @since   1.0
-     *
+     * @throws Exception
      */
     public function view()
     {
@@ -54,26 +49,20 @@ class OSMetaController extends JControllerLegacy
     }
 
     /**
-     * Method to the Save action for Meta Tags Manager
-     *
-     * @access  public
      * @return void
-     * @since   1.0
-     *
+     * @throws Exception
      */
     public function save()
     {
-        JFactory::getApplication()->enqueueMessage(JText::_('COM_OSMETA_SUCCESSFULLY_SAVED'), 'message');
+        Factory::getApplication()->enqueueMessage(Text::_('COM_OSMETA_SUCCESSFULLY_SAVED'));
         $this->actionManager('save');
     }
 
     /**
      * Method to the Copy Item Title to Title action for Meta Tags Manager
      *
-     * @access  public
      * @return void
-     * @since   1.0
-     *
+     * @throws Exception
      */
     public function copyItemTitleToSearchEngineTitle()
     {
@@ -81,12 +70,8 @@ class OSMetaController extends JControllerLegacy
     }
 
     /**
-     * Method to the Generate Descriptions action for Meta Tags Manager
-     *
-     * @access  public
      * @return void
-     * @since   1.0
-     *
+     * @throws Exception
      */
     public function generateDescriptions()
     {
@@ -94,20 +79,17 @@ class OSMetaController extends JControllerLegacy
     }
 
     /**
-     * Method to the execute actions
-     *
      * @param string $task Task name
      *
-     * @access  private
      * @return void
-     * @since   1.0
+     * @throws Exception
      *
      */
-    private function actionManager($task)
+    protected function actionManager($task)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
-        $itemType = $app->input->getString('type', null);
+        $itemType = $app->input->getString('type');
         if (empty($itemType)) {
             $itemType = 'com_content:Article';
             $app->input->set('type', $itemType);
@@ -125,32 +107,26 @@ class OSMetaController extends JControllerLegacy
 
         $metatagsContainer = $factory->getContainerById($itemType);
 
-        if (!is_object($metatagsContainer)) {
-            // TODO: throw error here.
-        }
-
-        $cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+        $cid = Factory::getApplication()->input->get('cid', [], 'array');
 
         // Execute the actions
         switch ($task) {
-            case "save":
+            case 'save':
                 // Content
-                $ids              = $app->input->get('ids', array(), 'array');
-                $metatitles       = $app->input->get('metatitle', array(), 'array');
-                $metadescriptions = $app->input->get('metadesc', array(), 'array');
-                $aliases          = $app->input->get('alias', array(), 'array');
+                $ids              = $app->input->get('ids', [], 'array');
+                $metatitles       = $app->input->get('metatitle', [], 'array');
+                $metadescriptions = $app->input->get('metadesc', [], 'array');
+                $aliases          = $app->input->get('alias', [], 'array');
                 $metatagsContainer->saveMetatags($ids, $metatitles, $metadescriptions, $aliases);
-
                 break;
 
-            case "copyItemTitleToSearchEngineTitle":
+            case 'copyItemTitleToSearchEngineTitle':
                 if ($metatagsContainer->supportGenerateTitle) {
                     $metatagsContainer->copyItemTitleToSearchEngineTitle($cid);
                 }
-
                 break;
 
-            case "generateDescriptions":
+            case 'generateDescriptions':
                 if ($metatagsContainer->supportGenerateDescription) {
                     $metatagsContainer->GenerateDescriptions($cid);
                 }
@@ -163,21 +139,20 @@ class OSMetaController extends JControllerLegacy
 
         $result = $metatagsContainer->getMetatags($limitstart, $limit);
 
-        jimport('joomla.html.pagination');
-        $pageNav = new JPagination($result['total'], $limitstart, $limit);
+        $pageNav = new Pagination($result['total'], $limitstart, $limit);
 
         $filter   = $metatagsContainer->getFilter();
         $features = $factory->getFeatures();
-        $order    = $app->input->getCmd("filter_order", "title");
-        $orderDir = $app->input->getCmd("filter_order_Dir", "ASC");
+        $order    = $app->input->getCmd('filter_order', 'title');
+        $orderDir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         // Add a warning message if the plugins are disabled
-        if (!JPluginHelper::isEnabled('content', 'osmetacontent')) {
-            $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_CONTENT_PLUGIN'), 'warning');
+        if (!PluginHelper::isEnabled('content', 'osmetacontent')) {
+            $app->enqueueMessage(Text::_('COM_OSMETA_DISABLED_CONTENT_PLUGIN'), 'warning');
         }
 
-        if (!JPluginHelper::isEnabled('system', 'osmetarenderer')) {
-            $app->enqueueMessage(JText::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
+        if (!PluginHelper::isEnabled('system', 'osmetarenderer')) {
+            $app->enqueueMessage(Text::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
         }
 
         $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
@@ -209,7 +184,7 @@ class OSMetaController extends JControllerLegacy
     {
         foreach ($contentTypes as $type => $data) {
             JHtmlSidebar::addEntry(
-                JText::_($data['name']),
+                Text::_($data['name']),
                 'index.php?option=com_osmeta&type=' . urlencode($type),
                 $itemType === $type
             );

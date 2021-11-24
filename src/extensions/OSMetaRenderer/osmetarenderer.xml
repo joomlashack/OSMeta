@@ -28,7 +28,7 @@
                    name="customfooter"
                    media="com_osmeta"
                    showgoproad="0"
-                   jedurl="http://extensions.joomla.org/extension/osmeta"/>
+                   jedurl="https://extensions.joomla.org/extension/osmeta"/>
         </fieldset>
     </config>
 </extension>

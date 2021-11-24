@@ -24,27 +24,19 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use JFactory;
-use JModelLegacy;
-use stdClass;
-use JRoute;
 use ContentHelperRoute;
-use JUri;
-use JHtml;
-use JText;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
-if (!class_exists('ContentHelperRoute')) {
-    require JPATH_SITE . '/components/com_content/helpers/route.php';
-}
+\JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-/**
- * Article Category Metatags Container
- *
- * @since  1.0
- */
 class Categories extends AbstractContainer
 {
     /**
@@ -56,20 +48,16 @@ class Categories extends AbstractContainer
     public $code = 4;
 
     /**
-     * Get meta tags
-     *
-     * @param int $lim0   Offset
-     * @param int $lim    Limit
-     * @param int $filter Filter
-     *
-     * @access  public
+     * @param int $lim0 Offset
+     * @param int $lim  Limit
      *
      * @return array
+     * @throws \Exception
      */
-    public function getMetatags($lim0, $lim, $filter = null)
+    public function getMetatags($lim0, $lim)
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle , c.extension, c.alias
             FROM
@@ -87,35 +75,35 @@ class Categories extends AbstractContainer
             '-1'
         );
 
-        if ($search != "") {
-            $sql .= " AND (";
-            $sql .= " c.title LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR m.title LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.metadesc LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.alias LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.id = " . $db->quote($search);
-            $sql .= ")";
+        if ($search != '') {
+            $sql .= ' AND (';
+            $sql .= ' c.title LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR m.title LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.metadesc LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.alias LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.id = ' . $db->quote($search);
+            $sql .= ')';
         }
 
         if ($authorId > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
+            $sql .= ' AND c.created_user_id=' . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.published=1";
+                $sql .= ' AND c.published=1';
                 break;
             case 'U':
-                $sql .= " AND c.published=0";
+                $sql .= ' AND c.published=0';
                 break;
         }
 
-        if ($comContentFilterShowEmptyDescriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != '-1') {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
         if (!empty($access)) {
-            $sql .= " AND c.access = " . $db->quote($access);
+            $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
         // Sorting
@@ -123,25 +111,25 @@ class Categories extends AbstractContainer
         $order_dir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         switch ($order) {
-            case "meta_title":
-                $sql .= " ORDER BY metatitle ";
+            case 'meta_title':
+                $sql .= ' ORDER BY metatitle ';
                 break;
 
-            case "meta_desc":
-                $sql .= " ORDER BY metadesc ";
+            case 'meta_desc':
+                $sql .= ' ORDER BY metadesc ';
                 break;
 
             default:
-                $sql .= " ORDER BY title ";
+                $sql .= ' ORDER BY title ';
                 break;
         }
 
         $order_dir = strtoupper($order_dir);
 
-        if ($order_dir === "ASC") {
-            $sql .= " ASC";
+        if ($order_dir === 'ASC') {
+            $sql .= ' ASC';
         } else {
-            $sql .= " DESC";
+            $sql .= ' DESC';
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -151,7 +139,7 @@ class Categories extends AbstractContainer
             if ($db->getErrorNum()) {
                 echo $db->stderr();
 
-                return false;
+                return [];
             }
         }
 
@@ -167,18 +155,18 @@ class Categories extends AbstractContainer
 
             // Get the category view url
             $url = ContentHelperRoute::getCategoryRoute($row->id);
-            $url = JRoute::_($url);
-            $uri = JUri::getInstance();
-            $url = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url = Route::_($url);
+            $uri = Uri::getInstance();
+            $url = $uri->toString(['scheme', 'host', 'port']) . $url;
             $url = str_replace('/administrator/', '/', $url);
 
             $row->view_url = $url;
         }
 
-        return array(
+        return [
             'rows'  => $rows,
             'total' => $total
-        );
+        ];
     }
 
     /**
@@ -192,32 +180,28 @@ class Categories extends AbstractContainer
      */
     public function getMetadataByRequest($query)
     {
-        $params = array();
+        $params = [];
         parse_str($query, $params);
         $metadata = $this->getDefaultMetadata();
 
-        if (isset($params["id"])) {
-            $metadata = $this->getMetadata($params["id"]);
+        if (isset($params['id'])) {
+            $metadata = $this->getMetadata($params['id']);
         }
 
         return $metadata;
     }
 
     /**
-     * Get Pages
-     *
-     * @param int $lim0   Offset
-     * @param int $lim    Limit
-     * @param int $filter Filter
-     *
-     * @access  public
+     * @param int $lim0 Offset
+     * @param int $lim  Limit
      *
      * @return array
+     * @throws \Exception
      */
-    public function getPages($lim0, $lim, $filter = null)
+    public function getPages($lim0, $lim)
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
         $sql = "SELECT SQL_CALC_FOUND_ROWS
             c.id, c.title, c.published,
         c.description AS content
@@ -234,34 +218,34 @@ class Categories extends AbstractContainer
             '-1'
         );
 
-        if ($search != "") {
+        if ($search != '') {
             if (is_numeric($search)) {
-                $sql .= " AND c.id=" . $db->quote($search);
+                $sql .= ' AND c.id=' . $db->quote($search);
             } else {
-                $sql .= " AND c.title LIKE " . $db->quote('%' . $search . '%');
+                $sql .= ' AND c.title LIKE ' . $db->quote('%' . $search . '%');
             }
         }
 
         if ($authorId > 0) {
-            $sql .= " AND c.created_user_id=" . $db->quote($authorId);
+            $sql .= ' AND c.created_user_id=' . $db->quote($authorId);
         }
 
         switch ($state) {
             case 'P':
-                $sql .= " AND c.published=1";
+                $sql .= ' AND c.published=1';
                 break;
 
             case 'U':
-                $sql .= " AND c.published=0";
+                $sql .= ' AND c.published=0';
                 break;
         }
 
-        if ($comContentFilterShowEmptyDescriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != '-1') {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
         if (!empty($access)) {
-            $sql .= " AND c.access = " . $db->quote($access);
+            $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -270,7 +254,7 @@ class Categories extends AbstractContainer
         if ($db->getErrorNum()) {
             echo $db->stderr();
 
-            return false;
+            return [];
         }
 
         // Get outgoing links
@@ -283,40 +267,37 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Save meta tags
-     *
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
      * @param array $aliases          Aliases
      *
-     * @access  public
-     *
      * @return void
+     * @throws \Exception
      */
     public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
 
         for ($i = 0; $i < count($ids); $i++) {
             // Get current category metadata
-            $sql = "SELECT metadata, alias FROM #__categories"
-                . " WHERE id=" . $db->quote($ids[$i]);
+            $sql = 'SELECT metadata, alias FROM #__categories'
+                . ' WHERE id=' . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $current = $db->loadObject();
 
             // Update the metadata
             $metadata = json_decode($current->metadata);
             if (!is_object($metadata)) {
-                $metadata = new stdClass;
+                $metadata = (object)[];
             }
             $metadata->metatitle = $metatitles[$i];
             $metadata            = json_encode($metadata);
 
-            $sql = "UPDATE #__categories SET "
-                . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
-                . " metadata=" . $db->quote($metadata);
+            $sql = 'UPDATE #__categories SET '
+                . ' metadesc=' . $db->quote($metadescriptions[$i]) . ', '
+                . ' metadata=' . $db->quote($metadata);
 
             if (isset($aliases[$i])) {
                 if (!empty($aliases[$i])) {
@@ -325,39 +306,39 @@ class Categories extends AbstractContainer
                     if ($current->alias !== $alias) {
                         // Check if the alias already exists and ignore it
                         if ($this->isUniqueAlias($alias)) {
-                            $sql .= ", alias=" . $db->quote($alias);
+                            $sql .= ', alias=' . $db->quote($alias);
                         } else {
                             $app->enqueueMessage(
-                                JText::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
+                                Text::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
                                 'warning'
                             );
                         }
                     }
 
                 } else {
-                    JFactory::getApplication()->enqueueMessage(
-                        JText::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
+                    Factory::getApplication()->enqueueMessage(
+                        Text::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
                         'warning'
                     );
                 }
             }
 
-            $sql .= " WHERE id=" . $db->quote($ids[$i]);
+            $sql .= ' WHERE id=' . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->execute();
 
             // Insert/Update OS Metadata
-            $sql = "INSERT INTO #__osmeta_metadata (item_id,
+            $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                 item_type, title, description)
                 VALUES (
-                " . $db->quote($ids[$i]) . ",
+                ' . $db->quote($ids[$i]) . ",
                 '{$this->code}',
-                " . $db->quote($metatitles[$i]) . ",
-                " . $db->quote($metadescriptions[$i]) . "
+                " . $db->quote($metatitles[$i]) . ',
+                ' . $db->quote($metadescriptions[$i]) . '
                 ) ON DUPLICATE KEY
                     UPDATE
-                    title=" . $db->quote($metatitles[$i]) . " ,
-                    description=" . $db->quote($metadescriptions[$i]);
+                    title=' . $db->quote($metatitles[$i]) . ' ,
+                    description=' . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
             $db->execute();
@@ -375,7 +356,7 @@ class Categories extends AbstractContainer
      */
     public function copyItemTitleToSearchEngineTitle($ids)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -383,19 +364,19 @@ class Categories extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, title
+        $sql = 'SELECT id, title
             FROM  #__categories
-            WHERE id IN (" . implode(",", $ids) . ")";
+            WHERE id IN (' . implode(',', $ids) . ')';
 
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
         foreach ($items as $item) {
             if ($item->title != '') {
-                $sql = "INSERT INTO #__osmeta_metadata (item_id,
+                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                     item_type, title, description)
                     VALUES (
-                    " . $db->quote($item->id) . ",
+                    ' . $db->quote($item->id) . ",
                     '{$this->code}',
                     " . $db->quote($item->title) . ",
                     ''
@@ -418,15 +399,12 @@ class Categories extends AbstractContainer
      */
     public function generateDescriptions($ids)
     {
-        jimport('legacy.model.legacy');
-
         $max_description_length = 500;
-        $model                  = JModelLegacy::getInstance("options", "OSModel");
+        $model                  = BaseDatabaseModel::getInstance('options', 'OSModel');
         $params                 = $model->getOptions();
-        $max_description_length = $params->max_description_length ?
-            $params->max_description_length : $max_description_length;
+        $max_description_length = $params->max_description_length ?: $max_description_length;
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -434,7 +412,7 @@ class Categories extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, description as introtext FROM  #__categories WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = 'SELECT id, description as introtext FROM  #__categories WHERE id IN (' . implode(',', $ids) . ')';
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -446,21 +424,21 @@ class Categories extends AbstractContainer
                     $introtext = substr($introtext, 0, $max_description_length);
                 }
 
-                $sql = "INSERT INTO #__osmeta_metadata (item_id,
+                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                     item_type, title, description)
                     VALUES (
-                    " . $db->quote($item->id) . ",
+                    ' . $db->quote($item->id) . ",
                     '{$this->code}',
 
                     '',
-                    " . $db->quote($introtext) . "
-                    ) ON DUPLICATE KEY UPDATE description=" . $db->quote($introtext);
+                    " . $db->quote($introtext) . '
+                    ) ON DUPLICATE KEY UPDATE description=' . $db->quote($introtext);
 
                 $db->setQuery($sql);
                 $db->execute();
 
-                $sql = "UPDATE #__categories SET metadesc=" . $db->quote($introtext) . "
-                    WHERE id=" . $db->quote($item->id);
+                $sql = 'UPDATE #__categories SET metadesc=' . $db->quote($introtext) . '
+                    WHERE id=' . $db->quote($item->id);
 
                 $db->setQuery($sql);
                 $db->execute();
@@ -469,15 +447,12 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Method to get Filter
-     *
-     * @access  public
-     *
      * @return string
+     * @throws \Exception
      */
     public function getFilter()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $search                                = $app->input->getString('com_content_filter_search', '');
         $state                                 = $app->input->getString('com_content_filter_state', '');
@@ -492,40 +467,40 @@ class Categories extends AbstractContainer
             		name="com_content_filter_search"
             		id="search"
             		value="' . $search . '"
-            		placeholder="' . JText::_('COM_OSMETA_SEARCH') . '"
-            		class="text_area" onchange="document.adminForm.submit();" '. '
-            		title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"/>
-            <button id="Go" class="btn" onclick="this.form.submit();">' . JText::_('COM_OSMETA_GO_LABEL') . '</button>
+            		placeholder="' . Text::_('COM_OSMETA_SEARCH') . '"
+            		class="text_area" onchange="document.adminForm.submit();" ' . '
+            		title="' . Text::_('COM_OSMETA_FILTER_DESC') . '"/>
+            <button id="Go" class="btn" onclick="this.form.submit();">' . Text::_('COM_OSMETA_GO_LABEL') . '</button>
         </div>
         <div class="btn-wrapper">
             <button class="btn" onclick="document.getElementById(\'search\').value=\'\';
                 this.form.getElementById(\'filter_sectionid\').value=\'-1\';
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';
-                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . JText::_('COM_OSMETA_RESET_LABEL') . '</button>
+                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . Text::_('COM_OSMETA_RESET_LABEL') . '</button>
         </div>';
 
-        $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
+        $descriptionChecked = $comContentFilterShowEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
 
-	    $result .= '<div class="om-filter-container">';
+        $result .= '<div class="om-filter-container">';
 
         $result .= '
             <select name="com_content_filter_state" id="filter_state"
                 class="inputbox" size="1" onchange="submitform();">
-                <option value=""  >' . JText::_('COM_OSMETA_SELECT_STATE') . '</option>
-                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_PUBLISHED') . '</option>
-                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_UNPUBLISHED') . '</option>
+                <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
+                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
+                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>
             </select>';
 
-        $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
+        $result .= HTMLHelper::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
-	    $result .= '<label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
+        $result .= '<label>' . Text::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
             <input type="checkbox"
                     onchange="document.adminForm.submit();"
                     name="com_content_filter_show_empty_descriptions"
                     ' . $descriptionChecked . '/>';
 
-	    $result .= '</div>';
+        $result .= '</div>';
 
         return $result;
     }
@@ -541,7 +516,7 @@ class Categories extends AbstractContainer
      */
     public function getItemData($id)
     {
-        $db  = JFactory::getDBO();
+        $db  = Factory::getDbo();
         $sql = "SELECT c.id as id, c.title as title,
             c.metadesc as metadescription, m.title as metatitle
             FROM
@@ -565,11 +540,11 @@ class Categories extends AbstractContainer
      */
     public function setItemData($id, $data)
     {
-        $db  = JFactory::getDBO();
-        $sql = "UPDATE #__categories SET
-            `title` = " . $db->quote($data["title"]) . ",
-            `metadesc` = " . $db->quote($data["metadescription"]) . "
-            WHERE `id`=" . $db->quote($id);
+        $db  = Factory::getDbo();
+        $sql = 'UPDATE #__categories SET
+            `title` = ' . $db->quote($data['title']) . ',
+            `metadesc` = ' . $db->quote($data['metadescription']) . '
+            WHERE `id`=' . $db->quote($id);
         $db->setQuery($sql);
         $db->execute();
         $this->saveMetadata($id, $this->code, $data);
@@ -587,24 +562,24 @@ class Categories extends AbstractContainer
      */
     public function setMetadataByRequest($url, $data)
     {
-        $params = array();
+        $params = [];
         parse_str($url, $params);
 
-        if (isset($params["id"]) && $params["id"]) {
-            $this->setMetadata($params["id"], $data);
+        if (isset($params['id']) && $params['id']) {
+            $this->setMetadata($params['id'], $data);
         }
     }
 
     /**
      * Method to check if an alias already exists
      *
-     * @param  string $alias The original alias
+     * @param string $alias The original alias
      *
-     * @return string        The new alias, incremented, if needed
+     * @return bool
      */
     public function isUniqueAlias($alias)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
@@ -621,7 +596,7 @@ class Categories extends AbstractContainer
     /**
      * Check if the component is available
      *
-     * @return boolean
+     * @return bool
      */
     public static function isAvailable()
     {

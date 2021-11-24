@@ -32,9 +32,7 @@ if (!Factory::getUser()->authorise('core.manage', 'com_osmeta')) {
     throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-include_once 'include.php';
-
-if (defined('OSMETA_LOADED')) {
+if (include 'include.php') {
     $component = new Extension\Component('OSMeta');
     $component->loadController();
     $component->executeTask();

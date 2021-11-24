@@ -24,14 +24,13 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use JFactory;
-use JHtml;
-use JText;
-use JModelLegacy;
-use stdClass;
-use JRoute;
 use ContentHelperRoute;
-use JUri;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
@@ -56,25 +55,21 @@ class Content extends AbstractContainer
     public $code = 1;
 
     /**
-     * Get Meta Tags
-     *
-     * @param int $lim0   Offset
-     * @param int $lim    Limit
-     * @param int $filter Filter
-     *
-     * @access  public
+     * @param int $lim0 Offset
+     * @param int $lim  Limit
      *
      * @return array
+     * @throws \Exception
      */
-    public function getMetatags($lim0, $lim, $filter = null)
+    public function getMetatags($lim0, $lim)
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
+        $sql = 'SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle, c.alias, c.catid
             FROM `#__content` c
             LEFT JOIN `#__categories` cc ON cc.id=c.catid
-            LEFT JOIN `#__osmeta_metadata` m ON m.item_id=c.id and m.item_type=1 WHERE 1";
+            LEFT JOIN `#__osmeta_metadata` m ON m.item_id=c.id and m.item_type=1 WHERE 1';
 
         $search   = $app->input->getString('com_content_filter_search', '');
         $catId    = $app->input->getString('com_content_filter_catid', '0');
@@ -88,20 +83,20 @@ class Content extends AbstractContainer
             '-1'
         );
 
-        if ($search != "") {
-            $sql .= " AND (";
-            $sql .= " c.title LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR m.title LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.metadesc LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.alias LIKE " . $db->quote('%' . $search . '%');
-            $sql .= " OR c.id = " . $db->quote($search);
-            $sql .= ")";
+        if ($search != '') {
+            $sql .= ' AND (';
+            $sql .= ' c.title LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR m.title LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.metadesc LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.alias LIKE ' . $db->quote('%' . $search . '%');
+            $sql .= ' OR c.id = ' . $db->quote($search);
+            $sql .= ')';
         }
 
         $baselevel = 1;
 
         if ($catId > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
+            $db->setQuery('SELECT * from #__categories where id=' . $db->quote($catId));
             $cat_tbl   = $db->loadObject();
             $rgt       = $cat_tbl->rgt;
             $lft       = $cat_tbl->lft;
@@ -111,44 +106,41 @@ class Content extends AbstractContainer
         }
 
         if ($level > 0) {
-            $sql .= ' AND cc.level <=' . ((int)$level + (int)$baselevel - 1);
+            $sql .= ' AND cc.level <=' . ((int)$level + $baselevel - 1);
         }
 
         if ($authorId > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($authorId);
+            $sql .= ' AND c.created_by=' . $db->quote($authorId);
         }
 
         switch ($state) {
-            case 'P':
-                $sql .= " AND c.state=1";
-                break;
-
             case 'U':
-                $sql .= " AND c.state=0";
+                $sql .= ' AND c.state=0';
                 break;
 
             case 'A':
-                $sql .= " AND c.state=-1";
+                $sql .= ' AND c.state=-1';
                 break;
 
             case 'D':
-                $sql .= " AND c.state=-2";
+                $sql .= ' AND c.state=-2';
                 break;
 
             case 'All':
                 break;
 
+            case 'P':
             default:
-                $sql .= " AND c.state=1";
+                $sql .= ' AND c.state=1';
                 break;
         }
 
-        if ($comContentFilterShowEmptyDescriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != '-1') {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
         if (!empty($access)) {
-            $sql .= " AND c.access = " . $db->quote($access);
+            $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
         // Sorting
@@ -156,26 +148,26 @@ class Content extends AbstractContainer
         $order_dir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         switch ($order) {
-            case "meta_title":
-                $sql .= " ORDER BY metatitle ";
+            case 'meta_title':
+                $sql .= ' ORDER BY metatitle ';
                 break;
 
-            case "meta_desc":
-                $sql .= " ORDER BY metadesc ";
+            case 'meta_desc':
+                $sql .= ' ORDER BY metadesc ';
                 break;
 
             default:
-                $sql .= " ORDER BY title ";
+                $sql .= ' ORDER BY title ';
                 break;
 
         }
 
         $order_dir = strtoupper($order_dir);
 
-        if ($order_dir === "ASC") {
-            $sql .= " ASC";
+        if ($order_dir === 'ASC') {
+            $sql .= ' ASC';
         } else {
-            $sql .= " DESC";
+            $sql .= ' DESC';
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -185,7 +177,7 @@ class Content extends AbstractContainer
             if ($db->getErrorNum()) {
                 echo $db->stderr();
 
-                return false;
+                return [];
             }
         }
 
@@ -200,35 +192,31 @@ class Content extends AbstractContainer
 
             // Get the article view url
             $url = ContentHelperRoute::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid);
-            $url = JRoute::_($url);
-            $uri = JUri::getInstance();
-            $url = $uri->toString(array('scheme', 'host', 'port')) . $url;
+            $url = Route::_($url);
+            $uri = Uri::getInstance();
+            $url = $uri->toString(['scheme', 'host', 'port']) . $url;
             $url = str_replace('/administrator/', '/', $url);
 
             $row->view_url = $url;
         }
 
-        return array(
+        return [
             'rows'  => $rows,
             'total' => $total
-        );
+        ];
     }
 
     /**
-     * Get Pages
-     *
-     * @param int $lim0   Offset
-     * @param int $lim    Limit
-     * @param int $filter Filter
-     *
-     * @access  public
+     * @param int $lim0 Offset
+     * @param int $lim  Limit
      *
      * @return array
+     * @throws \Exception
      */
-    public function getPages($lim0, $lim, $filter = null)
+    public function getPages($lim0, $lim)
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
 
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.state,
             if (c.fulltext != '', c.fulltext, c.introtext) AS content
@@ -249,18 +237,18 @@ class Content extends AbstractContainer
             '-1'
         );
 
-        if ($search != "") {
+        if ($search != '') {
             if (is_numeric($search)) {
-                $sql .= " AND c.id=" . $db->quote($search);
+                $sql .= ' AND c.id=' . $db->quote($search);
             } else {
-                $sql .= " AND c.title LIKE " . $db->quote('%' . $search . '%');
+                $sql .= ' AND c.title LIKE ' . $db->quote('%' . $search . '%');
             }
         }
 
         $baselevel = 1;
 
         if ($catId > 0) {
-            $db->setQuery("SELECT * from #__categories where id=" . $db->quote($catId));
+            $db->setQuery('SELECT * from #__categories where id=' . $db->quote($catId));
             $cat_tbl   = $db->loadObject();
             $rgt       = $cat_tbl->rgt;
             $lft       = $cat_tbl->lft;
@@ -270,44 +258,41 @@ class Content extends AbstractContainer
         }
 
         if ($level > 0) {
-            $sql .= ' AND cc.level <=' . ((int)$level + (int)$baselevel - 1);
+            $sql .= ' AND cc.level <=' . ((int)$level + $baselevel - 1);
         }
 
         if ($authorId > 0) {
-            $sql .= " AND c.created_by=" . $db->quote($authorId);
+            $sql .= ' AND c.created_by=' . $db->quote($authorId);
         }
 
         switch ($state) {
-            case 'P':
-                $sql .= " AND c.state=1";
-                break;
-
             case 'U':
-                $sql .= " AND c.state=0";
+                $sql .= ' AND c.state=0';
                 break;
 
             case 'A':
-                $sql .= " AND c.state=-1";
+                $sql .= ' AND c.state=-1';
                 break;
 
             case 'D':
-                $sql .= " AND c.state=-2";
+                $sql .= ' AND c.state=-2';
                 break;
 
             case 'All':
                 break;
 
+            case 'P':
             default:
-                $sql .= " AND c.state=1";
+                $sql .= ' AND c.state=1';
                 break;
         }
 
-        if ($comContentFilterShowEmptyDescriptions != "-1") {
+        if ($comContentFilterShowEmptyDescriptions != '-1') {
             $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
         }
 
         if (!empty($access)) {
-            $sql .= " AND c.access = " . $db->quote($access);
+            $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
         $db->setQuery($sql, $lim0, $lim);
@@ -317,7 +302,7 @@ class Content extends AbstractContainer
             if ($db->getErrorNum()) {
                 echo $db->stderr();
 
-                return false;
+                return [];
             }
         }
 
@@ -330,40 +315,37 @@ class Content extends AbstractContainer
     }
 
     /**
-     * Save meta tags
-     *
      * @param array $ids              IDs
      * @param array $metatitles       Meta titles
      * @param array $metadescriptions Meta Descriptions
      * @param array $aliases          Aliases
      *
-     * @access  public
-     *
      * @return void
+     * @throws \Exception
      */
     public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = '')
     {
-        $app = JFactory::getApplication();
-        $db  = JFactory::getDBO();
+        $app = Factory::getApplication();
+        $db  = Factory::getDbo();
 
         for ($i = 0; $i < count($ids); $i++) {
             // Get current article metadata
-            $sql = "SELECT metadata, alias FROM #__content"
-                . " WHERE id=" . $db->quote($ids[$i]);
+            $sql = 'SELECT metadata, alias FROM #__content'
+                . ' WHERE id=' . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $current = $db->loadObject();
 
             // Update the metadata
             $metadata = json_decode($current->metadata);
             if (!is_object($metadata)) {
-                $metadata = new stdClass;
+                $metadata = (object)[];
             }
             $metadata->metatitle = $metatitles[$i];
             $metadata            = json_encode($metadata);
 
-            $sql = "UPDATE #__content SET "
-                . " metadesc=" . $db->quote($metadescriptions[$i]) . ", "
-                . " metadata=" . $db->quote($metadata);
+            $sql = 'UPDATE #__content SET '
+                . ' metadesc=' . $db->quote($metadescriptions[$i]) . ', '
+                . ' metadata=' . $db->quote($metadata);
 
             if (isset($aliases[$i])) {
                 if (!empty($aliases[$i])) {
@@ -372,36 +354,36 @@ class Content extends AbstractContainer
                     if ($current->alias !== $alias) {
                         // Check if the alias already exists and ignore it
                         if ($this->isUniqueAlias($alias)) {
-                            $sql .= ", alias=" . $db->quote($alias);
+                            $sql .= ', alias=' . $db->quote($alias);
                         } else {
                             $app->enqueueMessage(
-                                JText::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
+                                Text::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
                                 'warning'
                             );
                         }
                     }
                 } else {
-                    JFactory::getApplication()->enqueueMessage(
-                        JText::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
+                    Factory::getApplication()->enqueueMessage(
+                        Text::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
                         'warning'
                     );
                 }
             }
 
-            $sql .= " WHERE id=" . $db->quote($ids[$i]);
+            $sql .= ' WHERE id=' . $db->quote($ids[$i]);
             $db->setQuery($sql);
             $db->execute();
 
             // Insert/Update OS Metadata
-            $sql = "INSERT INTO #__osmeta_metadata (item_id,
+            $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                 item_type, title, description)
                 VALUES (
-                " . $db->quote($ids[$i]) . ",
+                ' . $db->quote($ids[$i]) . ',
                 1,
-                " . $db->quote($metatitles[$i]) . ",
-                " . $db->quote($metadescriptions[$i]) . "
-                ) ON DUPLICATE KEY UPDATE title=" . $db->quote($metatitles[$i]) . " ,
-                    description=" . $db->quote($metadescriptions[$i]);
+                ' . $db->quote($metatitles[$i]) . ',
+                ' . $db->quote($metadescriptions[$i]) . '
+                ) ON DUPLICATE KEY UPDATE title=' . $db->quote($metatitles[$i]) . ' ,
+                    description=' . $db->quote($metadescriptions[$i]);
 
             $db->setQuery($sql);
             $db->execute();
@@ -419,7 +401,7 @@ class Content extends AbstractContainer
      */
     public function copyItemTitleToSearchEngineTitle($ids)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -427,18 +409,18 @@ class Content extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, title FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = 'SELECT id, title FROM  #__content WHERE id IN (' . implode(',', $ids) . ')';
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
         foreach ($items as $item) {
             if ($item->title != '') {
-                $sql = "INSERT INTO #__osmeta_metadata (item_id,
+                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                     item_type, title, description)
                     VALUES (
-                    " . $db->quote($item->id) . ",
+                    ' . $db->quote($item->id) . ',
                     1,
-                    " . $db->quote($item->title) . ",
+                    ' . $db->quote($item->title) . ",
                     ''
                     ) ON DUPLICATE KEY UPDATE title=" . $db->quote($item->title);
 
@@ -460,12 +442,11 @@ class Content extends AbstractContainer
     public function generateDescriptions($ids)
     {
         $max_description_length = 500;
-        $model                  = JModelLegacy::getInstance("options", "OSModel");
+        $model                  = BaseDatabaseModel::getInstance('options', 'OSModel');
         $params                 = $model->getOptions();
-        $max_description_length = $params->max_description_length ?
-            $params->max_description_length : $max_description_length;
+        $max_description_length = $params->max_description_length ?: $max_description_length;
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -473,7 +454,7 @@ class Content extends AbstractContainer
             }
         }
 
-        $sql = "SELECT id, introtext FROM  #__content WHERE id IN (" . implode(",", $ids) . ")";
+        $sql = 'SELECT id, introtext FROM  #__content WHERE id IN (' . implode(',', $ids) . ')';
         $db->setQuery($sql);
         $items = $db->loadObjectList();
 
@@ -485,21 +466,21 @@ class Content extends AbstractContainer
                     $introtext = substr($introtext, 0, $max_description_length);
                 }
 
-                $sql = "INSERT INTO #__osmeta_metadata (item_id,
+                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
                     item_type, title, description)
                     VALUES (
-                    " . $db->quote($item->id) . ",
+                    ' . $db->quote($item->id) . ",
                     1,
 
                     '',
-                    " . $db->quote($introtext) . "
-                    ) ON DUPLICATE KEY UPDATE description=" . $db->quote($introtext);
+                    " . $db->quote($introtext) . '
+                    ) ON DUPLICATE KEY UPDATE description=' . $db->quote($introtext);
 
                 $db->setQuery($sql);
                 $db->execute();
 
-                $sql = "UPDATE #__content SET metadesc=" . $db->quote($introtext) . "
-                    WHERE id=" . $db->quote($item->id);
+                $sql = 'UPDATE #__content SET metadesc=' . $db->quote($introtext) . '
+                    WHERE id=' . $db->quote($item->id);
 
                 $db->setQuery($sql);
                 $db->execute();
@@ -508,15 +489,12 @@ class Content extends AbstractContainer
     }
 
     /**
-     * Method to get Filter
-     *
-     * @access  public
-     *
-     * @return string
+     * @inheritDoc
+     * @throws \Exception
      */
     public function getFilter()
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $search = $app->input->getString('com_content_filter_search', '');
         $catId  = $app->input->getString('com_content_filter_catid', '0');
@@ -524,30 +502,31 @@ class Content extends AbstractContainer
         $access = $app->input->getString('com_content_filter_access', '');
 
         // Levels filter.
-        $levels   = array();
-        $levels[] = JHtml::_('select.option', '1', JText::_('J1'));
-        $levels[] = JHtml::_('select.option', '2', JText::_('J2'));
-        $levels[] = JHtml::_('select.option', '3', JText::_('J3'));
-        $levels[] = JHtml::_('select.option', '4', JText::_('J4'));
-        $levels[] = JHtml::_('select.option', '5', JText::_('J5'));
-        $levels[] = JHtml::_('select.option', '6', JText::_('J6'));
-        $levels[] = JHtml::_('select.option', '7', JText::_('J7'));
-        $levels[] = JHtml::_('select.option', '8', JText::_('J8'));
-        $levels[] = JHtml::_('select.option', '9', JText::_('J9'));
-        $levels[] = JHtml::_('select.option', '10', JText::_('J10'));
+        $levels = [
+            HTMLHelper::_('select.option', '1', Text::_('J1')),
+            HTMLHelper::_('select.option', '2', Text::_('J2')),
+            HTMLHelper::_('select.option', '3', Text::_('J3')),
+            HTMLHelper::_('select.option', '4', Text::_('J4')),
+            HTMLHelper::_('select.option', '5', Text::_('J5')),
+            HTMLHelper::_('select.option', '6', Text::_('J6')),
+            HTMLHelper::_('select.option', '7', Text::_('J7')),
+            HTMLHelper::_('select.option', '8', Text::_('J8')),
+            HTMLHelper::_('select.option', '9', Text::_('J9')),
+            HTMLHelper::_('select.option', '10', Text::_('J10')),
+        ];
 
         $state                                 = $app->input->getString('com_content_filter_state', '');
         $comContentFilterShowEmptyDescriptions = $app->input->getString('com_content_filter_show_empty_descriptions',
-            "-1");
+            '-1');
 
         $result = '<div class="btn-wrapper input-append">
 			<input type="text"
 					name="com_content_filter_search"
 					id="search"
 					value="' . $search . '"
-					placeholder="' . JText::_('COM_OSMETA_SEARCH') . '"
+					placeholder="' . Text::_('COM_OSMETA_SEARCH') . '"
 					data-original-title=""
-					title="' . JText::_('COM_OSMETA_FILTER_DESC') . '"
+					title="' . Text::_('COM_OSMETA_FILTER_DESC') . '"
 					onchange="document.adminForm.submit();">
 				<button type="submit"
 						class="btn hasTooltip"
@@ -564,92 +543,79 @@ class Content extends AbstractContainer
                 this.form.getElementById(\'catid\').value=\'0\';
                 this.form.getElementById(\'filter_authorid\').value=\'0\';
                 this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">
-                ' . JText::_('COM_OSMETA_RESET_LABEL') . '
+                ' . Text::_('COM_OSMETA_RESET_LABEL') . '
             </button>
 
             &nbsp;&nbsp;&nbsp;
         </div>
         <div class="clearfix"></div>';
 
-	    $result .= '<div class="om-filter-container">';
+        $result .= '<div class="om-filter-container">';
 
         $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
-            '<option value="">' . JText::_('COM_OSMETA_SELECT_CATEGORY') . '</option>' .
-            JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $catId) .
+            '<option value="">' . Text::_('COM_OSMETA_SELECT_CATEGORY') . '</option>' .
+            HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_content'), 'value', 'text', $catId) .
             '</select>';
 
         $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
-            '<option value="">' . JText::_('COM_OSMETA_SELECT_MAX_LEVELS') . '</option>' .
-            JHtml::_('select.options', $levels, 'value', 'text', $level) .
+            '<option value="">' . Text::_('COM_OSMETA_SELECT_MAX_LEVELS') . '</option>' .
+            HTMLHelper::_('select.options', $levels, 'value', 'text', $level) .
             '</select>';
 
-        $descriptionChecked = $comContentFilterShowEmptyDescriptions != "-1" ? 'checked="yes" ' : '';
+        $descriptionChecked = $comContentFilterShowEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
 
         $result .= '<select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
             onchange="submitform();">
-                <option value=""  >' . JText::_('COM_OSMETA_SELECT_STATE') . '</option>
-                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_PUBLISHED') . '</option>
-                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_UNPUBLISHED') . '</option>
-                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_ARCHIVED') . '</option>
-                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_TRASHED') . '</option>
-                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>' . JText::_('COM_OSMETA_ALL') . '</option>
+                <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
+                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
+                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>
+                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_ARCHIVED') . '</option>
+                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_TRASHED') . '</option>
+                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_ALL') . '</option>
             </select>';
 
-        $result .= JHtml::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
+        $result .= HTMLHelper::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
 
-	    $result .= '<label>' . JText::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
+        $result .= '<label>' . Text::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
             <input type="checkbox"
                     onchange="document.adminForm.submit();"
                     name="com_content_filter_show_empty_descriptions"
                     ' . $descriptionChecked . '/>';
 
-	    $result .= '</div>';
+        $result .= '</div>';
 
         return $result;
     }
 
     /**
-     * Method to set Metadata
-     *
-     * @param int   $id   ID
-     * @param array $data Data
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function setMetadata($id, $data)
+    public function setMetadata($itemId, $data)
     {
-        $db  = JFactory::getDBO();
-        $sql = "UPDATE #__content SET " .
-            (isset($data["title"]) && $data["title"] ?
-                "`title` = " . $db->quote($data["title"]) . "," : "") . "
-            `metadesc` = " . $db->quote($data["metadescription"]) . "
-            WHERE `id`=" . $db->quote($id);
+        $db  = Factory::getDbo();
+        $sql = 'UPDATE #__content SET ' .
+            (isset($data['title']) && $data['title'] ?
+                '`title` = ' . $db->quote($data['title']) . ',' : '') . '
+            `metadesc` = ' . $db->quote($data['metadescription']) . '
+            WHERE `id`=' . $db->quote($itemId);
         $db->setQuery($sql);
         $db->execute();
 
-        parent::setMetadata($id, $data);
+        parent::setMetadata($itemId, $data);
     }
 
     /**
-     * Method to get Metadata
-     *
-     * @param string $query Query
-     *
-     * @access  public
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getMetadataByRequest($query)
     {
-        $params = array();
+        $params = [];
         parse_str($query, $params);
 
         $metadata = $this->getDefaultMetadata();
 
-        if (isset($params["id"])) {
-            $metadata = $this->getMetadata($params["id"]);
+        if (isset($params['id'])) {
+            $metadata = $this->getMetadata($params['id']);
         }
 
         return $metadata;
@@ -667,24 +633,20 @@ class Content extends AbstractContainer
      */
     public function setMetadataByRequest($url, $data)
     {
-        $params = array();
+        $params = [];
         parse_str($url, $params);
 
-        if (isset($params["id"]) && $params["id"]) {
-            $this->setMetadata($params["id"], $data);
+        if (isset($params['id']) && $params['id']) {
+            $this->setMetadata($params['id'], $data);
         }
     }
 
     /**
-     * Method to check if an alias already exists
-     *
-     * @param  string $alias The original alias
-     *
-     * @return string        The new alias, incremented, if needed
+     * @inheritDoc
      */
     public function isUniqueAlias($alias)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
@@ -700,7 +662,7 @@ class Content extends AbstractContainer
     /**
      * Check if the component is available
      *
-     * @return boolean
+     * @return bool
      */
     public static function isAvailable()
     {
