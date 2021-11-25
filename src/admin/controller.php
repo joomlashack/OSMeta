@@ -21,6 +21,7 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
@@ -95,11 +96,7 @@ class OSMetaController extends JControllerLegacy
             $app->input->set('type', $itemType);
         }
 
-        if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
-            $factory = Alledia\OSMeta\Pro\Container\Factory::getInstance();
-        } else {
-            $factory = Alledia\OSMeta\Free\Container\Factory::getInstance();
-        }
+        $factory = ContainerFactory::getInstance();
 
         if (!$itemType) {
             $itemType = key($factory->getFeatures());
