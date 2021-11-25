@@ -47,7 +47,7 @@ try {
     }
 
 } catch (Throwable $error) {
-    Factory::getApplication()->enqueueMessage('[OSMap] Unable to initialize: ' . $error->getMessage(), 'error');
+    Factory::getApplication()->enqueueMessage('[OSMeta] Unable to initialize: ' . $error->getMessage(), 'error');
 
     return false;
 }
