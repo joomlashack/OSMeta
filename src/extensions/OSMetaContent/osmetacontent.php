@@ -24,6 +24,7 @@
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta;
+use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Form\Form;
 
 defined('_JEXEC') or die();
@@ -48,24 +49,17 @@ if (is_file($includePath) && (include $includePath)) {
 
                 $option = $input->getCmd('option');
 
-                if (is_object($content) && isset($content->id)) {
-                    if (class_exists('\\Alledia\\OSMeta\\Pro\\Container\\Factory')) {
-                        $factory = OSMeta\Pro\Container\Factory::getInstance();
-                    } else {
-                        $factory = OSMeta\Free\Container\Factory::getInstance();
-                    }
+                if (isset($content->id)) {
+                    $container = ContainerFactory::getInstance()->getContainerByComponentName($option);
 
-                    $container = $factory->getContainerByComponentName($option);
-                    if (is_object($container)) {
-                        $articleOSMetadataInput = json_decode($content->metadata);
+                    $articleOSMetadataInput = json_decode($content->metadata);
 
-                        $id       = [$content->id];
-                        $title    = [$articleOSMetadataInput->metatitle];
-                        $metaDesc = [$content->metadesc];
-                        $alias    = [$content->alias];
+                    $id       = [$content->id];
+                    $title    = [$articleOSMetadataInput->metatitle];
+                    $metaDesc = [$content->metadesc];
+                    $alias    = [$content->alias];
 
-                        $container->saveMetatags($id, $title, $metaDesc, $alias);
-                    }
+                    $container->saveMetatags($id, $title, $metaDesc, $alias);
                 }
             }
 

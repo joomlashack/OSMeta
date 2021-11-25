@@ -23,6 +23,7 @@
 
 use Alledia\Framework\Joomla\Extension;
 use Alledia\OSMeta;
+use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
@@ -46,13 +47,7 @@ if (is_file($includePath) && (include $includePath)) {
 
                 $buffer = $app->getBody();
 
-                if (class_exists('Alledia\OSMeta\Pro\Container\Factory')) {
-                    $factory = OSMeta\Pro\Container\Factory::getInstance();
-                } else {
-                    $factory = OSMeta\Free\Container\Factory::getInstance();
-                }
-
-                $buffer = $factory->processBody($buffer, $url);
+                $buffer = ContainerFactory::getInstance()->processBody($buffer, $url);
 
                 $app->setBody($buffer);
             }

@@ -43,6 +43,12 @@ try {
 
         AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
 
+        if (class_exists('\\Alledia\\OSMeta\\Pro\\Container\\Factory')) {
+            class_alias('\\Alledia\\OSMeta\\Pro\\Container\\Factory', '\\Alledia\\OSMeta\\ContainerFactory');
+        } else {
+            class_alias('\\Alledia\\OSMeta\\Free\\Container\\Factory', '\\Alledia\\OSMeta\\ContainerFactory');
+        }
+
         define('OSMETA_LOADED', 1);
     }
 
