@@ -23,8 +23,8 @@
 
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Extension\AbstractPlugin;
-use Alledia\OSMeta;
 use Alledia\OSMeta\ContainerFactory;
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Form\Form;
 
 defined('_JEXEC') or die();
@@ -35,17 +35,21 @@ if (is_file($includePath) && (include $includePath)) {
     class PlgContentOSMetaContent extends AbstractPlugin
     {
         /**
+         * @var CMSApplication
+         */
+        protected $app = null;
+
+        /**
          * @param string $context
          * @param object $content
          *
          * @return bool
          * @throws Exception
          */
-        public function onContentAfterSave($context, $content)
+        public function onContentAfterSave(string $context, object $content): bool
         {
             if ($context === 'com_content.article' || $context === 'com_categories.category') {
-                $app   = Factory::getApplication();
-                $input = $app->input;
+                $input = $this->app->input;
 
                 $option = $input->getCmd('option');
 
@@ -68,12 +72,11 @@ if (is_file($includePath) && (include $includePath)) {
 
         /**
          * @param Form  $form
-         * @param array $data
          *
          * @return void
          * @throws Exception
          */
-        public function onContentPrepareForm($form, $data)
+        public function onContentPrepareForm(Form $form)
         {
             if ($form->getName() === 'com_content.article'
                 || $form->getName() === 'com_categories.category'

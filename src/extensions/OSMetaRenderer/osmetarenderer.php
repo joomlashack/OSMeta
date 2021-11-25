@@ -21,8 +21,7 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Extension;
-use Alledia\OSMeta;
+use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Factory;
 
@@ -30,10 +29,10 @@ defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
 if (is_file($includePath) && (include $includePath)) {
-    class PlgSystemOSMetaRenderer extends Extension\AbstractPlugin
+    class PlgSystemOSMetaRenderer extends AbstractPlugin
     {
         /**
-         * @return bool
+         * @return void
          * @throws Exception
          */
         public function onAfterRender()
@@ -51,8 +50,6 @@ if (is_file($includePath) && (include $includePath)) {
 
                 $app->setBody($buffer);
             }
-
-            return true;
         }
     }
 }

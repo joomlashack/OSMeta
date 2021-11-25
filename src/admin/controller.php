@@ -23,6 +23,7 @@
 
 use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -86,7 +87,7 @@ class OSMetaController extends JControllerLegacy
      * @throws Exception
      *
      */
-    protected function actionManager($task)
+    protected function actionManager(string $task)
     {
         $app = Factory::getApplication();
 
@@ -174,13 +175,13 @@ class OSMetaController extends JControllerLegacy
     /**
      * Insert the submenu items
      *
-     * @param array  $contentTypes An array of the available content types
-     * @param string $itemType     The current
+     * @param array[]  $contentTypes
+     * @param string $itemType
      */
-    protected function addSubmenu($contentTypes, $itemType)
+    protected function addSubmenu(array $contentTypes, string $itemType)
     {
         foreach ($contentTypes as $type => $data) {
-            JHtmlSidebar::addEntry(
+            Sidebar::addEntry(
                 Text::_($data['name']),
                 'index.php?option=com_osmeta&type=' . urlencode($type),
                 $itemType === $type
