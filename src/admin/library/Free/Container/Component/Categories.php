@@ -439,7 +439,7 @@ class Categories extends AbstractContainer
 
         $result .= '
             <select name="com_content_filter_state" id="filter_state"
-                class="inputbox" size="1" onchange="submitform();">
+                class="inputbox" size="1" onchange="this.form.submit();">
                 <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
                 <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>

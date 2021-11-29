@@ -505,7 +505,7 @@ class Content extends AbstractContainer
 
         $result .= '<div class="om-filter-container">';
 
-        $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="submitform();">' .
+        $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="this.form.submit()">' .
             '<option value="">' . Text::_('COM_OSMETA_SELECT_CATEGORY') . '</option>' .
             HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_content'), 'value', 'text', $catId) .
             '</select>';
@@ -518,7 +518,7 @@ class Content extends AbstractContainer
         $descriptionChecked = $comContentFilterShowEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
 
         $result .= '<select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
-            onchange="submitform();">
+            onchange="this.form.submit()">
                 <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
                 <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
                 <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>
