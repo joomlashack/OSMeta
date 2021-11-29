@@ -35,8 +35,6 @@ use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
-\JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
 class Categories extends AbstractContainer
 {
     /**

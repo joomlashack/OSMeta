@@ -35,10 +35,6 @@ use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
-if (!class_exists('ContentHelperRoute')) {
-    require JPATH_SITE . '/components/com_content/helpers/route.php';
-}
-
 /**
  * Article Metatags Container
  *

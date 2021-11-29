@@ -43,6 +43,8 @@ try {
 
         AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
 
+        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
         if (class_exists('\\Alledia\\OSMeta\\Pro\\Container\\Factory')) {
             class_alias('\\Alledia\\OSMeta\\Pro\\Container\\Factory', '\\Alledia\\OSMeta\\ContainerFactory');
         } else {
