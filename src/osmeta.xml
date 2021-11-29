@@ -95,10 +95,13 @@
         </relatedExtensions>
 
         <obsolete>
+            <preflight>
+                <folder>administrator/components/com_osmeta/features</folder>
+            </preflight>
+
             <folder>components/com_osmeta</folder>
             <folder>media/com_osmeta/admin/font</folder>
 
-            <file>administrator/components/com_osmeta/features/home.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/AbstractHome.php</file>
             <file>administrator/components/com_osmeta/library/Free/Container/Component/Home.php</file>
             <file>administrator/manifests/packages/pkg_osmeta.xml</file>
