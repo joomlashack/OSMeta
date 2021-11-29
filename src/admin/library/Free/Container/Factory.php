@@ -338,12 +338,10 @@ class Factory
             $files = Folder::files($path, '.php');
 
             $features = [];
-
             foreach ($files as $file) {
                 include $path . '/' . $file;
             }
 
-            // Check what features are enabled
             foreach ($features as $key => $value) {
                 $class = $value['class'];
 
