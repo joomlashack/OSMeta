@@ -25,37 +25,28 @@ namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
 use ContentHelperRoute;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
 class Categories extends AbstractContainer
 {
     /**
-     * Code
-     *
-     * @var    int
-     * @since  1.0
+     * @inheritdoc
      */
     public $code = 4;
 
     /**
-     * @param int $lim0 Offset
-     * @param int $lim  Limit
-     *
-     * @return array
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function getMetatags($lim0, $lim)
+    public function getMetatags($limitStart, $limit)
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle , c.extension, c.alias
             FROM
@@ -130,16 +121,8 @@ class Categories extends AbstractContainer
             $sql .= ' DESC';
         }
 
-        $db->setQuery($sql, $lim0, $lim);
+        $db->setQuery($sql, $limitStart, $limit);
         $rows = $db->loadObjectList();
-
-        if (Version::MAJOR_VERSION < 4) {
-            if ($db->getErrorNum()) {
-                echo $db->stderr();
-
-                return [];
-            }
-        }
 
         // Get the total
         $db->setQuery('SELECT FOUND_ROWS();');
@@ -190,16 +173,12 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * @param int $lim0 Offset
-     * @param int $lim  Limit
-     *
-     * @return array
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function getPages($lim0, $lim)
+    public function getPages($limitStart, $limit)
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
         $sql = "SELECT SQL_CALC_FOUND_ROWS
             c.id, c.title, c.published,
         c.description AS content
@@ -246,14 +225,8 @@ class Categories extends AbstractContainer
             $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
-        $db->setQuery($sql, $lim0, $lim);
+        $db->setQuery($sql, $limitStart, $limit);
         $rows = $db->loadObjectList();
-
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
-
-            return [];
-        }
 
         // Get outgoing links
         for ($i = 0; $i < count($rows); $i++) {
@@ -265,18 +238,12 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * @param array $ids              IDs
-     * @param array $metatitles       Meta titles
-     * @param array $metadescriptions Meta Descriptions
-     * @param array $aliases          Aliases
-     *
-     * @return void
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases)
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = [])
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
 
         for ($i = 0; $i < count($ids); $i++) {
             // Get current category metadata
@@ -314,7 +281,7 @@ class Categories extends AbstractContainer
                     }
 
                 } else {
-                    Factory::getApplication()->enqueueMessage(
+                    $this->app->enqueueMessage(
                         Text::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
                         'warning'
                     );
@@ -344,17 +311,11 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Method to copy the item title to title
-     *
-     * @param array $ids IDs list
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
     public function copyItemTitleToSearchEngineTitle($ids)
     {
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -387,13 +348,7 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Method to generate descriptions
-     *
-     * @param array $ids IDs list
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
     public function generateDescriptions($ids)
     {
@@ -402,7 +357,7 @@ class Categories extends AbstractContainer
         $params                 = $model->getOptions();
         $max_description_length = $params->max_description_length ?: $max_description_length;
 
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -450,7 +405,7 @@ class Categories extends AbstractContainer
      */
     public function getFilter()
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
 
         $search                                = $app->input->getString('com_content_filter_search', '');
         $state                                 = $app->input->getString('com_content_filter_state', '');
@@ -504,51 +459,6 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Method to get the item data
-     *
-     * @param int $id Item Id
-     *
-     * @access  public
-     *
-     * @return array
-     */
-    public function getItemData($id)
-    {
-        $db  = Factory::getDbo();
-        $sql = "SELECT c.id as id, c.title as title,
-            c.metadesc as metadescription, m.title as metatitle
-            FROM
-            #__categories c
-            LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.id=" . $db->quote($id);
-        $db->setQuery($sql);
-
-        return $db->loadAssoc();
-    }
-
-    /**
-     * Method to set the item data
-     *
-     * @param int   $id   Item Id
-     * @param array $data Item Data
-     *
-     * @access  public
-     *
-     * @return void
-     */
-    public function setItemData($id, $data)
-    {
-        $db  = Factory::getDbo();
-        $sql = 'UPDATE #__categories SET
-            `title` = ' . $db->quote($data['title']) . ',
-            `metadesc` = ' . $db->quote($data['metadescription']) . '
-            WHERE `id`=' . $db->quote($id);
-        $db->setQuery($sql);
-        $db->execute();
-        $this->saveMetadata($id, $this->code, $data);
-    }
-
-    /**
      * Method to set Metadata by request
      *
      * @param string $url  URL
@@ -577,7 +487,7 @@ class Categories extends AbstractContainer
      */
     public function isUniqueAlias($alias)
     {
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
@@ -589,15 +499,5 @@ class Categories extends AbstractContainer
         $count = (int)$db->loadResult();
 
         return $count === 0;
-    }
-
-    /**
-     * Check if the component is available
-     *
-     * @return bool
-     */
-    public static function isAvailable()
-    {
-        return true;
     }
 }

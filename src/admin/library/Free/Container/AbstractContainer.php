@@ -23,7 +23,8 @@
 
 namespace Alledia\OSMeta\Free\Container;
 
-use JFactory;
+use Alledia\Framework\Factory as AllediaFactory;
+use Joomla\CMS\Application\CMSApplication;
 
 defined('_JEXEC') or die();
 
@@ -35,9 +36,14 @@ defined('_JEXEC') or die();
 abstract class AbstractContainer
 {
     /**
+     * @var int
+     */
+    public $code = null;
+
+    /**
      * Container priority
      *
-     * @var integer
+     * @var int
      */
     public $priority = 1;
 
@@ -45,7 +51,7 @@ abstract class AbstractContainer
      * True, if this content allow to automatically generate
      * title from the content
      *
-     * @var boolean
+     * @var bool
      */
     public $supportGenerateTitle = true;
 
@@ -53,24 +59,42 @@ abstract class AbstractContainer
      * True, if this content allow to automatically generate
      * description from the content
      *
-     * @var boolean
+     * @var bool
      */
     public $supportGenerateDescription = true;
 
     /**
+     * @var CMSApplication
+     */
+    protected $app = null;
+
+    /**
+     * @var \JDatabaseDriver
+     */
+    protected $dbo = null;
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        $this->app = AllediaFactory::getApplication();
+        $this->dbo = AllediaFactory::getDbo();
+    }
+
+    /**
      * Method to set the Metadata
      *
-     * @param int   $itemId Item ID
-     * @param array $data   Data
-     *
-     * @access  public
+     * @param int      $itemId Item ID
+     * @param string[] $data   Data
      *
      * @return void
      */
     public function setMetadata($itemId, $data)
     {
         $itemTypeId = $this->getTypeId();
-        $db         = JFactory::getDBO();
+        $db         = AllediaFactory::getDbo();
 
         // Save metatitles and metadata
         $sql = "INSERT INTO #__osmeta_metadata
@@ -87,12 +111,6 @@ abstract class AbstractContainer
             description = " . $db->quote($data["metadescription"]);
         $db->setQuery($sql);
         $db->execute();
-
-        if ($db->getErrorNum()) {
-            echo $db->stderr();
-
-            return false;
-        }
     }
 
     /**
@@ -106,7 +124,7 @@ abstract class AbstractContainer
      */
     public function getMetadata($id)
     {
-        $db = JFactory::getDBO();
+        $db = AllediaFactory::getDbo();
 
         $sql = "SELECT m.item_id as id,
                 m.item_id,
@@ -122,14 +140,14 @@ abstract class AbstractContainer
         $data = $db->loadAssoc();
 
         if (empty($data)) {
-            $data = array(
+            $data = [
                 'id'              => 0,
                 'item_id'         => 0,
                 'metadescription' => '',
                 'description'     => '',
                 'title'           => '',
                 'metatitle'       => ''
-            );
+            ];
         }
 
         return $data;
@@ -166,10 +184,10 @@ abstract class AbstractContainer
      */
     public function getDefaultMetadata()
     {
-        return array(
+        return [
             'metatitle'       => '',
             'metadescription' => ''
-        );
+        ];
     }
 
     /**
@@ -189,6 +207,14 @@ abstract class AbstractContainer
     }
 
     /**
+     * @return bool
+     */
+    public static function isAvailable()
+    {
+        return true;
+    }
+
+    /**
      * Method to check if an alias already exists
      *
      * @param string $alias The original alias
@@ -196,6 +222,38 @@ abstract class AbstractContainer
      * @return string        The new alias, incremented, if needed
      */
     abstract public function isUniqueAlias($alias);
+
+    /**
+     * @param int[] $ids
+     *
+     * @return void
+     */
+    abstract public function copyItemTitleToSearchEngineTitle($ids);
+
+    /**
+     * @param int[] $ids
+     *
+     * @return void
+     */
+    abstract public function generateDescriptions($ids);
+
+    /**
+     * @param int[]     $ids
+     * @param string[]  $metatitles
+     * @param string[]  $metadescriptions
+     * @param ?string[] $aliases
+     *
+     * @return void
+     */
+    abstract public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = []);
+
+    /**
+     * @param int $limitStart
+     * @param int $limit
+     *
+     * @return void
+     */
+    abstract public function getMetatags($limitStart, $limit);
 
     /**
      * Method to get the Metadata By Request
@@ -223,6 +281,17 @@ abstract class AbstractContainer
      * @return void
      */
     abstract public function setMetadataByRequest($url, $data);
+
+    /**
+     * @param int $limitStart Offset
+     * @param int $limit      Limit
+     *
+     * @return array
+     */
+    public function getPages($limitStart, $limit)
+    {
+        return [];
+    }
 
     /**
      * Method to get Filter

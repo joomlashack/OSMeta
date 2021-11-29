@@ -25,13 +25,11 @@ namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
 use ContentHelperRoute;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
@@ -43,24 +41,17 @@ defined('_JEXEC') or die();
 class Content extends AbstractContainer
 {
     /**
-     * Code
-     *
-     * @var    int
-     * @since  1.0
+     * @inheritdoc
      */
     public $code = 1;
 
     /**
-     * @param int $lim0 Offset
-     * @param int $lim  Limit
-     *
-     * @return array
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function getMetatags($lim0, $lim)
+    public function getMetatags($limitStart, $limit)
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
         $sql = 'SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
             c.metadesc, m.title as metatitle, c.alias, c.catid
             FROM `#__content` c
@@ -166,16 +157,8 @@ class Content extends AbstractContainer
             $sql .= ' DESC';
         }
 
-        $db->setQuery($sql, $lim0, $lim);
+        $db->setQuery($sql, $limitStart, $limit);
         $rows = $db->loadObjectList();
-
-        if (Version::MAJOR_VERSION < 4) {
-            if ($db->getErrorNum()) {
-                echo $db->stderr();
-
-                return [];
-            }
-        }
 
         // Get the total
         $db->setQuery('SELECT FOUND_ROWS();');
@@ -203,16 +186,16 @@ class Content extends AbstractContainer
     }
 
     /**
-     * @param int $lim0 Offset
-     * @param int $lim  Limit
+     * @param int $limitStart Offset
+     * @param int $limit      Limit
      *
      * @return array
      * @throws \Exception
      */
-    public function getPages($lim0, $lim)
+    public function getPages($limitStart, $limit)
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
 
         $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.state,
             if (c.fulltext != '', c.fulltext, c.introtext) AS content
@@ -291,16 +274,8 @@ class Content extends AbstractContainer
             $sql .= ' AND c.access = ' . $db->quote($access);
         }
 
-        $db->setQuery($sql, $lim0, $lim);
+        $db->setQuery($sql, $limitStart, $limit);
         $rows = $db->loadObjectList();
-
-        if (Version::MAJOR_VERSION < 4) {
-            if ($db->getErrorNum()) {
-                echo $db->stderr();
-
-                return [];
-            }
-        }
 
         // Get outgoing links
         for ($i = 0; $i < count($rows); $i++) {
@@ -311,18 +286,12 @@ class Content extends AbstractContainer
     }
 
     /**
-     * @param array $ids              IDs
-     * @param array $metatitles       Meta titles
-     * @param array $metadescriptions Meta Descriptions
-     * @param array $aliases          Aliases
-     *
-     * @return void
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = '')
+    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = [])
     {
-        $app = Factory::getApplication();
-        $db  = Factory::getDbo();
+        $app = $this->app;
+        $db  = $this->dbo;
 
         for ($i = 0; $i < count($ids); $i++) {
             // Get current article metadata
@@ -359,7 +328,7 @@ class Content extends AbstractContainer
                         }
                     }
                 } else {
-                    Factory::getApplication()->enqueueMessage(
+                    $this->app->enqueueMessage(
                         Text::_('COM_OSMETA_WARNING_EMPTY_ALIAS'),
                         'warning'
                     );
@@ -387,17 +356,11 @@ class Content extends AbstractContainer
     }
 
     /**
-     * Method to copy the item title to title
-     *
-     * @param array $ids IDs list
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
     public function copyItemTitleToSearchEngineTitle($ids)
     {
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -427,13 +390,7 @@ class Content extends AbstractContainer
     }
 
     /**
-     * Method to generate descriptions
-     *
-     * @param array $ids IDs list
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
     public function generateDescriptions($ids)
     {
@@ -442,7 +399,7 @@ class Content extends AbstractContainer
         $params                 = $model->getOptions();
         $max_description_length = $params->max_description_length ?: $max_description_length;
 
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         foreach ($ids as $key => $value) {
             if (!is_numeric($value)) {
@@ -490,7 +447,7 @@ class Content extends AbstractContainer
      */
     public function getFilter()
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
 
         $search = $app->input->getString('com_content_filter_search', '');
         $catId  = $app->input->getString('com_content_filter_catid', '0');
@@ -588,7 +545,7 @@ class Content extends AbstractContainer
      */
     public function setMetadata($itemId, $data)
     {
-        $db  = Factory::getDbo();
+        $db  = $this->dbo;
         $sql = 'UPDATE #__content SET ' .
             (isset($data['title']) && $data['title'] ?
                 '`title` = ' . $db->quote($data['title']) . ',' : '') . '
@@ -642,7 +599,7 @@ class Content extends AbstractContainer
      */
     public function isUniqueAlias($alias)
     {
-        $db = Factory::getDbo();
+        $db = $this->dbo;
 
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
@@ -653,15 +610,5 @@ class Content extends AbstractContainer
         $count = (int)$db->loadResult();
 
         return $count === 0;
-    }
-
-    /**
-     * Check if the component is available
-     *
-     * @return bool
-     */
-    public static function isAvailable()
-    {
-        return true;
     }
 }
