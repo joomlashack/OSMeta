@@ -97,6 +97,7 @@
         <obsolete>
             <preflight>
                 <folder>administrator/components/com_osmeta/features</folder>
+                <folder>administrator/components/com_osmeta/library/Pro</folder>
             </preflight>
 
             <folder>components/com_osmeta</folder>
