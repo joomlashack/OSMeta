@@ -152,8 +152,6 @@ class Factory
      */
     public function getContainerByComponentName($component)
     {
-        $container = false;
-
         $component = ucfirst(str_replace('com_', '', $component));
         $className = "\\Alledia\\OSMeta\\Free\\Container\\Component\\{$component}";
 
@@ -161,7 +159,7 @@ class Factory
             $container = new $className();
         }
 
-        return $container;
+        return $container ?? null;
     }
 
     /**

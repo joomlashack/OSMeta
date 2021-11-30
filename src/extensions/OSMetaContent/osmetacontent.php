@@ -53,17 +53,17 @@ if (is_file($includePath) && (include $includePath)) {
 
                 $option = $input->getCmd('option');
 
-                if (isset($content->id)) {
-                    $container = ContainerFactory::getInstance()->getContainerByComponentName($option);
+                if (empty($content->id) == false) {
+                    if ($container = ContainerFactory::getInstance()->getContainerByComponentName($option)) {
+                        $articleOSMetadataInput = json_decode($content->metadata);
 
-                    $articleOSMetadataInput = json_decode($content->metadata);
+                        $id       = [$content->id];
+                        $title    = [$articleOSMetadataInput->metatitle];
+                        $metaDesc = [$content->metadesc];
+                        $alias    = [$content->alias];
 
-                    $id       = [$content->id];
-                    $title    = [$articleOSMetadataInput->metatitle];
-                    $metaDesc = [$content->metadesc];
-                    $alias    = [$content->alias];
-
-                    $container->saveMetatags($id, $title, $metaDesc, $alias);
+                        $container->saveMetatags($id, $title, $metaDesc, $alias);
+                    }
                 }
             }
 
