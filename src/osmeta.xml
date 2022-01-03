@@ -15,13 +15,13 @@
 
     <install>
         <sql>
-            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql.sql</file>
         </sql>
     </install>
 
     <uninstall>
         <sql>
-            <file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8" folder="sql">sql/install/mysql/uninstall.sql</file>
         </sql>
     </uninstall>
 
@@ -98,6 +98,7 @@
             <preflight>
                 <folder>administrator/components/com_osmeta/features</folder>
                 <folder>administrator/components/com_osmeta/library/Pro</folder>
+                <folder>administrator/components/com_osmeta/sql</folder>
             </preflight>
 
             <folder>components/com_osmeta</folder>
