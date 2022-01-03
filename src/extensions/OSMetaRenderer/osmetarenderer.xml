@@ -7,8 +7,8 @@
     <copyright>Copyright 2011-2020 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>This system plugin prepares the content so that OSMeta can add meta data 'on the fly'.</description>
-    <version>2.0.2</version>
-    <creationDate>November 30 2021</creationDate>
+    <version>2.0.3b1</version>
+    <creationDate>January 03 2022</creationDate>
 
     <alledia>
         <element>osmetarenderer</element>
