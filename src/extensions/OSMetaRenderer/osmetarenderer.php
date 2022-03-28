@@ -40,7 +40,11 @@ if (is_file($includePath) && (include $includePath)) {
             $app = Factory::getApplication();
 
             if ($app->isClient('site')) {
-                $queryData = $_REQUEST ?? $app->getMenu()->getActive()->query;
+                $queryData = $_REQUEST;
+                if (empty($queryData)) {
+                    $queryData = $app->getMenu()->getActive()->query;
+                }
+
                 ksort($queryData);
                 $url = http_build_query($queryData);
 
