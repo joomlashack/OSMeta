@@ -41,8 +41,8 @@ if (is_file($includePath) && (include $includePath)) {
 
             if ($app->isClient('site')) {
                 $queryData = $_REQUEST;
-                if (empty($queryData)) {
-                    $queryData = $app->getMenu()->getActive()->query;
+                if (empty($queryData) || !isset($queryData['id']) || !isset($queryData['option'])) {
+                    $queryData += $app->getMenu()->getActive()->query;
                 }
 
                 ksort($queryData);
