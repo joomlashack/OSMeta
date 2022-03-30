@@ -45,6 +45,10 @@ if (is_file($includePath) && (include $includePath)) {
                     $queryData += $app->getMenu()->getActive()->query;
                 }
 
+                if (isset($queryData['id']) && !is_numeric($queryData['id'])) {
+                    $queryData['id'] = (int)$queryData['id'];
+                }
+
                 ksort($queryData);
                 $url = http_build_query($queryData);
 
