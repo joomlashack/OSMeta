@@ -40,7 +40,21 @@ if (is_file($includePath) && (include $includePath)) {
             $app = Factory::getApplication();
 
             if ($app->isClient('site')) {
-                $queryData = $_REQUEST ?? $app->getMenu()->getActive()->query;
+                $queryData = $_REQUEST;
+                if (empty($queryData) || empty($queryData['id']) || empty($queryData['option'])) {
+                    if (($menu = $app->getMenu()) && ($activeMenu = $menu->getActive())) {
+                        $queryData += $activeMenu->query;
+                    }
+                }
+
+                if (empty($queryData['id']) == false) {
+                    if (is_numeric($queryData['id'])) {
+                        $queryData['id'] = (int)$queryData['id'];
+                    } else {
+                        $queryData['id'] = (string)$queryData['id'];
+                    }
+                }
+
                 ksort($queryData);
                 $url = http_build_query($queryData);
 
