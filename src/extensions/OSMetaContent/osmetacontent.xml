@@ -7,8 +7,8 @@
     <copyright>Copyright 2022 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>OSMeta is an extension to easily manage meta titles, descriptions for Joomla articles</description>
-    <version>2.0.3</version>
-    <creationDate>January 03 2022</creationDate>
+    <version>2.0.4</version>
+    <creationDate>March 31 2022</creationDate>
 
     <alledia>
         <element>osmetacontent</element>
