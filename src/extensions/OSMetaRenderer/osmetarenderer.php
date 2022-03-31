@@ -41,8 +41,10 @@ if (is_file($includePath) && (include $includePath)) {
 
             if ($app->isClient('site')) {
                 $queryData = $_REQUEST;
-                if (empty($queryData) || !isset($queryData['id']) || !isset($queryData['option'])) {
-                    $queryData += $app->getMenu()->getActive()->query;
+                if (empty($queryData) || empty($queryData['id']) || empty($queryData['option'])) {
+                    if (($menu = $app->getMenu()) && ($activeMenu = $menu->getActive())) {
+                        $queryData += $activeMenu->query;
+                    }
                 }
 
                 if (isset($queryData['id']) && !is_numeric($queryData['id'])) {
