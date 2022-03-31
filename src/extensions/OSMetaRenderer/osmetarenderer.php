@@ -47,8 +47,12 @@ if (is_file($includePath) && (include $includePath)) {
                     }
                 }
 
-                if (isset($queryData['id']) && !is_numeric($queryData['id'])) {
-                    $queryData['id'] = (int)$queryData['id'];
+                if (empty($queryData['id']) == false) {
+                    if (is_numeric($queryData['id'])) {
+                        $queryData['id'] = (int)$queryData['id'];
+                    } else {
+                        $queryData['id'] = (string)$queryData['id'];
+                    }
                 }
 
                 ksort($queryData);
