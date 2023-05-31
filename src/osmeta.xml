@@ -116,6 +116,8 @@
             <file>media/com_osmeta/admin/alledia.css</file>
             <file>plugins/content/osmetacontent/include.php</file>
             <file>plugins/system/osmetarenderer/include.php</file>
+
+            <extension type="plugin" group="k2" element="osmetak2"/>
         </obsolete>
 
         <include>ShackDefaultFiles</include>
