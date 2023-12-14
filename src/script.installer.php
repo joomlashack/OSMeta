@@ -22,21 +22,25 @@
  */
 
 use Alledia\Installer\AbstractScript;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\InstallerAdapter;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 $installPath = __DIR__ . (is_dir(__DIR__ . '/admin') ? '/admin' : '');
 require_once $installPath . '/library/Installer/include.php';
+
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 
 class Com_osmetainstallerScript extends AbstractScript
 {
     /**
      * @inheritDoc
      */
-    protected function customPostFlight(string $type, InstallerAdapter $parent)
+    protected function customPostFlight(string $type, InstallerAdapter $parent): void
     {
         $db = $this->dbo;
 
@@ -45,7 +49,7 @@ class Com_osmetainstallerScript extends AbstractScript
             ->delete('#__extensions')
             ->where([
                 'type = ' . $db->quote('package'),
-                'element = ' . $db->quote('pkg_osmeta')
+                'element = ' . $db->quote('pkg_osmeta'),
             ]);
 
         $db->setQuery($query)->execute();

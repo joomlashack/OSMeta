@@ -21,13 +21,13 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Joomla\View\Admin\AbstractBase;
 use Alledia\OSMeta\Free\Container\Component\Content;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Alledia\Framework\Joomla\View\Admin\AbstractBase;
 
 defined('_JEXEC') or die();
 

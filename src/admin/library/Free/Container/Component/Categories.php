@@ -146,7 +146,7 @@ class Categories extends AbstractContainer
 
         return [
             'rows'  => $rows,
-            'total' => $total
+            'total' => $total,
         ];
     }
 
