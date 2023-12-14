@@ -28,12 +28,13 @@ defined('_JEXEC') or die();
 
 try {
     $frameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
-    if (!(is_file($frameworkPath) && include $frameworkPath)) {
+    if ((is_file($frameworkPath) && include $frameworkPath) == false) {
         $app = Factory::getApplication();
 
         if ($app->isClient('administrator')) {
             $app->enqueueMessage('[OSMeta] Joomlashack framework not found', 'error');
         }
+
         return false;
     }
 
