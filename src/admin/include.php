@@ -22,7 +22,12 @@
  */
 
 use Alledia\Framework\AutoLoader;
+use Alledia\Framework\Helper as FrameworkHelper;
+use Alledia\OSMeta\ContainerFactory;
+use Alledia\OSMeta\Free\Container\Factory as FreeFactory;
+use Alledia\OSMeta\Pro\Container\Factory as ProFactory;
 use Joomla\CMS\Factory;
+use Joomla\Component\Content\Site\Helper\RouteHelper as ContentRouteHelper;
 
 defined('_JEXEC') or die();
 
@@ -44,12 +49,16 @@ try {
 
         AutoLoader::register('Alledia\OSMeta', OSMETA_LIBRARY);
 
-        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+        if (class_exists(ContentRouteHelper::class) == false) {
+            JLoader::register(ContentHelperRoute::class, JPATH_SITE . '/components/com_content/helpers/route.php');
+            FrameworkHelper::createDatabaseClassAliases();
+            FrameworkHelper::createClassAliases([ContentHelperRoute::class => ContentRouteHelper::class]);
+        }
 
-        if (class_exists('\\Alledia\\OSMeta\\Pro\\Container\\Factory')) {
-            class_alias('\\Alledia\\OSMeta\\Pro\\Container\\Factory', '\\Alledia\\OSMeta\\ContainerFactory');
+        if (class_exists(ProFactory::class)) {
+            class_alias(ProFactory::class, ContainerFactory::class);
         } else {
-            class_alias('\\Alledia\\OSMeta\\Free\\Container\\Factory', '\\Alledia\\OSMeta\\ContainerFactory');
+            class_alias(FreeFactory::class, ContainerFactory::class);
         }
 
         define('OSMETA_LOADED', 1);

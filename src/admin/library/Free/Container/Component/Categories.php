@@ -24,12 +24,12 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use ContentHelperRoute;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 defined('_JEXEC') or die();
 
@@ -135,7 +135,7 @@ class Categories extends AbstractContainer
                 . "&extension={$row->extension}";
 
             // Get the category view url
-            $url = ContentHelperRoute::getCategoryRoute($row->id);
+            $url = RouteHelper::getCategoryRoute($row->id);
             $url = Route::_($url);
             $uri = Uri::getInstance();
             $url = $uri->toString(['scheme', 'host', 'port']) . $url;

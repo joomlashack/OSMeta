@@ -25,6 +25,8 @@ namespace Alledia\OSMeta\Free\Container;
 
 use Alledia\Framework\Factory as AllediaFactory;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseQuery;
 
 defined('_JEXEC') or die();
 
@@ -69,7 +71,7 @@ abstract class AbstractContainer
     protected $app = null;
 
     /**
-     * @var \JDatabaseDriver
+     * @var DatabaseDriver
      */
     protected $dbo = null;
 
