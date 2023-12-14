@@ -4,11 +4,11 @@
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com/</authorUrl>
-    <copyright>Copyright 2013-2023 Joomlashack.com</copyright>
+    <copyright>Copyright 2013-2023 Joomlashack</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
-    <version>2.0.6</version>
-    <creationDate>May 31 2023</creationDate>
+    <version>2.0.7b1</version>
+    <creationDate>December 13 2023</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
