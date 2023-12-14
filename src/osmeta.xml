@@ -56,7 +56,6 @@
     </administration>
 
     <media destination="com_osmeta" folder="media">
-        <folder>admin</folder>
         <folder>css</folder>
         <folder>images</folder>
         <folder>js</folder>

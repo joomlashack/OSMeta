@@ -1,0 +1,31 @@
+form label {
+  display: inline-block !important;
+}
+
+.char-count-container {
+  text-align: right;
+}
+
+.char-count-container div {
+  display: inline-block;
+}
+
+.char-count-container .char-count-counter {
+  margin-left: 10px;
+  margin-right: 4px;
+  color: gray;
+}
+
+.char-count-container .char-count-counter.invalid {
+  color: #f33b38;
+  font-weight: bold;
+}
+
+.char-count-container .char-count-counter-text {
+  color: gray;
+}
+
+.char-count-container .char-count-warning {
+  color: #f33b38;
+  font-style: italic;
+}

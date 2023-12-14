@@ -121,7 +121,7 @@ class OSMetaViewOSMeta extends AbstractBase
         $itemType       = $app->input->getString('type', null);
         $this->itemType = $itemType;
 
-        HTMLHelper::_('stylesheet', 'media/com_osmeta/admin/css/main-j3.css');
+        HTMLHelper::_('stylesheet', 'com_osmeta/admin.css', ['relative' => true]);
 
         $this->submenu = JHtmlSidebar::render();
 
