@@ -24,6 +24,7 @@
 use Alledia\OSMeta\Pro\Fields;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
@@ -31,161 +32,174 @@ HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' 
 HTMLHelper::_('behavior.core');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
-$colspan = $this->extension->isPro() ? 5 : 4;
+$isPro = $this->extension->isPro();
 ?>
 
-<form action="index.php?option=com_osmeta&type=<?php echo $this->itemType; ?>"
+<form action="<?php Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
       method="post"
       name="adminForm"
       id="adminForm">
 
-    <div class="row">
-        <div class="col-md-12">
-        <table style="width: 100%;">
-            <tr>
-                <td class="ost-filters">
-                    <?php echo $this->filter; ?>
-                </td>
-            </tr>
-        </table>
-
-        <?php if (count($this->metatagsData) == 0) : ?>
-            <div class="alert alert-warning">
-                <h4 class="alert-heading"><?php echo Text::_('MESSAGE') ?></h4>
-                <div class="alert-message"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
-            </div>
-
-        <?php else : ?>
-            <table class="table table-striped adminlist" id="articleList">
-                <thead class="hidden-phone">
+    <div class="j-main-container">
+        <div class="w-100">
+            <table class="w-100">
                 <tr>
-                    <th style="width: 2%;">
-                        <input type="checkbox"
-                               name="checkall-toggle"
-                               value=""
-                               title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
-                               onclick="Joomla.checkAll(this)"/>
-                    </th>
-
-                    <th class="title title-column"
-                        style="width: <?php echo $this->extension->isPro() ? '20%;' : '25%;'; ?>">
-                        <?php echo HTMLHelper::_(
-                            'grid.sort',
-                            Text::_('COM_OSMETA_TITLE_LABEL'),
-                            'title',
-                            $this->order_Dir,
-                            $this->order,
-                            'view'
-                        ); ?>
-                    </th>
-
-                    <?php if ($this->extension->isPro()) : ?>
-                        <?php Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
-                    <?php endif; ?>
-
-                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
-                        <?php echo HTMLHelper::_(
-                            'grid.sort',
-                            Text::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'),
-                            'meta_title',
-                            $this->order_Dir,
-                            $this->order,
-                            'view'
-                        ); ?>
-                    </th>
-
-                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
-                        <?php echo HTMLHelper::_(
-                            'grid.sort',
-                            Text::_('COM_OSMETA_DESCRIPTION_LABEL'),
-                            'meta_desc',
-                            $this->order_Dir,
-                            $this->order,
-                            'view'
-                        ); ?>
-                    </th>
-                </tr>
-
-                </thead>
-                <tr class="hidden-phone">
-                    <td style="width: 20px;"></td>
-                    <td class="title">
-                        <?php echo Text::_('COM_OSMETA_TITLE_DESC') ?>
-                    </td>
-
-                    <?php if ($this->extension->isPro()) : ?>
-                        <td>
-                            <?php echo Text::_('COM_OSMETA_ALIAS_DESC') ?>
-                        </td>
-                    <?php endif; ?>
-
-                    <td style="vertical-align: top;">
-                        <?php echo Text::sprintf(
-                            'COM_OSMETA_SEARCH_ENGINE_TITLE_DESC',
-                            $this->extension->params->get('meta_title_limit', 70)
-                        ); ?>
-                    </td>
-                    <td style="vertical-align: top;">
-                        <?php echo Text::sprintf(
-                            'COM_OSMETA_DESCRIPTION_DESC',
-                            $this->extension->params->get('meta_description_limit', 160)
-                        ); ?>
+                    <td class="ost-filters">
+                        <?php echo $this->filter; ?>
                     </td>
                 </tr>
+            </table>
 
-                <?php
-                $k = 1;
-                for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
-                    $row     = $this->metatagsData[$i];
-                    $checked = HTMLHelper::_('grid.id', $i, $row->id);
-                    ?>
-                    <tr class="<?php echo 'row' . $k; ?>">
-                        <td class="hidden-phone text-center"><?php echo $checked; ?>
-                            <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
+            <?php if (count($this->metatagsData) == 0) : ?>
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading"><?php echo Text::_('MESSAGE') ?></h4>
+                    <div class="alert-message"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
+                </div>
+
+            <?php else : ?>
+                <table class="table itemList" id="articleList">
+                    <thead>
+                    <tr>
+                        <th class="w-1">
+                            <input type="checkbox"
+                                   name="checkall-toggle"
+                                   value=""
+                                   title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
+                                   onclick="Joomla.checkAll(this)"/>
+                        </th>
+
+                        <th class="<?php echo $isPro ? 'w-20' : 'w-25'; ?>">
+                            <?php echo HTMLHelper::_(
+                                'grid.sort',
+                                Text::_('COM_OSMETA_TITLE_LABEL'),
+                                'title',
+                                $this->order_Dir,
+                                $this->order,
+                                'view'
+                            ); ?>
+                        </th>
+
+                        <?php
+                        if ($isPro) :
+                            echo Fields::additionalFieldsHeader($this->order_Dir, $this->order);
+                        endif;
+                        ?>
+
+                        <th class="<?php echo $isPro ? 'w-25' : 'w-35'; ?>">
+                            <?php echo HTMLHelper::_(
+                                'grid.sort',
+                                Text::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'),
+                                'meta_title',
+                                $this->order_Dir,
+                                $this->order,
+                                'view'
+                            ); ?>
+                        </th>
+
+                        <th class="<?php echo $isPro ? 'w-25' : 'w-35'; ?>">
+                            <?php echo HTMLHelper::_(
+                                'grid.sort',
+                                Text::_('COM_OSMETA_DESCRIPTION_LABEL'),
+                                'meta_desc',
+                                $this->order_Dir,
+                                $this->order,
+                                'view'
+                            ); ?>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td class="text-wrap align-top">
+                            <?php echo Text::_('COM_OSMETA_TITLE_DESC') ?>
                         </td>
-                        <td>
-                            <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
-                                <?php echo $row->title; ?>
-                            </a>
-                            <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
 
-                            </a>
-                        </td>
-
-                        <?php if ($this->extension->isPro()) : ?>
-                            <?php Fields::additionalFields($row); ?>
+                        <?php if ($isPro) : ?>
+                            <td class="text-wrap align-top">
+                                <?php echo Text::_('COM_OSMETA_ALIAS_DESC') ?>
+                            </td>
                         <?php endif; ?>
 
-                        <td class="field-column">
-                            <textarea name="metatitle[]"
-                                      class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
+                        <td class="text-wrap align-top">
+                            <?php echo Text::sprintf(
+                                'COM_OSMETA_SEARCH_ENGINE_TITLE_DESC',
+                                $this->extension->params->get('meta_title_limit', 70)
+                            ); ?>
                         </td>
-                        <td class="field-column">
-                            <textarea name="metadesc[]"
-                                      class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
+                        <td class="text-wrap align-top">
+                            <?php echo Text::sprintf(
+                                'COM_OSMETA_DESCRIPTION_DESC',
+                                $this->extension->params->get('meta_description_limit', 160)
+                            ); ?>
                         </td>
                     </tr>
+                    </thead>
+
                     <?php
-                    $k = 1 - $k;
-                }
-                ?>
-                <tfoot>
-                <tr>
-                    <td colspan="<?php echo $colspan; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
-                </tr>
-                </tfoot>
-            </table>
-        <?php endif; ?>
+                    foreach ($this->metatagsData as $i => $row) :
+                        $checked = HTMLHelper::_('grid.id', $i, $row->id);
+                        ?>
+                        <tr class="<?php echo 'row' . $i; ?>">
+                            <td class="text-center"><?php echo $checked; ?>
+                                <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
+                            </td>
 
-        <input type="hidden" name="option" value="com_osmeta"/>
-        <input type="hidden" name="task" value="view"/>
-        <input type="hidden" name="type" value="<?php echo $this->itemType; ?>"/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $this->order ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>"/>
-    </div>
-    </div>
+                            <td>
+                                <?php
+                                echo sprintf(
+                                    '%s %s',
+                                    HTMLHelper::_(
+                                        'link',
+                                        $row->edit_url,
+                                        $row->title,
+                                        [
+                                            'id' => 'title_' . $row->id,
+                                        ]
+                                    ),
+                                    HTMLHelper::_(
+                                        'link',
+                                        $row->view_url,
+                                        '',
+                                        [
+                                            'target' => '_blank',
+                                        ]
+                                    )
+                                );
+                                ?>
+                            </td>
 
+                            <?php
+                            if ($isPro) :
+                                echo Fields::additionalFields($row);
+                            endif;
+                            ?>
+
+                            <td>
+                            <textarea name="metatitle[]"
+                                      class="char-count metatitle w-100"><?php echo $row->metatitle ?? ''; ?></textarea>
+                            </td>
+                            <td>
+                            <textarea name="metadesc[]"
+                                      class="char-count metadesc w-100"><?php echo $row->metadesc ?? ''; ?></textarea>
+                            </td>
+                        </tr>
+                    <?php
+                    endforeach;
+                    ?>
+                </table>
+                <?php
+                echo $this->pageNav->getListFooter();
+            endif;
+            ?>
+
+            <input type="hidden" name="option" value="com_osmeta"/>
+            <input type="hidden" name="task" value="view"/>
+            <input type="hidden" name="type" value="<?php echo $this->itemType; ?>"/>
+            <input type="hidden" name="boxchecked" value="0"/>
+            <input type="hidden" name="filter_order" value="<?php echo $this->order ?>"/>
+            <input type="hidden" name="filter_order_Dir" value="<?php echo $this->order_Dir ?>"/>
+        </div>
+    </div>
 </form>
 
 <script>

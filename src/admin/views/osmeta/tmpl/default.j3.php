@@ -24,15 +24,16 @@
 use Alledia\OSMeta\Pro\Fields;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
 HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
 
-$colspan = $this->extension->isPro() ? 5 : 4;
+$isPro = $this->extension->isPro();
 ?>
 
-<form action="index.php?option=com_osmeta&type=<?php echo $this->itemType; ?>"
+<form action="<?php echo Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
       method="post"
       name="adminForm"
       id="adminForm">
@@ -41,7 +42,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
     </div>
 
     <div id="j-main-container" class="span10">
-        <table style="width: 100%;">
+        <table class="span12">
             <tr>
                 <td class="ost-filters">
                     <?php echo $this->filter; ?>
@@ -49,7 +50,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
             </tr>
         </table>
 
-        <?php if (count($this->metatagsData) == 0) : ?>
+        <?php if (empty($this->metatagsData)) : ?>
             <div class="alert alert-warning">
                 <h4 class="alert-heading"><?php echo Text::_('MESSAGE') ?></h4>
                 <div class="alert-message"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
@@ -57,18 +58,13 @@ $colspan = $this->extension->isPro() ? 5 : 4;
 
         <?php else : ?>
             <table class="table table-striped adminlist" id="articleList">
-                <thead class="hidden-phone">
+                <thead>
                 <tr>
-                    <th style="width: 2%;">
-                        <input type="checkbox"
-                               name="checkall-toggle"
-                               value=""
-                               title="<?php echo Text::_('JGLOBAL_CHECK_ALL'); ?>"
-                               onclick="Joomla.checkAll(this)"/>
+                    <th style="width: 1%;">
+                        <?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
 
-                    <th class="title title-column"
-                        style="width: <?php echo $this->extension->isPro() ? '20%;' : '25%;'; ?>">
+                    <th style="width: <?php echo $isPro ? '20%' : '25%'; ?>">
                         <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_TITLE_LABEL'),
@@ -79,11 +75,13 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                         ); ?>
                     </th>
 
-                    <?php if ($this->extension->isPro()) : ?>
-                        <?php Fields::additionalFieldsHeader($this->order_Dir, $this->order); ?>
-                    <?php endif; ?>
+                    <?php
+                    if ($isPro) :
+                        echo Fields::additionalFieldsHeader($this->order_Dir, $this->order);
+                    endif;
+                    ?>
 
-                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
+                    <th style="width: <?php echo $isPro ? '24%' : '35%'; ?>">
                         <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_SEARCH_ENGINE_TITLE_LABEL'),
@@ -94,7 +92,7 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                         ); ?>
                     </th>
 
-                    <th class="title" style="width: <?php echo $this->extension->isPro() ? '24%;' : '35%;'; ?>">
+                    <th style="width: <?php echo $isPro ? '24%' : '35%'; ?>">
                         <?php echo HTMLHelper::_(
                             'grid.sort',
                             Text::_('COM_OSMETA_DESCRIPTION_LABEL'),
@@ -106,15 +104,14 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                     </th>
                 </tr>
 
-                </thead>
-                <tr class="hidden-phone">
-                    <td style="width: 20px;"></td>
-                    <td class="title">
+                <tr>
+                    <td></td>
+                    <td style="vertical-align: top;">
                         <?php echo Text::_('COM_OSMETA_TITLE_DESC') ?>
                     </td>
 
-                    <?php if ($this->extension->isPro()) : ?>
-                        <td>
+                    <?php if ($isPro) : ?>
+                        <td style="vertical-align: top;">
                             <?php echo Text::_('COM_OSMETA_ALIAS_DESC') ?>
                         </td>
                     <?php endif; ?>
@@ -132,50 +129,63 @@ $colspan = $this->extension->isPro() ? 5 : 4;
                         ); ?>
                     </td>
                 </tr>
+                </thead>
 
+                <tbody>
                 <?php
-                $k = 1;
-                for ($i = 0, $n = count($this->metatagsData); $i < $n; $i++) {
-                    $row     = $this->metatagsData[$i];
+                foreach ($this->metatagsData as $i => $row) :
                     $checked = HTMLHelper::_('grid.id', $i, $row->id);
                     ?>
-                    <tr class="<?php echo 'row' . $k; ?>">
+                    <tr class="<?php echo 'row' . $i; ?>">
                         <td class="hidden-phone"><?php echo $checked; ?>
                             <input type="hidden" name="ids[]" value="<?php echo $row->id ?>"/>
                         </td>
                         <td>
-                            <a id="title_<?php echo $row->id ?>" href="<?php echo $row->edit_url; ?>">
-                                <?php echo $row->title; ?>
-                            </a>
-                            <a class="external-link" href="<?php echo $row->view_url; ?>" target="_blank">
-                                <span class="icon-out-2"></span>
-                            </a>
+                            <?php
+                            echo HTMLHelper::_(
+                                'link',
+                                $row->edit_url,
+                                $this->escape($row->title),
+                                [
+                                    'id' => 'title_' . $row->id,
+                                ]
+                            );
+                            echo ' ';
+                            echo HTMLHelper::_(
+                                'link',
+                                $row->view_url,
+                                '<span class="icon-out-2"></span>',
+                                [
+                                    'class' => 'external-link',
+                                ]
+                            );
+                            ?>
                         </td>
 
-                        <?php if ($this->extension->isPro()) : ?>
-                            <?php Fields::additionalFields($row); ?>
-                        <?php endif; ?>
+                        <?php
+                        if ($isPro) :
+                            echo Fields::additionalFields($row);
+                        endif;
+                        ?>
 
-                        <td class="field-column">
+                        <td>
                             <textarea name="metatitle[]"
-                                      class="char-count metatitle"><?php echo $row->metatitle; ?></textarea>
+                                      class="span12 char-count metatitle"
+                            ><?php echo $row->metatitle ?? ''; ?></textarea>
                         </td>
                         <td class="field-column">
                             <textarea name="metadesc[]"
-                                      class="char-count metadesc"><?php echo $row->metadesc; ?></textarea>
+                                      class="span12 char-count metadesc"
+                            ><?php echo $row->metadesc ?? ''; ?></textarea>
                         </td>
                     </tr>
-                    <?php
-                    $k = 1 - $k;
-                }
-                ?>
-                <tfoot>
-                <tr>
-                    <td colspan="<?php echo $colspan; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
-                </tr>
-                </tfoot>
+                <?php endforeach; ?>
+                </tbody>
             </table>
-        <?php endif; ?>
+            <?php
+            echo $this->pageNav->getListFooter();
+        endif;
+        ?>
 
         <input type="hidden" name="option" value="com_osmeta"/>
         <input type="hidden" name="task" value="view"/>
