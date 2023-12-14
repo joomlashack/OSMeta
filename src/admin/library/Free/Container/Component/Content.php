@@ -24,12 +24,12 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use ContentHelperRoute;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 defined('_JEXEC') or die();
 
@@ -169,19 +169,18 @@ class Content extends AbstractContainer
 
             $row->edit_url = "index.php?option=com_content&task=article.edit&id={$row->id}";
 
-            // Get the article view url
-            $url = ContentHelperRoute::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid);
-            $url = Route::_($url);
-            $uri = Uri::getInstance();
-            $url = $uri->toString(['scheme', 'host', 'port']) . $url;
-            $url = str_replace('/administrator/', '/', $url);
-
-            $row->view_url = $url;
+            $row->view_url = Route::link(
+                'site',
+                RouteHelper::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid),
+                true,
+                Route::TLS_IGNORE,
+                true
+            );
         }
 
         return [
             'rows'  => $rows,
-            'total' => $total
+            'total' => $total,
         ];
     }
 
