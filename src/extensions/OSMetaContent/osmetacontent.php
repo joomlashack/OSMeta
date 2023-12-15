@@ -21,93 +21,108 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Categories\Administrator\Table\CategoryTable;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
+if ((is_file($includePath) && (include $includePath)) == false) {
+    class_alias(CMSPlugin::class, AbstractPlugin::class);
+}
 
-if (is_file($includePath) && (include $includePath)) {
-    class PlgContentOSMetaContent extends AbstractPlugin
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
+class PlgContentOSMetaContent extends AbstractPlugin
+{
+    /**
+     * @var CMSApplication
+     */
+    protected $app = null;
+
+    /**
+     * @param string                                $context
+     * @param CategoriesTableCategory|CategoryTable $content
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function onContentAfterSave($context, $content): bool
     {
-        /**
-         * @var CMSApplication
-         */
-        protected $app = null;
+        if (
+            $this->isEnabled()
+            && (
+                $context === 'com_content.article'
+                || $context === 'com_categories.category'
+            )
+        ) {
+            $input = $this->app->input;
 
-        /**
-         * @param string $context
-         * @param object $content
-         *
-         * @return bool
-         * @throws Exception
-         */
-        public function onContentAfterSave(string $context, object $content): bool
-        {
-            if ($context === 'com_content.article' || $context === 'com_categories.category') {
-                $input = $this->app->input;
+            $option    = $input->getCmd('option');
+            $contentId = $content->id ?? null;
 
-                $option = $input->getCmd('option');
+            if ($contentId) {
+                if ($container = ContainerFactory::getInstance()->getContainerByComponentName($option)) {
+                    $contentMetadata  = json_decode($content->metadata ?? '');
+                    $contentMetatitle = $contentMetadata->metatitle ?? '';
 
-                if (empty($content->id) == false) {
-                    if ($container = ContainerFactory::getInstance()->getContainerByComponentName($option)) {
-                        $articleOSMetadataInput = json_decode($content->metadata);
-
-                        $id       = [$content->id];
-                        $title    = [$articleOSMetadataInput->metatitle];
-                        $metaDesc = [$content->metadesc];
-                        $alias    = [$content->alias];
-
-                        $container->saveMetatags($id, $title, $metaDesc, $alias);
-                    }
+                    $container->saveMetatags(
+                        [$contentId],
+                        [$contentMetatitle],
+                        [$content->metadesc ?? ''],
+                        [$content->alias ?? '']
+                    );
                 }
             }
-
-            return true;
         }
 
-        /**
-         * @param Form  $form
-         *
-         * @return void
-         * @throws Exception
-         */
-        public function onContentPrepareForm(Form $form)
-        {
-            if ($form->getName() === 'com_content.article'
-                || $form->getName() === 'com_categories.category'
-                || $form->getName() === 'com_categories.categorycom_content'
-            ) {
-                Factory::getLanguage()->load('com_osmeta', OSMETA_ADMIN);
+        return true;
+    }
 
-                $xml = file_get_contents(JPATH_ROOT . '/plugins/content/osmetacontent/forms/metadata3.xml');
-                $js  = '
-                        domready(function () {
-                            // Browser title and Meta title fields
-                            var metaTitle = document.getElementById("jform_metadata_metatitle");
-                            var fieldGroup = metaTitle.parentNode.parentNode.parentNode;
+    /**
+     * @param Form $form
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function onContentPrepareForm(Form $form): void
+    {
+        $formName = $form->getName();
+        if (
+            $formName == 'com_content.article'
+            || $formName == 'com_categories.categorycom_content'
+        ) {
+            Factory::getLanguage()->load('com_osmeta', OSMETA_ADMIN);
 
-                            fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
-                        });';
+            $formPath = JPATH_PLUGINS . '/content/osmetacontent/forms/metadata.xml';
+            if (is_file($formPath)) {
+                $form->load(file_get_contents($formPath));
 
-                $form->load($xml, true);
+                $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
+window.addEventListener('DOMContentLoaded', function () {
+    let metaTitle  = document.getElementById('jform_metadata_metatitle'),
+        fieldGroup = metaTitle.parentNode.parentNode.parentNode;
 
-                // Add Javascript code to sort the fields
-                $doc = Factory::getDocument();
-
-                $doc->addScriptDeclaration(
-                    '/*!
-                          * domready (c) Dustin Diaz 2012 - License MIT
-                          */
-                        !function (e,t) {typeof module!="undefined"?module.exports=t():typeof define=="function"&&typeof define.amd=="object"?define(t):this[e]=t()}("domready",function (e) {function p(e) {h=1;while (e=t.shift())e()}var t=[],n,r=!1,i=document,s=i.documentElement,o=s.doScroll,u="DOMContentLoaded",a="addEventListener",f="onreadystatechange",l="readyState",c=o?/^loaded|^c/:/^loaded|c/,h=c.test(i[l]);return i[a]&&i[a](u,n=function () {i.removeEventListener(u,n,r),p()},r),o&&i.attachEvent(f,n=function () {/^c/.test(i[l])&&(i.detachEvent(f,n),p())}),e=o?function (n) {self!=top?h?n():t.push(n):function () {try {s.doScroll("left")} catch (t){return setTimeout(function () {e(n)},50)}n()}()}:function (e) {h?e():t.push(e)}})
-                    '
+    fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
+});
+JSCRIPT
                 );
-                $doc->addScriptDeclaration($js);
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isEnabled(): bool
+    {
+        return class_exists(ContainerFactory::class);
     }
 }
