@@ -23,47 +23,65 @@
 
 use Alledia\Framework\Joomla\Extension\AbstractPlugin;
 use Alledia\OSMeta\ContainerFactory;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Plugin\CMSPlugin;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osmeta/include.php';
-if (is_file($includePath) && (include $includePath)) {
-    class PlgSystemOSMetaRenderer extends AbstractPlugin
+if ((is_file($includePath) && (include $includePath)) == false) {
+    class_alias(CMSPlugin::class, AbstractPlugin::class);
+}
+
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
+class PlgSystemOSMetaRenderer extends AbstractPlugin
+{
+    /**
+     * @inheritdoc
+     * @var CMSApplication
+     */
+    protected $app = null;
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function onAfterRender()
     {
-        /**
-         * @return void
-         * @throws Exception
-         */
-        public function onAfterRender()
-        {
-            $app = Factory::getApplication();
-
-            if ($app->isClient('site')) {
-                $queryData = $_REQUEST;
-                if (empty($queryData) || empty($queryData['id']) || empty($queryData['option'])) {
-                    if (($menu = $app->getMenu()) && ($activeMenu = $menu->getActive())) {
-                        $queryData += $activeMenu->query;
+        if (
+            $this->isEnabled()
+            && $this->app->isClient('site')
+        ) {
+            $queryData = $_REQUEST;
+            if (empty($queryData['id']) || empty($queryData['option'])) {
+                if ($menu = $this->app->getMenu()) {
+                    if ($menu = $menu->getActive()) {
+                        $queryData += $menu->query;
                     }
                 }
-
-                if (empty($queryData['id']) == false) {
-                    if (is_numeric($queryData['id'])) {
-                        $queryData['id'] = (int)$queryData['id'];
-                    } else {
-                        $queryData['id'] = (string)$queryData['id'];
-                    }
-                }
-
-                ksort($queryData);
-                $url = http_build_query($queryData);
-
-                $buffer = $app->getBody();
-
-                $buffer = ContainerFactory::getInstance()->processBody($buffer, $url);
-
-                $app->setBody($buffer);
             }
+
+            if ($id = ($queryData['id'] ?? null)) {
+                $queryData['id'] = is_numeric($id) ? (int)$id : (string)$id;
+            }
+
+            $buffer = ContainerFactory::getInstance()->processBody(
+                $this->app->getBody(),
+                http_build_query($queryData)
+            );
+
+            $this->app->setBody($buffer);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isEnabled(): bool
+    {
+        return class_exists(ContainerFactory::class);
     }
 }

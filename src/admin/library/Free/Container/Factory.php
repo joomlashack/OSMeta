@@ -23,9 +23,13 @@
 
 namespace Alledia\OSMeta\Free\Container;
 
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Filesystem\Folder;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class Factory
 {
@@ -44,17 +48,12 @@ class Factory
     /**
      * @var array
      */
-    public $metadataByQueryMap = [];
-
-    /**
-     * @var array
-     */
     protected $metadata = null;
 
     /**
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -66,79 +65,73 @@ class Factory
     /**
      * Method to get container by ID
      *
-     * @param string $type Container Type
+     * @param string $type
      *
-     * @return mixed
+     * @return ?AbstractContainer
      */
-    public function getContainerById($type)
+    public function getContainerById(string $type): ?AbstractContainer
     {
         $features  = $this->getFeatures();
-        $container = 'com_content:Article';
+        $className = $features[$type]['class'] ?? null;
 
-        if (isset($features[$type])) {
-            if (class_exists($features[$type]['class'])) {
-                $container = new $features[$type]['class']();
-            }
+        if ($className && class_exists($className)) {
+            return new $className();
         }
 
-        return $container;
+        return null;
     }
 
     /**
-     * @param string $queryString Query String
+     * @param ?string $queryString
      *
-     * @return mixed
+     * @return ?AbstractContainer
      * @throws \Exception
      */
-    public function getContainerByRequest($queryString = null)
+    public function getContainerByRequest(?string $queryString = null): ?AbstractContainer
     {
-        $app                   = \Joomla\CMS\Factory::getApplication();
-        $params                = [];
+        $app                   = JoomlaFactory::getApplication();
         $resultFeatureId       = null;
         $resultFeaturePriority = -1;
+        $features              = $this->getFeatures();
 
-        if ($queryString != null) {
-            parse_str($queryString, $params);
-        }
+        parse_str((string)$queryString, $query);
 
-        $features = $this->getFeatures();
+        // @TODO: this loop is crap
         foreach ($features as $featureId => $feature) {
             $success = true;
 
-            if (isset($feature['params'])) {
-                foreach ($feature['params'] as $paramsArray) {
-                    $success = true;
+            $params = $feature['params'] ?? [];
+            foreach ($params as $param) {
+                $success = true;
 
-                    foreach ($paramsArray as $key => $value) {
-                        if ($queryString != null) {
-                            if ($value !== null) {
-                                $success = $success && (isset($params[$key]) && $params[$key] == $value);
-                            } else {
-                                $success = $success && isset($params[$key]);
-                            }
-                        } elseif ($value !== null) {
-                            $success = $success && ($app->input->getCmd($key) == $value);
+                foreach ($param as $key => $value) {
+                    if ($query) {
+                        if ($value !== null) {
+                            $success = $success && (isset($query[$key]) && $query[$key] == $value);
                         } else {
-                            $success = $success && ($app->input->getCmd($key) !== null);
+                            $success = $success && isset($query[$key]);
                         }
+                    } elseif ($value !== null) {
+                        $success = $success && ($app->input->getCmd($key) == $value);
+                    } else {
+                        $success = $success && ($app->input->getCmd($key) !== null);
                     }
+                }
 
-                    if ($success) {
-                        $resultFeatureId = $featureId;
-                        break;
-                    }
+                if ($success) {
+                    $resultFeatureId = $featureId;
+                    break;
                 }
             }
 
             $featurePriority = $feature['priority'] ?? 0;
 
             if ($success && $featurePriority > $resultFeaturePriority) {
-                $resultFeatureId       = $featureId;
-                $resultFeaturePriority = $featurePriority;
+                $resultFeatureId = $featureId;
             }
         }
 
-        return $this->getContainerById($resultFeatureId);
+        return $resultFeatureId ? $this->getContainerById($resultFeatureId) : null;
     }
 
     /**
@@ -146,11 +139,9 @@ class Factory
      *
      * @param string $component Component Name
      *
-     * @access  public
-     *
-     * @return Object
+     * @return ?AbstractContainer
      */
-    public function getContainerByComponentName($component)
+    public function getContainerByComponentName(string $component): ?AbstractContainer
     {
         $component = ucfirst(str_replace('com_', '', $component));
         $className = "\\Alledia\\OSMeta\\Free\\Container\\Component\\{$component}";
@@ -163,50 +154,24 @@ class Factory
     }
 
     /**
-     * @param string $queryString Query string
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getMetadata($queryString)
-    {
-        $result = [];
-
-        if (isset($this->metadataByQueryMap[$queryString])) {
-            $result = $this->metadataByQueryMap[$queryString];
-        } else {
-            $container = $this->getContainerByRequest($queryString);
-
-            if ($container != null) {
-                $result                                 = $container->getMetadataByRequest($queryString);
-                $this->metadataByQueryMap[$queryString] = $result;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param string $body        Body buffer
-     * @param string $queryString Query string
+     * @param string $body
+     * @param string $queryString
      *
      * @return string
      * @throws \Exception
      */
-    public function processBody($body, $queryString)
+    public function processBody(string $body, string $queryString): string
     {
-        $container = $this->getContainerByRequest($queryString);
-
-        if ($container != null && is_object($container)) {
+        if ($container = $this->getContainerByRequest($queryString)) {
             $this->metadata = $container->getMetadataByRequest($queryString);
 
             $this->processMetadata($this->metadata, $queryString);
 
             // Meta title
-            if ($this->metadata && isset($this->metadata['metatitle']) && !empty($this->metadata['metatitle'])) {
+            if ($this->metadata && empty($this->metadata['metatitle']) == false) {
                 $replaced = 0;
 
-                $config = \Joomla\CMS\Factory::getConfig();
+                $config = JoomlaFactory::getConfig();
 
                 $metaTitle           = $this->metadata['metatitle'];
                 $configSiteNameTitle = $config->get('sitename_pagetitles');
@@ -215,28 +180,31 @@ class Factory
                 $browserTitle        = '';
 
                 // Check the site name title global setting
-                if ($configSiteNameTitle == 1) {
-                    $stringToAppend = "{$configSiteName} {$siteNameSeparator} ";
+                switch ($configSiteNameTitle) {
+                    case 1:
+                        $stringToAppend = "{$configSiteName} {$siteNameSeparator} ";
 
-                    // Check if the sitename is already there
-                    if (!preg_match('#^' . preg_quote($stringToAppend) . '#', $metaTitle)) {
-                        // Add site name before
-                        $browserTitle = $stringToAppend;
-                    }
+                        if (preg_match('#^' . preg_quote($stringToAppend) . '#', $metaTitle) == false) {
+                            // Add site name before
+                            $browserTitle = $stringToAppend;
+                        }
 
-                    $browserTitle .= $metaTitle;
-                } elseif ($configSiteNameTitle == 2) {
-                    $browserTitle   = $metaTitle;
-                    $stringToAppend = " {$siteNameSeparator} {$configSiteName}";
+                        $browserTitle .= $metaTitle;
+                        break;
 
-                    // Check if the sitename is already there
-                    if (!preg_match('#' . preg_quote($stringToAppend) . '$#', $metaTitle)) {
-                        // Add site name after
-                        $browserTitle .= $stringToAppend;
-                    }
-                } else {
-                    // No site name
-                    $browserTitle = $metaTitle;
+                    case 2:
+                        $browserTitle   = $metaTitle;
+                        $stringToAppend = " {$siteNameSeparator} {$configSiteName}";
+
+                        if (preg_match('#' . preg_quote($stringToAppend) . '$#', $metaTitle) == false) {
+                            // Add site name after
+                            $browserTitle .= $stringToAppend;
+                        }
+                        break;
+
+                    default:
+                        // No site name
+                        $browserTitle = $metaTitle;
                 }
 
                 // Process the window title tag
@@ -250,7 +218,7 @@ class Factory
 
                 // Process the meta title
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+title[\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name\s*=\s*[\"']+title[\"']+[^>]*>/i",
                     '<meta name="title" content="' . htmlspecialchars($metaTitle) . '" />',
                     $body,
                     1,
@@ -260,30 +228,33 @@ class Factory
                 if ($replaced != 1) {
                     $body = preg_replace(
                         '/<head>/i',
-                        "<head>\n  <meta name=\"title\" content=\"" . htmlspecialchars($metaTitle) . '" />',
+                        sprintf("<head>\n  <meta name=\"title\" content=\"%s\" />", htmlspecialchars($metaTitle)),
                         $body,
                         1
                     );
                 }
             } elseif ($this->metadata) {
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+title[\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name\s*=\s*[\"']+title[\"']+[^>]*>/i",
                     '',
                     $body,
-                    1,
-                    $replaced
+                    1
                 );
             }
 
             // Meta description
-            if ($this->metadata && isset($this->metadata['metadescription']) && !empty($this->metadata['metadescription'])) {
+            if (
+                $this->metadata
+                && isset($this->metadata['metadescription'])
+                && empty($this->metadata['metadescription']) == false
+            ) {
                 $replaced = 0;
 
                 $metaDescription = $this->metadata['metadescription'];
 
                 // Meta description tag
                 $body = preg_replace(
-                    "/<meta[^>]*name[\\s]*=[\\s]*[\"\\\']+description[\"\\\']+[^>]*>/i",
+                    "/<meta[^>]*name\s*=\s*[\"']+description[\"']+[^>]*>/i",
                     '<meta name="description" content="' . htmlspecialchars($metaDescription) . '" />',
                     $body,
                     1,
@@ -293,7 +264,10 @@ class Factory
                 if ($replaced != 1) {
                     $body = preg_replace(
                         '/<head>/i',
-                        "<head>\n  <meta name=\"description\" content=\"" . htmlspecialchars($metaDescription) . '" />',
+                        sprintf(
+                            "<head>\n  <meta name=\"description\" content=\"%s\" />",
+                            htmlspecialchars($metaDescription)
+                        ),
                         $body,
                         1
                     );
@@ -305,49 +279,21 @@ class Factory
     }
 
     /**
-     * @param string $query    Query
-     * @param string $metadata Metadata
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function setMetadataByRequest($query, $metadata)
-    {
-        $container = $this->getContainerByRequest($query);
-
-        if ($container != null) {
-            $container->setMetadataByRequest($query, $metadata);
-        }
-    }
-
-    /**
      * Method to get all available features
      *
      * @access  public
      *
      * @return array
      */
-    public function getFeatures()
+    public function getFeatures(): array
     {
-        if (empty($this->features)) {
-            $features = [];
-
-            $path  = JPATH_SITE . '/administrator/components/com_osmeta/features';
+        if ($this->features === null) {
+            $path  = JPATH_ADMINISTRATOR . '/components/com_osmeta/features';
             $files = Folder::files($path, '.php');
 
             $features = [];
             foreach ($files as $file) {
                 include $path . '/' . $file;
-            }
-
-            foreach ($features as $key => $value) {
-                $class = $value['class'];
-
-                if (class_exists($class)) {
-                    if (!$class::isAvailable()) {
-                        unset($features[$key]);
-                    }
-                }
             }
 
             $this->features = $features;
@@ -359,12 +305,12 @@ class Factory
     /**
      * Process the metada
      *
-     * @param array  $metadata    The metadata
-     * @param string $queryString Request query string
+     * @param array  $metadata
+     * @param string $queryString
      *
      * @return void
      */
-    protected function processMetadata(&$metadata, $queryString)
+    protected function processMetadata(array &$metadata, string $queryString): void
     {
     }
 }

@@ -28,11 +28,11 @@ use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
-if (!Factory::getUser()->authorise('core.manage', 'com_osmeta')) {
+if (Factory::getUser()->authorise('core.manage', 'com_osmeta') == false) {
     throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-if (include 'include.php') {
+if (include __DIR__ . '/include.php') {
     $component = new Extension\Component('OSMeta');
     $component->loadController();
     $component->executeTask();

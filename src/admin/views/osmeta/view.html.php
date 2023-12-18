@@ -21,15 +21,19 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\View\Admin\AbstractBase;
 use Alledia\OSMeta\Free\Container\Component\Content;
-use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSMetaViewOSMeta extends AbstractBase
 {
@@ -79,19 +83,13 @@ class OSMetaViewOSMeta extends AbstractBase
     public $metatagsContainer = null;
 
     /**
-     * Method to display the view
-     *
-     * @param string $tpl Template file
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
     public function display($tpl = null)
     {
         ToolbarHelper::title(Text::_('COM_OSMETA_META_TAGS_MANAGER'), 'logo');
 
-        ToolbarHelper::apply("save");
+        ToolbarHelper::apply('save');
 
         if ($this->metatagsContainer->supportGenerateTitle) {
             ToolbarHelper::custom(
@@ -118,14 +116,12 @@ class OSMetaViewOSMeta extends AbstractBase
 
         $app = Factory::getApplication();
 
-        $itemType       = $app->input->getString('type', null);
-        $this->itemType = $itemType;
+        $this->itemType  = $app->input->getString('type');
+        $this->submenu   = Sidebar::render();
+        $this->extension = Factory::getExtension('OSMeta', 'component');
 
         HTMLHelper::_('stylesheet', 'com_osmeta/admin.css', ['relative' => true]);
 
-        $this->submenu = JHtmlSidebar::render();
-
-        $this->extension = Alledia\Framework\Factory::getExtension('OSMeta', 'component');
 
         parent::display($tpl);
     }

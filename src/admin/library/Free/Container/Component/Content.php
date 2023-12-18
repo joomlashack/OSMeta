@@ -24,20 +24,17 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
-/**
- * Article Metatags Container
- *
- * @since  1.0
- */
+// phpcs:enable PSR1.Files.SideEffects
+
 class Content extends AbstractContainer
 {
     /**
@@ -48,7 +45,7 @@ class Content extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function getMetatags($limitStart, $limit)
+    public function getMetatags(int $limitStart, int $limit): array
     {
         $app = $this->app;
         $db  = $this->dbo;
@@ -84,12 +81,12 @@ class Content extends AbstractContainer
 
         if ($catId > 0) {
             $db->setQuery('SELECT * from #__categories where id=' . $db->quote($catId));
-            $cat_tbl   = $db->loadObject();
-            $rgt       = $cat_tbl->rgt;
-            $lft       = $cat_tbl->lft;
-            $baselevel = (int)$cat_tbl->level;
-            $sql       .= ' AND cc.lft >= ' . (int)$lft;
-            $sql       .= ' AND cc.rgt <= ' . (int)$rgt;
+            $categoryTable = $db->loadObject();
+            $rgt           = $categoryTable->rgt;
+            $lft           = $categoryTable->lft;
+            $baselevel     = (int)$categoryTable->level;
+            $sql           .= ' AND cc.lft >= ' . (int)$lft;
+            $sql           .= ' AND cc.rgt <= ' . (int)$rgt;
         }
 
         if ($level > 0) {
@@ -131,8 +128,8 @@ class Content extends AbstractContainer
         }
 
         // Sorting
-        $order     = $app->input->getCmd('filter_order', 'title');
-        $order_dir = $app->input->getCmd('filter_order_Dir', 'ASC');
+        $order    = $app->input->getCmd('filter_order', 'title');
+        $orderDir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         switch ($order) {
             case 'meta_title':
@@ -149,9 +146,9 @@ class Content extends AbstractContainer
 
         }
 
-        $order_dir = strtoupper($order_dir);
+        $orderDir = strtoupper($orderDir);
 
-        if ($order_dir === 'ASC') {
+        if ($orderDir === 'ASC') {
             $sql .= ' ASC';
         } else {
             $sql .= ' DESC';
@@ -185,110 +182,14 @@ class Content extends AbstractContainer
     }
 
     /**
-     * @param int $limitStart Offset
-     * @param int $limit      Limit
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function getPages($limitStart, $limit)
-    {
-        $app = $this->app;
-        $db  = $this->dbo;
-
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title, c.state,
-            if (c.fulltext != '', c.fulltext, c.introtext) AS content
-            FROM #__content c
-            LEFT JOIN #__categories cc ON cc.id=c.catid
-            WHERE 1
-            ";
-
-        $search   = $app->input->getString('com_content_filter_search', '');
-        $catId    = $app->input->getString('com_content_filter_catid', '0');
-        $authorId = $app->input->getString('com_content_filter_authorid', '0');
-        $level    = $app->input->getString('com_content_filter_level', '0');
-        $state    = $app->input->getString('com_content_filter_state', '');
-        $access   = $app->input->getString('com_content_filter_access', '');
-
-        $comContentFilterShowEmptyDescriptions = $app->input->getString(
-            'com_content_filter_show_empty_descriptions',
-            '-1'
-        );
-
-        if ($search != '') {
-            if (is_numeric($search)) {
-                $sql .= ' AND c.id=' . $db->quote($search);
-            } else {
-                $sql .= ' AND c.title LIKE ' . $db->quote('%' . $search . '%');
-            }
-        }
-
-        $baselevel = 1;
-
-        if ($catId > 0) {
-            $db->setQuery('SELECT * from #__categories where id=' . $db->quote($catId));
-            $cat_tbl   = $db->loadObject();
-            $rgt       = $cat_tbl->rgt;
-            $lft       = $cat_tbl->lft;
-            $baselevel = (int)$cat_tbl->level;
-            $sql       .= ' AND cc.lft >= ' . (int)$lft;
-            $sql       .= ' AND cc.rgt <= ' . (int)$rgt;
-        }
-
-        if ($level > 0) {
-            $sql .= ' AND cc.level <=' . ((int)$level + $baselevel - 1);
-        }
-
-        if ($authorId > 0) {
-            $sql .= ' AND c.created_by=' . $db->quote($authorId);
-        }
-
-        switch ($state) {
-            case 'U':
-                $sql .= ' AND c.state=0';
-                break;
-
-            case 'A':
-                $sql .= ' AND c.state=-1';
-                break;
-
-            case 'D':
-                $sql .= ' AND c.state=-2';
-                break;
-
-            case 'All':
-                break;
-
-            case 'P':
-            default:
-                $sql .= ' AND c.state=1';
-                break;
-        }
-
-        if ($comContentFilterShowEmptyDescriptions != '-1') {
-            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
-        }
-
-        if (!empty($access)) {
-            $sql .= ' AND c.access = ' . $db->quote($access);
-        }
-
-        $db->setQuery($sql, $limitStart, $limit);
-        $rows = $db->loadObjectList();
-
-        // Get outgoing links
-        for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_content&task=article.edit&id={$rows[$i]->id}";
-        }
-
-        return $rows;
-    }
-
-    /**
      * @inheritDoc
      */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = [])
-    {
+    public function saveMetatags(
+        array $ids,
+        array $metatitles = [],
+        array $metadescriptions = [],
+        array $aliases = []
+    ): void {
         $app = $this->app;
         $db  = $this->dbo;
 
@@ -357,7 +258,7 @@ class Content extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function copyItemTitleToSearchEngineTitle($ids)
+    public function copyItemTitleToSearchEngineTitle(array $ids): void
     {
         $db = $this->dbo;
 
@@ -391,12 +292,12 @@ class Content extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function generateDescriptions($ids)
+    public function generateDescriptions(array $ids): void
     {
-        $max_description_length = 500;
-        $model                  = BaseDatabaseModel::getInstance('options', 'OSModel');
-        $params                 = $model->getOptions();
-        $max_description_length = $params->max_description_length ?: $max_description_length;
+        $maxDescriptionLength = 500;
+        $model                = BaseDatabaseModel::getInstance('options', 'OSModel');
+        $params               = $model->getOptions();
+        $maxDescriptionLength = $params->max_description_length ?: $maxDescriptionLength;
 
         $db = $this->dbo;
 
@@ -414,8 +315,8 @@ class Content extends AbstractContainer
             if ($item->introtext != '') {
                 $introtext = strip_tags($item->introtext);
 
-                if (strlen($introtext) > $max_description_length) {
-                    $introtext = substr($introtext, 0, $max_description_length);
+                if (strlen($introtext) > $maxDescriptionLength) {
+                    $introtext = substr($introtext, 0, $maxDescriptionLength);
                 }
 
                 $sql = 'INSERT INTO #__osmeta_metadata (item_id,
@@ -442,9 +343,8 @@ class Content extends AbstractContainer
 
     /**
      * @inheritDoc
-     * @throws \Exception
      */
-    public function getFilter()
+    public function getFilter(): string
     {
         $app = $this->app;
 
@@ -468,8 +368,10 @@ class Content extends AbstractContainer
         ];
 
         $state                                 = $app->input->getString('com_content_filter_state', '');
-        $comContentFilterShowEmptyDescriptions = $app->input->getString('com_content_filter_show_empty_descriptions',
-            '-1');
+        $comContentFilterShowEmptyDescriptions = $app->input->getString(
+            'com_content_filter_show_empty_descriptions',
+            '-1'
+        );
 
         $result = '<div class="btn-wrapper input-append">
 			<input type="text"
@@ -542,24 +444,7 @@ class Content extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function setMetadata($itemId, $data)
-    {
-        $db  = $this->dbo;
-        $sql = 'UPDATE #__content SET ' .
-            (isset($data['title']) && $data['title'] ?
-                '`title` = ' . $db->quote($data['title']) . ',' : '') . '
-            `metadesc` = ' . $db->quote($data['metadescription']) . '
-            WHERE `id`=' . $db->quote($itemId);
-        $db->setQuery($sql);
-        $db->execute();
-
-        parent::setMetadata($itemId, $data);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMetadataByRequest($query)
+    public function getMetadataByRequest(string $query): array
     {
         $params = [];
         parse_str($query, $params);
@@ -574,29 +459,9 @@ class Content extends AbstractContainer
     }
 
     /**
-     * Method to set Metadata by request
-     *
-     * @param string $url  URL
-     * @param array  $data Data
-     *
-     * @access  public
-     *
-     * @return void
-     */
-    public function setMetadataByRequest($url, $data)
-    {
-        $params = [];
-        parse_str($url, $params);
-
-        if (isset($params['id']) && $params['id']) {
-            $this->setMetadata($params['id'], $data);
-        }
-    }
-
-    /**
      * @inheritDoc
      */
-    public function isUniqueAlias($alias)
+    protected function isUniqueAlias(string $alias): bool
     {
         $db = $this->dbo;
 
@@ -605,9 +470,6 @@ class Content extends AbstractContainer
             ->from('#__content')
             ->where('alias = ' . $db->quote($alias));
 
-        $db->setQuery($query);
-        $count = (int)$db->loadResult();
-
-        return $count === 0;
+        return (bool)(int)$db->setQuery($query)->loadResult();
     }
 }

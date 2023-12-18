@@ -31,7 +31,10 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class Categories extends AbstractContainer
 {
@@ -43,7 +46,7 @@ class Categories extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function getMetatags($limitStart, $limit)
+    public function getMetatags(int $limitStart, int $limit): array
     {
         $app = $this->app;
         $db  = $this->dbo;
@@ -96,8 +99,8 @@ class Categories extends AbstractContainer
         }
 
         // Sorting
-        $order     = $app->input->getCmd('filter_order', 'title');
-        $order_dir = $app->input->getCmd('filter_order_Dir', 'ASC');
+        $order    = $app->input->getCmd('filter_order', 'title');
+        $orderDir = $app->input->getCmd('filter_order_Dir', 'ASC');
 
         switch ($order) {
             case 'meta_title':
@@ -113,9 +116,9 @@ class Categories extends AbstractContainer
                 break;
         }
 
-        $order_dir = strtoupper($order_dir);
+        $orderDir = strtoupper($orderDir);
 
-        if ($order_dir === 'ASC') {
+        if ($orderDir === 'ASC') {
             $sql .= ' ASC';
         } else {
             $sql .= ' DESC';
@@ -151,15 +154,9 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Get meta data by request
-     *
-     * @param string $query Query
-     *
-     * @access  public
-     *
-     * @return array
+     * @inheritDoc
      */
-    public function getMetadataByRequest($query)
+    public function getMetadataByRequest(string $query): array
     {
         $params = [];
         parse_str($query, $params);
@@ -175,73 +172,12 @@ class Categories extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function getPages($limitStart, $limit)
-    {
-        $app = $this->app;
-        $db  = $this->dbo;
-        $sql = "SELECT SQL_CALC_FOUND_ROWS
-            c.id, c.title, c.published,
-        c.description AS content
-            FROM
-            #__categories c WHERE c.extension='com_content'";
-
-        $search   = $app->input->getString('com_content_filter_search', '');
-        $authorId = $app->input->getString('com_content_filter_authorid', '0');
-        $state    = $app->input->getString('com_content_filter_state', '');
-        $access   = $app->input->getString('com_content_filter_access', '');
-
-        $comContentFilterShowEmptyDescriptions = $app->input->getString(
-            'com_content_filter_show_empty_descriptions',
-            '-1'
-        );
-
-        if ($search != '') {
-            if (is_numeric($search)) {
-                $sql .= ' AND c.id=' . $db->quote($search);
-            } else {
-                $sql .= ' AND c.title LIKE ' . $db->quote('%' . $search . '%');
-            }
-        }
-
-        if ($authorId > 0) {
-            $sql .= ' AND c.created_user_id=' . $db->quote($authorId);
-        }
-
-        switch ($state) {
-            case 'P':
-                $sql .= ' AND c.published=1';
-                break;
-
-            case 'U':
-                $sql .= ' AND c.published=0';
-                break;
-        }
-
-        if ($comContentFilterShowEmptyDescriptions != '-1') {
-            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
-        }
-
-        if (!empty($access)) {
-            $sql .= ' AND c.access = ' . $db->quote($access);
-        }
-
-        $db->setQuery($sql, $limitStart, $limit);
-        $rows = $db->loadObjectList();
-
-        // Get outgoing links
-        for ($i = 0; $i < count($rows); $i++) {
-            $rows[$i]->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$rows[$i]->id}&"
-                . "extension={$rows[$i]->extension}";
-        }
-
-        return $rows;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function saveMetatags($ids, $metatitles, $metadescriptions, $aliases = [])
-    {
+    public function saveMetatags(
+        array $ids,
+        array $metatitles = [],
+        array $metadescriptions = [],
+        array $aliases = []
+    ): void {
         $app = $this->app;
         $db  = $this->dbo;
 
@@ -313,7 +249,7 @@ class Categories extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function copyItemTitleToSearchEngineTitle($ids)
+    public function copyItemTitleToSearchEngineTitle(array $ids): void
     {
         $db = $this->dbo;
 
@@ -350,12 +286,12 @@ class Categories extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function generateDescriptions($ids)
+    public function generateDescriptions(array $ids): void
     {
-        $max_description_length = 500;
-        $model                  = BaseDatabaseModel::getInstance('options', 'OSModel');
-        $params                 = $model->getOptions();
-        $max_description_length = $params->max_description_length ?: $max_description_length;
+        $maxDescriptionLength = 500;
+        $model                = BaseDatabaseModel::getInstance('options', 'OSModel');
+        $params               = $model->getOptions();
+        $maxDescriptionLength = $params->max_description_length ?: $maxDescriptionLength;
 
         $db = $this->dbo;
 
@@ -373,8 +309,8 @@ class Categories extends AbstractContainer
             if ($item->introtext != '') {
                 $introtext = strip_tags($item->introtext);
 
-                if (strlen($introtext) > $max_description_length) {
-                    $introtext = substr($introtext, 0, $max_description_length);
+                if (strlen($introtext) > $maxDescriptionLength) {
+                    $introtext = substr($introtext, 0, $maxDescriptionLength);
                 }
 
                 $sql = 'INSERT INTO #__osmeta_metadata (item_id,
@@ -400,10 +336,9 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * @return string
-     * @throws \Exception
+     * @inheritDoc
      */
-    public function getFilter()
+    public function getFilter(): string
     {
         $app = $this->app;
 
@@ -459,33 +394,9 @@ class Categories extends AbstractContainer
     }
 
     /**
-     * Method to set Metadata by request
-     *
-     * @param string $url  URL
-     * @param array  $data Data
-     *
-     * @access  public
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function setMetadataByRequest($url, $data)
-    {
-        $params = [];
-        parse_str($url, $params);
-
-        if (isset($params['id']) && $params['id']) {
-            $this->setMetadata($params['id'], $data);
-        }
-    }
-
-    /**
-     * Method to check if an alias already exists
-     *
-     * @param string $alias The original alias
-     *
-     * @return bool
-     */
-    public function isUniqueAlias($alias)
+    protected function isUniqueAlias(string $alias): bool
     {
         $db = $this->dbo;
 
@@ -495,9 +406,6 @@ class Categories extends AbstractContainer
             ->where('extension = ' . $db->quote('com_content'))
             ->where('alias = ' . $db->quote($alias));
 
-        $db->setQuery($query);
-        $count = (int)$db->loadResult();
-
-        return $count === 0;
+        return (bool)(int)$db->setQuery($query)->loadResult();
     }
 }

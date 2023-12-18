@@ -23,34 +23,34 @@
 
 defined('_JEXEC') or die();
 
-$features['com_content:Article'] = array(
+$features['com_content:Article'] = [
     'name'     => 'COM_OSMETA_ARTICLES',
     'priority' => 1,
-    'class'    => 'Alledia\OSMeta\Free\Container\Component\Content',
-    'params'   => array(
-        array(
+    'class'    => '\\Alledia\\OSMeta\\Free\\Container\\Component\\Content',
+    'params'   => [
+        [
             'option' => 'com_content',
-            'view'   => 'article'
-        ),
-        array(
+            'view'   => 'article',
+        ],
+        [
             'option' => 'com_content',
-            'view'   => 'frontpage'
-        ),
-        array(
+            'view'   => 'frontpage',
+        ],
+        [
             'option' => 'com_content',
-            'view'   => 'featured'
-        )
-    )
-);
+            'view'   => 'featured',
+        ],
+    ],
+];
 
-$features['com_content:ArticleCategory'] = array(
+$features['com_content:ArticleCategory'] = [
     'name'     => 'COM_OSMETA_ARTICLE_CATEGORIES',
     'priority' => 1,
-    'class'    => 'Alledia\OSMeta\Free\Container\Component\Categories',
-    'params'   => array(
-        array(
+    'class'    => '\\Alledia\\OSMeta\\Free\\Container\\Component\\Categories',
+    'params'   => [
+        [
             'option' => 'com_content',
-            'view' => 'category'
-        )
-    )
-);
+            'view'   => 'category',
+        ],
+    ],
+];
