@@ -89,14 +89,14 @@
                        element="osmetacontent"
                        publish="true"
                        ordering="last"
-                       uninstall="true">OSMetaContent</extension>
+                       uninstall="true">plg_content_osmetacontent</extension>
 
             <extension type="plugin"
                        group="system"
                        element="osmetarenderer"
                        publish="true"
                        ordering="last"
-                       uninstall="true">OSMetaRenderer</extension>
+                       uninstall="true">plg_system_osmetarenderer</extension>
         </relatedExtensions>
 
         <obsolete>
