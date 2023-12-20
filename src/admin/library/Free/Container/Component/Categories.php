@@ -24,11 +24,10 @@
 namespace Alledia\OSMeta\Free\Container\Component;
 
 use Alledia\OSMeta\Free\Container\AbstractContainer;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -48,103 +47,94 @@ class Categories extends AbstractContainer
      */
     public function getMetatags(int $limitStart, int $limit): array
     {
-        $app = $this->app;
-        $db  = $this->dbo;
-        $sql = "SELECT SQL_CALC_FOUND_ROWS c.id, c.title,
-            c.metadesc, m.title as metatitle , c.extension, c.alias
-            FROM
-            #__categories c
-            LEFT JOIN
-            #__osmeta_metadata m ON m.item_id=c.id and m.item_type='{$this->code}' WHERE c.extension='com_content'";
+        $db = $this->dbo;
 
-        $search   = $app->input->getString('com_content_filter_search', '');
-        $authorId = $app->input->getString('com_content_filter_authorid', '0');
-        $state    = $app->input->getString('com_content_filter_state', '');
-        $access   = $app->input->getString('com_content_filter_access', '');
+        $query = $db->getQuery(true)
+            ->select([
+                'c.id',
+                'c.title',
+                'c.metadesc',
+                'm.title AS ' . $db->quoteName('metatitle'),
+                'c.extension',
+                'c.alias',
+            ])
+            ->from('#__categories AS c')
+            ->leftJoin(
+                sprintf(
+                    '%s AS m ON %s = %s AND %s = %s',
+                    $db->quoteName('#__osmeta_metadata'),
+                    $db->quoteName('m.item_id'),
+                    $db->quoteName('c.id'),
+                    $db->quoteName('m.item_type'),
+                    $db->quote($this->code)
+                )
+            )
+            ->where($db->quoteName('c.extension') . ' = ' . $db->quote('com_content'));
 
-        $comContentFilterShowEmptyDescriptions = $app->input->getString(
-            'com_content_filter_show_empty_descriptions',
-            '-1'
-        );
+        if ($search = $this->app->input->getString('com_content_filter_search')) {
+            if (preg_match('/^\s*id:\s*(\d+)/', $search, $match)) {
+                $query->where($db->quoteName('c.id') . ' = ' . (int)$match[1]);
 
-        if ($search != '') {
-            $sql .= ' AND (';
-            $sql .= ' c.title LIKE ' . $db->quote('%' . $search . '%');
-            $sql .= ' OR m.title LIKE ' . $db->quote('%' . $search . '%');
-            $sql .= ' OR c.metadesc LIKE ' . $db->quote('%' . $search . '%');
-            $sql .= ' OR c.alias LIKE ' . $db->quote('%' . $search . '%');
-            $sql .= ' OR c.id = ' . $db->quote($search);
-            $sql .= ')';
+            } else {
+                $searchString = $db->quote('%' . $search . '%');
+
+                $ors = [
+                    $db->quoteName('c.title') . ' LIKE ' . $searchString,
+                    $db->quoteName('m.title') . ' LIKE ' . $searchString,
+                    $db->quoteName('c.metadesc') . 'LIKE ' . $searchString,
+                    $db->quoteName('c.alias') . ' LIKE ' . $searchString,
+                ];
+                $query->where(sprintf('(%s)', join(' OR ', $ors)));
+            }
         }
 
-        if ($authorId > 0) {
-            $sql .= ' AND c.created_user_id=' . $db->quote($authorId);
+        if ($authorId = $this->app->input->getInt('com_content_filter_authorid')) {
+            $query->where($db->quoteName('c.created_user_id') . ' = ' . $authorId);
         }
 
-        switch ($state) {
-            case 'P':
-                $sql .= ' AND c.published=1';
-                break;
-            case 'U':
-                $sql .= ' AND c.published=0';
-                break;
+        if ($state = stripos('PU', $this->app->input->getString('com_content_filter_state'))) {
+            $state = stripos('UP', $state);
+            if ($state !== false) {
+                $query->where($db->quoteName('c.published') . ' = ' . $state);
+            }
         }
 
-        if ($comContentFilterShowEmptyDescriptions != '-1') {
-            $sql .= " AND (ISNULL(c.metadesc) OR c.metadesc='') ";
+        $showEmptyDescriptions = $this->app->input->getBool('com_content_filter_show_empty_descriptions');
+        if ($showEmptyDescriptions) {
+            $query->where(sprintf('IFNULL(%1$s, %2$s) = %2$s', $db->quoteName('c.metadesc'), $db->quote('')));
         }
 
-        if (!empty($access)) {
-            $sql .= ' AND c.access = ' . $db->quote($access);
+        if ($access = $this->app->input->getInt('com_content_filter_access')) {
+            $query->where($db->quoteName('c.access') . ' = ' . $access);
         }
 
-        // Sorting
-        $order    = $app->input->getCmd('filter_order', 'title');
-        $orderDir = $app->input->getCmd('filter_order_Dir', 'ASC');
-
-        switch ($order) {
-            case 'meta_title':
-                $sql .= ' ORDER BY metatitle ';
-                break;
-
-            case 'meta_desc':
-                $sql .= ' ORDER BY metadesc ';
-                break;
-
-            default:
-                $sql .= ' ORDER BY title ';
-                break;
+        $ordering = str_replace('_', '', $this->app->input->getCmd('filter_order', 'title'));
+        $orderDir = strtoupper($this->app->input->getCmd('filter_order_Dir', 'ASC'));
+        if ($ordering && $orderDir) {
+            $query->order($ordering . ' ' . $orderDir);
         }
 
-        $orderDir = strtoupper($orderDir);
+        $rows = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
-        if ($orderDir === 'ASC') {
-            $sql .= ' ASC';
-        } else {
-            $sql .= ' DESC';
-        }
+        $query->clear('select')
+            ->clear('order')
+            ->select('COUNT(*)')
+            ->setLimit();
+        $total = $db->setQuery($query)->loadResult();
 
-        $db->setQuery($sql, $limitStart, $limit);
-        $rows = $db->loadObjectList();
+        foreach ($rows as $row) {
+            $editQuery     = [
+                'option'    => 'com_categories',
+                'view'      => 'category',
+                'layout'    => 'edit',
+                'id'        => $row->id,
+                'extension' => $row->extension,
+            ];
+            $row->edit_url = 'index.php?' . http_build_query($editQuery);
 
-        // Get the total
-        $db->setQuery('SELECT FOUND_ROWS();');
-        $total = $db->loadResult();
-
-        for ($i = 0; $i < count($rows); $i++) {
-            $row = $rows[$i];
-
-            $row->edit_url = "index.php?option=com_categories&view=category&layout=edit&id={$row->id}"
-                . "&extension={$row->extension}";
-
-            // Get the category view url
             $url = RouteHelper::getCategoryRoute($row->id);
-            $url = Route::_($url);
-            $uri = Uri::getInstance();
-            $url = $uri->toString(['scheme', 'host', 'port']) . $url;
-            $url = str_replace('/administrator/', '/', $url);
 
-            $row->view_url = $url;
+            $row->view_url = Route::link('site', $url, true, Route::TLS_IGNORE, true);
         }
 
         return [
@@ -178,38 +168,40 @@ class Categories extends AbstractContainer
         array $metadescriptions = [],
         array $aliases = []
     ): void {
-        $app = $this->app;
-        $db  = $this->dbo;
+        $db = $this->dbo;
 
-        for ($i = 0; $i < count($ids); $i++) {
-            // Get current category metadata
-            $sql = 'SELECT metadata, alias FROM #__categories'
-                . ' WHERE id=' . $db->quote($ids[$i]);
-            $db->setQuery($sql);
-            $current = $db->loadObject();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__osmeta_metadata')
+            ->where([
+                $db->quoteName('item_type') . ' = ' . $this->code,
+                sprintf('%s IN (%s)', $db->quoteName('item_id'), join(',', array_map('intval', $ids))),
+            ]);
 
-            // Update the metadata
-            $metadata = json_decode($current->metadata);
-            if (!is_object($metadata)) {
-                $metadata = (object)[];
-            }
-            $metadata->metatitle = $metatitles[$i];
-            $metadata            = json_encode($metadata);
+        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
 
-            $sql = 'UPDATE #__categories SET '
-                . ' metadesc=' . $db->quote($metadescriptions[$i]) . ', '
-                . ' metadata=' . $db->quote($metadata);
+        foreach ($ids as $i => $id) {
+            $query = $db->getQuery(true)
+                ->select($db->quoteName(['id', 'metadesc', 'metadata', 'alias']))
+                ->from('#__categories')
+                ->where('id = ' . (int)$id);
 
-            if (isset($aliases[$i])) {
-                if (!empty($aliases[$i])) {
-                    $alias = $this->stringURLSafe($aliases[$i]);
+            $current = $db->setQuery($query)->loadObject();
 
-                    if ($current->alias !== $alias) {
-                        // Check if the alias already exists and ignore it
+            $metadata            = json_decode((string)$current->metadata) ?: (object)[];
+            $metadata->metatitle = $metatitles[$i] ?? '';
+
+            $current->metadata = json_encode($metadata);
+            $current->metadesc = $metadescriptions[$i] ?: '';
+            if (array_key_exists($i, $aliases)) {
+                if ($alias = $aliases[$i]) {
+                    $alias = $this->stringURLSafe($alias);
+                    if ($current->alias != $alias) {
                         if ($this->isUniqueAlias($alias)) {
-                            $sql .= ', alias=' . $db->quote($alias);
+                            $current->alias = $alias;
+
                         } else {
-                            $app->enqueueMessage(
+                            $this->app->enqueueMessage(
                                 Text::sprintf('COM_OSMETA_WARNING_DUPLICATED_ALIAS', $alias),
                                 'warning'
                             );
@@ -224,26 +216,25 @@ class Categories extends AbstractContainer
                 }
             }
 
-            $sql .= ' WHERE id=' . $db->quote($ids[$i]);
-            $db->setQuery($sql);
-            $db->execute();
+            $currentOsmeta = (object)array_merge(
+                $osMetadata[$current->id] ?? [],
+                [
+                    'item_id'     => $current->id,
+                    'item_type'   => $this->code,
+                    'title'       => $metatitles[$i] ?? '',
+                    'description' => $metadescriptions[$i] ?? '',
+                ]
+            );
 
-            // Insert/Update OS Metadata
-            $sql = 'INSERT INTO #__osmeta_metadata (item_id,
-                item_type, title, description)
-                VALUES (
-                ' . $db->quote($ids[$i]) . ",
-                '{$this->code}',
-                " . $db->quote($metatitles[$i]) . ',
-                ' . $db->quote($metadescriptions[$i]) . '
-                ) ON DUPLICATE KEY
-                    UPDATE
-                    title=' . $db->quote($metatitles[$i]) . ' ,
-                    description=' . $db->quote($metadescriptions[$i]);
-
-            $db->setQuery($sql);
-            $db->execute();
+            $db->updateObject('#__categories', $current, ['id']);
+            if (empty($currentOsmeta->id)) {
+                $db->insertObject('#__osmeta_metadata', $currentOsmeta, ['id']);
+            } else {
+                $db->updateObject('#__osmeta_metadata', $currentOsmeta, ['id']);
+            }
         }
+
+        //die;
     }
 
     /**
@@ -253,32 +244,47 @@ class Categories extends AbstractContainer
     {
         $db = $this->dbo;
 
-        foreach ($ids as $key => $value) {
-            if (!is_numeric($value)) {
-                unset($ids[$key]);
-            }
-        }
+        $ids = array_filter(array_map('intval', $ids));
 
-        $sql = 'SELECT id, title
-            FROM  #__categories
-            WHERE id IN (' . implode(',', $ids) . ')';
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'title',
+            ])
+            ->from('#__categories')
+            ->where(sprintf('id IN (%s)', join(',', $ids)));
 
-        $db->setQuery($sql);
-        $items = $db->loadObjectList();
+        $items = $db->setQuery($query)->loadObjectList();
+
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'item_id',
+            ])
+            ->from('#__osmeta_metadata')
+            ->where([
+                sprintf('item_id IN (%s)', join(',', $ids)),
+                'item_type = ' . $this->code,
+            ]);
+
+        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
 
         foreach ($items as $item) {
             if ($item->title != '') {
-                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
-                    item_type, title, description)
-                    VALUES (
-                    ' . $db->quote($item->id) . ",
-                    '{$this->code}',
-                    " . $db->quote($item->title) . ",
-                    ''
-                    ) ON DUPLICATE KEY UPDATE title=" . $db->quote($item->title);
+                $metadata = (object)[
+                    'item_id'   => $item->id,
+                    'item_type' => $this->code,
+                    'title'     => $item->title,
+                ];
 
-                $db->setQuery($sql);
-                $db->execute();
+                $id = $osMetadata[$item->id]->id ?? null;
+                if ($id) {
+                    $metadata->id = $id;
+                    $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
+
+                } else {
+                    $db->insertObject('#__osmeta_metadata', $metadata);
+                }
             }
         }
     }
@@ -288,49 +294,53 @@ class Categories extends AbstractContainer
      */
     public function generateDescriptions(array $ids): void
     {
-        $maxDescriptionLength = 500;
-        $model                = BaseDatabaseModel::getInstance('options', 'OSModel');
-        $params               = $model->getOptions();
-        $maxDescriptionLength = $params->max_description_length ?: $maxDescriptionLength;
+        $db        = $this->dbo;
+        $params    = ComponentHelper::getParams('com_osmeta');
+        $maxLength = $params->get('meta_description_limit', 160);
 
-        $db = $this->dbo;
+        $ids = array_filter(array_map('intval', $ids));
 
-        foreach ($ids as $key => $value) {
-            if (!is_numeric($value)) {
-                unset($ids[$key]);
-            }
-        }
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'description',
+            ])
+            ->from('#__categories')
+            ->where(sprintf('id IN (%s)', join(',', $ids)));
 
-        $sql = 'SELECT id, description as introtext FROM  #__categories WHERE id IN (' . implode(',', $ids) . ')';
-        $db->setQuery($sql);
-        $items = $db->loadObjectList();
+        $items = $db->setQuery($query)->loadObjectList();
+
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'item_id',
+            ])
+            ->from('#__osmeta_metadata')
+            ->where([
+                'item_type = ' . $this->code,
+                sprintf('item_id in (%s)', join(',', $ids)),
+            ]);
+
+        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
 
         foreach ($items as $item) {
-            if ($item->introtext != '') {
-                $introtext = strip_tags($item->introtext);
+            if ($item->description) {
+                $item->metadesc = HTMLHelper::_('alledia.truncate', strip_tags($item->description), $maxLength, '');
 
-                if (strlen($introtext) > $maxDescriptionLength) {
-                    $introtext = substr($introtext, 0, $maxDescriptionLength);
+                $db->updateObject('#__categories', $item, 'id');
+
+                $metadata = (object)[
+                    'item_id'     => $item->id,
+                    'item_type'   => $this->code,
+                    'description' => $item->metadesc,
+                ];
+                if ($id = $osMetadata[$item->id]->id) {
+                    $metadata->id = $id;
+                    $db->updateObject('#__osmeta_metadata', $metadata, 'id');
+
+                } else {
+                    $db->insertObject('#__osmeta_metadata', $metadata);
                 }
-
-                $sql = 'INSERT INTO #__osmeta_metadata (item_id,
-                    item_type, title, description)
-                    VALUES (
-                    ' . $db->quote($item->id) . ",
-                    '{$this->code}',
-
-                    '',
-                    " . $db->quote($introtext) . '
-                    ) ON DUPLICATE KEY UPDATE description=' . $db->quote($introtext);
-
-                $db->setQuery($sql);
-                $db->execute();
-
-                $sql = 'UPDATE #__categories SET metadesc=' . $db->quote($introtext) . '
-                    WHERE id=' . $db->quote($item->id);
-
-                $db->setQuery($sql);
-                $db->execute();
             }
         }
     }
@@ -340,12 +350,10 @@ class Categories extends AbstractContainer
      */
     public function getFilter(): string
     {
-        $app = $this->app;
-
-        $search                                = $app->input->getString('com_content_filter_search', '');
-        $state                                 = $app->input->getString('com_content_filter_state', '');
-        $access                                = $app->input->getString('com_content_filter_access', '');
-        $comContentFilterShowEmptyDescriptions = $app->input->getString(
+        $search                = $this->app->input->getString('com_content_filter_search', '');
+        $state                 = $this->app->input->getString('com_content_filter_state', '');
+        $access                = $this->app->input->getString('com_content_filter_access', '');
+        $showEmptyDescriptions = $this->app->input->getString(
             'com_content_filter_show_empty_descriptions',
             '-1'
         );
@@ -368,7 +376,7 @@ class Categories extends AbstractContainer
                 this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . Text::_('COM_OSMETA_RESET_LABEL') . '</button>
         </div>';
 
-        $descriptionChecked = $comContentFilterShowEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
+        $descriptionChecked = $showEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
 
         $result .= '<div class="om-filter-container">';
 
@@ -384,8 +392,9 @@ class Categories extends AbstractContainer
 
         $result .= '<label>' . Text::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
             <input type="checkbox"
-                    onchange="document.adminForm.submit();"
-                    name="com_content_filter_show_empty_descriptions"
+                   value="1"
+                   onchange="document.adminForm.submit();"
+                   name="com_content_filter_show_empty_descriptions"
                     ' . $descriptionChecked . '/>';
 
         $result .= '</div>';
