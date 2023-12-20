@@ -25,12 +25,16 @@ use Alledia\OSMeta\ContainerFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Plugin\PluginHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
-class OSMetaController extends JControllerLegacy
+class OSMetaController extends BaseController
 {
     /**
      * @inheritDoc
@@ -45,7 +49,7 @@ class OSMetaController extends JControllerLegacy
      * @return void
      * @throws Exception
      */
-    public function view()
+    public function view(): void
     {
         $this->actionManager('view');
     }
@@ -54,7 +58,7 @@ class OSMetaController extends JControllerLegacy
      * @return void
      * @throws Exception
      */
-    public function save()
+    public function save(): void
     {
         Factory::getApplication()->enqueueMessage(Text::_('COM_OSMETA_SUCCESSFULLY_SAVED'));
         $this->actionManager('save');
@@ -66,7 +70,7 @@ class OSMetaController extends JControllerLegacy
      * @return void
      * @throws Exception
      */
-    public function copyItemTitleToSearchEngineTitle()
+    public function copyItemTitleToSearchEngineTitle(): void
     {
         $this->actionManager('copyItemTitleToSearchEngineTitle');
     }
@@ -75,7 +79,7 @@ class OSMetaController extends JControllerLegacy
      * @return void
      * @throws Exception
      */
-    public function generateDescriptions()
+    public function generateDescriptions(): void
     {
         $this->actionManager('generateDescriptions');
     }
@@ -87,21 +91,17 @@ class OSMetaController extends JControllerLegacy
      * @throws Exception
      *
      */
-    protected function actionManager(string $task)
+    protected function actionManager(string $task): void
     {
         $app = Factory::getApplication();
 
         $itemType = $app->input->getString('type');
-        if (empty($itemType)) {
+        if ($itemType == false) {
             $itemType = 'com_content:Article';
             $app->input->set('type', $itemType);
         }
 
         $factory = ContainerFactory::getInstance();
-
-        if (!$itemType) {
-            $itemType = key($factory->getFeatures());
-        }
 
         $metatagsContainer = $factory->getContainerById($itemType);
 
@@ -126,46 +126,39 @@ class OSMetaController extends JControllerLegacy
 
             case 'generateDescriptions':
                 if ($metatagsContainer->supportGenerateDescription) {
-                    $metatagsContainer->GenerateDescriptions($cid);
+                    $metatagsContainer->generateDescriptions($cid);
                 }
 
                 break;
         }
 
-        $limit      = $app->input->getInt('limit', $app->get('list_limit'));
-        $limitstart = $app->input->getInt('limitstart', 0);
-
-        $result = $metatagsContainer->getMetatags($limitstart, $limit);
-
-        $pageNav = new Pagination($result['total'], $limitstart, $limit);
-
-        $filter   = $metatagsContainer->getFilter();
-        $features = $factory->getFeatures();
-        $order    = $app->input->getCmd('filter_order', 'title');
-        $orderDir = $app->input->getCmd('filter_order_Dir', 'ASC');
-
         // Add a warning message if the plugins are disabled
-        if (!PluginHelper::isEnabled('content', 'osmetacontent')) {
+        if (PluginHelper::isEnabled('content', 'osmetacontent') == false) {
             $app->enqueueMessage(Text::_('COM_OSMETA_DISABLED_CONTENT_PLUGIN'), 'warning');
         }
 
-        if (!PluginHelper::isEnabled('system', 'osmetarenderer')) {
+        if (PluginHelper::isEnabled('system', 'osmetarenderer') == false) {
             $app->enqueueMessage(Text::_('COM_OSMETA_DISABLED_SYSTEM_PLUGIN'), 'warning');
         }
 
         $itemTypeShort = 'COM_OSMETA_TITLE_' . strtoupper(str_replace(':', '_', $itemType));
 
+        $features = $factory->getFeatures();
         $this->addSubmenu($features, $itemType);
+
+        $limit      = $app->input->getInt('limit', $app->get('list_limit'));
+        $limitStart = $app->input->getInt('limitstart', 0);
+        $result     = $metatagsContainer->getMetatags($limitStart, $limit);
 
         /** @var OSMetaViewOSMeta $view */
         $view                    = $this->getView('OSMeta', 'html');
         $view->itemType          = $itemType;
         $view->metatagsData      = $result['rows'];
-        $view->filter            = $filter;
+        $view->filter            = $metatagsContainer->getFilter();
         $view->availableTypes    = $features;
-        $view->pageNav           = $pageNav;
-        $view->order             = $order;
-        $view->order_Dir         = $orderDir;
+        $view->pageNav           = new Pagination($result['total'], $limitStart, $limit);
+        $view->order             = $app->input->getCmd('filter_order', 'title');
+        $view->order_Dir         = $app->input->getCmd('filter_order_Dir', 'ASC');
         $view->itemTypeShort     = $itemTypeShort;
         $view->metatagsContainer = $metatagsContainer;
 
@@ -175,10 +168,12 @@ class OSMetaController extends JControllerLegacy
     /**
      * Insert the submenu items
      *
-     * @param array[]  $contentTypes
-     * @param string $itemType
+     * @param array[] $contentTypes
+     * @param string  $itemType
+     *
+     * @return void
      */
-    protected function addSubmenu(array $contentTypes, string $itemType)
+    protected function addSubmenu(array $contentTypes, string $itemType): void
     {
         foreach ($contentTypes as $type => $data) {
             Sidebar::addEntry(
