@@ -125,8 +125,7 @@ class Categories extends AbstractContainer
         foreach ($rows as $row) {
             $editQuery     = [
                 'option'    => 'com_categories',
-                'view'      => 'category',
-                'layout'    => 'edit',
+                'task'      => 'category.edit',
                 'id'        => $row->id,
                 'extension' => $row->extension,
             ];
@@ -168,17 +167,20 @@ class Categories extends AbstractContainer
         array $metadescriptions = [],
         array $aliases = []
     ): void {
-        $db = $this->dbo;
+        $db  = $this->dbo;
+        $ids = array_filter(array_map('intval', $ids));
 
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__osmeta_metadata')
-            ->where([
-                $db->quoteName('item_type') . ' = ' . $this->code,
-                sprintf('%s IN (%s)', $db->quoteName('item_id'), join(',', array_map('intval', $ids))),
-            ]);
+        if ($ids) {
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__osmeta_metadata')
+                ->where([
+                    $db->quoteName('item_type') . ' = ' . $this->code,
+                    sprintf('%s IN (%s)', $db->quoteName('item_id'), join(',', $ids)),
+                ]);
 
-        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
+            $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
+        }
 
         foreach ($ids as $i => $id) {
             $query = $db->getQuery(true)
@@ -186,19 +188,20 @@ class Categories extends AbstractContainer
                 ->from('#__categories')
                 ->where('id = ' . (int)$id);
 
-            $current = $db->setQuery($query)->loadObject();
+            $category = $db->setQuery($query)->loadObject();
 
-            $metadata            = json_decode((string)$current->metadata) ?: (object)[];
+            $metadata            = json_decode((string)$category->metadata) ?: (object)[];
             $metadata->metatitle = $metatitles[$i] ?? '';
 
-            $current->metadata = json_encode($metadata);
-            $current->metadesc = $metadescriptions[$i] ?: '';
-            if (array_key_exists($i, $aliases)) {
-                if ($alias = $aliases[$i]) {
+            $category->metadata = json_encode($metadata);
+            $category->metadesc = $metadescriptions[$i] ?: '';
+            if ($aliases) {
+                $alias = $aliases[$i] ?? null;
+                if ($alias) {
                     $alias = $this->stringURLSafe($alias);
-                    if ($current->alias != $alias) {
+                    if ($category->alias != $alias) {
                         if ($this->isUniqueAlias($alias)) {
-                            $current->alias = $alias;
+                            $category->alias = $alias;
 
                         } else {
                             $this->app->enqueueMessage(
@@ -216,25 +219,23 @@ class Categories extends AbstractContainer
                 }
             }
 
-            $currentOsmeta = (object)array_merge(
-                $osMetadata[$current->id] ?? [],
+            $updatedMetadata = (object)array_merge(
+                $osMetadata[$category->id] ?? [],
                 [
-                    'item_id'     => $current->id,
+                    'item_id'     => $category->id,
                     'item_type'   => $this->code,
                     'title'       => $metatitles[$i] ?? '',
                     'description' => $metadescriptions[$i] ?? '',
                 ]
             );
 
-            $db->updateObject('#__categories', $current, ['id']);
-            if (empty($currentOsmeta->id)) {
-                $db->insertObject('#__osmeta_metadata', $currentOsmeta, ['id']);
+            $db->updateObject('#__categories', $category, ['id']);
+            if (empty($updatedMetadata->id)) {
+                $db->insertObject('#__osmeta_metadata', $updatedMetadata, ['id']);
             } else {
-                $db->updateObject('#__osmeta_metadata', $currentOsmeta, ['id']);
+                $db->updateObject('#__osmeta_metadata', $updatedMetadata, ['id']);
             }
         }
-
-        //die;
     }
 
     /**
@@ -242,19 +243,28 @@ class Categories extends AbstractContainer
      */
     public function copyItemTitleToSearchEngineTitle(array $ids): void
     {
-        $db = $this->dbo;
-
         $ids = array_filter(array_map('intval', $ids));
+        if ($ids == false) {
+            return;
+        }
+
+        $db        = $this->dbo;
+        $params    = ComponentHelper::getParams('com_osmeta');
+        $maxLength = $params->get('meta_title_limit', 70);
 
         $query = $db->getQuery(true)
             ->select([
                 'id',
                 'title',
+                'metadata',
             ])
             ->from('#__categories')
-            ->where(sprintf('id IN (%s)', join(',', $ids)));
+            ->where([
+                sprintf('IFNULL(%1$s, %2$s) != %2$s', $db->quoteName('title'), $db->quote('')),
+                sprintf('id IN (%s)', join(',', $ids)),
+            ]);
 
-        $items = $db->setQuery($query)->loadObjectList();
+        $categories = $db->setQuery($query)->loadObjectList();
 
         $query = $db->getQuery(true)
             ->select([
@@ -269,22 +279,27 @@ class Categories extends AbstractContainer
 
         $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
 
-        foreach ($items as $item) {
-            if ($item->title != '') {
-                $metadata = (object)[
-                    'item_id'   => $item->id,
-                    'item_type' => $this->code,
-                    'title'     => $item->title,
-                ];
+        foreach ($categories as $category) {
+            $category->metadata = json_decode((string)$category->metadata) ?: (object)[];
 
-                $id = $osMetadata[$item->id]->id ?? null;
-                if ($id) {
-                    $metadata->id = $id;
-                    $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
+            $category->metadata->metatitle = HTMLHelper::_('alledia.truncate', $category->title, $maxLength, '');
 
-                } else {
-                    $db->insertObject('#__osmeta_metadata', $metadata);
-                }
+            $metadata = (object)[
+                'item_id'   => $category->id,
+                'item_type' => $this->code,
+                'title'     => $category->metadata->metatitle,
+            ];
+
+            $category->metadata = json_encode($category->metadata);
+            $db->updateObject('#__categories', $category, ['id']);
+
+            $id = $osMetadata[$category->id]->id ?? null;
+            if ($id) {
+                $metadata->id = $id;
+                $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
+
+            } else {
+                $db->insertObject('#__osmeta_metadata', $metadata);
             }
         }
     }
@@ -294,11 +309,14 @@ class Categories extends AbstractContainer
      */
     public function generateDescriptions(array $ids): void
     {
+        $ids = array_filter(array_map('intval', $ids));
+        if ($ids == false) {
+            return;
+        }
+
         $db        = $this->dbo;
         $params    = ComponentHelper::getParams('com_osmeta');
         $maxLength = $params->get('meta_description_limit', 160);
-
-        $ids = array_filter(array_map('intval', $ids));
 
         $query = $db->getQuery(true)
             ->select([
@@ -308,7 +326,7 @@ class Categories extends AbstractContainer
             ->from('#__categories')
             ->where(sprintf('id IN (%s)', join(',', $ids)));
 
-        $items = $db->setQuery($query)->loadObjectList();
+        $categories = $db->setQuery($query)->loadObjectList();
 
         $query = $db->getQuery(true)
             ->select([
@@ -323,18 +341,23 @@ class Categories extends AbstractContainer
 
         $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
 
-        foreach ($items as $item) {
-            if ($item->description) {
-                $item->metadesc = HTMLHelper::_('alledia.truncate', strip_tags($item->description), $maxLength, '');
+        foreach ($categories as $category) {
+            if ($category->description) {
+                $category->metadesc = HTMLHelper::_(
+                    'alledia.truncate',
+                    strip_tags($category->description),
+                    $maxLength,
+                    ''
+                );
 
-                $db->updateObject('#__categories', $item, 'id');
+                $db->updateObject('#__categories', $category, 'id');
 
                 $metadata = (object)[
-                    'item_id'     => $item->id,
+                    'item_id'     => $category->id,
                     'item_type'   => $this->code,
-                    'description' => $item->metadesc,
+                    'description' => $category->metadesc,
                 ];
-                if ($id = $osMetadata[$item->id]->id) {
+                if ($id = $osMetadata[$category->id]->id) {
                     $metadata->id = $id;
                     $db->updateObject('#__osmeta_metadata', $metadata, 'id');
 
