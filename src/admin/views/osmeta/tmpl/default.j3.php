@@ -23,16 +23,26 @@
 
 use Alledia\OSMeta\Pro\Fields;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
+/**
+ * @var \OSMetaViewOSMeta $this
+ * @var string            $template
+ * @var string            $layout
+ * @var string            $layoutTemplate
+ * @var Language          $lang
+ * @var string            $filetofind
+ */
+
 HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
 
 $isPro = $this->extension->isPro();
-?>
 
+?>
 <form action="<?php echo Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
       method="post"
       name="adminForm"
@@ -42,13 +52,9 @@ $isPro = $this->extension->isPro();
     </div>
 
     <div id="j-main-container" class="span10">
-        <table class="span12">
-            <tr>
-                <td class="ost-filters">
-                    <?php echo $this->filter; ?>
-                </td>
-            </tr>
-        </table>
+        <div class="js-stools-container-bar">
+            <?php echo $this->loadFilterTemplate(); ?>
+        </div>
 
         <?php if (empty($this->metatagsData)) : ?>
             <div class="alert alert-warning">

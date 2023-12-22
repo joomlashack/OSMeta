@@ -27,6 +27,7 @@ use Alledia\Framework\Factory as AllediaFactory;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\Database\DatabaseDriver;
+use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -226,11 +227,9 @@ abstract class AbstractContainer
     abstract public function getMetadataByRequest(string $query): array;
 
     /**
-     * Method to get Filter
+     * Method to get filter values
      *
-     * @access  public
-     *
-     * @return string
+     * @return Registry
      */
-    abstract public function getFilter(): string;
+    abstract public function getFilters(): Registry;
 }

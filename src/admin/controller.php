@@ -154,7 +154,7 @@ class OSMetaController extends BaseController
         $view                    = $this->getView('OSMeta', 'html');
         $view->itemType          = $itemType;
         $view->metatagsData      = $result['rows'];
-        $view->filter            = $metatagsContainer->getFilter();
+        $view->filters           = $metatagsContainer->getFilters();
         $view->availableTypes    = $features;
         $view->pageNav           = new Pagination($result['total'], $limitStart, $limit);
         $view->order             = $app->input->getCmd('filter_order', 'title');

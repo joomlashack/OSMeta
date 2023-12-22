@@ -29,6 +29,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -48,9 +49,9 @@ class OSMetaViewOSMeta extends AbstractBase
     public $metatagsData = null;
 
     /**
-     * @var string
+     * @var Registry
      */
-    public $filter = null;
+    public $filters = null;
 
     /**
      * @var array[]
@@ -124,5 +125,17 @@ class OSMetaViewOSMeta extends AbstractBase
 
 
         parent::display($tpl);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function loadFilterTemplate(): string
+    {
+        $template = explode(':', $this->itemType);
+        $template = strtolower(array_pop($template));
+
+        return $this->loadTemplate($template);
     }
 }

@@ -28,7 +28,9 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
+use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -41,6 +43,11 @@ class Content extends AbstractContainer
      * @inheritdoc
      */
     public $code = 1;
+
+    /**
+     * @var string
+     */
+    protected $context = 'com_content.article';
 
     /**
      * @inheritDoc
@@ -80,7 +87,9 @@ class Content extends AbstractContainer
                 )
             );
 
-        if ($search = $this->app->input->getString('com_content_filter_search', '')) {
+        $filters = $this->getFilters();
+
+        if ($search = $filters->get('search')) {
             if (preg_match('/^\s*id:\s*(\d+)/', $search, $match)) {
                 $query->where($db->quoteName('c.id') . ' = ' . (int)$match[1]);
 
@@ -98,9 +107,8 @@ class Content extends AbstractContainer
         }
 
         $baseLevel = 1;
-        $level     = $this->app->input->getInt('com_content_filter_level', 0);
 
-        if ($categoryId = $this->app->input->getInt('com_content_filter_catid')) {
+        if ($categoryId = $filters->get('category.id')) {
             $categoryQuery = $db->getQuery(true)
                 ->select(
                     $db->quoteName(
@@ -123,6 +131,7 @@ class Content extends AbstractContainer
             }
         }
 
+        $level = $filters->get('category.level');
         if ($level > 0) {
             $query->where(
                 sprintf(
@@ -133,30 +142,26 @@ class Content extends AbstractContainer
             );
         }
 
-        if ($authorId = $this->app->input->getInt('com_content_filter_authorid')) {
-            $query->where($db->quoteName('c.created_by = ' . $authorId));
+        if ($authorId = $filters->get('author.id')) {
+            $query->where($db->quoteName('c.created_by') . ' = ' . $authorId);
         }
 
-        if ($state = $this->app->input->getString('com_content_filter_state', '')) {
-            $state = stripos('DAUP', $state);
-            if ($state !== false) {
-                $state -= 2;
-                $query->where($db->quoteName('c.state') . ' = ' . $state);
-            }
+        $state = $filters->get('state');
+        if ($state != '') {
+            $query->where($db->quoteName('c.state') . ' = ' . (int)$state);
         }
 
-        if ($access = $this->app->input->getInt('com_content_filter_access')) {
+        if ($access = $filters->get('access')) {
             $query->where($db->quoteName('c.access') . ' = ' . $access);
         }
 
-        $showEmptyDescriptions = $this->app->input->getBool('com_content_filter_show_empty_descriptions');
-        if ($showEmptyDescriptions) {
-            $query->where(sprintf('IFNULL(%1$s, %2$s = %2$s', $db->quoteName('c.metadesc'), $db->quote('')));
+        if ($filters->get('show.empty')) {
+            $query->where(sprintf('IFNULL(%1$s, %2$s) = %2$s', $db->quoteName('c.metadesc'), $db->quote('')));
         }
 
-        $ordering = str_replace('_', '', $this->app->input->getCmd('filter_order', 'title'));
-        $orderDir = $this->app->input->getCmd('filter_order_Dir', 'ASC');
-        $query->order($ordering . ' ' . $orderDir);
+        $ordering  = str_replace('_', '', $filters->get('list.ordering'));
+        $direction = $filters->get('list.direction');
+        $query->order($ordering . ' ' . $direction);
 
         $rows = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
@@ -171,6 +176,7 @@ class Content extends AbstractContainer
                 'option' => 'com_content',
                 'task'   => 'article.edit',
                 'id'     => $row->id,
+                'return' => base64_encode(Uri::getInstance()),
             ];
             $row->edit_url = 'index.php?' . http_build_query($editQuery);
 
@@ -411,102 +417,79 @@ class Content extends AbstractContainer
     /**
      * @inheritDoc
      */
-    public function getFilter(): string
+    public function getFilters(): Registry
     {
-        $app = $this->app;
-
-        $search = $this->app->input->getString('com_content_filter_search', '');
-        $catId  = $this->app->input->getString('com_content_filter_catid', '0');
-        $level  = $this->app->input->getString('com_content_filter_level', '0');
-        $access = $this->app->input->getString('com_content_filter_access', '');
-
-        // Levels filter.
-        $levels = [
-            HTMLHelper::_('select.option', '1', Text::_('J1')),
-            HTMLHelper::_('select.option', '2', Text::_('J2')),
-            HTMLHelper::_('select.option', '3', Text::_('J3')),
-            HTMLHelper::_('select.option', '4', Text::_('J4')),
-            HTMLHelper::_('select.option', '5', Text::_('J5')),
-            HTMLHelper::_('select.option', '6', Text::_('J6')),
-            HTMLHelper::_('select.option', '7', Text::_('J7')),
-            HTMLHelper::_('select.option', '8', Text::_('J8')),
-            HTMLHelper::_('select.option', '9', Text::_('J9')),
-            HTMLHelper::_('select.option', '10', Text::_('J10')),
-        ];
-
-        $state                 = $this->app->input->getString('com_content_filter_state', '');
-        $showEmptyDescriptions = $this->app->input->getString(
-            'com_content_filter_show_empty_descriptions',
-            '-1'
+        $search = $this->app->getUserStateFromRequest(
+            $this->context . '.filter.search',
+            'com_content_filter_search',
+            '',
+            'string'
         );
 
-        $result = '<div class="btn-wrapper input-append">
-			<input type="text"
-					name="com_content_filter_search"
-					id="search"
-					value="' . $search . '"
-					placeholder="' . Text::_('COM_OSMETA_SEARCH') . '"
-					data-original-title=""
-					title="' . Text::_('COM_OSMETA_FILTER_DESC') . '"
-					onchange="document.adminForm.submit();">
-				<button type="submit"
-						class="btn hasTooltip"
-						id="Go"
-						title="" aria-label="' . $search . '"
-						data-original-title="' . $search . '"
-						onclick="this.form.submit();">
-				<span class="icon-search" aria-hidden="true"></span>
-			</button>
-		</div>
-		<div class="btn-wrapper">
-            <button class="btn" onclick="document.getElementById(\'search\').value=\'\';
-                this.form.getElementById(\'filter_sectionid\').value=\'-1\';
-                this.form.getElementById(\'catid\').value=\'0\';
-                this.form.getElementById(\'filter_authorid\').value=\'0\';
-                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">
-                ' . Text::_('COM_OSMETA_RESET_LABEL') . '
-            </button>
+        $categoryId = $this->app->getUserStateFromRequest(
+            $this->context . '.filter.catid',
+            'com_content_filter_catid',
+            null,
+            'int'
+        );
 
-            &nbsp;&nbsp;&nbsp;
-        </div>
-        <div class="clearfix"></div>';
+        $level = $this->app->getUserStateFromRequest(
+            $this->context . '.filter.level',
+            'com_content_filter_level',
+            0,
+            'int'
+        );
 
-        $result .= '<div class="om-filter-container">';
+        $access = $this->app->getUserStateFromRequest(
+            $this->context . '.filter.access',
+            'com_content_filter_access',
+            null,
+            'string'
+        );
 
-        $result .= '<select name="com_content_filter_catid" class="inputbox" onchange="this.form.submit()">' .
-            '<option value="">' . Text::_('COM_OSMETA_SELECT_CATEGORY') . '</option>' .
-            HTMLHelper::_('select.options', HTMLHelper::_('category.options', 'com_content'), 'value', 'text', $catId) .
-            '</select>';
+        $state = $this->app->getUserStateFromRequest(
+            $this->context . '.filter.state',
+            'com_content_filter_state',
+            null,
+            'string'
+        );
 
-        $result .= '<select name="com_content_filter_level" class="inputbox" onchange="this.form.submit()">' .
-            '<option value="">' . Text::_('COM_OSMETA_SELECT_MAX_LEVELS') . '</option>' .
-            HTMLHelper::_('select.options', $levels, 'value', 'text', $level) .
-            '</select>';
+        $showEmptyDescriptions = $this->app->getUserStateFromRequest(
+            $this->context . '.show.empty.descriptions',
+            'com_content_filter_show_empty_descriptions',
+            false,
+            'bool'
+        );
 
-        $descriptionChecked = $showEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
+        $ordering  = $this->app->getUserStateFromRequest(
+            $this->context . '.list.order',
+            'filter_order',
+            'title',
+            'cmd'
+        );
+        $direction = $this->app->getUserStateFromRequest(
+            $this->context . '.list.direction',
+            'filter_order_Dir',
+            'ASC',
+            'cmd'
+        );
 
-        $result .= '<select name="com_content_filter_state" id="filter_state" class="inputbox" size="1"
-            onchange="this.form.submit()">
-                <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
-                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
-                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>
-                <option value="A" ' . ($state == 'A' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_ARCHIVED') . '</option>
-                <option value="D" ' . ($state == 'D' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_TRASHED') . '</option>
-                <option value="All" ' . ($state == 'All' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_ALL') . '</option>
-            </select>';
-
-        $result .= HTMLHelper::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
-
-        $result .= '<label>' . Text::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
-            <input type="checkbox"
-                   value="1"
-                   onchange="document.adminForm.submit();"
-                   name="com_content_filter_show_empty_descriptions"
-                   ' . $descriptionChecked . '/>';
-
-        $result .= '</div>';
-
-        return $result;
+        return new Registry([
+            'search'   => $search,
+            'category' => [
+                'id'    => $categoryId,
+                'level' => $level,
+            ],
+            'access'   => $access,
+            'state'    => $state,
+            'show'     => [
+                'empty' => $showEmptyDescriptions,
+            ],
+            'list'     => [
+                'ordering'  => $ordering,
+                'direction' => $direction,
+            ],
+        ]);
     }
 
     /**
