@@ -40,7 +40,12 @@ class Categories extends AbstractContainer
     /**
      * @inheritdoc
      */
-    public $code = 4;
+    protected $code = 4;
+
+    /**
+     * @inheritdoc
+     */
+    protected $context = 'content.category';
 
     /**
      * @inheritDoc
@@ -71,7 +76,8 @@ class Categories extends AbstractContainer
             )
             ->where($db->quoteName('c.extension') . ' = ' . $db->quote('com_content'));
 
-        if ($search = $this->app->input->getString('com_content_filter_search')) {
+        $filters = $this->getFilters();
+        if ($search = $filters->get('search')) {
             if (preg_match('/^\s*id:\s*(\d+)/', $search, $match)) {
                 $query->where($db->quoteName('c.id') . ' = ' . (int)$match[1]);
 
@@ -88,31 +94,22 @@ class Categories extends AbstractContainer
             }
         }
 
-        if ($authorId = $this->app->input->getInt('com_content_filter_authorid')) {
-            $query->where($db->quoteName('c.created_user_id') . ' = ' . $authorId);
+        $state = $filters->get('state');
+        if ($state != '') {
+            $query->where($db->quoteName('c.published') . ' = ' . (int)$state);
         }
 
-        if ($state = stripos('PU', $this->app->input->getString('com_content_filter_state'))) {
-            $state = stripos('UP', $state);
-            if ($state !== false) {
-                $query->where($db->quoteName('c.published') . ' = ' . $state);
-            }
-        }
-
-        $showEmptyDescriptions = $this->app->input->getBool('com_content_filter_show_empty_descriptions');
-        if ($showEmptyDescriptions) {
-            $query->where(sprintf('IFNULL(%1$s, %2$s) = %2$s', $db->quoteName('c.metadesc'), $db->quote('')));
-        }
-
-        if ($access = $this->app->input->getInt('com_content_filter_access')) {
+        if ($access = $filters->get('access')) {
             $query->where($db->quoteName('c.access') . ' = ' . $access);
         }
 
-        $ordering = str_replace('_', '', $this->app->input->getCmd('filter_order', 'title'));
-        $orderDir = strtoupper($this->app->input->getCmd('filter_order_Dir', 'ASC'));
-        if ($ordering && $orderDir) {
-            $query->order($ordering . ' ' . $orderDir);
+        if ($filters->get('show.empty')) {
+            $query->where(sprintf('IFNULL(%1$s, %2$s) = %2$s', $db->quoteName('c.metadesc'), $db->quote('')));
         }
+
+        $ordering  = str_replace('_', '', $filters->get('list.ordering'));
+        $direction = $filters->get('list.direction');
+        $query->order($ordering . ' ' . $direction);
 
         $rows = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
@@ -366,63 +363,6 @@ class Categories extends AbstractContainer
                 }
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFilter(): string
-    {
-        $search                = $this->app->input->getString('com_content_filter_search', '');
-        $state                 = $this->app->input->getString('com_content_filter_state', '');
-        $access                = $this->app->input->getString('com_content_filter_access', '');
-        $showEmptyDescriptions = $this->app->input->getString(
-            'com_content_filter_show_empty_descriptions',
-            '-1'
-        );
-
-        $result = '<div class="btn-wrapper input-append">
-            <input type="text"
-            		name="com_content_filter_search"
-            		id="search"
-            		value="' . $search . '"
-            		placeholder="' . Text::_('COM_OSMETA_SEARCH') . '"
-            		class="text_area" onchange="document.adminForm.submit();" ' . '
-            		title="' . Text::_('COM_OSMETA_FILTER_DESC') . '"/>
-            <button id="Go" class="btn" onclick="this.form.submit();">' . Text::_('COM_OSMETA_GO_LABEL') . '</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn" onclick="document.getElementById(\'search\').value=\'\';
-                this.form.getElementById(\'filter_sectionid\').value=\'-1\';
-                this.form.getElementById(\'catid\').value=\'0\';
-                this.form.getElementById(\'filter_authorid\').value=\'0\';
-                this.form.getElementById(\'filter_state\').value=\'\';this.form.submit();">' . Text::_('COM_OSMETA_RESET_LABEL') . '</button>
-        </div>';
-
-        $descriptionChecked = $showEmptyDescriptions != '-1' ? 'checked="yes" ' : '';
-
-        $result .= '<div class="om-filter-container">';
-
-        $result .= '
-            <select name="com_content_filter_state" id="filter_state"
-                class="inputbox" size="1" onchange="this.form.submit();">
-                <option value=""  >' . Text::_('COM_OSMETA_SELECT_STATE') . '</option>
-                <option value="P" ' . ($state == 'P' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_PUBLISHED') . '</option>
-                <option value="U" ' . ($state == 'U' ? 'selected="selected"' : '') . '>' . Text::_('COM_OSMETA_UNPUBLISHED') . '</option>
-            </select>';
-
-        $result .= HTMLHelper::_('access.level', 'com_content_filter_access', $access, 'onchange="submitform();"');
-
-        $result .= '<label>' . Text::_('COM_OSMETA_SHOW_ONLY_EMPTY_DESCRIPTIONS') . '</label>
-            <input type="checkbox"
-                   value="1"
-                   onchange="document.adminForm.submit();"
-                   name="com_content_filter_show_empty_descriptions"
-                    ' . $descriptionChecked . '/>';
-
-        $result .= '</div>';
-
-        return $result;
     }
 
     /**

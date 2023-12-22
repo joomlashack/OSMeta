@@ -136,6 +136,15 @@ class OSMetaViewOSMeta extends AbstractBase
         $template = explode(':', $this->itemType);
         $template = strtolower(array_pop($template));
 
-        return $this->loadTemplate($template);
+        try {
+            $filter = $this->loadTemplate('filter');
+
+            return $filter . $this->loadTemplate($template);
+
+        } catch (Throwable $error) {
+            // ignore
+        }
+
+        return '';
     }
 }

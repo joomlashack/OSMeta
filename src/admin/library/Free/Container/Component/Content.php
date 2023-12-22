@@ -30,7 +30,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
-use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -42,12 +41,12 @@ class Content extends AbstractContainer
     /**
      * @inheritdoc
      */
-    public $code = 1;
+    protected $code = 1;
 
     /**
-     * @var string
+     * @inheritdoc
      */
-    protected $context = 'com_content.article';
+    protected $context = 'content.article';
 
     /**
      * @inheritDoc
@@ -412,84 +411,6 @@ class Content extends AbstractContainer
                 $db->insertObject('#__osmeta_metadata', $metadata);
             }
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFilters(): Registry
-    {
-        $search = $this->app->getUserStateFromRequest(
-            $this->context . '.filter.search',
-            'com_content_filter_search',
-            '',
-            'string'
-        );
-
-        $categoryId = $this->app->getUserStateFromRequest(
-            $this->context . '.filter.catid',
-            'com_content_filter_catid',
-            null,
-            'int'
-        );
-
-        $level = $this->app->getUserStateFromRequest(
-            $this->context . '.filter.level',
-            'com_content_filter_level',
-            0,
-            'int'
-        );
-
-        $access = $this->app->getUserStateFromRequest(
-            $this->context . '.filter.access',
-            'com_content_filter_access',
-            null,
-            'string'
-        );
-
-        $state = $this->app->getUserStateFromRequest(
-            $this->context . '.filter.state',
-            'com_content_filter_state',
-            null,
-            'string'
-        );
-
-        $showEmptyDescriptions = $this->app->getUserStateFromRequest(
-            $this->context . '.show.empty.descriptions',
-            'com_content_filter_show_empty_descriptions',
-            false,
-            'bool'
-        );
-
-        $ordering  = $this->app->getUserStateFromRequest(
-            $this->context . '.list.order',
-            'filter_order',
-            'title',
-            'cmd'
-        );
-        $direction = $this->app->getUserStateFromRequest(
-            $this->context . '.list.direction',
-            'filter_order_Dir',
-            'ASC',
-            'cmd'
-        );
-
-        return new Registry([
-            'search'   => $search,
-            'category' => [
-                'id'    => $categoryId,
-                'level' => $level,
-            ],
-            'access'   => $access,
-            'state'    => $state,
-            'show'     => [
-                'empty' => $showEmptyDescriptions,
-            ],
-            'list'     => [
-                'ordering'  => $ordering,
-                'direction' => $direction,
-            ],
-        ]);
     }
 
     /**
