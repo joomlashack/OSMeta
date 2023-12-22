@@ -111,7 +111,7 @@ class Categories extends AbstractContainer
         $direction = $filters->get('list.direction');
         $query->order($ordering . ' ' . $direction);
 
-        $rows = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
+        $categories = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
         $query->clear('select')
             ->clear('order')
@@ -119,22 +119,22 @@ class Categories extends AbstractContainer
             ->setLimit();
         $total = $db->setQuery($query)->loadResult();
 
-        foreach ($rows as $row) {
-            $editQuery     = [
+        foreach ($categories as $category) {
+            $editQuery          = [
                 'option'    => 'com_categories',
                 'task'      => 'category.edit',
-                'id'        => $row->id,
-                'extension' => $row->extension,
+                'id'        => $category->id,
+                'extension' => $category->extension,
             ];
-            $row->edit_url = 'index.php?' . http_build_query($editQuery);
+            $category->edit_url = 'index.php?' . http_build_query($editQuery);
 
-            $url = RouteHelper::getCategoryRoute($row->id);
+            $url = RouteHelper::getCategoryRoute($category->id);
 
-            $row->view_url = Route::link('site', $url, true, Route::TLS_IGNORE, true);
+            $category->view_url = Route::link('site', $url, true, Route::TLS_IGNORE, true);
         }
 
         return [
-            'rows'  => $rows,
+            'rows'  => $categories,
             'total' => $total,
         ];
     }

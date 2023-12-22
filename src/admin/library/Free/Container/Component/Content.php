@@ -162,7 +162,7 @@ class Content extends AbstractContainer
         $direction = $filters->get('list.direction');
         $query->order($ordering . ' ' . $direction);
 
-        $rows = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
+        $articles = $db->setQuery($query, $limitStart, $limit)->loadObjectList();
 
         $query->clear('select')
             ->clear('order')
@@ -170,18 +170,18 @@ class Content extends AbstractContainer
             ->setLimit();
         $total = $db->setQuery($query)->loadResult();
 
-        foreach ($rows as $row) {
-            $editQuery     = [
+        foreach ($articles as $article) {
+            $editQuery         = [
                 'option' => 'com_content',
                 'task'   => 'article.edit',
-                'id'     => $row->id,
+                'id'     => $article->id,
                 'return' => base64_encode(Uri::getInstance()),
             ];
-            $row->edit_url = 'index.php?' . http_build_query($editQuery);
+            $article->edit_url = 'index.php?' . http_build_query($editQuery);
 
-            $row->view_url = Route::link(
+            $article->view_url = Route::link(
                 'site',
-                RouteHelper::getArticleRoute($row->id . ':' . urlencode($row->alias), $row->catid),
+                RouteHelper::getArticleRoute($article->id . ':' . urlencode($article->alias), $article->catid),
                 true,
                 Route::TLS_IGNORE,
                 true
@@ -190,7 +190,7 @@ class Content extends AbstractContainer
         }
 
         return [
-            'rows'  => $rows,
+            'rows'  => $articles,
             'total' => $total,
         ];
     }
