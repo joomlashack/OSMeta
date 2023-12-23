@@ -38,8 +38,6 @@ defined('_JEXEC') or die();
  * @var string            $filetofind
  */
 
-HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
-
 $isPro = $this->extension->isPro();
 
 ?>
@@ -52,9 +50,7 @@ $isPro = $this->extension->isPro();
     </div>
 
     <div id="j-main-container" class="span10">
-        <div class="js-stools-container-bar">
-            <?php echo $this->loadFilterTemplate(); ?>
-        </div>
+        <?php echo $this->loadFilterTemplate(); ?>
 
         <?php if (empty($this->metatagsData)) : ?>
             <div class="alert alert-warning">
@@ -202,62 +198,3 @@ $isPro = $this->extension->isPro();
     </div>
 
 </form>
-
-<script>
-    let hashCode = function(s) {
-        return s.split('').reduce(function(a, b) {
-            a = ((a << 5) - a) + b.charCodeAt(0);
-            return a & a
-        }, 0);
-    }
-
-    let hashedInitialValues = '',
-        getHashedValues;
-
-    (function($) {
-        // Get a hash from the value of all fields, concatenated
-        getHashedValues = function() {
-            let str = ''
-
-            $('#articleList input, #articleList textarea').each(function() {
-                str += $(this).val();
-            });
-
-            return hashCode(str);
-        };
-
-        $('#articleList textarea.char-count.metatitle').osmetaCharCount({
-            limit        : <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
-            message      : '<?php echo Text::_('COM_OSMETA_TITLE_TOO_LONG'); ?>',
-            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
-            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
-        });
-
-        $('#articleList textarea.char-count.metadesc').osmetaCharCount({
-            limit        : <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
-            message      : '<?php echo Text::_('COM_OSMETA_DESCR_TOO_LONG'); ?>',
-            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
-            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
-        });
-    })(jQuery);
-
-    // Store the initial hash
-    hashedInitialValues = getHashedValues();
-
-    // Overwrite the native submit action, to catch the cancel task
-    let nativeSubmitButton = Joomla.submitbutton;
-    Joomla.submitbutton    = function(pressbutton) {
-        if (pressbutton !== 'save') {
-            let hashedValues = getHashedValues();
-
-            // Do we have any modified field?
-            if (hashedInitialValues !== hashedValues) {
-                if (!confirm('<?php echo Text::_('COM_OSMETA_CONFIRM_CANCEL'); ?>')) {
-                    return;
-                }
-            }
-        }
-
-        nativeSubmitButton(pressbutton);
-    };
-</script>

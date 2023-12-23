@@ -28,7 +28,6 @@ use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
-HTMLHelper::_('script', 'com_osmeta/jquery.osmetacharcount.min.js', ['relative' => true]);
 HTMLHelper::_('behavior.core');
 HTMLHelper::_('formbehavior.chosen', 'select');
 

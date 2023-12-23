@@ -123,6 +123,26 @@ class OSMetaViewOSMeta extends AbstractBase
 
         HTMLHelper::_('stylesheet', 'com_osmeta/admin.css', ['relative' => true]);
 
+        Text::script('COM_OSMETA_CHARS');
+        Text::script('COM_OSMETA_CHARS_1');
+        Text::script('COM_OSMETA_CONFIRM_CANCEL');
+
+        HTMLHelper::_('script', 'com_osmeta/admin.min.js', ['relative' => true]);
+
+        $titleLimit       = $this->extension->params->get('meta_title_limit', 70);
+        $titleLong        = Text::_('COM_OSMETA_TITLE_TOO_LONG');
+        $descriptionLimit = $this->extension->params->get('meta_description_limit', 160);
+        $descriptionLong  = Text::_('COM_OSMETA_DESCR_TOO_LONG');
+
+        $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
+jQuery(function($) {
+    $('#articleList textarea.char-count.metatitle')
+        .osmetaCharCount({limit  : {$titleLimit}, message: '{$titleLong}'});
+    $('#articleList textarea.char-count.metadesc')
+        .osmetaCharCount({limit  : {$descriptionLimit}, message: '{$descriptionLong}'});
+    });
+JSCRIPT
+        );
 
         parent::display($tpl);
     }

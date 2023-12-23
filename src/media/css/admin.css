@@ -28,4 +28,5 @@ form label {
 .char-count-container .char-count-warning {
   color: #f33b38;
   font-style: italic;
+  padding: 0 .5em;
 }

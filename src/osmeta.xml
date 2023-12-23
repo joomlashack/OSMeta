@@ -71,7 +71,7 @@
         <targetplatform>3.9</targetplatform>
 
         <minify>
-            <script>media/js/jquery.osmetacharcount.js</script>
+            <script>media/js/admin.js</script>
         </minify>
 
         <relatedExtensions>
