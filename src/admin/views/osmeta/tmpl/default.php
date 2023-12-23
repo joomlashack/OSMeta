@@ -23,15 +23,24 @@
 
 use Alledia\OSMeta\Pro\Fields;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
-HTMLHelper::_('behavior.core');
-HTMLHelper::_('formbehavior.chosen', 'select');
+/**
+ * @var \OSMetaViewOSMeta $this
+ * @var object            $template
+ * @var string            $layout
+ * @var string            $layoutTemplate
+ * @var Language          $lang
+ * @var string            $filetofind
+ * @var bool              $isPro
+ */
 
 $isPro = $this->extension->isPro();
+
 ?>
 
 <form action="<?php Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
@@ -41,15 +50,10 @@ $isPro = $this->extension->isPro();
 
     <div class="j-main-container">
         <div class="w-100">
-            <table class="w-100">
-                <tr>
-                    <td class="ost-filters">
-                        <?php echo $this->filter; ?>
-                    </td>
-                </tr>
-            </table>
+            <?php echo $this->loadFilterTemplate(); ?>
 
-            <?php if (count($this->metatagsData) == 0) : ?>
+            <?php
+            if (count($this->metatagsData) == 0) : ?>
                 <div class="alert alert-warning">
                     <h4 class="alert-heading"><?php echo Text::_('MESSAGE') ?></h4>
                     <div class="alert-message"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS') ?></div>
@@ -200,62 +204,3 @@ $isPro = $this->extension->isPro();
         </div>
     </div>
 </form>
-
-<script>
-    let hashCode = function(s) {
-        return s.split('').reduce(function(a, b) {
-            a = ((a << 5) - a) + b.charCodeAt(0);
-            return a & a
-        }, 0);
-    }
-
-    let hashedInitialValues = '',
-        getHashedValues;
-
-    (function($) {
-        // Get a hash from the value of all fields, concatenated
-        getHashedValues = function() {
-            let str = ''
-
-            $('#articleList input, #articleList textarea').each(function() {
-                str += $(this).val();
-            });
-
-            return hashCode(str);
-        };
-
-        $('#articleList textarea.char-count.metatitle').osmetaCharCount({
-            limit        : <?php echo $this->extension->params->get('meta_title_limit', 70); ?>,
-            message      : '<?php echo Text::_('COM_OSMETA_TITLE_TOO_LONG'); ?>',
-            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
-            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
-        });
-
-        $('#articleList textarea.char-count.metadesc').osmetaCharCount({
-            limit        : <?php echo $this->extension->params->get('meta_description_limit', 160); ?>,
-            message      : '<?php echo Text::_('COM_OSMETA_DESCR_TOO_LONG'); ?>',
-            charStr      : '<?php echo Text::_('COM_OSMETA_CHAR'); ?>',
-            charPluralStr: '<?php echo Text::_('COM_OSMETA_CHARS'); ?>'
-        });
-    })(jQuery);
-
-    // Store the initial hash
-    hashedInitialValues = getHashedValues();
-
-    // Overwrite the native submit action, to catch the cancel task
-    let nativeSubmitButton = Joomla.submitbutton;
-    Joomla.submitbutton    = function(pressbutton) {
-        if (pressbutton !== 'save') {
-            let hashedValues = getHashedValues();
-
-            // Do we have any modified field?
-            if (hashedInitialValues !== hashedValues) {
-                if (!confirm('<?php echo Text::_('COM_OSMETA_CONFIRM_CANCEL'); ?>')) {
-                    return;
-                }
-            }
-        }
-
-        nativeSubmitButton(pressbutton);
-    };
-</script>

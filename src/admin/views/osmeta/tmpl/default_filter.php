@@ -36,30 +36,34 @@ defined('_JEXEC') or die();
  * @var string            $filetofind
  */
 
-HTMLHelper::_('formbehavior.chosen', 'select');
-
+HTMLHelper::_('stylesheet', 'system/searchtools/searchtools.min.css', ['relative' => true]);
 ?>
-<div class="row-fluid">
-    <div class="input-append">
-        <input type="text"
-               name="com_content_filter_search"
-               id="search"
-               class="hasTooltip"
-               value="<?php echo $this->filters->get('search'); ?>"
-               placeholder="<?php echo Text::_('COM_OSMETA_SEARCH'); ?>"
-               title="<?php echo Text::_('COM_OSMETA_FILTER_DESC'); ?>"
-               onchange="this.form.submit();">
+<div class="js-stools" role="search">
+    <div class="js-stools-container-bar">
+        <div class="btn-toolbar">
+            <div class="filter-search-bar btn-group">
+                <div class="input-group">
+                    <input type="text"
+                           name="com_content_filter_search"
+                           id="search"
+                           class="form-control"
+                           value="<?php echo $this->filters->get('search'); ?>"
+                           placeholder="<?php echo Text::_('COM_OSMETA_SEARCH'); ?>"
+                           title="<?php echo Text::_('COM_OSMETA_FILTER_DESC'); ?>"
+                           onchange="this.form.submit();">
 
-        <button type="submit"
-                class="btn"
-                id="Go"
-                onclick="this.form.submit();">
-            <span class="icon-search"></span>
-        </button>
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="Go"
+                            onclick="this.form.submit();">
+                        <span class="icon-search"></span>
+                    </button>
 
-        <button id="clearForm" class="btn">
-            <?php echo Text::_('COM_OSMETA_RESET_LABEL'); ?>
-        </button>
+                    <button id="clearForm" class="btn btn-light">
+                        <?php echo Text::_('COM_OSMETA_RESET_LABEL'); ?>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
