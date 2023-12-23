@@ -156,15 +156,18 @@ JSCRIPT
         $template = explode(':', $this->itemType);
         $template = strtolower(array_pop($template));
 
+        $filter = '';
         try {
             $filter = $this->loadTemplate('filter');
 
-            return $filter . $this->loadTemplate($template);
+            return $filter . $this->loadTemplate('filter_' . $template);
 
         } catch (Throwable $error) {
-            // ignore
+            if ($this->app->get('debug')) {
+                $this->app->enqueueMessage($error->getMessage(), 'warning');
+            }
         }
 
-        return '';
+        return $filter;
     }
 }
