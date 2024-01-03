@@ -95,31 +95,39 @@ abstract class AbstractContainer
     {
         $db = AllediaFactory::getDbo();
 
-        $sql = "SELECT m.item_id as id,
-                m.item_id,
-                m.description as metadescription,
-                m.description,
-                m.title as metatitle,
-                m.title
-                FROM #__osmeta_metadata m
-                WHERE m.item_id=" . $db->quote($id) . "
-                    AND m.item_type=" . $db->quote($this->getTypeId());
-        $db->setQuery($sql);
+        $fields = $db->quoteName([
+            'item_id',
+            'description',
+            'title',
+        ]);
+        $query  = $db->getQuery(true)
+            ->select(
+                array_merge(
+                    $fields,
+                    [
+                        $db->quoteName('item_id') . ' AS ' . $db->quoteName('id'),
+                        $db->quoteName('description') . ' AS ' . $db->quoteName('metadescription'),
+                        $db->quoteName('title') . ' AS ' . $db->quoteName('metatitle'),
+                    ]
+                )
+            )
+            ->from('#__osmeta_metadata')
+            ->where([
+                $db->quoteName('item_id') . ' = ' . $id,
+                $db->quoteName('item_type') . ' = ' . $db->quote($this->getTypeId()),
+            ]);
 
-        $data = $db->loadAssoc();
-
-        if (empty($data)) {
-            $data = [
+        return array_merge(
+            [
                 'id'              => 0,
                 'item_id'         => 0,
                 'metadescription' => '',
                 'description'     => '',
                 'title'           => '',
                 'metatitle'       => '',
-            ];
-        }
-
-        return $data;
+            ],
+            $db->setQuery($query)->loadAssoc() ?: []
+        );
     }
 
     /**
