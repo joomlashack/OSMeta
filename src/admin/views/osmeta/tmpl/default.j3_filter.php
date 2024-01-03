@@ -21,7 +21,6 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 
@@ -35,8 +34,6 @@ defined('_JEXEC') or die();
  * @var Language          $lang
  * @var string            $filetofind
  */
-
-HTMLHelper::_('formbehavior.chosen', 'select');
 
 ?>
 <div class="js-stools-container-bar">

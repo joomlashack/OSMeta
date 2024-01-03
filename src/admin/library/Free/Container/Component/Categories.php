@@ -47,6 +47,11 @@ class Categories extends AbstractContainer
      */
     protected $context = 'content.category';
 
+    public function getFormFilter(int $fieldMask = -1): string
+    {
+        return parent::getFormFilter(static::FILTER_STATE | static::FILTER_ACCESS);
+    }
+
     /**
      * @inheritDoc
      */

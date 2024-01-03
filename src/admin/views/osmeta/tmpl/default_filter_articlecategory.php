@@ -35,7 +35,7 @@ defined('_JEXEC') or die();
  * @var string           $filetofind
  */
 ?>
-<div class="clearfix" style="padding: .5em 0;">
+<div class="row-fluid clearfix" style="padding: .5em 0;">
     <input type="hidden" name="com_content_filter_show_empty_descriptions"/>
     <input type="checkbox"
         <?php echo $this->filters->get('show.empty') ? 'checked="checked"' : ''; ?>
@@ -48,6 +48,6 @@ defined('_JEXEC') or die();
     </label>
 </div>
 
-<div class="js-stools-container-filters js-stools-container-filters-visible clearfix">
-    <?php echo $this->getFilters($this->filterState | $this->filterAccess); ?>
+<div class="row-fluid js-stools-container-filters js-stools-container-filters-visible clearfix">
+    <?php echo $this->getFilterForm(); ?>
 </div>

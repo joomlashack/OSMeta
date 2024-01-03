@@ -40,6 +40,8 @@ defined('_JEXEC') or die();
 
 $isPro = $this->extension->isPro();
 
+HTMLHelper::_('formbehavior.chosen', 'select');
+
 ?>
 <form action="<?php echo Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
       method="post"

@@ -36,14 +36,12 @@ defined('_JEXEC') or die();
  * @var string            $layoutTemplate
  * @var Language          $lang
  * @var string            $filetofind
- * @var bool              $isPro
  */
 
 $isPro = $this->extension->isPro();
 
 ?>
-
-<form action="<?php Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
+<form action="<?php echo Route::_('index.php?option=com_osmeta&type=' . $this->itemType); ?>"
       method="post"
       name="adminForm"
       id="adminForm">

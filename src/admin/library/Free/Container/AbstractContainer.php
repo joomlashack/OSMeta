@@ -26,6 +26,9 @@ namespace Alledia\OSMeta\Free\Container;
 use Alledia\Framework\Factory as AllediaFactory;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
 use Joomla\Database\DatabaseDriver;
 use Joomla\Registry\Registry;
 
@@ -40,6 +43,11 @@ defined('_JEXEC') or die();
  */
 abstract class AbstractContainer
 {
+    protected const FILTER_STATE    = 1 << 0;
+    protected const FILTER_CATEGORY = 1 << 1;
+    protected const FILTER_LEVEL    = 1 << 2;
+    protected const FILTER_ACCESS   = 1 << 3;
+
     /**
      * Allow automatically generating title from the content
      *
@@ -176,61 +184,6 @@ abstract class AbstractContainer
     }
 
     /**
-     * Method to check if an alias already exists.
-     *
-     * @param string $alias
-     *
-     * @return bool
-     */
-    abstract protected function isUniqueAlias(string $alias): bool;
-
-    /**
-     * @param int[] $ids
-     *
-     * @return void
-     */
-    abstract public function copyItemTitleToSearchEngineTitle(array $ids): void;
-
-    /**
-     * @param int[] $ids
-     *
-     * @return void
-     */
-    abstract public function generateDescriptions(array $ids): void;
-
-    /**
-     * @param int[]     $ids
-     * @param ?string[] $metatitles
-     * @param ?string[] $metadescriptions
-     * @param ?string[] $aliases
-     *
-     * @return void
-     */
-    abstract public function saveMetatags(
-        array $ids,
-        array $metatitles = [],
-        array $metadescriptions = [],
-        array $aliases = []
-    ): void;
-
-    /**
-     * @param int $limitStart
-     * @param int $limit
-     *
-     * @return array
-     */
-    abstract public function getMetatags(int $limitStart, int $limit): array;
-
-    /**
-     * Method to get the Metadata By Request
-     *
-     * @param string $query
-     *
-     * @return array
-     */
-    abstract public function getMetadataByRequest(string $query): array;
-
-    /**
      * Method to get filter values
      *
      * @return Registry
@@ -309,4 +262,190 @@ abstract class AbstractContainer
             ],
         ]);
     }
+
+    /**
+     * @param int $fieldMask
+     *
+     * @return string
+     */
+    public function getFormFilter(int $fieldMask = -1): string
+    {
+        $filterState = $this->getFilters();
+
+        $filters = [];
+
+        if ($fieldMask & static::FILTER_STATE) {
+            $id = 'com_content_filter_state';
+
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                [
+                    HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_STATE')),
+                    HTMLHelper::_('select.option', 1, Text::_('COM_OSMETA_PUBLISHED')),
+                    HTMLHelper::_('select.option', 0, Text::_('COM_OSMETA_UNPUBLISHED')),
+                    HTMLHelper::_('select.option', -1, Text::_('COM_OSMETA_ARCHIVED')),
+                    HTMLHelper::_('select.option', -2, Text::_('COM_OSMETA_TRASHED')),
+                ],
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $filterState->get('state')
+            );
+        }
+
+        if ($fieldMask & static::FILTER_CATEGORY) {
+            $categories = HTMLHelper::_('category.options', 'com_content');
+            array_unshift($categories, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_CATEGORY')));
+            $id = 'com_content_filter_catid';
+
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                $categories,
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $filterState->get('category.id')
+            );
+        }
+
+        if ($fieldMask & static::FILTER_LEVEL) {
+            $levelOptions = array_map(
+                function ($value) {
+                    return HTMLHelper::_('select.option', $value, Text::_('J' . $value));
+                },
+                range(1, 10)
+            );
+            array_unshift($levelOptions, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_MAX_LEVELS')));
+            $id = 'com_content_filter_level';
+
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                $levelOptions,
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $filterState->get('category.level')
+            );
+        }
+
+        if ($fieldMask & static::FILTER_ACCESS) {
+            $id = 'com_content_filter_access';
+
+            $filters[$id] = HTMLHelper::_(
+                'access.level',
+                $id,
+                $filterState->get('access'),
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ]
+            );
+        }
+
+        $fields = json_encode(array_keys($filters));
+
+        $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
+jQuery(function($) {
+    let clear   = document.getElementById('clearForm'),
+        empty   = document.getElementById('com_content_filter_show_empty_descriptions'),
+        filters = {$fields}; 
+
+    clear.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        let form = this.form;
+
+        this.form.search.value = '';
+
+        filters.forEach(function (filter) {
+            if (form[filter]) {
+                form[filter].value = '';
+            }
+        });
+        
+        if (empty) {
+            empty.checked = false;
+        }
+
+        this.form.submit();
+    })
+});
+JSCRIPT
+        );
+
+        if (Version::MAJOR_VERSION < 4) {
+            return join("\n", $filters);
+        }
+
+        $filterDiv = '<div class="js-stools-field-filter">';
+
+        return $filterDiv . join("</div>\n" . $filterDiv, $filters) . '</div>';
+    }
+
+    /**
+     * Method to check if an alias already exists.
+     *
+     * @param string $alias
+     *
+     * @return bool
+     */
+    abstract protected function isUniqueAlias(string $alias): bool;
+
+    /**
+     * @param int[] $ids
+     *
+     * @return void
+     */
+    abstract public function copyItemTitleToSearchEngineTitle(array $ids): void;
+
+    /**
+     * @param int[] $ids
+     *
+     * @return void
+     */
+    abstract public function generateDescriptions(array $ids): void;
+
+    /**
+     * @param int[]     $ids
+     * @param ?string[] $metatitles
+     * @param ?string[] $metadescriptions
+     * @param ?string[] $aliases
+     *
+     * @return void
+     */
+    abstract public function saveMetatags(
+        array $ids,
+        array $metatitles = [],
+        array $metadescriptions = [],
+        array $aliases = []
+    ): void;
+
+    /**
+     * @param int $limitStart
+     * @param int $limit
+     *
+     * @return array
+     */
+    abstract public function getMetatags(int $limitStart, int $limit): array;
+
+    /**
+     * Method to get the Metadata By Request
+     *
+     * @param string $query
+     *
+     * @return array
+     */
+    abstract public function getMetadataByRequest(string $query): array;
 }
