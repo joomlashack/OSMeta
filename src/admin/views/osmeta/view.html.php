@@ -29,6 +29,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Version;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -38,6 +39,11 @@ defined('_JEXEC') or die();
 
 class OSMetaViewOSMeta extends AbstractBase
 {
+    protected $filterState    = 1 << 0;
+    protected $filterCategory = 1 << 1;
+    protected $filterLevel    = 1 << 2;
+    protected $filterAccess   = 1 << 3;
+
     /**
      * @var string
      */
@@ -148,96 +154,117 @@ JSCRIPT
     }
 
     /**
+     * @param int $options
+     *
      * @return string
      */
-    protected function getFilters(): string
+    protected function getFilters(int $options = -1): string
     {
         $filters = [];
 
-        $stateOptions = [
-            HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_STATE')),
-            HTMLHelper::_('select.option', 1, Text::_('COM_OSMETA_PUBLISHED')),
-            HTMLHelper::_('select.option', 0, Text::_('COM_OSMETA_UNPUBLISHED')),
-            HTMLHelper::_('select.option', -1, Text::_('COM_OSMETA_ARCHIVED')),
-            HTMLHelper::_('select.option', -2, Text::_('COM_OSMETA_TRASHED')),
-        ];
-        $filters[]    = HTMLHelper::_(
-            'select.genericlist',
-            $stateOptions,
-            'com_content_filter_state',
-            [
-                'onchange' => 'this.form.submit();',
-                'class'    => 'form-select',
-            ],
-            'value',
-            'text',
-            $this->filters->get('state')
-        );
+        if ($options & $this->filterState) {
+            $id = 'com_content_filter_state';
 
-        $categories = HTMLHelper::_('category.options', 'com_content');
-        array_unshift($categories, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_CATEGORY')));
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                [
+                    HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_STATE')),
+                    HTMLHelper::_('select.option', 1, Text::_('COM_OSMETA_PUBLISHED')),
+                    HTMLHelper::_('select.option', 0, Text::_('COM_OSMETA_UNPUBLISHED')),
+                    HTMLHelper::_('select.option', -1, Text::_('COM_OSMETA_ARCHIVED')),
+                    HTMLHelper::_('select.option', -2, Text::_('COM_OSMETA_TRASHED')),
+                ],
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $this->filters->get('state')
+            );
+        }
 
-        $filters[] = HTMLHelper::_(
-            'select.genericlist',
-            $categories,
-            'com_content_filter_catid',
-            [
-                'onchange' => 'this.form.submit();',
-                'class'    => 'form-select',
-            ],
-            'value',
-            'text',
-            $this->filters->get('category.id')
-        );
+        if ($options & $this->filterCategory) {
+            $categories = HTMLHelper::_('category.options', 'com_content');
+            array_unshift($categories, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_CATEGORY')));
+            $id = 'com_content_filter_catid';
 
-        $levelOptions = array_map(
-            function ($value) {
-                return HTMLHelper::_('select.option', $value, Text::_('J' . $value));
-            },
-            range(1, 10)
-        );
-        array_unshift($levelOptions, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_MAX_LEVELS')));
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                $categories,
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $this->filters->get('category.id')
+            );
+        }
 
-        $filters[] = HTMLHelper::_(
-            'select.genericlist',
-            $levelOptions,
-            'com_content_filter_level',
-            [
-                'onchange' => 'this.form.submit();',
-                'class'    => 'form-select',
-            ],
-            'value',
-            'text',
-            $this->filters->get('category.level')
-        );
+        if ($options & $this->filterLevel) {
+            $levelOptions = array_map(
+                function ($value) {
+                    return HTMLHelper::_('select.option', $value, Text::_('J' . $value));
+                },
+                range(1, 10)
+            );
+            array_unshift($levelOptions, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_MAX_LEVELS')));
+            $id = 'com_content_filter_level';
 
-        $filters[] = HTMLHelper::_(
-            'access.level',
-            'com_content_filter_access',
-            $this->filters->get('access'),
-            [
-                'onchange' => 'this.form.submit();',
-                'class'    => 'form-select',
-            ]
-        );
+            $filters[$id] = HTMLHelper::_(
+                'select.genericlist',
+                $levelOptions,
+                $id,
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ],
+                'value',
+                'text',
+                $this->filters->get('category.level')
+            );
+        }
+
+        if ($options & $this->filterAccess) {
+            $id = 'com_content_filter_access';
+
+            $filters[$id] = HTMLHelper::_(
+                'access.level',
+                $id,
+                $this->filters->get('access'),
+                [
+                    'onchange' => 'this.form.submit();',
+                    'class'    => 'form-select',
+                ]
+            );
+        }
+
+        $fields = json_encode(array_keys($filters));
 
         $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
 jQuery(function($) {
-    let clear = document.getElementById('clearForm');
+    let clear   = document.getElementById('clearForm'),
+        empty   = document.getElementById('com_content_filter_show_empty_descriptions'),
+        filters = {$fields}; 
 
     clear.addEventListener('click', function(event) {
         event.preventDefault();
+        
+        let form = this.form;
 
         this.form.search.value = '';
 
-        this.form.com_content_filter_catid.value  = '';
-        this.form.com_content_filter_state.value  = '';
-        this.form.com_content_filter_level.value  = '';
-        this.form.com_content_filter_access.value = '';
-
-        let emptyFilter = document.getElementById('com_content_filter_show_empty_descriptions');
-        if (emptyFilter) {
-            emptyFilter.checked = false;
+        filters.forEach(function (filter) {
+            if (form[filter]) {
+                form[filter].value = '';
+            }
+        });
+        
+        if (empty) {
+            empty.checked = false;
         }
 
         this.form.submit();
@@ -246,13 +273,13 @@ jQuery(function($) {
 JSCRIPT
         );
 
-        if (\Joomla\CMS\Version::MAJOR_VERSION < 4) {
+        if (Version::MAJOR_VERSION < 4) {
             return join("\n", $filters);
         }
 
         $filterDiv = '<div class="js-stools-field-filter">';
 
-        return $filterDiv . join("</div>\n" . $filterDiv, $filters);
+        return $filterDiv . join("</div>\n" . $filterDiv, $filters) . '</div>';
     }
 
     /**

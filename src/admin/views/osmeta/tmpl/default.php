@@ -186,9 +186,7 @@ $isPro = $this->extension->isPro();
                                       class="char-count metadesc w-100"><?php echo $row->metadesc ?? ''; ?></textarea>
                             </td>
                         </tr>
-                    <?php
-                    endforeach;
-                    ?>
+                    <?php endforeach; ?>
                 </table>
                 <?php
                 echo $this->pageNav->getListFooter();
