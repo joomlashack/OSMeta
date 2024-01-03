@@ -149,6 +149,114 @@ JSCRIPT
 
     /**
      * @return string
+     */
+    protected function getFilters(): string
+    {
+        $filters = [];
+
+        $stateOptions = [
+            HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_STATE')),
+            HTMLHelper::_('select.option', 1, Text::_('COM_OSMETA_PUBLISHED')),
+            HTMLHelper::_('select.option', 0, Text::_('COM_OSMETA_UNPUBLISHED')),
+            HTMLHelper::_('select.option', -1, Text::_('COM_OSMETA_ARCHIVED')),
+            HTMLHelper::_('select.option', -2, Text::_('COM_OSMETA_TRASHED')),
+        ];
+        $filters[]    = HTMLHelper::_(
+            'select.genericlist',
+            $stateOptions,
+            'com_content_filter_state',
+            [
+                'onchange' => 'this.form.submit();',
+                'class'    => 'form-select',
+            ],
+            'value',
+            'text',
+            $this->filters->get('state')
+        );
+
+        $categories = HTMLHelper::_('category.options', 'com_content');
+        array_unshift($categories, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_CATEGORY')));
+
+        $filters[] = HTMLHelper::_(
+            'select.genericlist',
+            $categories,
+            'com_content_filter_catid',
+            [
+                'onchange' => 'this.form.submit();',
+                'class'    => 'form-select',
+            ],
+            'value',
+            'text',
+            $this->filters->get('category.id')
+        );
+
+        $levelOptions = array_map(
+            function ($value) {
+                return HTMLHelper::_('select.option', $value, Text::_('J' . $value));
+            },
+            range(1, 10)
+        );
+        array_unshift($levelOptions, HTMLHelper::_('select.option', '', Text::_('COM_OSMETA_SELECT_MAX_LEVELS')));
+
+        $filters[] = HTMLHelper::_(
+            'select.genericlist',
+            $levelOptions,
+            'com_content_filter_level',
+            [
+                'onchange' => 'this.form.submit();',
+                'class'    => 'form-select',
+            ],
+            'value',
+            'text',
+            $this->filters->get('category.level')
+        );
+
+        $filters[] = HTMLHelper::_(
+            'access.level',
+            'com_content_filter_access',
+            $this->filters->get('access'),
+            [
+                'onchange' => 'this.form.submit();',
+                'class'    => 'form-select',
+            ]
+        );
+
+        $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
+jQuery(function($) {
+    let clear = document.getElementById('clearForm');
+
+    clear.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        this.form.search.value = '';
+
+        this.form.com_content_filter_catid.value  = '';
+        this.form.com_content_filter_state.value  = '';
+        this.form.com_content_filter_level.value  = '';
+        this.form.com_content_filter_access.value = '';
+
+        let emptyFilter = document.getElementById('com_content_filter_show_empty_descriptions');
+        if (emptyFilter) {
+            emptyFilter.checked = false;
+        }
+
+        this.form.submit();
+    })
+});
+JSCRIPT
+        );
+
+        if (\Joomla\CMS\Version::MAJOR_VERSION < 4) {
+            return join("\n", $filters);
+        }
+
+        $filterDiv = '<div class="js-stools-field-filter">';
+
+        return $filterDiv . join("</div>\n" . $filterDiv, $filters);
+    }
+
+    /**
+     * @return string
      * @throws Exception
      */
     protected function loadFilterTemplate(): string
