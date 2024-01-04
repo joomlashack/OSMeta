@@ -60,7 +60,7 @@ class Content extends AbstractContainer
                 $db->quoteName('c.id'),
                 $db->quoteName('c.title'),
                 $db->quoteName('c.metadesc'),
-                sprintf('%s AS %s', $db->quoteName('m.title'), $db->quoteName('metatitle')),
+                $db->quoteName('m.title') . ' AS ' . $db->quoteName('metatitle'),
                 $db->quoteName('c.alias'),
                 $db->quoteName('c.catid'),
             ])
@@ -186,7 +186,6 @@ class Content extends AbstractContainer
                 Route::TLS_IGNORE,
                 true
             );
-
         }
 
         return [
