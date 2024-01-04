@@ -270,6 +270,55 @@ abstract class AbstractContainer
      */
     public function getFormFilter(int $fieldMask = -1): string
     {
+        $filters = $this->getFilterFields($fieldMask);
+
+        $fields = json_encode(array_keys($filters));
+
+        $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
+jQuery(function($) {
+    let clear   = document.getElementById('clearForm'),
+        empty   = document.getElementById('com_content_filter_show_empty_descriptions'),
+        filters = {$fields}; 
+
+    clear.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        let form = this.form;
+
+        this.form.search.value = '';
+
+        filters.forEach(function (filter) {
+            if (form[filter]) {
+                form[filter].value = '';
+            }
+        });
+        
+        if (empty) {
+            empty.checked = false;
+        }
+
+        this.form.submit();
+    })
+});
+JSCRIPT
+        );
+
+        if (Version::MAJOR_VERSION < 4) {
+            return join("\n", $filters);
+        }
+
+        $filterDiv = '<div class="js-stools-field-filter">';
+
+        return $filterDiv . join("</div>\n" . $filterDiv, $filters) . '</div>';
+    }
+
+    /**
+     * @param int $fieldMask
+     *
+     * @return string[]
+     */
+    protected function getFilterFields(int $fieldMask = 0): array
+    {
         $filterState = $this->getFilters();
 
         $filters = [];
@@ -354,44 +403,7 @@ abstract class AbstractContainer
             );
         }
 
-        $fields = json_encode(array_keys($filters));
-
-        $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
-jQuery(function($) {
-    let clear   = document.getElementById('clearForm'),
-        empty   = document.getElementById('com_content_filter_show_empty_descriptions'),
-        filters = {$fields}; 
-
-    clear.addEventListener('click', function(event) {
-        event.preventDefault();
-        
-        let form = this.form;
-
-        this.form.search.value = '';
-
-        filters.forEach(function (filter) {
-            if (form[filter]) {
-                form[filter].value = '';
-            }
-        });
-        
-        if (empty) {
-            empty.checked = false;
-        }
-
-        this.form.submit();
-    })
-});
-JSCRIPT
-        );
-
-        if (Version::MAJOR_VERSION < 4) {
-            return join("\n", $filters);
-        }
-
-        $filterDiv = '<div class="js-stools-field-filter">';
-
-        return $filterDiv . join("</div>\n" . $filterDiv, $filters) . '</div>';
+        return $filters;
     }
 
     /**
