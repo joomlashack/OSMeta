@@ -161,21 +161,6 @@ JSCRIPT
      */
     protected function loadFilterTemplate(): string
     {
-        $template = explode(':', $this->itemType);
-        $template = strtolower(array_pop($template));
-
-        $filter = '';
-        try {
-            $filter = $this->loadTemplate('filter');
-
-            return $filter . $this->loadTemplate('filter_' . $template);
-
-        } catch (Throwable $error) {
-            if ($this->app->get('debug')) {
-                $this->app->enqueueMessage($error->getMessage(), 'warning');
-            }
-        }
-
-        return $filter;
+        return $this->loadTemplate('filter') . $this->loadTemplate('filter_fields');
     }
 }
