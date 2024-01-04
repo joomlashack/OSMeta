@@ -383,6 +383,6 @@ class Categories extends AbstractContainer
             ->where('extension = ' . $db->quote('com_content'))
             ->where('alias = ' . $db->quote($alias));
 
-        return (bool)(int)$db->setQuery($query)->loadResult();
+        return $db->setQuery($query)->loadResult() == 0;
     }
 }
