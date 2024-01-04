@@ -168,22 +168,6 @@ abstract class AbstractContainer
     }
 
     /**
-     * Make sure we have the required indexes.
-     */
-    public function verifyMetadata($metadata)
-    {
-        if (!isset($metadata['metatitle'])) {
-            $metadata['metatitle'] = '';
-        }
-
-        if (!isset($metadata['metadescription'])) {
-            $metadata['metadescription'] = '';
-        }
-
-        return $metadata;
-    }
-
-    /**
      * Method to get filter values
      *
      * @return Registry
