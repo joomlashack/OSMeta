@@ -153,8 +153,9 @@ class Categories extends AbstractContainer
         parse_str($query, $params);
         $metadata = $this->getDefaultMetadata();
 
-        if (isset($params['id'])) {
-            $metadata = $this->getMetadata($params['id']);
+        $itemId = $params['id'] ?? null;
+        if ((int)$itemId) {
+            $metadata = $this->getMetadata((int)$itemId);
         }
 
         return $metadata;
