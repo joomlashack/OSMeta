@@ -69,6 +69,7 @@
         <namespace>OSMeta</namespace>
         <license>free</license>
         <targetplatform>3.9</targetplatform>
+        <previousminimum>2.0.0</previousminimum>
 
         <minify>
             <script>media/js/admin.js</script>

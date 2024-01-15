@@ -42,34 +42,7 @@ class Com_osmetainstallerScript extends AbstractScript
      */
     protected function customPostFlight(string $type, InstallerAdapter $parent): void
     {
-        $db = $this->dbo;
 
-        // Remove the old pkg_osmeta, if existent
-        $query = $db->getQuery(true)
-            ->delete('#__extensions')
-            ->where([
-                'type = ' . $db->quote('package'),
-                'element = ' . $db->quote('pkg_osmeta'),
-            ]);
 
-        $db->setQuery($query)->execute();
-
-        // Remove the old tables, if existent
-        $tables = [
-            '#__osmeta_extensions',
-            '#__osmeta_meta_extensions',
-            '#__osmeta_keywords',
-            '#__osmeta_keywords_items',
-        ];
-        foreach ($tables as $table) {
-            $query = 'DROP TABLE IF EXISTS ' . $db->quoteName($table);
-
-            $db->setQuery($query)->execute();
-        }
-
-        $oldLanguageFiles = Folder::files(JPATH_ADMINISTRATOR . '/language', '.*com_osmeta.*', true, true);
-        foreach ($oldLanguageFiles as $oldLanguageFile) {
-            unlink($oldLanguageFile);
-        }
     }
 }
