@@ -22,7 +22,6 @@
  */
 
 use Alledia\Installer\AbstractScript;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\InstallerAdapter;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -38,11 +37,29 @@ require_once $installPath . '/library/Installer/include.php';
 class Com_osmetainstallerScript extends AbstractScript
 {
     /**
+     * @var string[]
+     */
+    protected $plugins = [
+        'plugin.content.osmetacontent',
+        'plugin.system.osmetarenderer',
+    ];
+
+    /**
+     * @inheritDoc
+     */
+    protected function customPreFlight(string $type, InstallerAdapter $parent): bool
+    {
+        // Disable plugins to prevent class definition clashes
+        $this->setExtensionState($this->plugins);
+
+        return true;
+    }
+
+    /**
      * @inheritDoc
      */
     protected function customPostFlight(string $type, InstallerAdapter $parent): void
     {
-
-
+        $this->setExtensionState($this->plugins, 1);
     }
 }
