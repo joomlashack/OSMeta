@@ -123,7 +123,7 @@ class Factory
 
                 if ($success) {
                     $resultFeatureId = $featureId;
-                    break;
+                    break 2;
                 }
             }
 
