@@ -7,8 +7,8 @@
     <copyright>Copyright 2013-2024 Joomlashack. All rights reserved.</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSMETA_DESCRIPTION</description>
-    <version>2.0.8</version>
-    <creationDate>January 09 2024</creationDate>
+    <version>2.0.9b1</version>
+    <creationDate>January 15 2024</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
