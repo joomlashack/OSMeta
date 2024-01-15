@@ -96,7 +96,7 @@ class Factory
 
         parse_str((string)$queryString, $query);
 
-        // @TODO: this loop is crap
+        // @TODO: There has to be a better way to do this!
         foreach ($features as $featureId => $feature) {
             $success = true;
 
@@ -108,11 +108,14 @@ class Factory
                     if ($query) {
                         if ($value !== null) {
                             $success = $success && (isset($query[$key]) && $query[$key] == $value);
+
                         } else {
                             $success = $success && isset($query[$key]);
                         }
+
                     } elseif ($value !== null) {
                         $success = $success && ($app->input->getCmd($key) == $value);
+
                     } else {
                         $success = $success && ($app->input->getCmd($key) !== null);
                     }
