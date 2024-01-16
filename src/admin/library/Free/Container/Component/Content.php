@@ -307,7 +307,7 @@ class Content extends AbstractContainer
                 $db->quoteName('item_type') . ' = ' . $this->code,
                 sprintf('%s IN (%s)', $db->quoteName('item_id'), join(',', $ids)),
             ]);
-        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
+        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
 
         $query = $db->getQuery(true)
             ->select(
@@ -329,24 +329,27 @@ class Content extends AbstractContainer
         foreach ($articles as $article) {
             $article->metadata = json_decode((string)$article->metadata) ?: (object)[];
 
-            $article->metadata->metatitle = HTMLHelper::_('alledia.truncate', $article->title, $maxLength, '');
-
-            $metadata = (object)[
-                'item_id'   => $article->id,
-                'item_type' => $this->code,
-                'title'     => $article->metadata->metatitle,
-            ];
+            $metaTitle                    = HTMLHelper::_('alledia.truncate', $article->title, $maxLength, '');
+            $article->metadata->metatitle = $metaTitle;
 
             $article->metadata = json_encode($article->metadata);
             $db->updateObject('#__content', $article, ['id']);
 
-            $id = $osMetadata[$article->id]->id ?? null;
-            if ($id) {
-                $metadata->id = $id;
-                $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
+            $metadata = (object)array_merge(
+                $osMetadata[$article->id] ?? [],
+                [
+                    'item_id'   => $article->id,
+                    'item_type' => $this->code,
+                    'title'     => $metaTitle,
+                ]
+            );
+
+            if (empty($metadata->id)) {
+                $metadata->description = '';
+                $db->insertObject('#__osmeta_metadata', $metadata);
 
             } else {
-                $db->insertObject('#__osmeta_metadata', $metadata);
+                $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
             }
         }
     }

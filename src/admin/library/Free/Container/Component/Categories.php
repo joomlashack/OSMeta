@@ -280,29 +280,32 @@ class Categories extends AbstractContainer
                 'item_type = ' . $this->code,
             ]);
 
-        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
+        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
 
         foreach ($categories as $category) {
             $category->metadata = json_decode((string)$category->metadata) ?: (object)[];
 
-            $category->metadata->metatitle = HTMLHelper::_('alledia.truncate', $category->title, $maxLength, '');
-
-            $metadata = (object)[
-                'item_id'   => $category->id,
-                'item_type' => $this->code,
-                'title'     => $category->metadata->metatitle,
-            ];
+            $metaTitle                     = HTMLHelper::_('alledia.truncate', $category->title, $maxLength, '');
+            $category->metadata->metatitle = $metaTitle;
 
             $category->metadata = json_encode($category->metadata);
             $db->updateObject('#__categories', $category, ['id']);
 
-            $id = $osMetadata[$category->id]->id ?? null;
-            if ($id) {
-                $metadata->id = $id;
-                $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
+            $metadata = (object)array_merge(
+                $osMetadata[$category->id] ?? [],
+                [
+                    'item_id'   => $category->id,
+                    'item_type' => $this->code,
+                    'title'     => $metaTitle,
+                ]
+            );
+
+            if (empty($metadata->id)) {
+                $metadata->description = '';
+                $db->insertObject('#__osmeta_metadata', $metadata);
 
             } else {
-                $db->insertObject('#__osmeta_metadata', $metadata);
+                $db->updateObject('#__osmeta_metadata', $metadata, ['id']);
             }
         }
     }
