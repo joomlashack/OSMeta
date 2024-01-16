@@ -388,7 +388,7 @@ class Content extends AbstractContainer
                 $db->quoteName('item_type') . ' = ' . $this->code,
                 sprintf('%s IN (%s)', $db->quoteName('item_id'), join(',', $ids)),
             ]);
-        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
+        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
 
         foreach ($articles as $article) {
             $introtext = HTMLHelper::_('alledia.truncate', strip_tags($article->introtext), $maxLength, '');
@@ -396,18 +396,21 @@ class Content extends AbstractContainer
             $article->metadesc = $introtext;
             $db->updateObject('#__content', $article, ['id']);
 
-            $metadata = (object)[
-                'item_id'     => $article->id,
-                'item_type'   => $this->code,
-                'description' => $article->metadesc,
-            ];
+            $metadata = (object)array_merge(
+                $osMetadata[$article->id] ?? [],
+                [
+                    'item_id'     => $article->id,
+                    'item_type'   => $this->code,
+                    'description' => $article->metadesc,
+                ]
+            );
 
-            if ($id = $osMetadata[$article->id]->id) {
-                $metadata->id = $id;
-                $db->updateObject('#__osmeta_metadata', $metadata, 'id');
+            if (empty($metadata->id)) {
+                $metadata->title = '';
+                $db->insertObject('#__osmeta_metadata', $metadata);
 
             } else {
-                $db->insertObject('#__osmeta_metadata', $metadata);
+                $db->updateObject('#__osmeta_metadata', $metadata, 'id');
             }
         }
     }

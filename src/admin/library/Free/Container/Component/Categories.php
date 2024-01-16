@@ -342,7 +342,7 @@ class Categories extends AbstractContainer
                 sprintf('item_id in (%s)', join(',', $ids)),
             ]);
 
-        $osMetadata = $db->setQuery($query)->loadObjectList('item_id');
+        $osMetadata = $db->setQuery($query)->loadAssocList('item_id');
 
         foreach ($categories as $category) {
             if ($category->description) {
@@ -355,17 +355,20 @@ class Categories extends AbstractContainer
 
                 $db->updateObject('#__categories', $category, 'id');
 
-                $metadata = (object)[
-                    'item_id'     => $category->id,
-                    'item_type'   => $this->code,
-                    'description' => $category->metadesc,
-                ];
-                if ($id = $osMetadata[$category->id]->id) {
-                    $metadata->id = $id;
-                    $db->updateObject('#__osmeta_metadata', $metadata, 'id');
+                $metadata = (object)array_merge(
+                    $osMetadata[$category->id] ?? [],
+                    [
+                        'item_id'     => $category->id,
+                        'item_type'   => $this->code,
+                        'description' => $category->metadesc,
+                    ]
+                );
+                if (empty($metadata->id)) {
+                    $metadata->title = '';
+                    $db->insertObject('#__osmeta_metadata', $metadata);
 
                 } else {
-                    $db->insertObject('#__osmeta_metadata', $metadata);
+                    $db->updateObject('#__osmeta_metadata', $metadata, 'id');
                 }
             }
         }
