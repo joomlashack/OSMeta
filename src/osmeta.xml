@@ -70,6 +70,7 @@
         <license>free</license>
         <targetplatform>3.9</targetplatform>
         <previousminimum>2.0.0</previousminimum>
+        <phpminimum>7.4</phpminimum>
 
         <minify>
             <script>media/js/admin.js</script>
