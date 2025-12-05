@@ -225,6 +225,7 @@ class Content extends AbstractContainer
                     $db->quoteName(
                         [
                             'id',
+                            'attribs',
                             'metadesc',
                             'metadata',
                             'alias',
@@ -235,11 +236,15 @@ class Content extends AbstractContainer
                 ->where($db->quoteName('id') . ' = ' . $id);
             $article = $db->setQuery($query)->loadObject();
 
-            $article->metadata            = json_decode($article->metadata ?: '') ?: (object)[];
-            $article->metadata->metatitle = $metatitles[$i] ?? '';
+            $article->metadata = json_decode($article->metadata ?: '{}') ?: (object)[];
+            $article->attribs  = json_decode($article->attribs ?: '{}') ?: (object)[];
+
+            $article->metadata->metatitle         = $metatitles[$i] ?? '';
+            $article->attribs->article_page_title = $metatitles[$i] ?? '';
+            $article->metadesc                    = $metadescriptions[$i] ?? '';
 
             $article->metadata = json_encode($article->metadata);
-            $article->metadesc = $metadescriptions[$i] ?? '';
+            $article->attribs  = json_encode($article->attribs);
 
             if ($aliases) {
                 if (empty($aliases[$i])) {
