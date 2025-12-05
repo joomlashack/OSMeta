@@ -25,7 +25,7 @@
 namespace Alledia\OSMeta\Free\Container;
 
 use Joomla\CMS\Factory as JoomlaFactory;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\Folder;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
