@@ -22,12 +22,14 @@
  * along with OSMeta.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSMeta\Free\Container\Component\Content;
+
 defined('_JEXEC') or die();
 
 $features['com_content:Article'] = [
     'name'     => 'COM_OSMETA_ARTICLES',
     'priority' => 1,
-    'class'    => '\\Alledia\\OSMeta\\Free\\Container\\Component\\Content',
+    'class'    => Content::class,
     'params'   => [
         [
             'option' => 'com_content',
