@@ -106,12 +106,18 @@ class PlgContentOSMetaContent extends AbstractPlugin
             if (is_file($formPath)) {
                 $form->load(file_get_contents($formPath));
 
+                // Move our custom field to the top and hide the article core field
                 $this->app->getDocument()->addScriptDeclaration(<<<JSCRIPT
 window.addEventListener('DOMContentLoaded', function () {
     let metaTitle  = document.getElementById('jform_metadata_metatitle'),
         fieldGroup = metaTitle.parentNode.parentNode.parentNode;
 
     fieldGroup.insertBefore(metaTitle.parentNode.parentNode, fieldGroup.firstChild);
+    
+    let article_page_title = document.getElementById('jform_attribs_article_page_title');
+    if (article_page_title) {
+        article_page_title.closest('.control-group').style.display = 'none';
+    }
 });
 JSCRIPT
                 );
