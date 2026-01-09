@@ -69,7 +69,7 @@ class PlgContentOSMetaContent extends AbstractPlugin
             $option    = $input->getCmd('option');
             $contentId = $content->id ?? null;
 
-            if ($contentId) {
+            if ($option && $contentId) {
                 if ($container = ContainerFactory::getInstance()->getContainerByComponentName($option)) {
                     $contentMetadata  = json_decode($content->metadata ?? '');
                     $contentMetatitle = $contentMetadata->metatitle ?? '';
